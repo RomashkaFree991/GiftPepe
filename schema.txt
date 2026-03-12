@@ -1,0 +1,162 @@
+-- =============================================
+-- GiftPepe Database Schema for Supabase
+-- =============================================
+
+-- Удаляем старые таблицы если есть
+DROP TABLE IF EXISTS pending_payments CASCADE;
+DROP TABLE IF EXISTS star_payments CASCADE;
+DROP TABLE IF EXISTS withdrawals CASCADE;
+DROP TABLE IF EXISTS promo_usage CASCADE;
+DROP TABLE IF EXISTS promocodes CASCADE;
+DROP TABLE IF EXISTS inventory CASCADE;
+DROP TABLE IF EXISTS transactions CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
+
+-- =============================================
+-- Таблица пользователей
+-- =============================================
+CREATE TABLE users (
+    id BIGINT PRIMARY KEY,
+    username TEXT,
+    first_name TEXT,
+    last_name TEXT,
+    photo_url TEXT,
+    balance NUMERIC DEFAULT 0,
+    referrer_id BIGINT,
+    referral_count INT DEFAULT 0,
+    referral_earnings NUMERIC DEFAULT 0,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- =============================================
+-- Таблица инвентаря
+-- =============================================
+CREATE TABLE inventory (
+    id SERIAL PRIMARY KEY,
+    user_id BIGINT REFERENCES users(id) ON DELETE CASCADE,
+    gift_name TEXT NOT NULL,
+    gift_image TEXT NOT NULL,
+    gift_price NUMERIC NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- =============================================
+-- Таблица промокодов (поддержка TON и подарков)
+-- =============================================
+CREATE TABLE promocodes (
+    id SERIAL PRIMARY KEY,
+    code TEXT UNIQUE NOT NULL,
+    reward_type TEXT DEFAULT 'ton', -- 'ton' или 'gift'
+    reward NUMERIC DEFAULT 0,       -- награда в TON
+    gift_name TEXT,                 -- название подарка
+    gift_image TEXT,                -- картинка подарка
+    gift_price NUMERIC,             -- цена подарка
+    max_uses INT DEFAULT 1,
+    used_count INT DEFAULT 0,
+    created_by BIGINT,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- =============================================
+-- Таблица использования промокодов
+-- =============================================
+CREATE TABLE promo_usage (
+    id SERIAL PRIMARY KEY,
+    user_id BIGINT REFERENCES users(id) ON DELETE CASCADE,
+    promo_id INT REFERENCES promocodes(id) ON DELETE CASCADE,
+    used_at TIMESTAMPTZ DEFAULT NOW(),
+    UNIQUE(user_id, promo_id)
+);
+
+-- =============================================
+-- Таблица транзакций (логи)
+-- =============================================
+CREATE TABLE transactions (
+    id SERIAL PRIMARY KEY,
+    user_id BIGINT,
+    type TEXT,
+    amount NUMERIC,
+    description TEXT,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- =============================================
+-- Таблица заявок на вывод
+-- =============================================
+CREATE TABLE withdrawals (
+    id SERIAL PRIMARY KEY,
+    user_id BIGINT REFERENCES users(id) ON DELETE CASCADE,
+    username TEXT,
+    gift_name TEXT NOT NULL,
+    gift_image TEXT,
+    gift_price NUMERIC NOT NULL,
+    status TEXT DEFAULT 'pending', -- pending, notified, completed, rejected
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- =============================================
+-- Таблица платежей Stars
+-- =============================================
+CREATE TABLE star_payments (
+    id SERIAL PRIMARY KEY,
+    user_id BIGINT REFERENCES users(id) ON DELETE CASCADE,
+    stars INT NOT NULL,
+    ton_amount NUMERIC NOT NULL,
+    payment_id TEXT,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- =============================================
+-- Таблица ожидающих платежей (для инвойсов)
+-- =============================================
+CREATE TABLE pending_payments (
+    id TEXT PRIMARY KEY,
+    user_id BIGINT,
+    stars INT,
+    ton_amount NUMERIC,
+    status TEXT DEFAULT 'pending', -- pending, sent, error
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- =============================================
+-- RPC функция для увеличения счётчика рефералов
+-- =============================================
+CREATE OR REPLACE FUNCTION increment_referral_count(user_id BIGINT)
+RETURNS void AS $$
+BEGIN
+    UPDATE users 
+    SET referral_count = referral_count + 1 
+    WHERE id = user_id;
+END;
+$$ LANGUAGE plpgsql;
+
+-- =============================================
+-- Отключаем RLS для простоты
+-- =============================================
+ALTER TABLE users DISABLE ROW LEVEL SECURITY;
+ALTER TABLE inventory DISABLE ROW LEVEL SECURITY;
+ALTER TABLE promocodes DISABLE ROW LEVEL SECURITY;
+ALTER TABLE promo_usage DISABLE ROW LEVEL SECURITY;
+ALTER TABLE transactions DISABLE ROW LEVEL SECURITY;
+ALTER TABLE withdrawals DISABLE ROW LEVEL SECURITY;
+ALTER TABLE star_payments DISABLE ROW LEVEL SECURITY;
+ALTER TABLE pending_payments DISABLE ROW LEVEL SECURITY;
+
+-- =============================================
+-- Индексы для быстрого поиска
+-- =============================================
+CREATE INDEX idx_inventory_user ON inventory(user_id);
+CREATE INDEX idx_promo_usage_user ON promo_usage(user_id);
+CREATE INDEX idx_transactions_user ON transactions(user_id);
+CREATE INDEX idx_withdrawals_user ON withdrawals(user_id);
+CREATE INDEX idx_withdrawals_status ON withdrawals(status);
+CREATE INDEX idx_star_payments_user ON star_payments(user_id);
+CREATE INDEX idx_pending_payments_status ON pending_payments(status);
+
+-- =============================================
+-- Восстановление баланса админа (опционально)
+-- Раскомментируй и выполни отдельно если нужно
+-- =============================================
+-- INSERT INTO users (id, username, balance) 
+-- VALUES (8339935446, '@Skkapap', 13000)
+-- ON CONFLICT (id) DO UPDATE SET balance = 13000;
