@@ -702,7 +702,7 @@
       padding: 0 8px; z-index: 100;
     }
     .indicator {
-      position: absolute; width: 44px; height: 44px; border-radius: 50%;
+      position: absolute; width: 40px; height: 40px; border-radius: 50%;
       background: rgba(59,130,246,0.18);
       top: 50%; transform: translateY(-50%);
       transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
@@ -711,7 +711,7 @@
     .tab {
       display: flex; flex-direction: column; align-items: center; gap: 2px;
       cursor: pointer; -webkit-tap-highlight-color: transparent;
-      padding: 6px 2px; border-radius: 16px;
+      padding: 6px 1px; border-radius: 14px;
       position: relative; z-index: 1; flex: 1; min-width: 0;
     }
     .tab .tab-icon { position: relative; opacity: 0.4; transition: opacity 0.3s ease; }
@@ -724,10 +724,10 @@
     .tab.active .tab-icon .tab-icon-default { opacity: 0; }
     .tab.active .tab-icon .tab-icon-active-layer { opacity: 1; }
     .tab.active .tab-label { color: #3b82f6; }
-    .tab-icon { width: 22px; height: 22px; }
+    .tab-icon { width: 20px; height: 20px; }
     .tab-icon img, .tab-icon svg { width: 100%; height: 100%; }
     .tab-label {
-      font-size: 8px; font-weight: 500; color: rgba(255,255,255,0.4);
+      font-size: 7px; font-weight: 500; color: rgba(255,255,255,0.4);
       transition: color 0.25s ease; white-space: nowrap;
     }
 
@@ -1182,6 +1182,111 @@
     }
     .craft-result-btn:active { transform: scale(0.96); }
 
+    /* ===== Чиленд ===== */
+    .chilend-container {
+      display: flex; flex-direction: column; align-items: center;
+      padding-top: 60px; min-height: calc(100vh - 180px); min-height: calc(100dvh - 180px);
+      justify-content: center;
+    }
+    .chilend-title {
+      font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 24px; text-align: center;
+    }
+    .chilend-tickets {
+      display: flex; flex-direction: column; align-items: center; gap: 12px; margin-bottom: 24px;
+    }
+    .chilend-ticket-row {
+      display: flex; align-items: center; gap: 14px; justify-content: center;
+    }
+    .chilend-ticket {
+      width: 120px; height: auto; object-fit: contain; opacity: 0.4;
+      -webkit-touch-callout: none; -webkit-user-select: none; user-select: none;
+    }
+    .chilend-ticket-big {
+      width: 180px; opacity: 1;
+    }
+    .chilend-arrow-left, .chilend-arrow-right { flex-shrink: 0; opacity: 0.5; }
+    .chilend-status {
+      font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: 16px; text-align: center; min-height: 20px;
+    }
+    .chilend-bet-btn {
+      width: calc(100% - 32px); max-width: 360px; height: 52px; border-radius: 16px; border: none;
+      background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff;
+      font-size: 16px; font-weight: 700; font-family: inherit;
+      cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+      -webkit-tap-highlight-color: transparent;
+      box-shadow: 0 4px 20px rgba(59,130,246,0.35);
+      position: fixed; bottom: 110px; left: 50%; transform: translateX(-50%);
+      z-index: 50;
+    }
+    .chilend-bet-btn:active { transform: translateX(-50%) scale(0.97); }
+    .chilend-bet-btn:disabled { opacity: 0.4; pointer-events: none; }
+    .chilend-bet-btn.spin {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      box-shadow: 0 4px 20px rgba(34,197,94,0.35);
+    }
+    /* Чиленд Sheet */
+    .chilend-sheet-overlay {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0); z-index: 200;
+      pointer-events: none; transition: background 0.35s ease;
+    }
+    .chilend-sheet-overlay.open { background: rgba(0,0,0,0.5); pointer-events: all; }
+    .chilend-sheet {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: #2c2c2e; border-radius: 24px 24px 0 0; z-index: 201;
+      transform: translateY(100%);
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 0 20px 34px 20px; max-height: 70vh;
+    }
+    .chilend-sheet.open { transform: translateY(0); }
+    .chilend-sheet-handle {
+      width: 40px; height: 4px; border-radius: 2px;
+      background: rgba(255,255,255,0.2); margin: 12px auto 20px auto;
+    }
+    .chilend-sheet-title {
+      font-size: 20px; font-weight: 800; color: #fff; text-align: center; margin-bottom: 20px;
+    }
+    .chilend-methods { display: flex; gap: 8px; margin-bottom: 20px; }
+    .chilend-method {
+      flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;
+      padding: 14px 8px; border-radius: 16px;
+      background: rgba(255,255,255,0.05); border: 2px solid transparent;
+      cursor: pointer; -webkit-tap-highlight-color: transparent;
+      transition: background 0.2s, border-color 0.25s;
+    }
+    .chilend-method.selected { border-color: #3b82f6; background: rgba(59,130,246,0.08); }
+    .chilend-method.disabled { opacity: 0.4; pointer-events: none; }
+    .chilend-method-icon {
+      width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.06);
+      display: flex; align-items: center; justify-content: center; overflow: hidden;
+    }
+    .chilend-method-icon img { width: 24px; height: 24px; object-fit: contain; }
+    .chilend-method-name { font-size: 13px; font-weight: 600; color: #fff; }
+    .chilend-method-soon {
+      font-size: 9px; font-weight: 700; color: #f59e0b;
+      background: rgba(245,158,11,0.15); padding: 2px 6px; border-radius: 6px;
+    }
+    .chilend-input-wrap {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 14px 0; margin-bottom: 16px;
+    }
+    .chilend-input {
+      background: transparent; border: none; outline: none;
+      color: #fff; font-size: 38px; font-weight: 800;
+      text-align: right; width: 130px; font-family: inherit; caret-color: #3b82f6;
+    }
+    .chilend-input::placeholder { color: rgba(255,255,255,0.15); }
+    .chilend-input-icon { width: 32px; height: 32px; flex-shrink: 0; }
+    .chilend-input-icon img { width: 100%; height: 100%; object-fit: contain; }
+    .chilend-confirm-btn {
+      width: 100%; height: 52px; border-radius: 16px; border: none;
+      background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff;
+      font-size: 16px; font-weight: 700; font-family: inherit;
+      cursor: pointer; transition: transform 0.15s;
+      box-shadow: 0 4px 20px rgba(59,130,246,0.35);
+    }
+    .chilend-confirm-btn:active { transform: scale(0.97); }
+
     /* ===== Upgrade =====  */
     .upgrade-container {
       display: flex; flex-direction: column; align-items: center;
@@ -1458,8 +1563,34 @@
     </div>
   </div>
 
-  <!-- Page 2: Кейсы -->
-  <div class="page active visible" id="page-3">
+  <!-- Page 3: Чиленд -->
+  <div class="page" id="page-3">
+    <div class="chilend-container">
+      <div class="chilend-title">Чиленд</div>
+      <div class="chilend-tickets">
+        <div class="chilend-ticket-row">
+          <img src="ticket_vector_blue.svg" alt="" class="chilend-ticket">
+        </div>
+        <div class="chilend-ticket-row chilend-ticket-main">
+          <div class="chilend-arrow-left">
+            <svg width="20" height="24" viewBox="0 0 20 24" fill="none"><path d="M18 2L4 12L18 22" stroke="rgba(255,255,255,0.3)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <img src="ticket_vector_blue.svg" alt="" class="chilend-ticket chilend-ticket-big">
+          <div class="chilend-arrow-right">
+            <svg width="20" height="24" viewBox="0 0 20 24" fill="none"><path d="M2 2L16 12L2 22" stroke="rgba(255,255,255,0.3)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+        <div class="chilend-ticket-row">
+          <img src="ticket_vector_blue.svg" alt="" class="chilend-ticket">
+        </div>
+      </div>
+      <div class="chilend-status" id="chilendStatus"></div>
+      <button class="chilend-bet-btn" id="chilendBetBtn" onclick="openChilendSheet()" style="display:none;">Сделать ставку</button>
+    </div>
+  </div>
+
+  <!-- Page 4: Кейсы -->
+  <div class="page active visible" id="page-4">
     <!-- Live drops feed -->
     <div class="live-feed" id="liveFeed">
       <div class="live-feed-label"><div class="live-dot"></div> LIVE</div>
@@ -1535,7 +1666,7 @@
   </div>
 
   <!-- Page 2: Апгрейд -->
-  <div class="page" id="page-4">
+  <div class="page" id="page-5">
     <div class="upgrade-container">
       <!-- Колесо фортуны -->
       <div class="upgrade-wheel-wrap">
@@ -1628,7 +1759,7 @@
   </div>
 
   <!-- Page 3: Профиль -->
-  <div class="page" id="page-5">
+  <div class="page" id="page-6">
     <div class="profile-header">
       <div class="profile-avatar" id="profileAvatar" onclick="openLuckModal()"><img id="tgAvatar" src="" alt="avatar"></div>
       <div class="profile-username" id="tgUsername">Загрузка...</div>
@@ -1856,6 +1987,29 @@
     </div>
   </div>
 
+  <!-- Чиленд Sheet -->
+  <div class="chilend-sheet-overlay" id="chilendSheetOverlay" onclick="closeChilendSheet()"></div>
+  <div class="chilend-sheet" id="chilendSheet">
+    <div class="chilend-sheet-handle"></div>
+    <div class="chilend-sheet-title">Ставка</div>
+    <div class="chilend-methods">
+      <div class="chilend-method disabled">
+        <div class="chilend-method-icon"><img src="gift.svg" alt=""></div>
+        <div class="chilend-method-name">Подарки</div>
+        <div class="chilend-method-soon">SOON</div>
+      </div>
+      <div class="chilend-method selected">
+        <div class="chilend-method-icon"><img src="ton.webp" alt=""></div>
+        <div class="chilend-method-name">TON</div>
+      </div>
+    </div>
+    <div class="chilend-input-wrap">
+      <input class="chilend-input" id="chilendInput" type="text" inputmode="decimal" placeholder="0.00">
+      <div class="chilend-input-icon"><img src="ton.webp" alt="TON"></div>
+    </div>
+    <button class="chilend-confirm-btn" onclick="confirmChilendBet()">Сделать ставку</button>
+  </div>
+
   <!-- Bottom panel -->
   <div class="bottom-panel" id="bottomPanel">
     <div class="indicator" id="indicator"></div>
@@ -1890,21 +2044,28 @@
       </div>
       <span class="tab-label">Крафт</span>
     </div>
-    <div class="tab active" data-index="3" onclick="setActive(this)">
+    <div class="tab" data-index="3" onclick="setActive(this)">
+      <div class="tab-icon">
+        <div class="tab-icon-default"><img src="samoletik.svg" alt="Чиленд" style="filter:brightness(0) invert(1);"></div>
+        <div class="tab-icon-active-layer"><img src="samoletik.svg" alt="" style="filter:brightness(0) saturate(100%) invert(42%) sepia(98%) saturate(1200%) hue-rotate(207deg) brightness(100%) contrast(96%);"></div>
+      </div>
+      <span class="tab-label">Чиленд</span>
+    </div>
+    <div class="tab active" data-index="4" onclick="setActive(this)">
       <div class="tab-icon">
         <div class="tab-icon-default"><img src="box.svg" alt="Кейсы"></div>
         <div class="tab-icon-active-layer"><img src="box.svg" alt="" style="filter:brightness(0) saturate(100%) invert(42%) sepia(98%) saturate(1200%) hue-rotate(207deg) brightness(100%) contrast(96%);"></div>
       </div>
       <span class="tab-label">Кейсы</span>
     </div>
-    <div class="tab" data-index="4" onclick="setActive(this)">
+    <div class="tab" data-index="5" onclick="setActive(this)">
       <div class="tab-icon">
         <div class="tab-icon-default"><img src="rise.svg" alt="Апгрейд"></div>
         <div class="tab-icon-active-layer"><img src="rise.svg" alt="" style="filter:brightness(0) saturate(100%) invert(42%) sepia(98%) saturate(1200%) hue-rotate(207deg) brightness(100%) contrast(96%);"></div>
       </div>
       <span class="tab-label">Апгрейд</span>
     </div>
-    <div class="tab" data-index="5" onclick="setActive(this)">
+    <div class="tab" data-index="6" onclick="setActive(this)">
       <div class="tab-icon">
         <div class="tab-icon-default">
           <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2336,7 +2497,7 @@
       buildAllRoulettes();
       resetCaseUI();
 
-      const page1 = document.getElementById('page-3');
+      const page1 = document.getElementById('page-4');
       page1.classList.remove('visible');
       setTimeout(() => {
         page1.classList.remove('active');
@@ -2775,7 +2936,7 @@
       detail.classList.remove('visible');
       setTimeout(() => {
         detail.classList.remove('active');
-        const page1 = document.getElementById('page-3');
+        const page1 = document.getElementById('page-4');
         page1.classList.add('active');
         void page1.offsetHeight;
         requestAnimationFrame(() => page1.classList.add('visible'));
@@ -2786,12 +2947,12 @@
     // ===== Navigation =====
     const indicator = document.getElementById('indicator');
     const panel = document.getElementById('bottomPanel');
-    let currentPageIndex = 3;
+    let currentPageIndex = 4;
 
     function moveIndicator(tab) {
       const panelRect = panel.getBoundingClientRect();
       const tabRect = tab.getBoundingClientRect();
-      indicator.style.left = (tabRect.left + tabRect.width / 2 - panelRect.left - 22) + 'px';
+      indicator.style.left = (tabRect.left + tabRect.width / 2 - panelRect.left - 20) + 'px';
     }
 
     function setActive(el) {
@@ -2834,7 +2995,7 @@
       currentPageIndex = newIndex;
       
       // Инициализация апгрейда при переходе
-      if (newIndex === 4) {
+      if (newIndex === 5) {
         initUpgradePage();
       }
       // Инициализация крафта при переходе
@@ -2843,11 +3004,14 @@
       }
       // Скрываем top user bar на профиле
       const topBar = document.getElementById('topUserBar');
-      if (topBar) topBar.style.display = (newIndex === 5) ? 'none' : '';
+      if (topBar) topBar.style.display = (newIndex === 6) ? 'none' : '';
       // Init Топ page
       if (newIndex === 0) {
         loadTopUsers();
       }
+      // Show/hide Чиленд button
+      const chilendBtn = document.getElementById('chilendBetBtn');
+      if (chilendBtn) chilendBtn.style.display = (newIndex === 3) ? '' : 'none';
     }
 
     window.addEventListener('load', () => {
@@ -3250,7 +3414,7 @@
     // ===== Promo History =====
     async function openPromoHistory() {
       promoHistoryOpen = true;
-      const profilePage = document.getElementById('page-5');
+      const profilePage = document.getElementById('page-6');
       profilePage.classList.remove('visible');
       setTimeout(async () => {
         profilePage.classList.remove('active');
@@ -3268,7 +3432,7 @@
       hp.classList.remove('visible');
       setTimeout(() => {
         hp.classList.remove('active');
-        const profilePage = document.getElementById('page-5');
+        const profilePage = document.getElementById('page-6');
         profilePage.classList.add('active');
         void profilePage.offsetHeight;
         requestAnimationFrame(() => profilePage.classList.add('visible'));
@@ -3554,7 +3718,7 @@
                 document.getElementById('sellPrice').textContent = totalSellPrice.toFixed(2).replace(/\.?0+$/, '');
                 document.getElementById('resultButtons').classList.add('show');
                 
-                const page1 = document.getElementById('page-3');
+                const page1 = document.getElementById('page-4');
                 page1.classList.remove('visible');
                 page1.classList.remove('active');
                 const detail = document.getElementById('caseDetail');
@@ -3564,7 +3728,7 @@
                 caseDetailOpen = true;
                 
                 // Переходим на вкладку кейсов
-                const tab1 = document.querySelector('.tab[data-index="3"]');
+                const tab1 = document.querySelector('.tab[data-index="4"]');
                 if (tab1) { document.querySelectorAll('.tab').forEach(t => t.classList.remove('active')); tab1.classList.add('active'); }
                 
                 showNotification('Ваш выигрыш восстановлен после перезагрузки!', 'success');
@@ -4566,6 +4730,102 @@
 
     function closeCraftResult() {
       document.getElementById('craftResultOverlay').classList.remove('open');
+    }
+
+    // ===== Чиленд =====
+    let chilendBetAmount = 0;
+    let chilendHasBet = false;
+
+    function openChilendSheet() {
+      if (chilendHasBet) {
+        spinChilend();
+        return;
+      }
+      document.getElementById('chilendSheetOverlay').classList.add('open');
+      document.getElementById('chilendSheet').classList.add('open');
+      document.getElementById('chilendInput').value = '';
+      document.getElementById('chilendInput').focus();
+    }
+
+    function closeChilendSheet() {
+      document.getElementById('chilendSheetOverlay').classList.remove('open');
+      document.getElementById('chilendSheet').classList.remove('open');
+    }
+
+    function confirmChilendBet() {
+      const input = document.getElementById('chilendInput');
+      const amount = parseFloat(input.value);
+      if (!amount || amount <= 0) {
+        showNotification('Введите сумму', 'error');
+        return;
+      }
+      if (amount > userBalance) {
+        showNotification('Недостаточно TON', 'error');
+        return;
+      }
+
+      chilendBetAmount = amount;
+      userBalance = parseFloat((userBalance - amount).toFixed(2));
+      updateBalanceDisplay();
+      saveUserData();
+
+      chilendHasBet = true;
+      closeChilendSheet();
+
+      const btn = document.getElementById('chilendBetBtn');
+      btn.textContent = 'Крутить';
+      btn.classList.add('spin');
+
+      const status = document.getElementById('chilendStatus');
+      status.textContent = 'Ставка: ' + amount.toFixed(2) + ' TON';
+    }
+
+    function spinChilend() {
+      if (!chilendHasBet) return;
+      const btn = document.getElementById('chilendBetBtn');
+      btn.disabled = true;
+      btn.textContent = '...';
+
+      // Анимация тикетов
+      const tickets = document.querySelectorAll('.chilend-ticket');
+      tickets.forEach(t => {
+        t.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
+        t.style.transform = 'scale(1.15) rotate(' + (Math.random() * 10 - 5) + 'deg)';
+        t.style.opacity = '0.8';
+      });
+
+      setTimeout(() => {
+        // Результат: рандом x0.2 .. x3
+        const multi = Math.pow(Math.random(), 1.3) * 2.8 + 0.2;
+        const winAmount = parseFloat((chilendBetAmount * multi).toFixed(2));
+        const isProfit = winAmount >= chilendBetAmount;
+
+        userBalance = parseFloat((userBalance + winAmount).toFixed(2));
+        updateBalanceDisplay();
+        saveUserData();
+
+        // Сброс анимации
+        tickets.forEach(t => {
+          t.style.transition = 'transform 0.4s ease, opacity 0.4s ease';
+          t.style.transform = '';
+          t.style.opacity = '';
+        });
+
+        const status = document.getElementById('chilendStatus');
+        if (isProfit) {
+          status.innerHTML = '<span style="color:#22c55e;font-weight:700;">+' + winAmount.toFixed(2) + ' TON (x' + multi.toFixed(2) + ')</span>';
+        } else {
+          status.innerHTML = '<span style="color:#ef4444;font-weight:700;">' + winAmount.toFixed(2) + ' TON (x' + multi.toFixed(2) + ')</span>';
+        }
+        showNotification(isProfit ? 'Выигрыш +' + winAmount.toFixed(2) + ' TON!' : 'Результат: ' + winAmount.toFixed(2) + ' TON', isProfit ? 'success' : 'error');
+
+        // Сброс
+        chilendHasBet = false;
+        chilendBetAmount = 0;
+        btn.disabled = false;
+        btn.textContent = 'Сделать ставку';
+        btn.classList.remove('spin');
+      }, 1500);
     }
 
     // ===== Top Page =====
