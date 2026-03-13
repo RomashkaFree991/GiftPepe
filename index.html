@@ -11,7 +11,7 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      background: #1c1c1e; min-height: 100vh; min-height: 100dvh;
+      background: #000; min-height: 100vh; min-height: 100dvh;
       overflow-x: hidden;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       color: #fff;
@@ -32,22 +32,13 @@
     /* ===== Loading Screen ===== */
     .loading-screen {
       position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-      background:
-        linear-gradient(90deg, rgba(66, 196, 255, 0.24) 0%, rgba(0, 0, 0, 0) 18%, rgba(0, 0, 0, 0) 82%, rgba(66, 196, 255, 0.24) 100%),
-        linear-gradient(180deg, rgba(8, 20, 52, 0.22) 0%, rgba(0, 0, 0, 0.72) 58%, rgba(0, 0, 0, 0.96) 100%),
-        url('PepeFon.png') center center / cover no-repeat;
+      background: url('PepeFon.png') center center / cover no-repeat;
       z-index: 9999;
       display: flex; align-items: center; justify-content: center;
       transition: opacity 0.5s ease;
       overflow: hidden;
     }
-    .loading-screen::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, rgba(76, 211, 255, 0.16) 0%, rgba(76, 211, 255, 0.06) 10%, rgba(0, 0, 0, 0) 24%, rgba(0, 0, 0, 0) 76%, rgba(76, 211, 255, 0.06) 90%, rgba(76, 211, 255, 0.16) 100%);
-      pointer-events: none;
-    }
+    .loading-screen::before { display: none; }
     .loading-screen.hide { opacity: 0; pointer-events: none; }
     .loading-logo-wrap {
       position: relative;
@@ -58,14 +49,15 @@
     }
     .loading-logo {
       position: relative;
-      width: clamp(82px, 22vw, 118px);
-      max-width: 26vw;
+      width: clamp(56px, 14vw, 76px);
       height: auto;
       object-fit: contain;
-      animation: spinLoader 3.2s linear infinite;
+      animation: spinLoader 2.9s linear infinite;
       transform-origin: center center;
       pointer-events: none;
       z-index: 1;
+      filter: none;
+      box-shadow: none;
     }
     @keyframes spinLoader {
       from { transform: rotate(0deg); }
@@ -77,6 +69,7 @@
       min-height: 100vh; min-height: 100dvh;
       opacity: 0; transform: translateY(12px);
       transition: opacity 0.35s ease, transform 0.35s ease;
+      background: #000;
     }
     .page.active { display: block; }
     .page.visible { opacity: 1; transform: translateY(0); }
@@ -259,11 +252,11 @@
     }
     .live-feed::before {
       content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 30px;
-      background: linear-gradient(to right, #1c1c1e, transparent); z-index: 2; pointer-events: none;
+      background: linear-gradient(to right, #000, transparent); z-index: 2; pointer-events: none;
     }
     .live-feed::after {
       content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 30px;
-      background: linear-gradient(to left, #1c1c1e, transparent); z-index: 2; pointer-events: none;
+      background: linear-gradient(to left, #000, transparent); z-index: 2; pointer-events: none;
     }
     .live-feed-label {
       position: absolute; left: 6px; top: 50%; transform: translateY(-50%);
@@ -305,27 +298,37 @@
     .live-feed-price img { width: 10px; height: 10px; }
 
     /* ===== Cases grid ===== */
-    .cases-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 0; padding: 0 4px; }
+    .cases-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 0; padding: 0 4px; }
     .case-card {
-      background: linear-gradient(145deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03));
-      border: 1px solid rgba(255,255,255,0.08); border-radius: 14px;
-      padding: 6px 6px 8px; display: flex; flex-direction: column; align-items: center;
+      background: linear-gradient(180deg, rgba(12,12,12,0.98), rgba(18,18,18,0.96));
+      border: 1px solid rgba(255,255,255,0.06); border-radius: 18px;
+      padding: 10px 8px 12px; display: flex; flex-direction: column; align-items: center;
       cursor: pointer; -webkit-tap-highlight-color: transparent;
-      transition: transform 0.2s; position: relative; overflow: hidden;
+      transition: transform 0.2s, border-color 0.2s; position: relative; overflow: hidden;
+      min-height: 210px;
     }
-    .case-card::before {
-      content: ''; position: absolute; top: -40px; right: -40px;
-      width: 100px; height: 100px;
-      background: radial-gradient(circle, rgba(59,130,246,0.1), transparent 70%);
-      border-radius: 50%; pointer-events: none;
-    }
+    .case-card::before { display: none; }
     .case-card:active { transform: scale(0.96); }
-    .case-name { font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 4px; text-align: center; }
-    .case-image { width: 130px; height: 130px; object-fit: contain; margin: 8px 0; pointer-events: none; }
-    .case-price { display: flex; align-items: center; gap: 3px; font-size: 13px; font-weight: 700; color: #fff; }
+    .case-image { order: 1; width: 126px; height: 126px; object-fit: contain; margin: 2px 0 8px; pointer-events: none; }
+    .case-name {
+      order: 2; font-size: 13px; font-weight: 700; color: #fff;
+      margin-bottom: 8px; text-align: center; line-height: 1.2;
+    }
+    .case-price {
+      order: 3; display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+      min-height: 32px; padding: 0 12px; border-radius: 999px;
+      background: #111317; border: 1px solid rgba(255,255,255,0.07);
+      font-size: 13px; font-weight: 800; color: #fff;
+    }
     .case-price img { width: 14px; height: 14px; object-fit: contain; }
-    .case-price-free { color: #22c55e; font-weight: 800; }
-    .case-price-timer { color: rgba(255,255,255,0.5); font-size: 12px; }
+    .case-price-free {
+      color: #fff; font-weight: 800;
+      background: #111317; border: 1px solid rgba(255,255,255,0.07);
+    }
+    .case-price-timer {
+      color: rgba(255,255,255,0.58); font-size: 12px;
+      background: #111317; border: 1px solid rgba(255,255,255,0.07);
+    }
 
     /* ===== Case detail ===== */
     .case-detail {
@@ -333,6 +336,7 @@
       min-height: 100vh; min-height: 100dvh;
       opacity: 0; transform: translateY(12px);
       transition: opacity 0.35s ease, transform 0.35s ease;
+      background: #000;
     }
     .case-detail.active { display: block; }
     .case-detail.visible { opacity: 1; transform: translateY(0); }
@@ -360,13 +364,13 @@
     .roulette-row:nth-child(5) { transition-delay: 0.25s; }
     .roulette-container {
       position: relative; width: 100%; height: 100px; overflow: hidden;
-      border-radius: 16px; background: rgba(255,255,255,0.04);
+      border-radius: 16px; background: #090909;
       border: 1px solid rgba(255,255,255,0.06);
     }
     .roulette-pointer {
       position: absolute; top: 0; left: 50%; transform: translateX(-50%);
       width: 3px; height: 100%; background: #3b82f6; z-index: 5;
-      box-shadow: 0 0 12px rgba(59,130,246,0.6);
+      box-shadow: 0 0 12px rgba(59,130,246,0.35);
     }
     .roulette-pointer::before {
       content: ''; position: absolute; top: -2px; left: 50%; transform: translateX(-50%);
@@ -381,8 +385,8 @@
     .roulette-fade-left, .roulette-fade-right {
       position: absolute; top: 0; width: 40px; height: 100%; z-index: 3; pointer-events: none;
     }
-    .roulette-fade-left { left: 0; background: linear-gradient(to right, #1c1c1e, transparent); }
-    .roulette-fade-right { right: 0; background: linear-gradient(to left, #1c1c1e, transparent); }
+    .roulette-fade-left { left: 0; background: linear-gradient(to right, #000, transparent); }
+    .roulette-fade-right { right: 0; background: linear-gradient(to left, #000, transparent); }
     .roulette-track {
       display: flex; align-items: center; height: 100%;
       position: absolute; top: 0; left: 0; will-change: transform;
@@ -403,7 +407,7 @@
     .won-prize-display {
       display: none; flex-direction: column; align-items: center; justify-content: center;
       width: 100%; padding: 20px 16px; border-radius: 16px;
-      background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2);
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
       animation: prizeReveal 0.5s ease; min-height: 100px; margin-bottom: 16px;
     }
     .won-prize-display.show { display: flex; }
@@ -418,32 +422,43 @@
     .won-prize-item .won-price-tag img { width: 13px; height: 13px; }
     @keyframes prizeReveal { 0% { opacity: 0; transform: scale(0.7); } 60% { transform: scale(1.05); } 100% { opacity: 1; transform: scale(1); } }
 
-    .case-detail-line { width: 100%; height: 1px; background: rgba(255,255,255,0.08); margin: 16px 0; }
+    .case-detail-line { width: 100%; height: 1px; background: rgba(255,255,255,0.08); margin: 18px 0 14px; }
 
     .multiplier-pills { display: flex; gap: 8px; justify-content: center; margin-bottom: 14px; }
     .multi-pill {
-      width: 56px; height: 34px; border-radius: 12px; border: 2px solid rgba(255,255,255,0.1);
-      background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.5);
-      font-size: 14px; font-weight: 700; font-family: inherit;
-      cursor: pointer; -webkit-tap-highlight-color: transparent; transition: all 0.25s ease;
+      width: 46px; height: 40px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);
+      background: #101113; color: #fff;
+      font-size: 16px; font-weight: 800; font-family: inherit;
+      cursor: pointer; -webkit-tap-highlight-color: transparent; transition: all 0.2s ease;
       display: flex; align-items: center; justify-content: center;
     }
     .multi-pill.active {
-      border-color: #3b82f6; background: rgba(59,130,246,0.15); color: #3b82f6;
-      box-shadow: 0 0 12px rgba(59,130,246,0.2);
+      border-color: rgba(59,130,246,0.45); background: #151a25; color: #fff;
+      box-shadow: none;
     }
     .case-open-btn {
-      width: 100%; height: 52px; border-radius: 16px; border: none;
+      width: 100%; height: 52px; border-radius: 18px; border: none;
       background: linear-gradient(135deg, #3b82f6, #2563eb);
       color: #fff; font-size: 16px; font-weight: 700; font-family: inherit;
       cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
       transition: transform 0.15s, box-shadow 0.15s;
-      -webkit-tap-highlight-color: transparent; box-shadow: 0 4px 20px rgba(59,130,246,0.35);
-      margin-bottom: 16px;
+      -webkit-tap-highlight-color: transparent; box-shadow: 0 4px 20px rgba(59,130,246,0.28);
+      margin-bottom: 10px;
     }
     .case-open-btn:active { transform: scale(0.97); }
     .case-open-btn:disabled { opacity: 0.5; pointer-events: none; }
     .case-open-btn img { width: 20px; height: 20px; object-fit: contain; }
+    .case-open-fast-btn {
+      width: 100%; height: 46px; border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: #111214; color: #8e949d;
+      font-size: 15px; font-weight: 700; font-family: inherit;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: transform 0.15s, background 0.2s; -webkit-tap-highlight-color: transparent;
+      margin-bottom: 16px;
+    }
+    .case-open-fast-btn:active { transform: scale(0.97); }
+    .case-open-fast-btn:disabled { opacity: 0.5; pointer-events: none; }
 
     .result-buttons {
       display: none; gap: 10px; width: 100%; margin-bottom: 16px; animation: resultAppear 0.5s ease;
@@ -483,7 +498,7 @@
     .result-btn-sell { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); color: #fff; }
     .result-btn-sell img { width: 16px; height: 16px; object-fit: contain; }
 
-    .prizes-title { font-size: 16px; font-weight: 600; color: rgba(255,255,255,0.35); margin-bottom: 14px; text-align: center; }
+    .prizes-title { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 14px; text-align: left; }
     .prizes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
     .prize-cell {
       border-radius: 20px; padding: 14px 6px 10px 6px;
@@ -667,14 +682,11 @@
 
     /* ===== PC Adaptation ===== */
     @media (min-width: 768px) {
-      body { display: flex; justify-content: center; background: #121214; }
-      .loading-screen { background:
-        linear-gradient(90deg, rgba(66, 196, 255, 0.24) 0%, rgba(0, 0, 0, 0) 18%, rgba(0, 0, 0, 0) 82%, rgba(66, 196, 255, 0.24) 100%),
-        linear-gradient(180deg, rgba(8, 20, 52, 0.22) 0%, rgba(0, 0, 0, 0.72) 58%, rgba(0, 0, 0, 0.96) 100%),
-        url('PepeFon.png') center center / cover no-repeat; }
+      body { display: flex; justify-content: center; background: #000; }
+      .loading-screen { background: url('PepeFon.png') center center / cover no-repeat; }
       .pc-wrapper {
         width: 100%; max-width: 480px; min-height: 100vh; min-height: 100dvh;
-        background: #1c1c1e; position: relative;
+        background: #000; position: relative;
         box-shadow: 0 0 60px rgba(0,0,0,0.5);
       }
       .top-pill { right: calc(50% - 240px + 16px); }
@@ -1050,24 +1062,15 @@
     }
     .craft-cost-card {
       width: calc(100% - 32px); max-width: 380px;
-      background: linear-gradient(145deg, rgba(59,130,246,0.08), rgba(255,255,255,0.04));
-      border: 1px solid rgba(59,130,246,0.15); border-radius: 24px;
+      background: #2a2a2d;
+      border: 1px solid rgba(255,255,255,0.08); border-radius: 24px;
       padding: 22px 20px 18px; margin-bottom: 20px;
       display: flex; flex-direction: column; align-items: center;
       position: relative; overflow: hidden;
+      box-shadow: none;
     }
-    .craft-cost-card::before {
-      content: ''; position: absolute; top: -40px; right: -40px;
-      width: 120px; height: 120px;
-      background: radial-gradient(circle, rgba(59,130,246,0.12), transparent 70%);
-      border-radius: 50%; pointer-events: none;
-    }
-    .craft-cost-card::after {
-      content: ''; position: absolute; bottom: -30px; left: -30px;
-      width: 90px; height: 90px;
-      background: radial-gradient(circle, rgba(168,85,247,0.08), transparent 70%);
-      border-radius: 50%; pointer-events: none;
-    }
+    .craft-cost-card::before { display: none; }
+    .craft-cost-card::after { display: none; }
     .craft-cost-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; position: relative; z-index: 1; }
     .craft-ton-icon { width: 28px; height: 28px; object-fit: contain; }
     .craft-cost-value { font-size: 32px; font-weight: 800; color: #fff; }
@@ -1148,7 +1151,7 @@
     }
     .craft-result-overlay.open { display: flex; }
     .craft-result-modal {
-      background: linear-gradient(165deg, #2c2c2e 0%, #1c1c1e 100%);
+      background: linear-gradient(165deg, #2c2c2e 0%, #000 100%);
       border: 1px solid rgba(255,255,255,0.08);
       border-radius: 28px; padding: 32px 24px 24px;
       width: calc(100% - 40px); max-width: 340px;
@@ -1229,11 +1232,11 @@
     }
     .chilend-viewport::before {
       content: ''; position: absolute; top: 0; left: 0; right: 0; height: 80px;
-      background: linear-gradient(to bottom, #1c1c1e, transparent); z-index: 3; pointer-events: none;
+      background: linear-gradient(to bottom, #000, transparent); z-index: 3; pointer-events: none;
     }
     .chilend-viewport::after {
       content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 80px;
-      background: linear-gradient(to top, #1c1c1e, transparent); z-index: 3; pointer-events: none;
+      background: linear-gradient(to top, #000, transparent); z-index: 3; pointer-events: none;
     }
     .chilend-pointer {
       position: absolute; top: 50%; left: 0; right: 0; transform: translateY(-50%);
@@ -1383,7 +1386,7 @@
     }
     .upgrade-wheel-center {
       position: absolute; width: 80px; height: 80px; border-radius: 50%;
-      background: linear-gradient(145deg, #2c2c2e, #1c1c1e);
+      background: linear-gradient(145deg, #2c2c2e, #000);
       border: 3px solid rgba(255,255,255,0.1);
       display: flex; align-items: center; justify-content: center; flex-direction: column;
       z-index: 5;
@@ -1713,14 +1716,17 @@
     <div class="roulette-section" id="rouletteSection"></div>
     <div class="won-prize-display" id="wonPrizeDisplay"></div>
     <div class="multiplier-pills" id="multiplierPills">
-      <button class="multi-pill active" data-multi="1" onclick="setMultiplier(1)">1x</button>
-      <button class="multi-pill" data-multi="2" onclick="setMultiplier(2)">2x</button>
-      <button class="multi-pill" data-multi="3" onclick="setMultiplier(3)">3x</button>
-      <button class="multi-pill" data-multi="4" onclick="setMultiplier(4)">4x</button>
-      <button class="multi-pill" data-multi="5" onclick="setMultiplier(5)">5x</button>
+      <button class="multi-pill active" data-multi="1" onclick="setMultiplier(1)">1</button>
+      <button class="multi-pill" data-multi="2" onclick="setMultiplier(2)">2</button>
+      <button class="multi-pill" data-multi="3" onclick="setMultiplier(3)">3</button>
+      <button class="multi-pill" data-multi="4" onclick="setMultiplier(4)">4</button>
+      <button class="multi-pill" data-multi="5" onclick="setMultiplier(5)">5</button>
     </div>
     <button class="case-open-btn" id="caseOpenBtn" onclick="spinRoulette()">
       Открыть за <span id="caseOpenPrice"></span> <img src="ton.webp" alt="TON">
+    </button>
+    <button class="case-open-fast-btn" id="caseOpenFastBtn" onclick="spinRouletteFast()">
+      Открыть быстро
     </button>
     <div class="result-buttons" id="resultButtons">
       <button class="result-btn result-btn-claim" id="claimBtn" onclick="claimPrize()">
@@ -1735,7 +1741,7 @@
       </button>
     </div>
     <div class="case-detail-line"></div>
-    <div class="prizes-title">Призы в кейсе</div>
+    <div class="prizes-title">Содержимое кейса</div>
     <div class="prizes-grid" id="prizesGrid"></div>
   </div>
 
@@ -2597,6 +2603,11 @@
     function resetCaseUI() {
       document.getElementById('caseOpenBtn').style.display = '';
       document.getElementById('caseOpenBtn').disabled = false;
+      const caseOpenFastBtn = document.getElementById('caseOpenFastBtn');
+      if (caseOpenFastBtn) {
+        caseOpenFastBtn.style.display = '';
+        caseOpenFastBtn.disabled = false;
+      }
       document.getElementById('multiplierPills').style.display = '';
       document.getElementById('resultButtons').classList.remove('show');
       document.getElementById('rouletteSection').style.display = '';
@@ -2661,10 +2672,11 @@
       track.style.transform = 'translateX(' + initialX + 'px)';
     }
 
-    function spinRoulette() {
+    function spinRoulette(forceQuickOpen = false) {
       if (isSpinning) return;
       if (currentCaseIndex < 0 || currentCaseIndex >= casesData.length) return;
       const c = casesData[currentCaseIndex];
+      const instantOpen = forceQuickOpen || quickOpenMode;
       
       // Для бесплатного кейса
       if (c.freeCase) {
@@ -2710,6 +2722,8 @@
         isSpinning = true;
         const btn = document.getElementById('caseOpenBtn');
         btn.disabled = true;
+        const fastBtn = document.getElementById('caseOpenFastBtn');
+        if (fastBtn) fastBtn.disabled = true;
         document.getElementById('multiplierPills').style.pointerEvents = 'none';
 
         for (let t = 0; t < currentMultiplier; t++) {
@@ -2726,14 +2740,14 @@
             const containerW = container.offsetWidth || 360;
             const winCenter = WIN_TARGET * ITEM_WIDTH + ITEM_WIDTH / 2;
             const finalX = containerW / 2 - winCenter + (Math.random() - 0.5) * (ITEM_WIDTH * 0.6);
-            if (!quickOpenMode) {
+            if (!instantOpen) {
               track.style.transition = 'transform ' + SPIN_DURATION + 's cubic-bezier(0.12, 0.8, 0.2, 1)';
             }
             track.style.transform = 'translateX(' + finalX + 'px)';
           }
         });
 
-        const spinDelay = quickOpenMode ? 100 : (SPIN_DURATION + 0.3) * 1000;
+        const spinDelay = instantOpen ? 100 : (SPIN_DURATION + 0.3) * 1000;
         setTimeout(() => {
           isSpinning = false;
           document.getElementById('rouletteSection').style.display = 'none';
@@ -2755,6 +2769,8 @@
           wonDisplay.style.display = '';
           wonDisplay.classList.add('show');
           btn.style.display = 'none';
+          const fastBtn = document.getElementById('caseOpenFastBtn');
+          if (fastBtn) fastBtn.style.display = 'none';
           document.getElementById('multiplierPills').style.display = 'none';
           document.getElementById('sellPrice').textContent = totalSellPrice.toFixed(2).replace(/\.?0+$/, '');
           document.getElementById('resultButtons').classList.add('show');
@@ -2766,6 +2782,8 @@
       isSpinning = true;
       const btn = document.getElementById('caseOpenBtn');
       btn.disabled = true;
+      const fastBtn = document.getElementById('caseOpenFastBtn');
+      if (fastBtn) fastBtn.disabled = true;
       document.getElementById('multiplierPills').style.pointerEvents = 'none';
       wonPrizes = [];
 
@@ -2791,14 +2809,14 @@
           const winCenter = WIN_TARGET * ITEM_WIDTH + ITEM_WIDTH / 2;
           const finalX = containerW / 2 - winCenter + (Math.random() - 0.5) * (ITEM_WIDTH * 0.6);
 
-          if (!quickOpenMode) {
+          if (!instantOpen) {
             track.style.transition = 'transform ' + SPIN_DURATION + 's cubic-bezier(0.12, 0.8, 0.2, 1)';
           }
           track.style.transform = 'translateX(' + finalX + 'px)';
         }
       });
 
-      const spinDelay2 = quickOpenMode ? 100 : (SPIN_DURATION + 0.3) * 1000;
+      const spinDelay2 = instantOpen ? 100 : (SPIN_DURATION + 0.3) * 1000;
       setTimeout(() => {
         isSpinning = false;
         document.getElementById('rouletteSection').style.display = 'none';
@@ -2820,6 +2838,8 @@
         wonDisplay.style.display = '';
         wonDisplay.classList.add('show');
         btn.style.display = 'none';
+        const fastBtn2 = document.getElementById('caseOpenFastBtn');
+        if (fastBtn2) fastBtn2.style.display = 'none';
         document.getElementById('multiplierPills').style.display = 'none';
         document.getElementById('sellPrice').textContent = totalSellPrice.toFixed(2).replace(/\.?0+$/, '');
         document.getElementById('resultButtons').classList.add('show');
@@ -2875,6 +2895,11 @@
       document.getElementById('rouletteSection').style.display = '';
       document.getElementById('caseOpenBtn').style.display = '';
       document.getElementById('caseOpenBtn').disabled = false;
+      const caseOpenFastBtn = document.getElementById('caseOpenFastBtn');
+      if (caseOpenFastBtn) {
+        caseOpenFastBtn.style.display = '';
+        caseOpenFastBtn.disabled = false;
+      }
       document.getElementById('multiplierPills').style.display = '';
       document.getElementById('multiplierPills').style.pointerEvents = '';
       buildAllRoulettes();
@@ -3797,6 +3822,8 @@
                 document.getElementById('rouletteSection').style.display = 'none';
                 const caseOpenBtn = document.getElementById('caseOpenBtn');
                 if (caseOpenBtn) caseOpenBtn.style.display = 'none';
+                const caseOpenFastBtn = document.getElementById('caseOpenFastBtn');
+                if (caseOpenFastBtn) caseOpenFastBtn.style.display = 'none';
                 document.getElementById('multiplierPills').style.display = 'none';
                 document.getElementById('sellPrice').textContent = totalSellPrice.toFixed(2).replace(/\.?0+$/, '');
                 document.getElementById('resultButtons').classList.add('show');
