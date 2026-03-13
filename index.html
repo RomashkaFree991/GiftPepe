@@ -19,6 +19,7 @@
       -webkit-user-select: none;
       user-select: none;
     }
+    .app-loading .pc-wrapper > :not(.loading-screen) { visibility: hidden; }
     img {
       -webkit-touch-callout: none;
       -webkit-user-select: none;
@@ -49,15 +50,15 @@
     }
     .loading-logo {
       position: relative;
-      width: clamp(56px, 14vw, 76px);
+      width: clamp(78px, 18vw, 96px);
       height: auto;
       object-fit: contain;
-      animation: spinLoader 2.9s linear infinite;
+      animation: spinLoader 2.5s linear infinite;
       transform-origin: center center;
       pointer-events: none;
       z-index: 1;
-      filter: none;
-      box-shadow: none;
+      filter: none !important;
+      box-shadow: none !important;
     }
     @keyframes spinLoader {
       from { transform: rotate(0deg); }
@@ -300,7 +301,7 @@
     /* ===== Cases grid ===== */
     .cases-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 0; padding: 0 4px; }
     .case-card {
-      background: linear-gradient(180deg, rgba(12,12,12,0.98), rgba(18,18,18,0.96));
+      background: linear-gradient(180deg, #070707 0%, #101010 100%);
       border: 1px solid rgba(255,255,255,0.06); border-radius: 18px;
       padding: 10px 8px 12px; display: flex; flex-direction: column; align-items: center;
       cursor: pointer; -webkit-tap-highlight-color: transparent;
@@ -369,18 +370,19 @@
     }
     .roulette-pointer {
       position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-      width: 3px; height: 100%; background: #3b82f6; z-index: 5;
-      box-shadow: 0 0 12px rgba(59,130,246,0.35);
+      width: 5px; height: 100%; background: #3b82f6; z-index: 5;
+      box-shadow: 0 0 18px rgba(59,130,246,0.45);
+      border-radius: 999px;
     }
     .roulette-pointer::before {
       content: ''; position: absolute; top: -2px; left: 50%; transform: translateX(-50%);
-      width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent;
-      border-top: 10px solid #3b82f6;
+      width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent;
+      border-top: 12px solid #3b82f6;
     }
     .roulette-pointer::after {
       content: ''; position: absolute; bottom: -2px; left: 50%; transform: translateX(-50%);
-      width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent;
-      border-bottom: 10px solid #3b82f6;
+      width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent;
+      border-bottom: 12px solid #3b82f6;
     }
     .roulette-fade-left, .roulette-fade-right {
       position: absolute; top: 0; width: 40px; height: 100%; z-index: 3; pointer-events: none;
@@ -393,15 +395,25 @@
     }
     .roulette-item {
       width: 90px; height: 100%; flex-shrink: 0;
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
       border-right: 1px solid rgba(255,255,255,0.04);
+      position: relative; overflow: hidden;
     }
-    .roulette-item img { width: 50px; height: 50px; object-fit: contain; }
+    .roulette-item-glow {
+      position: absolute; top: 38%; left: 50%;
+      width: 54px; height: 54px; border-radius: 50%;
+      transform: translate(-50%, -50%); filter: blur(20px);
+      opacity: 0.42; pointer-events: none;
+    }
+    .roulette-item img { width: 50px; height: 50px; object-fit: contain; position: relative; z-index: 1; }
     .roulette-item-price {
-      font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.4);
-      display: flex; align-items: center; gap: 3px;
+      font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.48);
+      display: flex; align-items: center; gap: 3px; position: relative; z-index: 1;
     }
     .roulette-item-price img { width: 12px; height: 12px; }
+    .roulette-item .rarity-bar {
+      width: 28px; height: 3px; border-radius: 999px; position: relative; z-index: 1;
+    }
 
     /* ===== Won prize ===== */
     .won-prize-display {
@@ -498,7 +510,7 @@
     .result-btn-sell { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); color: #fff; }
     .result-btn-sell img { width: 16px; height: 16px; object-fit: contain; }
 
-    .prizes-title { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 14px; text-align: left; }
+    .prizes-title { font-size: 21px; font-weight: 800; color: #fff; margin-bottom: 16px; text-align: left; }
     .prizes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
     .prize-cell {
       border-radius: 20px; padding: 14px 6px 10px 6px;
@@ -698,41 +710,41 @@
     }
 
     /* ===== Top user bar ===== */
-    .top-user-bar {
-      position: fixed; top: 16px; left: 16px; height: 42px;
-      display: flex; align-items: center; gap: 10px;
-      z-index: 100; pointer-events: none;
-    }
+    .top-user-bar { display: none !important; }
     .top-user-avatar {
-      width: 36px; height: 36px; border-radius: 50%; overflow: hidden;
+      width: 40px; height: 40px; border-radius: 50%; overflow: hidden;
       background: rgba(255,255,255,0.08); flex-shrink: 0;
-      border: 2px solid rgba(59,130,246,0.3);
+      border: 2px solid rgba(59,130,246,0.32);
     }
     .top-user-avatar img { width: 100%; height: 100%; object-fit: cover; }
-    .top-user-name {
-      font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.7);
-      max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-    }
+    .top-user-name { display: none !important; }
 
     /* ===== Top pill ===== */
     .top-pill {
-      position: fixed; top: 16px; right: 16px; height: 42px;
-      display: flex; align-items: center;
-      background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
-      border: 1px solid rgba(255,255,255,0.06); border-radius: 100px;
-      padding: 0 4px 0 14px; z-index: 100;
+      position: fixed; top: 16px; right: 16px; min-height: 48px;
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(26px); -webkit-backdrop-filter: blur(26px);
+      border: 1px solid rgba(255,255,255,0.07); border-radius: 100px;
+      padding: 4px 6px 4px 10px; z-index: 100;
     }
-    .pill-amount { font-size: 16px; font-weight: 600; color: #fff; margin-right: 4px; }
-    .pill-icon { width: 22px; height: 22px; margin-right: 8px; }
+    .pill-amount { font-size: 16px; font-weight: 700; color: #fff; margin-right: 2px; }
+    .pill-icon { width: 18px; height: 18px; margin-right: 0; flex-shrink: 0; }
     .pill-icon img { width: 100%; height: 100%; object-fit: contain; }
     .pill-plus {
-      width: 34px; height: 34px; border-radius: 50%; background: #3b82f6;
+      width: 36px; height: 36px; border-radius: 50%; background: #3b82f6;
       display: flex; align-items: center; justify-content: center;
       cursor: pointer; -webkit-tap-highlight-color: transparent; transition: transform 0.15s;
+      flex-shrink: 0;
     }
     .pill-plus:active { transform: scale(0.9); }
     .pill-plus svg { width: 18px; height: 18px; }
+    .pill-avatar {
+      width: 40px; height: 40px; border-radius: 50%; overflow: hidden;
+      background: rgba(255,255,255,0.08); border: 2px solid rgba(59,130,246,0.32);
+      flex-shrink: 0;
+    }
+    .pill-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
     /* ===== Bottom panel ===== */
     .bottom-panel {
@@ -744,8 +756,9 @@
       padding: 0 8px; z-index: 100;
     }
     .indicator {
-      position: absolute; width: 40px; height: 40px; border-radius: 50%;
-      background: rgba(59,130,246,0.18);
+      position: absolute; width: 56px; height: 50px; border-radius: 18px;
+      background: rgba(59,130,246,0.24);
+      box-shadow: 0 0 18px rgba(59,130,246,0.18);
       top: 50%; transform: translateY(-50%);
       transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
       pointer-events: none; z-index: 0;
@@ -847,15 +860,17 @@
     /* ===== Modals ===== */
     .modal-overlay {
       position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.6); z-index: 300;
+      background: rgba(0,0,0,0.82); z-index: 300;
       display: none; align-items: center; justify-content: center;
-      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
     }
     .modal-overlay.open { display: flex; }
     .modal {
-      background: #2c2c2e; border-radius: 24px; padding: 24px;
+      background: linear-gradient(180deg, #111214 0%, #070708 100%);
+      border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 24px;
       width: calc(100% - 40px); max-width: 360px;
       animation: modalAppear 0.3s ease;
+      box-shadow: 0 18px 52px rgba(0,0,0,0.46);
     }
     @keyframes modalAppear { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
     .modal-title { font-size: 20px; font-weight: 800; color: #fff; text-align: center; margin-bottom: 20px; }
@@ -883,15 +898,17 @@
     /* ===== Admin Luck Modal ===== */
     .luck-modal-overlay {
       position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.6); z-index: 300;
+      background: rgba(0,0,0,0.82); z-index: 300;
       display: none; align-items: center; justify-content: center;
-      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
     }
     .luck-modal-overlay.open { display: flex; }
     .luck-modal {
-      background: #2c2c2e; border-radius: 24px; padding: 24px;
+      background: linear-gradient(180deg, #111214 0%, #070708 100%);
+      border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 24px;
       width: calc(100% - 40px); max-width: 320px;
       animation: modalAppear 0.3s ease; text-align: center;
+      box-shadow: 0 18px 52px rgba(0,0,0,0.46);
     }
     .luck-modal-title { font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 8px; }
     .luck-modal-subtitle { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 24px; }
@@ -936,9 +953,11 @@
     }
     .ucheat-overlay.open { display: flex; }
     .ucheat-modal {
-      background: #2c2c2e; border-radius: 24px; padding: 24px;
+      background: linear-gradient(180deg, #111214 0%, #070708 100%);
+      border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 24px;
       width: calc(100% - 40px); max-width: 340px;
       animation: modalAppear 0.3s ease;
+      box-shadow: 0 18px 52px rgba(0,0,0,0.46);
     }
     .ucheat-title { font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 4px; }
     .ucheat-sub { font-size: 12px; color: rgba(255,255,255,0.35); margin-bottom: 20px; }
@@ -1044,7 +1063,7 @@
     }
     .craft-slot:active { transform: scale(0.95); }
     .craft-slot.filled {
-      border-style: solid; border-color: rgba(59,130,246,0.4); background: rgba(59,130,246,0.05);
+      border-style: solid; border-color: rgba(255,255,255,0.1); background: rgba(255,255,255,0.04);
     }
     .craft-slot-empty {
       font-size: 10px; color: rgba(255,255,255,0.2); font-weight: 600; text-align: center; line-height: 1.2;
@@ -1060,9 +1079,13 @@
       border-radius: 50%; transform: translate(-50%, -50%); filter: blur(16px);
       pointer-events: none; opacity: 0.5;
     }
+    .craft-slot-bar {
+      width: 28px; height: 3px; border-radius: 999px;
+      position: relative; z-index: 1; margin-top: 1px;
+    }
     .craft-cost-card {
       width: calc(100% - 32px); max-width: 380px;
-      background: #2a2a2d;
+      background: #090909;
       border: 1px solid rgba(255,255,255,0.08); border-radius: 24px;
       padding: 22px 20px 18px; margin-bottom: 20px;
       display: flex; flex-direction: column; align-items: center;
@@ -1142,21 +1165,26 @@
       display: flex; align-items: center; gap: 3px; position: relative; z-index: 1;
     }
     .craft-inv-cell-price img { width: 11px; height: 11px; }
+    .craft-inv-cell-bar {
+      width: 30px; height: 3px; border-radius: 999px;
+      position: relative; z-index: 1; margin-top: 2px;
+    }
     /* Craft result overlay */
     .craft-result-overlay {
       position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.75); z-index: 300;
+      background: rgba(0,0,0,0.82); z-index: 300;
       display: none; align-items: center; justify-content: center;
-      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
     }
     .craft-result-overlay.open { display: flex; }
     .craft-result-modal {
-      background: linear-gradient(165deg, #2c2c2e 0%, #000 100%);
+      background: linear-gradient(180deg, #111214 0%, #070708 100%);
       border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 28px; padding: 32px 24px 24px;
+      border-radius: 24px; padding: 30px 24px 24px;
       width: calc(100% - 40px); max-width: 340px;
       animation: modalAppear 0.4s ease; text-align: center;
       position: relative; overflow: hidden;
+      box-shadow: 0 18px 52px rgba(0,0,0,0.46);
     }
     .craft-result-modal::before {
       content: ''; position: absolute; top: -60px; left: 50%; transform: translateX(-50%);
@@ -1441,7 +1469,7 @@
       position: relative; overflow: hidden;
     }
     .upgrade-slot:active { transform: scale(0.97); }
-    .upgrade-slot.filled { border-color: rgba(59,130,246,0.4); background: rgba(59,130,246,0.05); }
+    .upgrade-slot.filled { border-color: rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); }
     .upgrade-slot-empty { display: flex; flex-direction: column; align-items: center; gap: 6px; }
     .upgrade-slot-icon { width: 32px; height: 32px; opacity: 0.4; }
     .upgrade-slot-icon img { width: 100%; height: 100%; }
@@ -1456,6 +1484,10 @@
       display: flex; align-items: center; gap: 3px;
     }
     .upgrade-slot-price img { width: 12px; height: 12px; }
+    .upgrade-slot-bar {
+      width: 32px; height: 3px; border-radius: 999px;
+      display: none;
+    }
     .upgrade-slot .rarity-glow {
       position: absolute; top: 50%; left: 50%; width: 70px; height: 70px;
       border-radius: 50%; transform: translate(-50%, -50%); filter: blur(25px);
@@ -1504,6 +1536,10 @@
       display: flex; align-items: center; gap: 3px; position: relative; z-index: 1;
     }
     .upgrade-item-cell-price img { width: 11px; height: 11px; }
+    .upgrade-item-cell-bar {
+      width: 30px; height: 3px; border-radius: 999px;
+      position: relative; z-index: 1; margin-top: 2px;
+    }
     .upgrade-items-empty {
       grid-column: 1 / -1; text-align: center; color: rgba(255,255,255,0.3);
       font-size: 14px; padding: 20px 0;
@@ -1552,7 +1588,7 @@
 .tab[data-index="3"]{display:none;}
 </style>
 </head>
-<body>
+<body class="app-loading">
   <div class="pc-wrapper">
 
   <!-- Loading Screen -->
@@ -1787,6 +1823,7 @@
           <div class="upgrade-slot-filled" id="slotFromFilled" style="display:none;">
             <img class="upgrade-slot-img" id="slotFromImg" src="" alt="">
             <div class="upgrade-slot-price" id="slotFromPrice"></div>
+            <div class="upgrade-slot-bar" id="slotFromBar"></div>
           </div>
         </div>
 
@@ -1798,6 +1835,7 @@
           <div class="upgrade-slot-filled" id="slotToFilled" style="display:none;">
             <img class="upgrade-slot-img" id="slotToImg" src="" alt="">
             <div class="upgrade-slot-price" id="slotToPrice"></div>
+            <div class="upgrade-slot-bar" id="slotToBar"></div>
           </div>
         </div>
       </div>
@@ -1930,21 +1968,21 @@
   <!-- Item Sheet removed - buttons now in cells -->
 
   <!-- Top user bar -->
-  <div class="top-user-bar" id="topUserBar">
-    <div class="top-user-avatar" id="topUserAvatar">
-      <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#3b82f6;background:rgba(59,130,246,0.15);border-radius:50%;">?</div>
-    </div>
+  <div class="top-user-bar" id="topUserBar" style="display:none !important;">
     <span class="top-user-name" id="topUserName">Гость</span>
   </div>
 
   <!-- Top pill -->
   <div class="top-pill">
-    <span class="pill-amount" id="pillAmount">0.00</span>
     <div class="pill-icon"><img src="ton.webp" alt="TON"></div>
+    <span class="pill-amount" id="pillAmount">0.00</span>
     <div class="pill-plus" onclick="openDeposit()">
       <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round">
         <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
       </svg>
+    </div>
+    <div class="pill-avatar" id="topUserAvatar">
+      <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#3b82f6;background:rgba(59,130,246,0.15);border-radius:50%;">?</div>
     </div>
   </div>
 
@@ -2320,9 +2358,15 @@
         const remaining = Math.max(0, minimumLoadingTime - elapsed);
         setTimeout(() => {
           const ls = document.getElementById('loadingScreen');
-          if (!ls) return;
+          if (!ls) {
+            document.body.classList.remove('app-loading');
+            return;
+          }
           ls.classList.add('hide');
-          setTimeout(() => ls.style.display = 'none', 500);
+          setTimeout(() => {
+            ls.style.display = 'none';
+            document.body.classList.remove('app-loading');
+          }, 350);
         }, remaining);
       }
     });
@@ -2383,22 +2427,21 @@
       {
         name: '8 Марта', image: 'case/case_3.png', price: 8,
         prizes: [
-          { name: 'Peach Black', image: 'gift/PreciousPeaches_1.webp', price: 750, weight: 0.005 },
-          { name: 'Oil Baron', image: 'gift/VintageCigars_2.webp', price: 400, weight: 0.02 },
-          { name: 'Bitcoin', image: 'gift/Bitcoin.png', price: 23.9, weight: 0.5 },
-          { name: 'Cupid Charm', image: 'gift/cupidcharm.webp', price: 21.7, weight: 0.6 },
-          { name: 'Money Printer', image: 'gift/Money Printer.png', price: 20, weight: 0.6 },
-          { name: 'Bondi Blue', image: 'gift/DiamondRings_2.webp', price: 32.8, weight: 0.8 },
-          { name: 'Pink Glass', image: 'gift/CupidCharms_1.webp', price: 24, weight: 1.5 },
-          { name: 'Flash Tattoo', image: 'gift/ValentineBoxes_3.webp', price: 18, weight: 3 },
-          { name: 'Rendezvous', image: 'gift/SkyStilettos_14.webp', price: 17, weight: 3.5 },
-          { name: 'Joke-O-Lantern', image: 'gift/MadPumpkins_2.webp', price: 17, weight: 3.5 },
-          { name: 'Homer', image: 'gift/Homer.png', price: 6.2, weight: 6 },
-          { name: 'Clover Pin', image: 'gift/cloverpin.webp', price: 4.68, weight: 7 },
-          { name: 'Наски', image: 'gift/Original-1.png', price: 4.39, weight: 7 },
-          { name: 'Valentine', image: 'gift/valentine.webp', price: 0.56, weight: 25 },
-          { name: 'White Bear', image: 'gift/white_bear.webp', price: 0.56, weight: 25 },
-          { name: '0.1 TON', image: 'ton.webp', price: 0.1, isTon: true, weight: 15.975 },
+          { name: 'Peach Black', image: 'gift/PreciousPeaches_1.webp', price: 750, weight: 0.006 },
+          { name: 'Oil Baron', image: 'gift/VintageCigars_2.webp', price: 400, weight: 0.025 },
+          { name: 'Bitcoin', image: 'gift/Bitcoin.png', price: 23.9, weight: 0.75 },
+          { name: 'Cupid Charm', image: 'gift/cupidcharm.webp', price: 21.7, weight: 0.9 },
+          { name: 'Money Printer', image: 'gift/Money Printer.png', price: 20, weight: 0.9 },
+          { name: 'Bondi Blue', image: 'gift/DiamondRings_2.webp', price: 32.8, weight: 1.1 },
+          { name: 'Pink Glass', image: 'gift/CupidCharms_1.webp', price: 24, weight: 2.1 },
+          { name: 'Flash Tattoo', image: 'gift/ValentineBoxes_3.webp', price: 18, weight: 3.4 },
+          { name: 'Rendezvous', image: 'gift/SkyStilettos_14.webp', price: 17, weight: 4.1 },
+          { name: 'Joke-O-Lantern', image: 'gift/MadPumpkins_2.webp', price: 17, weight: 4.1 },
+          { name: 'Homer', image: 'gift/Homer.png', price: 6.2, weight: 7.4 },
+          { name: 'Clover Pin', image: 'gift/cloverpin.webp', price: 4.68, weight: 8.8 },
+          { name: 'Наски', image: 'gift/Original-1.png', price: 4.39, weight: 8.8 },
+          { name: 'Valentine', image: 'gift/valentine.webp', price: 0.56, weight: 28.8 },
+          { name: 'White Bear', image: 'gift/white_bear.webp', price: 0.56, weight: 28.8 },
         ]
       },
       {
@@ -2663,8 +2706,11 @@
         item.setAttribute('data-index', i);
         item.setAttribute('data-name', p.name);
         item.setAttribute('data-price', p.price);
-        item.innerHTML = '<img src="' + p.image + '" alt="' + p.name + '">' +
-          '<div class="roulette-item-price">' + p.price + ' <img src="ton.webp" alt="TON"></div>';
+        const r = getRarityColor(p.price);
+        item.innerHTML = '<div class="roulette-item-glow ' + r.cls + '"></div>' +
+          '<img src="' + p.image + '" alt="' + p.name + '">' +
+          '<div class="roulette-item-price">' + p.price + ' <img src="ton.webp" alt="TON"></div>' +
+          '<div class="rarity-bar ' + r.cls + '"></div>';
         track.appendChild(item);
       }
 
@@ -4228,7 +4274,8 @@
           '<div class="rarity-glow ' + r.cls + '"></div>' +
           '<img src="' + item.image + '" alt="' + item.name + '">' +
           '<div class="upgrade-item-cell-name">' + item.name + '</div>' +
-          '<div class="upgrade-item-cell-price">' + item.price + ' <img src="ton.webp" alt="TON"></div>';
+          '<div class="upgrade-item-cell-price">' + item.price + ' <img src="ton.webp" alt="TON"></div>' +
+          '<div class="upgrade-item-cell-bar ' + r.cls + '"></div>';
         el.onclick = () => selectUpgradeItem(item, currentUpgradeTab === 'inventory' ? idx : -1);
         grid.appendChild(el);
       });
@@ -4276,6 +4323,8 @@
         document.getElementById('slotTo').classList.add('filled');
 
         const r = getRarityColor(item.price);
+        const toBar = document.getElementById('slotToBar');
+        if (toBar) { toBar.className = 'upgrade-slot-bar ' + r.cls; toBar.style.display = 'block'; }
         let glow = document.querySelector('#slotTo .rarity-glow');
         if (!glow) {
           glow = document.createElement('div');
@@ -4297,6 +4346,8 @@
       document.getElementById('slotTo').classList.remove('filled');
       const glow = document.querySelector('#slotTo .rarity-glow');
       if (glow) glow.remove();
+      const toBar = document.getElementById('slotToBar');
+      if (toBar) toBar.style.display = 'none';
     }
 
     function updateUpgradeChance() {
@@ -4547,12 +4598,16 @@
       document.getElementById('slotFrom').classList.remove('filled');
       let glow1 = document.querySelector('#slotFrom .rarity-glow');
       if (glow1) glow1.remove();
+      const fromBar = document.getElementById('slotFromBar');
+      if (fromBar) fromBar.style.display = 'none';
 
       document.getElementById('slotToEmpty').style.display = '';
       document.getElementById('slotToFilled').style.display = 'none';
       document.getElementById('slotTo').classList.remove('filled');
       let glow2 = document.querySelector('#slotTo .rarity-glow');
       if (glow2) glow2.remove();
+      const toBar = document.getElementById('slotToBar');
+      if (toBar) toBar.style.display = 'none';
 
       updateUpgradeChance();
     }
@@ -4591,7 +4646,8 @@
           const r = getRarityColor(item.price);
           slot.innerHTML = '<div class="rarity-glow ' + r.cls + '"></div>' +
             '<img class="craft-slot-img" src="' + item.image + '" alt="' + item.name + '">' +
-            '<div class="craft-slot-name">' + item.name + '</div>';
+            '<div class="craft-slot-name">' + item.name + '</div>' +
+            '<div class="craft-slot-bar ' + r.cls + '"></div>';
           slot.onclick = function() { removeCraftSlot(i); };
         } else {
           slot.innerHTML = '<div class="craft-slot-empty">Пусто</div>';
@@ -4692,7 +4748,8 @@
         cell.innerHTML = '<div class="rarity-glow ' + r.cls + '"></div>' +
           '<img src="' + item.image + '" alt="' + item.name + '">' +
           '<div class="craft-inv-cell-name">' + item.name + '</div>' +
-          '<div class="craft-inv-cell-price">' + item.price.toFixed(2) + ' <img src="ton.webp" alt="TON"></div>';
+          '<div class="craft-inv-cell-price">' + item.price.toFixed(2) + ' <img src="ton.webp" alt="TON"></div>' +
+          '<div class="craft-inv-cell-bar ' + r.cls + '"></div>';
         cell.onclick = function() { addToCraftSlot(realIdx); };
         gridEl.appendChild(cell);
       });
