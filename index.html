@@ -341,13 +341,22 @@
     }
     .case-detail.active { display: block; }
     .case-detail.visible { opacity: 1; transform: translateY(0); }
-    .case-detail-back {
-      display: flex; align-items: center; gap: 6px;
-      font-size: 15px; font-weight: 600; color: #3b82f6;
-      cursor: pointer; -webkit-tap-highlight-color: transparent;
+    .case-detail-header {
+      display: flex; align-items: center; gap: 12px;
       margin-bottom: 20px; margin-top: 50px;
     }
+    .case-detail-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 15px; font-weight: 600; color: #3b82f6;
+      cursor: pointer; -webkit-tap-highlight-color: transparent;
+      flex-shrink: 0;
+    }
     .case-detail-back svg { width: 20px; height: 20px; }
+    .case-detail-current-title {
+      font-size: 18px; font-weight: 800; color: #fff;
+      letter-spacing: -0.02em;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
 
     /* ===== Roulette ===== */
     .roulette-section { margin-bottom: 16px; }
@@ -654,43 +663,33 @@
     .referral-invite-btn:active { transform: scale(0.97); }
 
     /* ===== Quick Open Toggle ===== */
-    .quick-open-row {
-      display: flex; align-items: center; justify-content: space-between;
-      width: calc(100% - 8px); margin: 16px 4px 0 4px;
-      background: rgba(255,255,255,0.05); border: 1.5px solid rgba(255,255,255,0.08);
-      border-radius: 16px; padding: 14px 16px;
-    }
-    .quick-open-info { display: flex; flex-direction: column; gap: 2px; }
-    .quick-open-title { font-size: 15px; font-weight: 700; color: #fff; }
-    .quick-open-sub { font-size: 12px; color: rgba(255,255,255,0.4); }
-    .quick-toggle {
-      position: relative; width: 52px; height: 30px;
-      background: rgba(255,255,255,0.1); border-radius: 15px;
-      cursor: pointer; transition: background 0.3s; flex-shrink: 0;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .quick-toggle.on { background: #3b82f6; }
-    .quick-toggle-knob {
-      position: absolute; top: 3px; left: 3px;
-      width: 24px; height: 24px; border-radius: 50%;
-      background: #fff; transition: transform 0.3s;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-    }
-    .quick-toggle.on .quick-toggle-knob { transform: translateX(22px); }
-
-    /* ===== Support Button ===== */
-    .support-btn {
-      width: calc(100% - 8px); margin: 20px 4px 0 4px; height: 50px;
-      border-radius: 100px; border: 1.5px solid rgba(255,255,255,0.1);
-      background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.6);
-      font-size: 15px; font-weight: 600; font-family: inherit;
+    .profile-link-btn {
+      width: calc(100% - 8px); margin: 14px 4px 0 4px; height: 52px;
+      border-radius: 18px; border: 1px solid rgba(108,177,255,0.34);
+      background: rgba(59,130,246,0.16); color: #eaf3ff;
+      font-size: 15px; font-weight: 700; font-family: inherit;
       cursor: pointer; transition: all 0.2s; display: flex;
       align-items: center; justify-content: center; gap: 8px;
       -webkit-tap-highlight-color: transparent;
+      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
     }
-    .support-btn:hover { border-color: rgba(59,130,246,0.4); color: #fff; }
-    .support-btn:active { transform: scale(0.97); }
-    .support-btn svg { width: 18px; height: 18px; }
+    .profile-link-btn:active { transform: scale(0.97); }
+    .profile-link-btn svg { width: 18px; height: 18px; }
+    .community-btn {
+      background: rgba(59,130,246,0.12);
+      border-color: rgba(108,177,255,0.28);
+      color: #dcecff;
+    }
+    .support-btn {
+      background: linear-gradient(180deg, #49a4ff 0%, #2d87ff 100%);
+      border-color: rgba(122,189,255,0.38);
+      color: #ffffff;
+      box-shadow: 0 10px 26px rgba(45,135,255,0.22);
+    }
+    .support-btn:hover, .community-btn:hover {
+      border-color: rgba(122,189,255,0.45);
+      color: #fff;
+    }
 
     /* ===== PC Adaptation ===== */
     @media (min-width: 768px) {
@@ -710,23 +709,32 @@
     }
 
     /* ===== Top user bar ===== */
-    .top-user-bar { display: none !important; }
+    .top-user-bar {
+      position: fixed; top: 16px; left: 16px; height: 42px;
+      display: flex; align-items: center; gap: 10px;
+      z-index: 100; pointer-events: none;
+    }
     .top-user-avatar {
-      width: 40px; height: 40px; border-radius: 50%; overflow: hidden;
+      width: 36px; height: 36px; border-radius: 50%; overflow: hidden;
       background: rgba(255,255,255,0.08); flex-shrink: 0;
       border: 2px solid rgba(59,130,246,0.32);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
     }
     .top-user-avatar img { width: 100%; height: 100%; object-fit: cover; }
-    .top-user-name { display: none !important; }
+    .top-user-name {
+      font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.74);
+      max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      display: block;
+    }
 
     /* ===== Top pill ===== */
     .top-pill {
       position: fixed; top: 16px; right: 16px; min-height: 48px;
       display: flex; align-items: center; gap: 8px;
-      background: rgba(10,10,10,0.92);
-      backdrop-filter: blur(26px); -webkit-backdrop-filter: blur(26px);
-      border: 1px solid rgba(255,255,255,0.07); border-radius: 100px;
-      padding: 4px 6px 4px 10px; z-index: 100;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255,255,255,0.08); border-radius: 100px;
+      padding: 6px 10px; z-index: 100;
     }
     .pill-amount { font-size: 16px; font-weight: 700; color: #fff; margin-right: 2px; }
     .pill-icon { width: 18px; height: 18px; margin-right: 0; flex-shrink: 0; }
@@ -736,15 +744,10 @@
       display: flex; align-items: center; justify-content: center;
       cursor: pointer; -webkit-tap-highlight-color: transparent; transition: transform 0.15s;
       flex-shrink: 0;
+      box-shadow: 0 8px 20px rgba(59,130,246,0.22);
     }
     .pill-plus:active { transform: scale(0.9); }
     .pill-plus svg { width: 18px; height: 18px; }
-    .pill-avatar {
-      width: 40px; height: 40px; border-radius: 50%; overflow: hidden;
-      background: rgba(255,255,255,0.08); border: 2px solid rgba(59,130,246,0.32);
-      flex-shrink: 0;
-    }
-    .pill-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
     /* ===== Bottom panel ===== */
     .bottom-panel {
@@ -756,9 +759,8 @@
       padding: 0 8px; z-index: 100;
     }
     .indicator {
-      position: absolute; width: 56px; height: 50px; border-radius: 18px;
-      background: rgba(59,130,246,0.24);
-      box-shadow: 0 0 18px rgba(59,130,246,0.18);
+      position: absolute; width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(59,130,246,0.18);
       top: 50%; transform: translateY(-50%);
       transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
       pointer-events: none; z-index: 0;
@@ -1745,9 +1747,12 @@
 
   <!-- Case detail -->
   <div class="case-detail" id="caseDetail">
-    <div class="case-detail-back" onclick="closeCase()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-      Назад
+    <div class="case-detail-header">
+      <div class="case-detail-back" onclick="closeCase()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Назад
+      </div>
+      <div class="case-detail-current-title" id="caseDetailTitle"></div>
     </div>
     <div class="roulette-section" id="rouletteSection"></div>
     <div class="won-prize-display" id="wonPrizeDisplay"></div>
@@ -1938,16 +1943,13 @@
       </div>
       <button class="referral-invite-btn" onclick="inviteFriend()">Пригласить друга</button>
     </div>
-    <div class="quick-open-row">
-      <div class="quick-open-info">
-        <div class="quick-open-title">⚡ Быстрое открытие</div>
-        <div class="quick-open-sub">Мгновенный результат без анимации</div>
-      </div>
-      <div class="quick-toggle" id="quickToggle" onclick="toggleQuickOpen()">
-        <div class="quick-toggle-knob"></div>
-      </div>
-    </div>
-    <button class="support-btn" onclick="openSupport()">
+    <button class="profile-link-btn community-btn" onclick="openCommunityChannel()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/>
+      </svg>
+      Канал сообщества
+    </button>
+    <button class="profile-link-btn support-btn" onclick="openSupport()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
       </svg>
@@ -1968,7 +1970,10 @@
   <!-- Item Sheet removed - buttons now in cells -->
 
   <!-- Top user bar -->
-  <div class="top-user-bar" id="topUserBar" style="display:none !important;">
+  <div class="top-user-bar" id="topUserBar">
+    <div class="top-user-avatar" id="topUserAvatar">
+      <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#3b82f6;background:rgba(59,130,246,0.15);border-radius:50%;">?</div>
+    </div>
     <span class="top-user-name" id="topUserName">Гость</span>
   </div>
 
@@ -1980,9 +1985,6 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round">
         <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
       </svg>
-    </div>
-    <div class="pill-avatar" id="topUserAvatar">
-      <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#3b82f6;background:rgba(59,130,246,0.15);border-radius:50%;">?</div>
     </div>
   </div>
 
@@ -2508,6 +2510,10 @@
       const t = document.getElementById('quickToggle');
       if (t) quickOpenMode ? t.classList.add('on') : t.classList.remove('on');
     }
+
+    function spinRouletteFast() {
+      spinRoulette(true);
+    }
     
     // userBalance объявляем отдельно для защиты
     var userBalance = 0;
@@ -2606,6 +2612,8 @@
       
       currentCaseIndex = index;
       currentMultiplier = 1;
+      const caseTitleEl = document.getElementById('caseDetailTitle');
+      if (caseTitleEl) caseTitleEl.textContent = c.name || 'Кейс';
       document.querySelectorAll('.multi-pill').forEach(p => p.classList.remove('active'));
       document.querySelector('.multi-pill[data-multi="1"]').classList.add('active');
       
@@ -5375,6 +5383,14 @@
         window.Telegram.WebApp.openTelegramLink('https://t.me/GiftPepeReleyer');
       } catch(e) {
         window.open('https://t.me/GiftPepeReleyer', '_blank');
+      }
+    }
+
+    function openCommunityChannel() {
+      try {
+        window.Telegram.WebApp.openTelegramLink('https://t.me/giftpepechannel');
+      } catch(e) {
+        window.open('https://t.me/giftpepechannel', '_blank');
       }
     }
   </script>
