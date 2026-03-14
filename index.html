@@ -1333,6 +1333,18 @@
     }
     .chilend-bet-btn:active { transform: scale(0.97); }
     .chilend-bet-btn:disabled { opacity: 0.45; pointer-events: none; }
+    .chilend-bet-secondary {
+      width: calc(100% - 32px); max-width: 360px; height: 48px; border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.88);
+      font-size: 15px; font-weight: 700; font-family: inherit;
+      cursor: pointer; transition: transform 0.15s, background 0.2s, opacity 0.2s;
+      -webkit-tap-highlight-color: transparent;
+      margin-top: 2px; margin-bottom: 6px;
+      display: none;
+    }
+    .chilend-bet-secondary:active { transform: scale(0.98); }
+    .chilend-bet-secondary:disabled { opacity: 0.45; pointer-events: none; }
     .chilend-status {
       font-size: 15px; color: rgba(255,255,255,0.62);
       margin-top: 8px; margin-bottom: 0; text-align: center; min-height: 22px;
@@ -1472,11 +1484,11 @@
       background: rgba(255,255,255,0.06);
     }
     .chilend-confirm-btn {
-      width: 100%; height: 54px; border-radius: 18px; border: none;
-      background: linear-gradient(180deg, #49a4ff 0%, #2d87ff 100%); color: #fff;
+      width: 100%; height: 54px; border-radius: 18px; border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.08); color: #fff;
       font-size: 16px; font-weight: 800; font-family: inherit;
-      cursor: pointer; transition: transform 0.15s;
-      box-shadow: 0 10px 28px rgba(45,135,255,0.28);
+      cursor: pointer; transition: transform 0.15s, background 0.2s;
+      box-shadow: none;
     }
     .chilend-confirm-btn:active { transform: scale(0.97); }
     /* ===== Upgrade =====  */
@@ -1781,6 +1793,7 @@
       </div>
 
       <button class="chilend-bet-btn" id="chilendBetBtn" onclick="openChilendSheet()" style="display:none;">Сделать ставку</button>
+      <button class="chilend-bet-secondary" id="chilendIncreaseBtn" onclick="openChilendSheet(true)" style="display:none;">Увеличить ставку</button>
       <div class="chilend-status" id="chilendStatus"></div>
     </div>
   </div>
@@ -2192,7 +2205,7 @@
   <div class="chilend-sheet-overlay" id="chilendSheetOverlay" onclick="closeChilendSheet()"></div>
   <div class="chilend-sheet" id="chilendSheet">
     <div class="chilend-sheet-handle"></div>
-    <div class="chilend-sheet-title">Сделать ставку</div>
+    <div class="chilend-sheet-title" id="chilendSheetTitle">Ставка</div>
     <div class="chilend-methods">
       <button type="button" class="chilend-method selected" id="chilendMethodTon" onclick="selectChilendMethod('ton')">
         <div class="chilend-method-icon"><img src="ton.webp" alt=""></div>
@@ -5048,6 +5061,35 @@
       if (status) status.innerHTML = html || '';
     }
 
+    function getChilendStakeLabel() {
+      return chilendBetAmount > 0 ? ('Ставка: ' + chilendBetAmount.toFixed(2) + ' TON') : '';
+    }
+
+    function updateChilendActionButtons() {
+      const mainBtn = document.getElementById('chilendBetBtn');
+      const incBtn = document.getElementById('chilendIncreaseBtn');
+      if (mainBtn) {
+        mainBtn.textContent = chilendHasBet ? 'Крутить' : 'Сделать ставку';
+        mainBtn.disabled = !!chilendSpinning;
+      }
+      if (incBtn) {
+        incBtn.style.display = chilendHasBet ? 'block' : 'none';
+        incBtn.disabled = !!chilendSpinning;
+      }
+    }
+
+    function updateChilendSheetButton() {
+      const btn = document.getElementById('chilendConfirmBtn');
+      if (!btn) return;
+      const actionText = chilendHasBet ? 'Увеличить ставку' : 'Сделать ставку';
+      if (chilendBetMode === 'gifts') {
+        const total = getChilendSelectedGiftTotal();
+        btn.textContent = total > 0 ? (actionText + ' · ' + total.toFixed(2) + ' TON') : actionText;
+      } else {
+        btn.textContent = actionText;
+      }
+    }
+
     function getChilendSelectedGiftTotal() {
       return chilendGiftSelection.reduce((sum, index) => sum + (inventory[index]?.price || 0), 0);
     }
@@ -5056,13 +5098,7 @@
       const total = getChilendSelectedGiftTotal();
       const totalEl = document.getElementById('chilendGiftTotal');
       if (totalEl) totalEl.textContent = total.toFixed(2) + ' TON';
-      const btn = document.getElementById('chilendConfirmBtn');
-      if (btn && chilendBetMode === 'gifts') {
-        btn.textContent = total > 0 ? ('Сделать ставку · ' + total.toFixed(2) + ' TON') : 'Сделать ставку';
-      }
-      if (btn && chilendBetMode === 'ton') {
-        btn.textContent = 'Сделать ставку';
-      }
+      updateChilendSheetButton();
     }
 
     function renderChilendGiftInventory() {
@@ -5184,27 +5220,22 @@
         chilendCards = buildChilendReel();
       }
       renderChilendTrack(chilendCards, CHILEND_START_INDEX);
-      const btn = document.getElementById('chilendBetBtn');
-      if (btn) btn.textContent = chilendHasBet ? 'Крутить' : 'Сделать ставку';
-      if (chilendHasBet) {
-        const stakeLabel = chilendBetSource === 'gifts'
-          ? ('Ставка: ' + chilendBetGiftItems.length + ' подарков · ' + chilendBetAmount.toFixed(2) + ' TON')
-          : ('Ставка: ' + chilendBetAmount.toFixed(2) + ' TON');
-        updateChilendStatus(stakeLabel);
-      } else {
-        updateChilendStatus('');
-      }
+      updateChilendActionButtons();
+      updateChilendStatus(chilendHasBet ? getChilendStakeLabel() : '');
     }
 
-    function openChilendSheet() {
+    function openChilendSheet(forceOpen) {
       if (chilendSpinning) return;
-      if (chilendHasBet) { spinChilend(); return; }
+      if (chilendHasBet && !forceOpen) { spinChilend(); return; }
       chilendGiftSelection = [];
       document.getElementById('chilendSheetOverlay').classList.add('open');
       document.getElementById('chilendSheet').classList.add('open');
       const input = document.getElementById('chilendInput');
       if (input) input.value = '';
+      const title = document.getElementById('chilendSheetTitle');
+      if (title) title.textContent = 'Ставка';
       selectChilendMethod('ton');
+      updateChilendSheetButton();
     }
 
     function closeChilendSheet() {
@@ -5214,6 +5245,19 @@
       if (input) input.blur();
     }
 
+    document.addEventListener('DOMContentLoaded', () => {
+      const chilendInput = document.getElementById('chilendInput');
+      if (chilendInput && !chilendInput.dataset.enterBound) {
+        chilendInput.dataset.enterBound = '1';
+        chilendInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            chilendInput.blur();
+          }
+        });
+      }
+    });
+
     function confirmChilendBet() {
       if (chilendBetMode === 'ton') {
         const input = document.getElementById('chilendInput');
@@ -5221,21 +5265,23 @@
         if (!amount || amount <= 0) { showNotification('Введите сумму', 'error'); return; }
         if (amount > userBalance) { showNotification('Недостаточно TON', 'error'); return; }
 
-        chilendBetAmount = parseFloat(amount.toFixed(2));
-        chilendBetSource = 'ton';
-        chilendBetGiftItems = [];
-        userBalance = parseFloat((userBalance - chilendBetAmount).toFixed(2));
+        const addAmount = parseFloat(amount.toFixed(2));
+        userBalance = parseFloat((userBalance - addAmount).toFixed(2));
+        chilendBetAmount = parseFloat((chilendBetAmount + addAmount).toFixed(2));
+        if (chilendBetSource !== 'gifts' && chilendBetGiftItems.length === 0) chilendBetSource = 'ton';
+        else chilendBetSource = 'mixed';
         updateBalanceDisplay();
       } else {
         if (!chilendGiftSelection.length) { showNotification('Выберите подарки', 'error'); return; }
-        chilendBetGiftItems = chilendGiftSelection
+        const addedGiftItems = chilendGiftSelection
           .map(index => inventory[index] ? { ...inventory[index] } : null)
           .filter(Boolean);
-        const total = chilendBetGiftItems.reduce((sum, item) => sum + (item.price || 0), 0);
+        const total = addedGiftItems.reduce((sum, item) => sum + (item.price || 0), 0);
         if (!total) { showNotification('Подарки не найдены', 'error'); return; }
 
-        chilendBetAmount = parseFloat(total.toFixed(2));
-        chilendBetSource = 'gifts';
+        chilendBetGiftItems = chilendBetGiftItems.concat(addedGiftItems);
+        chilendBetAmount = parseFloat((chilendBetAmount + total).toFixed(2));
+        chilendBetSource = chilendBetAmount > total ? 'mixed' : 'gifts';
 
         [...chilendGiftSelection].sort((a, b) => b - a).forEach(index => {
           if (inventory[index]) inventory.splice(index, 1);
@@ -5249,14 +5295,8 @@
       chilendHasBet = true;
       closeChilendSheet();
       saveUserData();
-
-      const btn = document.getElementById('chilendBetBtn');
-      if (btn) btn.textContent = 'Крутить';
-
-      const stakeLabel = chilendBetSource === 'gifts'
-        ? ('Ставка: ' + chilendBetGiftItems.length + ' подарков · ' + chilendBetAmount.toFixed(2) + ' TON')
-        : ('Ставка: ' + chilendBetAmount.toFixed(2) + ' TON');
-      updateChilendStatus(stakeLabel);
+      updateChilendActionButtons();
+      updateChilendStatus(getChilendStakeLabel());
       renderChilendGiftInventory();
     }
 
@@ -5293,11 +5333,7 @@
       chilendBetGiftItems = [];
       chilendGiftSelection = [];
 
-      const btn = document.getElementById('chilendBetBtn');
-      if (btn) {
-        btn.disabled = false;
-        btn.textContent = 'Сделать ставку';
-      }
+      updateChilendActionButtons();
 
       chilendCards = buildChilendReel();
       renderChilendTrack(chilendCards, CHILEND_START_INDEX);
@@ -5313,6 +5349,8 @@
       chilendSpinning = true;
       const btn = document.getElementById('chilendBetBtn');
       if (btn) btn.disabled = true;
+      const incBtn = document.getElementById('chilendIncreaseBtn');
+      if (incBtn) incBtn.disabled = true;
 
       if (!chilendCards.length) chilendCards = buildChilendReel();
       const baseIndex = Math.max(CHILEND_START_INDEX, Math.round(chilendCurrentCenteredIndex));
@@ -5334,15 +5372,12 @@
         const winAmount = parseFloat((chilendBetAmount * multi).toFixed(2));
         const lostAmount = Math.max(0, parseFloat((chilendBetAmount - winAmount).toFixed(2)));
         const isWin = multi >= 1;
-        const stakeLabel = chilendBetSource === 'gifts'
-          ? ('Ставка: ' + chilendBetGiftItems.length + ' подарков · ' + chilendBetAmount.toFixed(2) + ' TON')
-          : ('Ставка: ' + chilendBetAmount.toFixed(2) + ' TON');
 
         userBalance = parseFloat((userBalance + winAmount).toFixed(2));
         updateBalanceDisplay();
         saveUserData();
         saveChilendToSupabase(chilendBetAmount, multi, winAmount);
-        updateChilendStatus(stakeLabel);
+        updateChilendStatus(getChilendStakeLabel());
 
         if (isWin) {
           showChilendToast(true, 'Вы выиграли ' + winAmount.toFixed(2) + ' TON при ' + formatChilendFactor(multi));
