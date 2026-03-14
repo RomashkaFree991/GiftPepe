@@ -759,9 +759,11 @@
       padding: 0 8px; z-index: 100;
     }
     .indicator {
-      position: absolute; width: 40px; height: 40px; border-radius: 50%;
-      background: rgba(59,130,246,0.18);
-      top: 50%; transform: translateY(-50%);
+      position: absolute; width: 50px; height: 50px; border-radius: 50%;
+      background: radial-gradient(circle at 50% 45%, rgba(96,165,250,0.3), rgba(59,130,246,0.2) 55%, rgba(59,130,246,0.12) 100%);
+      border: 1px solid rgba(96,165,250,0.18);
+      box-shadow: inset 0 1px 2px rgba(255,255,255,0.08), 0 10px 24px rgba(37,99,235,0.16);
+      top: 50%; transform: translate(-50%, -50%);
       transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
       pointer-events: none; z-index: 0;
     }
@@ -1247,144 +1249,179 @@
 
     /* ===== Чиленд ===== */
     .chilend-container {
-      display: flex; flex-direction: column; align-items: center;
-      padding-top: 70px; min-height: calc(100vh - 180px); min-height: calc(100dvh - 180px);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 84px 0 180px;
+      min-height: calc(100vh - 132px); min-height: calc(100dvh - 132px);
     }
     .chilend-roulette-wrap {
       width: 100%; display: flex; align-items: center; justify-content: center;
-      gap: 10px; margin-bottom: 16px;
+      gap: 14px; margin-bottom: 18px;
     }
-    .chilend-arrow { flex-shrink: 0; opacity: 0.5; }
+    .chilend-arrow {
+      width: 30px; height: 30px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+      opacity: 0.95; filter: drop-shadow(0 0 12px rgba(59,130,246,0.18));
+    }
     .chilend-viewport {
-      width: 200px; height: 400px; overflow: hidden; position: relative;
-      border-radius: 22px; background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.06);
+      width: 218px; height: 426px; overflow: hidden; position: relative;
+      border-radius: 28px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      border: 1px solid rgba(96,165,250,0.12);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 24px 56px rgba(0,0,0,0.42);
     }
     .chilend-viewport::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 80px;
-      background: linear-gradient(to bottom, #000, transparent); z-index: 3; pointer-events: none;
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 92px;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.94), rgba(0,0,0,0));
+      z-index: 4; pointer-events: none;
     }
     .chilend-viewport::after {
-      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 80px;
-      background: linear-gradient(to top, #000, transparent); z-index: 3; pointer-events: none;
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 92px;
+      background: linear-gradient(to top, rgba(0,0,0,0.94), rgba(0,0,0,0));
+      z-index: 4; pointer-events: none;
     }
     .chilend-pointer {
-      position: absolute; top: 50%; left: 0; right: 0; transform: translateY(-50%);
-      height: 84px; border: 2px solid rgba(59,130,246,0.5); border-radius: 16px;
-      z-index: 4; pointer-events: none; box-shadow: 0 0 24px rgba(59,130,246,0.15);
+      position: absolute; top: 50%; left: 10px; right: 10px; transform: translateY(-50%);
+      height: 76px; border-radius: 20px; z-index: 5; pointer-events: none;
+      border: 2px solid rgba(59,130,246,0.52);
+      background: linear-gradient(180deg, rgba(59,130,246,0.08), rgba(59,130,246,0.04));
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03), 0 0 30px rgba(59,130,246,0.14);
+    }
+    .chilend-pointer::before,
+    .chilend-pointer::after {
+      content: ''; position: absolute; top: 50%; transform: translateY(-50%);
+      width: 0; height: 0;
+    }
+    .chilend-pointer::before {
+      left: -11px;
+      border-top: 9px solid transparent; border-bottom: 9px solid transparent;
+      border-right: 13px solid rgba(59,130,246,0.78);
+      filter: drop-shadow(0 0 6px rgba(59,130,246,0.18));
+    }
+    .chilend-pointer::after {
+      right: -11px;
+      border-top: 9px solid transparent; border-bottom: 9px solid transparent;
+      border-left: 13px solid rgba(59,130,246,0.78);
+      filter: drop-shadow(0 0 6px rgba(59,130,246,0.18));
     }
     .chilend-track {
-      display: flex; flex-direction: column; align-items: center; gap: 10px;
-      padding: 158px 0; will-change: transform;
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+      padding: 177px 0; will-change: transform;
+      transform: translateY(-168px);
     }
     .chilend-track.spinning {
-      transition: transform 4s cubic-bezier(0.12, 0.75, 0.15, 1);
+      transition: transform 4.4s cubic-bezier(0.12, 0.82, 0.12, 1);
     }
     .chilend-card {
-      width: 180px; height: 74px; position: relative;
+      width: 184px; height: 72px; position: relative;
       display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      transition: transform 0.35s ease, filter 0.35s ease;
+    }
+    .chilend-card::after {
+      content: ''; position: absolute; inset: 10px 16px; border-radius: 18px;
+      background: radial-gradient(circle at center, rgba(59,130,246,0.26), rgba(59,130,246,0) 72%);
+      opacity: 0.42; z-index: 1; pointer-events: none;
     }
     .chilend-card img {
       width: 100%; height: 100%; object-fit: contain; position: absolute; top: 0; left: 0;
       -webkit-touch-callout: none; -webkit-user-select: none; user-select: none;
     }
     .chilend-card-multi {
-      position: relative; z-index: 2; font-size: 28px; font-weight: 800; color: #fff;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.6);
+      position: relative; z-index: 2; font-size: 25px; font-weight: 800; color: #fff;
+      text-shadow: 0 3px 14px rgba(0,0,0,0.55);
     }
-    .chilend-card.pink .chilend-card-multi { color: #ff6eb4; }
-    .chilend-card.win { transform: scale(1.08); transition: transform 0.4s ease; }
+    .chilend-card.win {
+      transform: scale(1.12);
+      filter: brightness(1.08) drop-shadow(0 0 24px rgba(59,130,246,0.24));
+    }
+    .chilend-card.win::after { opacity: 0.76; }
     .chilend-status {
-      font-size: 15px; color: rgba(255,255,255,0.5); margin-bottom: 12px; text-align: center; min-height: 22px;
+      font-size: 15px; color: rgba(255,255,255,0.55);
+      margin-bottom: 16px; text-align: center; min-height: 22px;
+      padding: 0 24px;
     }
     .chilend-bet-btn {
-      width: calc(100% - 32px); max-width: 360px; height: 52px; border-radius: 16px; border: none;
-      background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff;
-      font-size: 16px; font-weight: 700; font-family: inherit;
+      width: calc(100% - 32px); max-width: 360px; height: 54px; border-radius: 18px; border: none;
+      background: linear-gradient(180deg, #49a4ff 0%, #2d87ff 100%); color: #fff;
+      font-size: 16px; font-weight: 800; font-family: inherit;
       cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
       -webkit-tap-highlight-color: transparent;
-      box-shadow: 0 4px 20px rgba(59,130,246,0.35);
-      position: fixed; bottom: 110px; left: 50%; transform: translateX(-50%); z-index: 50;
+      box-shadow: 0 10px 28px rgba(45,135,255,0.28);
+      position: fixed; bottom: 106px; left: 50%; transform: translateX(-50%); z-index: 50;
     }
     .chilend-bet-btn:active { transform: translateX(-50%) scale(0.97); }
-    .chilend-bet-btn:disabled { opacity: 0.4; pointer-events: none; }
-    /* iOS-style toast */
+    .chilend-bet-btn:disabled { opacity: 0.45; pointer-events: none; }
     .chilend-toast {
       position: fixed; top: 60px; left: 50%; transform: translateX(-50%) translateY(-20px);
       padding: 14px 24px; border-radius: 20px;
-      background: rgba(40,40,42,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      background: rgba(26,26,28,0.88); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
       border: 1px solid rgba(255,255,255,0.1);
-      font-size: 15px; font-weight: 700; color: #fff; z-index: 500;
-      opacity: 0; pointer-events: none;
-      transition: opacity 0.4s ease, transform 0.4s ease;
-      display: flex; align-items: center; gap: 8px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      display: flex; align-items: center; gap: 10px;
+      opacity: 0; transition: all 0.35s ease; z-index: 300;
     }
     .chilend-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-    .chilend-toast.win { border-color: rgba(34,197,94,0.3); }
-    .chilend-toast.lose { border-color: rgba(239,68,68,0.3); }
+    .chilend-toast.win { border-color: rgba(34,197,94,0.32); }
+    .chilend-toast.lose { border-color: rgba(239,68,68,0.32); }
     .chilend-toast-icon { font-size: 20px; }
-    /* Чиленд Sheet */
     .chilend-sheet-overlay {
       position: fixed; top: 0; left: 0; right: 0; bottom: 0;
       background: rgba(0,0,0,0); z-index: 200;
       pointer-events: none; transition: background 0.35s ease;
     }
-    .chilend-sheet-overlay.open { background: rgba(0,0,0,0.5); pointer-events: all; }
+    .chilend-sheet-overlay.open { background: rgba(0,0,0,0.56); pointer-events: all; }
     .chilend-sheet {
       position: fixed; bottom: 0; left: 0; right: 0;
-      background: #2c2c2e; border-radius: 24px 24px 0 0; z-index: 201;
+      background: #202022; border-radius: 24px 24px 0 0; z-index: 201;
       transform: translateY(100%);
       transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       padding: 0 20px 34px 20px; max-height: 70vh;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 -14px 44px rgba(0,0,0,0.45);
     }
     .chilend-sheet.open { transform: translateY(0); }
     .chilend-sheet-handle {
       width: 40px; height: 4px; border-radius: 2px;
       background: rgba(255,255,255,0.2); margin: 12px auto 20px auto;
     }
-    .chilend-sheet-title { font-size: 20px; font-weight: 800; color: #fff; text-align: center; margin-bottom: 20px; }
-    .chilend-methods { display: flex; gap: 8px; margin-bottom: 20px; }
+    .chilend-sheet-title {
+      font-size: 22px; font-weight: 800; color: #fff; text-align: center; margin-bottom: 22px;
+    }
+    .chilend-methods { display: flex; gap: 10px; margin-bottom: 22px; }
     .chilend-method {
       flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;
-      padding: 14px 8px; border-radius: 16px;
-      background: rgba(255,255,255,0.05); border: 2px solid transparent;
-      cursor: pointer; -webkit-tap-highlight-color: transparent;
-      transition: background 0.2s, border-color 0.25s;
+      padding: 14px 8px; border-radius: 18px;
+      background: rgba(255,255,255,0.05); border: 1px solid transparent;
     }
-    .chilend-method.selected { border-color: #3b82f6; background: rgba(59,130,246,0.08); }
-    .chilend-method.disabled { opacity: 0.4; pointer-events: none; }
+    .chilend-method.selected {
+      border-color: rgba(59,130,246,0.55);
+      background: rgba(59,130,246,0.1);
+    }
+    .chilend-method.disabled { opacity: 0.46; }
     .chilend-method-icon {
-      width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.06);
-      display: flex; align-items: center; justify-content: center;
+      width: 46px; height: 46px; border-radius: 14px;
+      background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center;
     }
     .chilend-method-icon img { width: 24px; height: 24px; object-fit: contain; }
-    .chilend-method-name { font-size: 13px; font-weight: 600; color: #fff; }
-    .chilend-method-soon {
-      font-size: 9px; font-weight: 700; color: #f59e0b;
-      background: rgba(245,158,11,0.15); padding: 2px 6px; border-radius: 6px;
-    }
+    .chilend-method-name { font-size: 14px; font-weight: 700; color: #fff; }
+    .chilend-method-soon { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.35); }
     .chilend-input-wrap {
       display: flex; align-items: center; justify-content: center; gap: 8px;
       padding: 14px 0; margin-bottom: 16px;
     }
     .chilend-input {
       background: transparent; border: none; outline: none;
-      color: #fff; font-size: 38px; font-weight: 800;
-      text-align: right; width: 130px; font-family: inherit; caret-color: #3b82f6;
+      color: #fff; font-size: 40px; font-weight: 800;
+      text-align: right; width: 140px; font-family: inherit; caret-color: #3b82f6;
     }
     .chilend-input::placeholder { color: rgba(255,255,255,0.15); }
-    .chilend-input-icon { width: 32px; height: 32px; flex-shrink: 0; }
+    .chilend-input-icon { width: 34px; height: 34px; flex-shrink: 0; }
     .chilend-input-icon img { width: 100%; height: 100%; object-fit: contain; }
     .chilend-confirm-btn {
-      width: 100%; height: 52px; border-radius: 16px; border: none;
-      background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff;
-      font-size: 16px; font-weight: 700; font-family: inherit;
+      width: 100%; height: 54px; border-radius: 18px; border: none;
+      background: linear-gradient(180deg, #49a4ff 0%, #2d87ff 100%); color: #fff;
+      font-size: 16px; font-weight: 800; font-family: inherit;
       cursor: pointer; transition: transform 0.15s;
-      box-shadow: 0 4px 20px rgba(59,130,246,0.35);
+      box-shadow: 0 10px 28px rgba(45,135,255,0.28);
     }
     .chilend-confirm-btn:active { transform: scale(0.97); }
-
     /* ===== Upgrade =====  */
     .upgrade-container {
       display: flex; flex-direction: column; align-items: center;
@@ -2111,12 +2148,12 @@
   <div class="chilend-sheet-overlay" id="chilendSheetOverlay" onclick="closeChilendSheet()"></div>
   <div class="chilend-sheet" id="chilendSheet">
     <div class="chilend-sheet-handle"></div>
-    <div class="chilend-sheet-title">Ставка</div>
+    <div class="chilend-sheet-title">Сделать ставку</div>
     <div class="chilend-methods">
       <div class="chilend-method disabled">
         <div class="chilend-method-icon"><img src="gift.svg" alt=""></div>
         <div class="chilend-method-name">Подарки</div>
-        <div class="chilend-method-soon">SOON</div>
+        <div class="chilend-method-soon">(soon)</div>
       </div>
       <div class="chilend-method selected">
         <div class="chilend-method-icon"><img src="ton.webp" alt=""></div>
@@ -3113,7 +3150,7 @@
     function moveIndicator(tab) {
       const panelRect = panel.getBoundingClientRect();
       const tabRect = tab.getBoundingClientRect();
-      indicator.style.left = (tabRect.left + tabRect.width / 2 - panelRect.left - 20) + 'px';
+      indicator.style.left = (tabRect.left + tabRect.width / 2 - panelRect.left) + 'px';
     }
 
     function setActive(el) {
@@ -4911,47 +4948,51 @@
     let chilendBetAmount = 0;
     let chilendHasBet = false;
     let chilendSpinning = false;
-    const CHILEND_CARD_H = 84; // card height + gap
+    let chilendCards = [];
+    const CHILEND_CARD_H = 84;
+    const CHILEND_START_INDEX = 2;
+    const CHILEND_MULTIS = [0, 0, 0.5, 0.5, 1, 1, 1, 2, 2];
 
-    // Multipliers pool: blue tickets
-    const CHILEND_BLUE_MULTIS = [0, 0, 0.5, 0.5, 0.5, 1, 1, 1, 1, 1.5, 1.5, 2, 2, 3];
+    function formatChilendMulti(multi) {
+      if (multi === 0) return '0x';
+      if (multi === 0.5) return '0.5x';
+      return multi + 'x';
+    }
 
     function buildChilendReel() {
-      // Pink ticket: random 5x-50x, appears 2-3 times in 40 cards
-      const pinkMulti = Math.floor(Math.random() * 46) + 5; // 5..50
-      const pinkCount = Math.random() < 0.5 ? 2 : 3;
       const cards = [];
-      for (let i = 0; i < 40; i++) cards.push({ type: 'blue', multi: CHILEND_BLUE_MULTIS[Math.floor(Math.random() * CHILEND_BLUE_MULTIS.length)] });
-      // Insert pink at random positions
-      const pinkPositions = [];
-      while (pinkPositions.length < pinkCount) {
-        const p = Math.floor(Math.random() * 38) + 1;
-        if (!pinkPositions.includes(p)) pinkPositions.push(p);
+      for (let i = 0; i < 48; i++) {
+        const multi = CHILEND_MULTIS[Math.floor(Math.random() * CHILEND_MULTIS.length)];
+        cards.push({ multi });
       }
-      pinkPositions.forEach(p => { cards[p] = { type: 'pink', multi: pinkMulti }; });
       return cards;
     }
 
-    function renderChilendTrack(cards) {
+    function renderChilendTrack(cards, centeredIndex = CHILEND_START_INDEX) {
       const track = document.getElementById('chilendTrack');
       let html = '';
       cards.forEach(c => {
-        const img = c.type === 'pink' ? 'ticket_vector_pink.svg' : 'ticket_vector_blue.svg';
-        const cls = c.type === 'pink' ? ' pink' : '';
-        const multiText = c.multi === 0 ? '0x' : c.multi + 'x';
-        html += '<div class="chilend-card' + cls + '">' +
-          '<img src="' + img + '" alt="">' +
-          '<div class="chilend-card-multi">' + multiText + '</div>' +
+        html += '<div class="chilend-card">' +
+          '<img src="ticket_vector_blue.svg" alt="">' +
+          '<div class="chilend-card-multi">' + formatChilendMulti(c.multi) + '</div>' +
         '</div>';
       });
       track.innerHTML = html;
       track.style.transition = 'none';
-      track.style.transform = 'translateY(0)';
+      track.classList.remove('spinning');
+      track.style.transform = 'translateY(' + (-(centeredIndex * CHILEND_CARD_H)) + 'px)';
     }
 
     function initChilendPage() {
-      const cards = buildChilendReel();
-      renderChilendTrack(cards);
+      if (!chilendCards.length || !chilendHasBet) {
+        chilendCards = buildChilendReel();
+      }
+      renderChilendTrack(chilendCards, CHILEND_START_INDEX);
+      const btn = document.getElementById('chilendBetBtn');
+      if (btn) btn.textContent = chilendHasBet ? 'Крутить' : 'Сделать ставку';
+      if (!chilendHasBet) {
+        document.getElementById('chilendStatus').textContent = 'Выбери сумму и крути билеты';
+      }
     }
 
     function openChilendSheet() {
@@ -4970,91 +5011,78 @@
 
     function confirmChilendBet() {
       const input = document.getElementById('chilendInput');
-      const amount = parseFloat(input.value);
+      const amount = parseFloat(String(input.value).replace(',', '.'));
       if (!amount || amount <= 0) { showNotification('Введите сумму', 'error'); return; }
       if (amount > userBalance) { showNotification('Недостаточно TON', 'error'); return; }
 
-      chilendBetAmount = amount;
-      userBalance = parseFloat((userBalance - amount).toFixed(2));
+      chilendBetAmount = parseFloat(amount.toFixed(2));
+      userBalance = parseFloat((userBalance - chilendBetAmount).toFixed(2));
       updateBalanceDisplay();
       saveUserData();
       chilendHasBet = true;
       closeChilendSheet();
 
-      // Build fresh reel
-      const cards = buildChilendReel();
-      renderChilendTrack(cards);
+      chilendCards = buildChilendReel();
+      renderChilendTrack(chilendCards, CHILEND_START_INDEX);
 
       const btn = document.getElementById('chilendBetBtn');
       btn.textContent = 'Крутить';
-      document.getElementById('chilendStatus').textContent = 'Ставка: ' + amount.toFixed(2) + ' TON';
+      document.getElementById('chilendStatus').textContent = 'Ставка: ' + chilendBetAmount.toFixed(2) + ' TON';
     }
 
     function spinChilend() {
       if (!chilendHasBet || chilendSpinning) return;
+      const track = document.getElementById('chilendTrack');
+      const allCards = track.querySelectorAll('.chilend-card');
+      if (!allCards.length) return;
+
       chilendSpinning = true;
       const btn = document.getElementById('chilendBetBtn');
       btn.disabled = true;
+      allCards.forEach(card => card.classList.remove('win'));
 
-      const track = document.getElementById('chilendTrack');
-      const allCards = track.querySelectorAll('.chilend-card');
-      const totalCards = allCards.length;
-
-      // Pick winner: index 25-35 range
-      const winIdx = Math.floor(Math.random() * 10) + 25;
+      const winIdx = Math.floor(Math.random() * 12) + 28;
       const winCard = allCards[winIdx];
-      const multiText = winCard.querySelector('.chilend-card-multi').textContent;
-      const multi = parseFloat(multiText.replace('x', ''));
+      const multi = chilendCards[winIdx]?.multi ?? 0;
+      const targetY = -(winIdx * CHILEND_CARD_H);
 
-      // Calculate scroll distance: center winIdx in viewport
-      // Viewport is 400px, center is 200px, card center is winIdx * CARD_H + CARD_H/2 + padding(158)
-      const targetY = -(winIdx * CHILEND_CARD_H + CHILEND_CARD_H / 2 - 200 + 158);
-
+      track.offsetHeight;
       track.classList.add('spinning');
       track.style.transform = 'translateY(' + targetY + 'px)';
 
       setTimeout(() => {
         chilendSpinning = false;
         track.classList.remove('spinning');
-
-        // Highlight winner
         winCard.classList.add('win');
 
         const winAmount = parseFloat((chilendBetAmount * multi).toFixed(2));
         const isProfit = winAmount > chilendBetAmount;
-
         userBalance = parseFloat((userBalance + winAmount).toFixed(2));
         updateBalanceDisplay();
         saveUserData();
-
-        // Save to Supabase
         saveChilendToSupabase(chilendBetAmount, multi, winAmount);
-
-        // iOS toast
         showChilendToast(isProfit, winAmount, multi);
 
-        // Status
         const status = document.getElementById('chilendStatus');
         if (multi === 0) {
           status.innerHTML = '<span style="color:#ef4444;font-weight:700;">0 TON (0x)</span>';
         } else if (isProfit) {
-          status.innerHTML = '<span style="color:#22c55e;font-weight:700;">+' + winAmount.toFixed(2) + ' TON (' + multi + 'x)</span>';
+          status.innerHTML = '<span style="color:#22c55e;font-weight:700;">+' + winAmount.toFixed(2) + ' TON (' + formatChilendMulti(multi) + ')</span>';
         } else {
-          status.innerHTML = '<span style="color:#ef4444;font-weight:700;">' + winAmount.toFixed(2) + ' TON (' + multi + 'x)</span>';
+          status.innerHTML = '<span style="color:#f59e0b;font-weight:700;">' + winAmount.toFixed(2) + ' TON (' + formatChilendMulti(multi) + ')</span>';
         }
 
-        // Reset after delay
         setTimeout(() => {
           winCard.classList.remove('win');
           chilendHasBet = false;
           chilendBetAmount = 0;
           btn.disabled = false;
           btn.textContent = 'Сделать ставку';
-          // Rebuild reel
-          const newCards = buildChilendReel();
-          renderChilendTrack(newCards);
-        }, 2500);
-      }, 4200);
+          chilendCards = buildChilendReel();
+          renderChilendTrack(chilendCards, CHILEND_START_INDEX);
+          status.textContent = 'Выбери сумму и крути билеты';
+        }, 2600);
+      }, 4500);
     }
 
     function showChilendToast(isWin, amount, multi) {
@@ -5068,10 +5096,10 @@
         text.textContent = 'Пусто! 0 TON';
       } else if (isWin) {
         icon.textContent = '🎉';
-        text.textContent = '+' + amount.toFixed(2) + ' TON (' + multi + 'x)';
+        text.textContent = '+' + amount.toFixed(2) + ' TON (' + formatChilendMulti(multi) + ')';
       } else {
         icon.textContent = '😔';
-        text.textContent = amount.toFixed(2) + ' TON (' + multi + 'x)';
+        text.textContent = amount.toFixed(2) + ' TON (' + formatChilendMulti(multi) + ')';
       }
       toast.classList.add('show');
       setTimeout(() => { toast.classList.remove('show'); }, 3000);
