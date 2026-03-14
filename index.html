@@ -1248,54 +1248,54 @@
     .craft-result-btn:active { transform: scale(0.96); }    /* ===== Чиленд ===== */
     .chilend-container {
       display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-      padding: 36px 0 120px;
+      padding: 28px 0 120px;
       min-height: calc(100vh - 132px); min-height: calc(100dvh - 132px);
     }
     .chilend-roulette-wrap {
       width: 100%; display: flex; align-items: center; justify-content: center;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
     }
     .chilend-arrow {
       display: none;
     }
     .chilend-viewport {
-      width: 266px; height: 520px; overflow: hidden; position: relative;
-      border-radius: 32px;
+      width: 282px; height: 548px; overflow: hidden; position: relative;
+      border-radius: 34px;
       background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
       border: 1px solid rgba(96,165,250,0.14);
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 22px 54px rgba(0,0,0,0.42);
     }
     .chilend-viewport::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 102px;
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 108px;
       background: linear-gradient(to bottom, rgba(0,0,0,0.96), rgba(0,0,0,0));
       z-index: 4; pointer-events: none;
     }
     .chilend-viewport::after {
-      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 102px;
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 108px;
       background: linear-gradient(to top, rgba(0,0,0,0.96), rgba(0,0,0,0));
       z-index: 4; pointer-events: none;
     }
     .chilend-pointer {
-      position: absolute; top: 50%; left: 10px; right: 10px; transform: translateY(-50%);
-      height: 106px; border-radius: 26px; z-index: 5; pointer-events: none;
-      border: 2px solid rgba(59,130,246,0.52);
-      background: linear-gradient(180deg, rgba(59,130,246,0.10), rgba(59,130,246,0.03));
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.035), 0 0 26px rgba(59,130,246,0.10);
+      position: absolute; top: 50%; left: 12px; right: 12px; transform: translateY(-50%);
+      height: 118px; border-radius: 28px; z-index: 5; pointer-events: none;
+      border: 2px solid rgba(59,130,246,0.56);
+      background: linear-gradient(180deg, rgba(59,130,246,0.13), rgba(59,130,246,0.04));
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.035), 0 0 28px rgba(59,130,246,0.12);
     }
     .chilend-pointer::before,
     .chilend-pointer::after {
       display: none;
     }
     .chilend-track {
-      display: flex; flex-direction: column; align-items: center; gap: 16px;
-      padding: 212px 0; will-change: transform;
-      transform: translate3d(0, -224px, 0);
+      display: flex; flex-direction: column; align-items: center; gap: 18px;
+      padding: 220px 0; will-change: transform;
+      transform: translate3d(0, -378px, 0);
     }
     .chilend-track.spinning {
       transition: none;
     }
     .chilend-card {
-      width: 236px; height: 96px; position: relative;
+      width: 252px; height: 108px; position: relative;
       display: flex; align-items: center; justify-content: center; flex-shrink: 0;
       opacity: 0.92;
       transition: transform 0.26s ease, filter 0.26s ease, opacity 0.26s ease;
@@ -1303,7 +1303,7 @@
     }
     .chilend-card::after {
       content: ''; position: absolute; inset: 8px 14px; border-radius: 22px;
-      background: radial-gradient(circle at center, rgba(59,130,246,0.24), rgba(59,130,246,0) 74%);
+      background: radial-gradient(circle at center, rgba(59,130,246,0.22), rgba(59,130,246,0) 74%);
       opacity: 0.28; z-index: 1; pointer-events: none;
     }
     .chilend-card img {
@@ -1311,20 +1311,15 @@
       -webkit-touch-callout: none; -webkit-user-select: none; user-select: none;
     }
     .chilend-card-multi {
-      position: relative; z-index: 2; font-size: 32px; font-weight: 800; color: #fff;
+      position: relative; z-index: 2; font-size: 35px; font-weight: 800; color: #fff;
       text-shadow: 0 3px 14px rgba(0,0,0,0.55);
     }
     .chilend-card.win {
-      transform: scale(1.1) !important;
+      transform: scale(1.12) !important;
       opacity: 1 !important;
-      filter: brightness(1.1) drop-shadow(0 0 28px rgba(59,130,246,0.26)) !important;
+      filter: brightness(1.08) drop-shadow(0 0 28px rgba(59,130,246,0.26)) !important;
     }
-    .chilend-card.win::after { opacity: 0.78; }
-    .chilend-status {
-      font-size: 15px; color: rgba(255,255,255,0.62);
-      margin-bottom: 0; text-align: center; min-height: 22px;
-      padding: 0 24px;
-    }
+    .chilend-card.win::after { opacity: 0.82; }
     .chilend-bet-btn {
       width: calc(100% - 32px); max-width: 360px; height: 54px; border-radius: 18px; border: none;
       background: linear-gradient(180deg, #49a4ff 0%, #2d87ff 100%); color: #fff;
@@ -1333,13 +1328,27 @@
       -webkit-tap-highlight-color: transparent;
       box-shadow: 0 10px 28px rgba(45,135,255,0.28);
       position: relative; left: auto; bottom: auto; transform: none; z-index: 50;
-      margin-top: 16px;
+      margin-top: 6px;
     }
     .chilend-bet-btn:active { transform: scale(0.97); }
     .chilend-bet-btn:disabled { opacity: 0.45; pointer-events: none; }
-    .chilend-toast {
-      display: none !important;
+    .chilend-status {
+      font-size: 15px; color: rgba(255,255,255,0.62);
+      margin-top: 12px; margin-bottom: 0; text-align: center; min-height: 22px;
+      padding: 0 24px;
     }
+    .chilend-toast {
+      position: fixed; top: 14px; left: 12px; right: 12px;
+      padding: 15px 18px; border-radius: 18px;
+      color: #fff; font-size: 15px; font-weight: 700;
+      box-shadow: 0 20px 48px rgba(0,0,0,0.35);
+      transform: translateY(-140%); opacity: 0;
+      transition: transform 0.42s cubic-bezier(0.2, 0.9, 0.2, 1), opacity 0.28s ease;
+      pointer-events: none; z-index: 260;
+    }
+    .chilend-toast.show { transform: translateY(0); opacity: 1; }
+    .chilend-toast.win { background: linear-gradient(135deg, #22c55e 0%, #16a34a 55%, #15803d 100%); }
+    .chilend-toast.lose { background: linear-gradient(135deg, #ef4444 0%, #dc2626 55%, #b91c1c 100%); }
     .chilend-sheet-overlay {
       position: fixed; top: 0; left: 0; right: 0; bottom: 0;
       background: rgba(0,0,0,0); z-index: 200;
@@ -1351,7 +1360,7 @@
       background: #202022; border-radius: 24px 24px 0 0; z-index: 201;
       transform: translateY(100%);
       transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      padding: 0 20px 34px 20px; max-height: 70vh;
+      padding: 0 20px 34px 20px; max-height: 78vh; overflow-y: auto;
       border-top: 1px solid rgba(255,255,255,0.06);
       box-shadow: 0 -14px 44px rgba(0,0,0,0.45);
     }
@@ -1363,17 +1372,19 @@
     .chilend-sheet-title {
       font-size: 22px; font-weight: 800; color: #fff; text-align: center; margin-bottom: 22px;
     }
-    .chilend-methods { display: flex; gap: 10px; margin-bottom: 22px; }
+    .chilend-methods { display: flex; gap: 10px; margin-bottom: 20px; }
     .chilend-method {
       flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;
       padding: 14px 8px; border-radius: 18px;
       background: rgba(255,255,255,0.05); border: 1px solid transparent;
+      cursor: pointer; transition: background 0.2s, border-color 0.2s, transform 0.15s;
+      color: inherit;
     }
+    .chilend-method:active { transform: scale(0.98); }
     .chilend-method.selected {
       border-color: rgba(59,130,246,0.55);
       background: rgba(59,130,246,0.1);
     }
-    .chilend-method.disabled { opacity: 0.46; }
     .chilend-method-icon {
       width: 46px; height: 46px; border-radius: 14px;
       background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center;
@@ -1381,9 +1392,10 @@
     .chilend-method-icon img { width: 24px; height: 24px; object-fit: contain; }
     .chilend-method-name { font-size: 14px; font-weight: 700; color: #fff; }
     .chilend-method-soon { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.35); }
+    .chilend-ton-wrap { display: block; }
     .chilend-input-wrap {
       display: flex; align-items: center; justify-content: center; gap: 8px;
-      padding: 14px 0; margin-bottom: 16px;
+      padding: 14px 0; margin-bottom: 14px;
     }
     .chilend-input {
       background: transparent; border: none; outline: none;
@@ -1393,6 +1405,71 @@
     .chilend-input::placeholder { color: rgba(255,255,255,0.15); }
     .chilend-input-icon { width: 34px; height: 34px; flex-shrink: 0; }
     .chilend-input-icon img { width: 100%; height: 100%; object-fit: contain; }
+    .chilend-gift-wrap { display: none; margin-bottom: 16px; }
+    .chilend-gift-head {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 12px; gap: 10px;
+    }
+    .chilend-gift-title { font-size: 14px; font-weight: 700; color: #fff; }
+    .chilend-gift-total {
+      font-size: 13px; font-weight: 700; color: #fff;
+      padding: 6px 10px; border-radius: 999px;
+      background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.25);
+    }
+    .chilend-gift-empty {
+      display: none; text-align: center; padding: 16px 12px; border-radius: 16px;
+      background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.45);
+      font-size: 13px; font-weight: 600;
+    }
+    .chilend-gift-grid {
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px;
+      max-height: 280px; overflow-y: auto; padding-bottom: 2px;
+    }
+    .chilend-gift-item {
+      position: relative; border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.04); border-radius: 18px; padding: 12px 10px 10px;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+      overflow: hidden; min-height: 146px;
+    }
+    .chilend-gift-item.selected {
+      border-color: rgba(59,130,246,0.55);
+      background: rgba(59,130,246,0.10);
+      transform: translateY(-1px);
+    }
+    .chilend-gift-glow {
+      position: absolute; top: 42px; left: 50%; width: 82px; height: 82px;
+      transform: translate(-50%, -50%); border-radius: 50%; filter: blur(28px);
+      opacity: 0.5; pointer-events: none;
+    }
+    .chilend-gift-img {
+      width: 62px; height: 62px; object-fit: contain; position: relative; z-index: 1;
+    }
+    .chilend-gift-name {
+      font-size: 12px; font-weight: 700; color: #fff; text-align: center;
+      width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      position: relative; z-index: 1;
+    }
+    .chilend-gift-price {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 12px; font-weight: 700; color: #fff;
+      padding: 6px 10px; border-radius: 999px;
+      background: rgba(255,255,255,0.06); position: relative; z-index: 1;
+    }
+    .chilend-gift-price img { width: 12px; height: 12px; }
+    .chilend-gift-check {
+      position: absolute; top: 10px; right: 10px; width: 22px; height: 22px;
+      border-radius: 50%; background: rgba(255,255,255,0.10); color: rgba(255,255,255,0.55);
+      display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900;
+      border: 1px solid rgba(255,255,255,0.08); z-index: 2;
+    }
+    .chilend-gift-item.selected .chilend-gift-check {
+      background: #3b82f6; color: #fff; border-color: rgba(59,130,246,0.65);
+    }
+    .chilend-gift-bar {
+      width: 100%; height: 4px; border-radius: 999px; position: relative; z-index: 1;
+      background: rgba(255,255,255,0.06);
+    }
     .chilend-confirm-btn {
       width: 100%; height: 54px; border-radius: 18px; border: none;
       background: linear-gradient(180deg, #49a4ff 0%, #2d87ff 100%); color: #fff;
@@ -1692,7 +1769,6 @@
   <div class="page" id="page-3">
     <div class="chilend-container">
       <div class="chilend-toast" id="chilendToast">
-        <span class="chilend-toast-icon" id="chilendToastIcon"></span>
         <span id="chilendToastText"></span>
       </div>
 
@@ -1703,8 +1779,8 @@
         </div>
       </div>
 
-      <div class="chilend-status" id="chilendStatus"></div>
       <button class="chilend-bet-btn" id="chilendBetBtn" onclick="openChilendSheet()" style="display:none;">Сделать ставку</button>
+      <div class="chilend-status" id="chilendStatus"></div>
     </div>
   </div>
 
@@ -2117,21 +2193,30 @@
     <div class="chilend-sheet-handle"></div>
     <div class="chilend-sheet-title">Сделать ставку</div>
     <div class="chilend-methods">
-      <div class="chilend-method disabled">
-        <div class="chilend-method-icon"><img src="gift.svg" alt=""></div>
-        <div class="chilend-method-name">Подарки</div>
-        <div class="chilend-method-soon">(soon)</div>
-      </div>
-      <div class="chilend-method selected">
+      <button type="button" class="chilend-method selected" id="chilendMethodTon" onclick="selectChilendMethod('ton')">
         <div class="chilend-method-icon"><img src="ton.webp" alt=""></div>
         <div class="chilend-method-name">TON</div>
+      </button>
+      <button type="button" class="chilend-method" id="chilendMethodGifts" onclick="selectChilendMethod('gifts')">
+        <div class="chilend-method-icon"><img src="gift.svg" alt=""></div>
+        <div class="chilend-method-name">Подарки</div>
+      </button>
+    </div>
+    <div class="chilend-ton-wrap" id="chilendTonWrap">
+      <div class="chilend-input-wrap">
+        <input class="chilend-input" id="chilendInput" type="text" inputmode="decimal" placeholder="0.00">
+        <div class="chilend-input-icon"><img src="ton.webp" alt="TON"></div>
       </div>
     </div>
-    <div class="chilend-input-wrap">
-      <input class="chilend-input" id="chilendInput" type="text" inputmode="decimal" placeholder="0.00">
-      <div class="chilend-input-icon"><img src="ton.webp" alt="TON"></div>
+    <div class="chilend-gift-wrap" id="chilendGiftWrap">
+      <div class="chilend-gift-head">
+        <div class="chilend-gift-title">Инвентарь</div>
+        <div class="chilend-gift-total" id="chilendGiftTotal">0.00 TON</div>
+      </div>
+      <div class="chilend-gift-empty" id="chilendGiftEmpty">Нет подарков в инвентаре</div>
+      <div class="chilend-gift-grid" id="chilendGiftGrid"></div>
     </div>
-    <button class="chilend-confirm-btn" onclick="confirmChilendBet()">Сделать ставку</button>
+    <button class="chilend-confirm-btn" id="chilendConfirmBtn" onclick="confirmChilendBet()">Сделать ставку</button>
   </div>
 
   <!-- Bottom panel -->
@@ -3179,6 +3264,14 @@
       if (chilendBtn) chilendBtn.style.display = (newIndex === 3) ? '' : 'none';
       if (newIndex === 3) initChilendPage();
     }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter') return;
+      const target = e.target;
+      if (!target || !(target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) return;
+      e.preventDefault();
+      target.blur();
+    });
 
     window.addEventListener('load', () => {
       const active = document.querySelector('.tab.active');
@@ -4917,25 +5010,134 @@
     let chilendSpinning = false;
     let chilendCards = [];
     let chilendSpinFrame = null;
-    const CHILEND_CARD_H = 96;
-    const CHILEND_CARD_GAP = 16;
+    let chilendCurrentCenteredIndex = 3;
+    let chilendBetMode = 'ton';
+    let chilendBetSource = 'ton';
+    let chilendGiftSelection = [];
+    let chilendBetGiftItems = [];
+    let chilendToastTimer = null;
+    const CHILEND_CARD_H = 108;
+    const CHILEND_CARD_GAP = 18;
     const CHILEND_CARD_STEP = CHILEND_CARD_H + CHILEND_CARD_GAP;
-    const CHILEND_START_INDEX = 2;
-    const CHILEND_MULTIS = [0, 0, 0.5, 0.5, 1, 1, 1, 2, 2];
+    const CHILEND_START_INDEX = 3;
+    const CHILEND_REEL_LENGTH = 90;
+    const CHILEND_MULTIS = [0, 0, 0.5, 0.5, 1, 1, 1, 1, 2, 2];
 
     function formatChilendMulti(multi) {
-      if (multi === 0) return '0x';
       if (multi === 0.5) return '0.5x';
       return multi + 'x';
     }
 
+    function formatChilendFactor(multi) {
+      if (multi === 0.5) return 'x0.5';
+      return 'x' + multi;
+    }
+
     function buildChilendReel() {
       const cards = [];
-      for (let i = 0; i < 96; i++) {
+      for (let i = 0; i < CHILEND_REEL_LENGTH; i++) {
         const multi = CHILEND_MULTIS[Math.floor(Math.random() * CHILEND_MULTIS.length)];
         cards.push({ multi });
       }
       return cards;
+    }
+
+    function updateChilendStatus(html) {
+      const status = document.getElementById('chilendStatus');
+      if (status) status.innerHTML = html || '';
+    }
+
+    function getChilendSelectedGiftTotal() {
+      return chilendGiftSelection.reduce((sum, index) => sum + (inventory[index]?.price || 0), 0);
+    }
+
+    function updateChilendGiftTotal() {
+      const total = getChilendSelectedGiftTotal();
+      const totalEl = document.getElementById('chilendGiftTotal');
+      if (totalEl) totalEl.textContent = total.toFixed(2) + ' TON';
+      const btn = document.getElementById('chilendConfirmBtn');
+      if (btn && chilendBetMode === 'gifts') {
+        btn.textContent = total > 0 ? ('Сделать ставку · ' + total.toFixed(2) + ' TON') : 'Сделать ставку';
+      }
+      if (btn && chilendBetMode === 'ton') {
+        btn.textContent = 'Сделать ставку';
+      }
+    }
+
+    function renderChilendGiftInventory() {
+      const grid = document.getElementById('chilendGiftGrid');
+      const empty = document.getElementById('chilendGiftEmpty');
+      if (!grid || !empty) return;
+
+      grid.innerHTML = '';
+      if (!inventory.length) {
+        empty.style.display = 'block';
+        grid.style.display = 'none';
+        updateChilendGiftTotal();
+        return;
+      }
+
+      empty.style.display = 'none';
+      grid.style.display = 'grid';
+
+      const sorted = [...inventory].map((item, originalIndex) => ({ item, originalIndex }))
+        .sort((a, b) => b.item.price - a.item.price);
+
+      sorted.forEach(({ item, originalIndex }) => {
+        const rarity = getRarityColor(item.price);
+        const el = document.createElement('button');
+        el.type = 'button';
+        el.className = 'chilend-gift-item' + (chilendGiftSelection.includes(originalIndex) ? ' selected' : '');
+        el.onclick = () => toggleChilendGift(originalIndex);
+        el.innerHTML =
+          '<div class="chilend-gift-check">✓</div>' +
+          '<div class="chilend-gift-glow ' + rarity.cls + '"></div>' +
+          '<img class="chilend-gift-img" src="' + item.image + '" alt="' + item.name + '">' +
+          '<div class="chilend-gift-name">' + item.name + '</div>' +
+          '<div class="chilend-gift-price">' + item.price.toFixed(2) + ' <img src="ton.webp" alt="TON"></div>' +
+          '<div class="chilend-gift-bar" style="background:' + rarity.color + ';"></div>';
+        grid.appendChild(el);
+      });
+
+      updateChilendGiftTotal();
+    }
+
+    function toggleChilendGift(index) {
+      if (chilendSpinning || chilendHasBet) return;
+      const pos = chilendGiftSelection.indexOf(index);
+      if (pos === -1) {
+        chilendGiftSelection.push(index);
+      } else {
+        chilendGiftSelection.splice(pos, 1);
+      }
+      renderChilendGiftInventory();
+    }
+
+    function selectChilendMethod(mode) {
+      chilendBetMode = mode;
+      const tonBtn = document.getElementById('chilendMethodTon');
+      const giftsBtn = document.getElementById('chilendMethodGifts');
+      const tonWrap = document.getElementById('chilendTonWrap');
+      const giftWrap = document.getElementById('chilendGiftWrap');
+      const input = document.getElementById('chilendInput');
+
+      if (tonBtn) tonBtn.classList.toggle('selected', mode === 'ton');
+      if (giftsBtn) giftsBtn.classList.toggle('selected', mode === 'gifts');
+      if (tonWrap) tonWrap.style.display = mode === 'ton' ? 'block' : 'none';
+      if (giftWrap) giftWrap.style.display = mode === 'gifts' ? 'block' : 'none';
+
+      if (mode === 'gifts') {
+        if (input) input.blur();
+        renderChilendGiftInventory();
+      } else {
+        chilendGiftSelection = [];
+        renderChilendGiftInventory();
+        setTimeout(() => {
+          if (input && document.getElementById('chilendSheet')?.classList.contains('open')) input.focus();
+        }, 180);
+      }
+
+      updateChilendGiftTotal();
     }
 
     function setChilendTrackPosition(y) {
@@ -4945,12 +5147,14 @@
 
       const cards = track.querySelectorAll('.chilend-card');
       const currentIndex = Math.abs(y) / CHILEND_CARD_STEP;
+      chilendCurrentCenteredIndex = currentIndex;
+
       cards.forEach((card, index) => {
         if (card.classList.contains('win')) return;
         const dist = Math.abs(index - currentIndex);
-        const scale = Math.max(0.78, 1 - dist * 0.075);
-        const opacity = Math.max(0.22, 1 - dist * 0.17);
-        const blur = Math.min(7, dist * 1.45);
+        const scale = Math.max(0.76, 1 - dist * 0.085);
+        const opacity = Math.max(0.18, 1 - dist * 0.16);
+        const blur = Math.min(7, dist * 1.35);
         const bright = Math.max(0.72, 1 - dist * 0.08);
         card.style.transform = 'scale(' + scale.toFixed(3) + ')';
         card.style.opacity = opacity.toFixed(3);
@@ -4975,59 +5179,97 @@
     }
 
     function initChilendPage() {
-      if (!chilendCards.length || !chilendHasBet) {
+      if (!chilendCards.length) {
         chilendCards = buildChilendReel();
       }
       renderChilendTrack(chilendCards, CHILEND_START_INDEX);
       const btn = document.getElementById('chilendBetBtn');
       if (btn) btn.textContent = chilendHasBet ? 'Крутить' : 'Сделать ставку';
-      const status = document.getElementById('chilendStatus');
-      if (status && !chilendHasBet) status.textContent = '';
+      if (chilendHasBet) {
+        const stakeLabel = chilendBetSource === 'gifts'
+          ? ('Ставка: ' + chilendBetGiftItems.length + ' подарков · ' + chilendBetAmount.toFixed(2) + ' TON')
+          : ('Ставка: ' + chilendBetAmount.toFixed(2) + ' TON');
+        updateChilendStatus(stakeLabel);
+      } else {
+        updateChilendStatus('');
+      }
     }
 
     function openChilendSheet() {
       if (chilendSpinning) return;
       if (chilendHasBet) { spinChilend(); return; }
+      chilendGiftSelection = [];
       document.getElementById('chilendSheetOverlay').classList.add('open');
       document.getElementById('chilendSheet').classList.add('open');
-      document.getElementById('chilendInput').value = '';
-      setTimeout(() => document.getElementById('chilendInput').focus(), 300);
+      const input = document.getElementById('chilendInput');
+      if (input) input.value = '';
+      selectChilendMethod('ton');
     }
 
     function closeChilendSheet() {
       document.getElementById('chilendSheetOverlay').classList.remove('open');
       document.getElementById('chilendSheet').classList.remove('open');
+      const input = document.getElementById('chilendInput');
+      if (input) input.blur();
     }
 
     function confirmChilendBet() {
-      const input = document.getElementById('chilendInput');
-      const amount = parseFloat(String(input.value).replace(',', '.'));
-      if (!amount || amount <= 0) { showNotification('Введите сумму', 'error'); return; }
-      if (amount > userBalance) { showNotification('Недостаточно TON', 'error'); return; }
+      if (chilendBetMode === 'ton') {
+        const input = document.getElementById('chilendInput');
+        const amount = parseFloat(String(input?.value || '').replace(',', '.'));
+        if (!amount || amount <= 0) { showNotification('Введите сумму', 'error'); return; }
+        if (amount > userBalance) { showNotification('Недостаточно TON', 'error'); return; }
 
-      chilendBetAmount = parseFloat(amount.toFixed(2));
-      userBalance = parseFloat((userBalance - chilendBetAmount).toFixed(2));
-      updateBalanceDisplay();
-      saveUserData();
+        chilendBetAmount = parseFloat(amount.toFixed(2));
+        chilendBetSource = 'ton';
+        chilendBetGiftItems = [];
+        userBalance = parseFloat((userBalance - chilendBetAmount).toFixed(2));
+        updateBalanceDisplay();
+      } else {
+        if (!chilendGiftSelection.length) { showNotification('Выберите подарки', 'error'); return; }
+        chilendBetGiftItems = chilendGiftSelection
+          .map(index => inventory[index] ? { ...inventory[index] } : null)
+          .filter(Boolean);
+        const total = chilendBetGiftItems.reduce((sum, item) => sum + (item.price || 0), 0);
+        if (!total) { showNotification('Подарки не найдены', 'error'); return; }
+
+        chilendBetAmount = parseFloat(total.toFixed(2));
+        chilendBetSource = 'gifts';
+
+        [...chilendGiftSelection].sort((a, b) => b - a).forEach(index => {
+          if (inventory[index]) inventory.splice(index, 1);
+        });
+
+        renderInventory();
+        if (typeof initCraftPage === 'function') initCraftPage();
+        if (typeof initUpgradePage === 'function' && currentPageIndex === 5) initUpgradePage();
+      }
+
       chilendHasBet = true;
       closeChilendSheet();
-
-      chilendCards = buildChilendReel();
-      renderChilendTrack(chilendCards, CHILEND_START_INDEX);
+      saveUserData();
 
       const btn = document.getElementById('chilendBetBtn');
       if (btn) btn.textContent = 'Крутить';
-      const status = document.getElementById('chilendStatus');
-      if (status) status.textContent = 'Ставка: ' + chilendBetAmount.toFixed(2) + ' TON';
+
+      const stakeLabel = chilendBetSource === 'gifts'
+        ? ('Ставка: ' + chilendBetGiftItems.length + ' подарков · ' + chilendBetAmount.toFixed(2) + ' TON')
+        : ('Ставка: ' + chilendBetAmount.toFixed(2) + ' TON');
+      updateChilendStatus(stakeLabel);
+      renderChilendGiftInventory();
     }
 
     function animateChilendTrack(fromY, toY, duration, done) {
       if (chilendSpinFrame) cancelAnimationFrame(chilendSpinFrame);
       const startTime = performance.now();
 
+      function easeOutQuint(t) {
+        return 1 - Math.pow(1 - t, 5);
+      }
+
       function frame(now) {
         const progress = Math.min(1, (now - startTime) / duration);
-        const eased = 1 - Math.pow(1 - progress, 4);
+        const eased = easeOutQuint(progress);
         const y = fromY + (toY - fromY) * eased;
         setChilendTrackPosition(y);
         if (progress < 1) {
@@ -5042,6 +5284,26 @@
       chilendSpinFrame = requestAnimationFrame(frame);
     }
 
+    function resetChilendAfterSpin() {
+      chilendSpinning = false;
+      chilendHasBet = false;
+      chilendBetAmount = 0;
+      chilendBetSource = 'ton';
+      chilendBetGiftItems = [];
+      chilendGiftSelection = [];
+
+      const btn = document.getElementById('chilendBetBtn');
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = 'Сделать ставку';
+      }
+
+      chilendCards = buildChilendReel();
+      renderChilendTrack(chilendCards, CHILEND_START_INDEX);
+      updateChilendStatus('');
+      renderChilendGiftInventory();
+    }
+
     function spinChilend() {
       if (!chilendHasBet || chilendSpinning) return;
       const track = document.getElementById('chilendTrack');
@@ -5051,60 +5313,62 @@
       const btn = document.getElementById('chilendBetBtn');
       if (btn) btn.disabled = true;
 
-      chilendCards = buildChilendReel();
-      const winIdx = Math.floor(Math.random() * 10) + 16;
-      const startIdx = winIdx + 34;
+      if (!chilendCards.length) chilendCards = buildChilendReel();
+      const baseIndex = Math.max(CHILEND_START_INDEX, Math.round(chilendCurrentCenteredIndex));
+      const travelCards = 26 + Math.floor(Math.random() * 12);
+      const winIdx = Math.min(chilendCards.length - CHILEND_START_INDEX - 1, baseIndex + travelCards);
       const multi = chilendCards[winIdx]?.multi ?? 0;
 
-      renderChilendTrack(chilendCards, startIdx);
       const allCards = track.querySelectorAll('.chilend-card');
       allCards.forEach(card => card.classList.remove('win'));
 
-      const fromY = -(startIdx * CHILEND_CARD_STEP);
+      const fromY = -(baseIndex * CHILEND_CARD_STEP);
       const toY = -(winIdx * CHILEND_CARD_STEP);
 
-      setTimeout(() => {
-        animateChilendTrack(fromY, toY, 4200, () => {
-          const winCard = track.querySelectorAll('.chilend-card')[winIdx];
-          if (winCard) winCard.classList.add('win');
+      animateChilendTrack(fromY, toY, 4200, () => {
+        const cards = track.querySelectorAll('.chilend-card');
+        const winCard = cards[winIdx];
+        if (winCard) winCard.classList.add('win');
 
-          const winAmount = parseFloat((chilendBetAmount * multi).toFixed(2));
-          const isProfit = winAmount > chilendBetAmount;
-          userBalance = parseFloat((userBalance + winAmount).toFixed(2));
-          updateBalanceDisplay();
-          saveUserData();
-          saveChilendToSupabase(chilendBetAmount, multi, winAmount);
+        const winAmount = parseFloat((chilendBetAmount * multi).toFixed(2));
+        const lostAmount = Math.max(0, parseFloat((chilendBetAmount - winAmount).toFixed(2)));
+        const isWin = multi >= 1;
 
-          const status = document.getElementById('chilendStatus');
-          if (status) {
-            if (multi === 0) {
-              status.innerHTML = '<span style="color:#ef4444;font-weight:700;">0 TON (0x)</span>';
-            } else if (isProfit) {
-              status.innerHTML = '<span style="color:#22c55e;font-weight:700;">+' + winAmount.toFixed(2) + ' TON (' + formatChilendMulti(multi) + ')</span>';
-            } else {
-              status.innerHTML = '<span style="color:#f59e0b;font-weight:700;">' + winAmount.toFixed(2) + ' TON (' + formatChilendMulti(multi) + ')</span>';
-            }
-          }
+        userBalance = parseFloat((userBalance + winAmount).toFixed(2));
+        updateBalanceDisplay();
+        saveUserData();
+        saveChilendToSupabase(chilendBetAmount, multi, winAmount);
 
-          chilendSpinning = false;
-          setTimeout(() => {
-            if (winCard) winCard.classList.remove('win');
-            chilendHasBet = false;
-            chilendBetAmount = 0;
-            if (btn) {
-              btn.disabled = false;
-              btn.textContent = 'Сделать ставку';
-            }
-            chilendCards = buildChilendReel();
-            renderChilendTrack(chilendCards, CHILEND_START_INDEX);
-            if (status) status.textContent = '';
-          }, 1500);
-        });
-      }, 80);
+        if (isWin) {
+          updateChilendStatus('<span style="color:#22c55e;font-weight:700;">+' + winAmount.toFixed(2) + ' TON (' + formatChilendFactor(multi) + ')</span>');
+          showChilendToast(true, 'Вы выиграли ' + winAmount.toFixed(2) + ' TON при ' + formatChilendFactor(multi));
+        } else {
+          updateChilendStatus('<span style="color:#ef4444;font-weight:700;">-' + lostAmount.toFixed(2) + ' TON (' + formatChilendFactor(multi) + ')</span>');
+          showChilendToast(false, 'Вы проиграли ' + lostAmount.toFixed(2) + ' TON при ' + formatChilendFactor(multi));
+        }
+
+        setTimeout(() => {
+          if (winCard) winCard.classList.remove('win');
+          resetChilendAfterSpin();
+        }, 1600);
+      });
     }
 
-    function showChilendToast() {
-      return;
+    function showChilendToast(isWin, text) {
+      const toast = document.getElementById('chilendToast');
+      const textEl = document.getElementById('chilendToastText');
+      if (!toast || !textEl) return;
+
+      if (chilendToastTimer) clearTimeout(chilendToastTimer);
+      toast.classList.remove('show', 'win', 'lose');
+      textEl.textContent = text;
+      toast.classList.add(isWin ? 'win' : 'lose');
+      void toast.offsetHeight;
+      toast.classList.add('show');
+
+      chilendToastTimer = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2600);
     }
 
     async function saveChilendToSupabase(betAmount, multi, winAmount) {
