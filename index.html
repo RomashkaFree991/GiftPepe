@@ -3438,6 +3438,48 @@
       }
     }
 
+    async function persistTonDeposit(amount) {
+      if (!supabaseClient || !currentUserId) return;
+
+      const updatePayload = { balance: userBalance };
+
+      try {
+        const { data: userRow, error: userRowError } = await supabaseClient
+          .from('users')
+          .select('total_deposited')
+          .eq('id', currentUserId)
+          .single();
+
+        if (!userRowError && userRow && userRow.total_deposited !== undefined && userRow.total_deposited !== null) {
+          updatePayload.total_deposited = parseFloat(userRow.total_deposited || 0) + amount;
+        }
+      } catch (totalErr) {
+        console.warn('total_deposited lookup skipped:', totalErr);
+      }
+
+      const { error: updateError } = await supabaseClient
+        .from('users')
+        .update(updatePayload)
+        .eq('id', currentUserId);
+
+      if (updateError) throw updateError;
+
+      try {
+        await supabaseClient.from('transactions').insert({
+          user_id: currentUserId,
+          type: 'deposit',
+          amount: amount
+        });
+      } catch (dbErr) {
+        console.warn('TON transaction log error:', dbErr);
+      }
+
+      topUsersLoaded = false;
+      if (currentPageIndex === 0) {
+        await loadTopUsers(true);
+      }
+    }
+
     async function sendTonPayment(amount) {
       let tc;
       try { tc = initTonConnect(); } catch(e) { showNotification('TON Connect не загружен', 'error'); return; }
@@ -3469,19 +3511,24 @@
         const result = await tc.sendTransaction(transaction);
 
         if (result) {
+          closeDeposit();
           userBalance += amount;
           updateBalanceDisplay();
-          saveUserData();
-          showNotification('+' + amount.toFixed(2) + ' TON зачислено!', 'success');
-          closeDeposit();
 
-          if (supabaseClient && currentUserId) {
+          try {
+            await persistTonDeposit(amount);
+          } catch (persistErr) {
+            console.error('Persist TON deposit error:', persistErr);
             try {
-              await supabaseClient.from('transactions').insert({
-                user_id: currentUserId, type: 'deposit', amount: amount, method: 'ton', status: 'completed'
-              });
-            } catch(dbErr) { console.error('DB log error:', dbErr); }
+              if (supabaseClient && currentUserId) {
+                await supabaseClient.from('users').update({ balance: userBalance }).eq('id', currentUserId);
+              }
+            } catch (fallbackErr) {
+              console.error('TON deposit balance fallback error:', fallbackErr);
+            }
           }
+
+          showNotification('+' + amount.toFixed(2) + ' TON зачислено!', 'success');
         }
       } catch (e) {
         console.error('TON payment error:', e);
@@ -5602,23 +5649,44 @@
     }
 
     async function fetchTopUsersFromPayments() {
-      const { data, error } = await supabaseClient
-        .from('star_payments')
-        .select('user_id, ton_amount');
-
-      if (error) throw error;
-      if (!data || data.length === 0) return [];
-
       const totals = {};
-      data.forEach(row => {
-        const uid = row.user_id;
-        if (!uid) return;
-        if (!totals[uid]) totals[uid] = 0;
-        totals[uid] += parseFloat(row.ton_amount || 0);
-      });
+
+      try {
+        const { data: starData, error: starError } = await supabaseClient
+          .from('star_payments')
+          .select('user_id, ton_amount');
+
+        if (starError) throw starError;
+        (starData || []).forEach(row => {
+          const uid = row.user_id;
+          if (!uid) return;
+          if (!totals[uid]) totals[uid] = 0;
+          totals[uid] += parseFloat(row.ton_amount || 0);
+        });
+      } catch (starErr) {
+        console.warn('Top users star payments load error:', starErr);
+      }
+
+      try {
+        const { data: tonData, error: tonError } = await supabaseClient
+          .from('transactions')
+          .select('user_id, amount')
+          .eq('type', 'deposit');
+
+        if (tonError) throw tonError;
+        (tonData || []).forEach(row => {
+          const uid = row.user_id;
+          if (!uid) return;
+          if (!totals[uid]) totals[uid] = 0;
+          totals[uid] += parseFloat(row.amount || 0);
+        });
+      } catch (tonErr) {
+        console.warn('Top users TON payments load error:', tonErr);
+      }
 
       const sorted = Object.entries(totals)
         .map(([uid, total]) => ({ user_id: parseInt(uid), total }))
+        .filter(entry => entry.total > 0)
         .sort((a, b) => b.total - a.total)
         .slice(0, 30);
 
@@ -5652,13 +5720,17 @@
       try {
         let entries = null;
         try {
-          entries = await fetchTopUsersFromUsersTable();
-        } catch (usersTableError) {
-          console.warn('Top users users-table fallback:', usersTableError);
+          entries = await fetchTopUsersFromPayments();
+        } catch (paymentsError) {
+          console.warn('Top users payments load error:', paymentsError);
         }
 
         if (!entries || entries.length === 0) {
-          entries = await fetchTopUsersFromPayments();
+          try {
+            entries = await fetchTopUsersFromUsersTable();
+          } catch (usersTableError) {
+            console.warn('Top users users-table fallback:', usersTableError);
+          }
         }
 
         listEl.innerHTML = buildTopUsersHtml(entries);
