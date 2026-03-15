@@ -3272,7 +3272,7 @@
       if (topBar) topBar.style.display = (newIndex === 6) ? 'none' : '';
       // Init Топ page
       if (newIndex === 0) {
-        loadTopUsers();
+        loadTopUsers(true);
       }
       // Show/hide Чиленд button
       const chilendBtn = document.getElementById('chilendBetBtn');
@@ -3395,6 +3395,10 @@
                   if (ud) {
                     userBalance = ud.balance || 0;
                     updateBalanceDisplay();
+                  }
+                  topUsersLoaded = false;
+                  if (currentPageIndex === 0) {
+                    await loadTopUsers(true);
                   }
                   showNotification('+' + pd.ton_amount.toFixed(2) + ' TON зачислено!', 'success');
                 }
@@ -5541,87 +5545,129 @@
       { image: 'gift/Dogel Mogel.png' }
     ];
     let topUsersLoaded = false;
+    let topUsersLoading = false;
 
-    async function loadTopUsers() {
+    function buildTopUsersHtml(entries) {
+      if (!entries || entries.length === 0) {
+        return '<div class="top-loading">Пока нет пополнений</div>';
+      }
+      let html = '';
+      entries.forEach((entry, i) => {
+        const u = entry.user || {};
+        const total = parseFloat(entry.total || 0);
+        const name = u.username ? '@' + u.username : (u.first_name || 'Аноним');
+        const rank = i + 1;
+        const topClass = rank <= 3 ? ' top-' + rank : '';
+        const initials = (u.first_name?.[0] || u.username?.[0] || '?');
+
+        const avatarHtml = u.photo_url
+          ? '<img src="' + u.photo_url + '" alt="">'
+          : '<div class="top-avatar-placeholder">' + initials + '</div>';
+
+        let prizeHtml = '';
+        if (rank <= 3) {
+          prizeHtml = '<img class="top-prize" src="' + TOP_PRIZES[rank - 1].image + '" alt="">';
+        }
+
+        html += '<div class="top-row' + topClass + '" style="animation-delay:' + (i * 0.05) + 's">' +
+          '<div class="top-rank">#' + rank + '</div>' +
+          '<div class="top-avatar">' + avatarHtml + '</div>' +
+          '<div class="top-user-info"><div class="top-username">' + name + '</div></div>' +
+          '<div class="top-right">' +
+            '<div class="top-amount">' + total.toFixed(2) + ' <img src="ton.webp" alt="TON"></div>' +
+            prizeHtml +
+          '</div>' +
+        '</div>';
+      });
+      return html;
+    }
+
+    async function fetchTopUsersFromUsersTable() {
+      const { data, error } = await supabaseClient
+        .from('users')
+        .select('id, username, first_name, photo_url, total_deposited')
+        .gt('total_deposited', 0)
+        .order('total_deposited', { ascending: false })
+        .limit(30);
+
+      if (error || !data || data.length === 0) {
+        return null;
+      }
+
+      return data.map(row => ({
+        user_id: row.id,
+        total: parseFloat(row.total_deposited || 0),
+        user: row
+      }));
+    }
+
+    async function fetchTopUsersFromPayments() {
+      const { data, error } = await supabaseClient
+        .from('star_payments')
+        .select('user_id, ton_amount');
+
+      if (error) throw error;
+      if (!data || data.length === 0) return [];
+
+      const totals = {};
+      data.forEach(row => {
+        const uid = row.user_id;
+        if (!uid) return;
+        if (!totals[uid]) totals[uid] = 0;
+        totals[uid] += parseFloat(row.ton_amount || 0);
+      });
+
+      const sorted = Object.entries(totals)
+        .map(([uid, total]) => ({ user_id: parseInt(uid), total }))
+        .sort((a, b) => b.total - a.total)
+        .slice(0, 30);
+
+      if (sorted.length === 0) return [];
+
+      const userIds = sorted.map(s => s.user_id);
+      const { data: usersData } = await supabaseClient
+        .from('users')
+        .select('id, username, first_name, photo_url')
+        .in('id', userIds);
+
+      const usersMap = {};
+      if (usersData) usersData.forEach(u => { usersMap[u.id] = u; });
+
+      return sorted.map(entry => ({
+        ...entry,
+        user: usersMap[entry.user_id] || {}
+      }));
+    }
+
+    async function loadTopUsers(force = false) {
       if (!supabaseClient) return;
       const listEl = document.getElementById('topList');
       if (!listEl) return;
-      if (topUsersLoaded) return; // Загружаем один раз, обновляем при повторном входе
+      if (topUsersLoading) return;
+      if (topUsersLoaded && !force) return;
+
+      topUsersLoading = true;
+      listEl.innerHTML = '<div class="top-loading">Загрузка...</div>';
+
       try {
-        // Получаем пользователей у которых были пополнения (star_payments)
-        const { data, error } = await supabaseClient
-          .from('star_payments')
-          .select('user_id, ton_amount');
-        
-        if (error) throw error;
-        if (!data || data.length === 0) {
-          listEl.innerHTML = '<div class="top-loading">Пока нет пополнений</div>';
-          return;
+        let entries = null;
+        try {
+          entries = await fetchTopUsersFromUsersTable();
+        } catch (usersTableError) {
+          console.warn('Top users users-table fallback:', usersTableError);
         }
 
-        // Группируем по user_id и суммируем
-        const totals = {};
-        data.forEach(row => {
-          const uid = row.user_id;
-          if (!totals[uid]) totals[uid] = 0;
-          totals[uid] += parseFloat(row.ton_amount || 0);
-        });
-
-        // Сортируем по сумме
-        const sorted = Object.entries(totals)
-          .map(([uid, total]) => ({ user_id: parseInt(uid), total }))
-          .sort((a, b) => b.total - a.total)
-          .slice(0, 30);
-
-        if (sorted.length === 0) {
-          listEl.innerHTML = '<div class="top-loading">Пока нет пополнений</div>';
-          return;
+        if (!entries || entries.length === 0) {
+          entries = await fetchTopUsersFromPayments();
         }
 
-        // Получаем данные пользователей
-        const userIds = sorted.map(s => s.user_id);
-        const { data: usersData } = await supabaseClient
-          .from('users')
-          .select('id, username, first_name, photo_url')
-          .in('id', userIds);
-
-        const usersMap = {};
-        if (usersData) usersData.forEach(u => { usersMap[u.id] = u; });
-
-        // Рендерим
-        let html = '';
-        sorted.forEach((entry, i) => {
-          const u = usersMap[entry.user_id] || {};
-          const name = u.username ? '@' + u.username : (u.first_name || 'Аноним');
-          const rank = i + 1;
-          const topClass = rank <= 3 ? ' top-' + rank : '';
-          const initials = (u.first_name?.[0] || '?');
-
-          const avatarHtml = u.photo_url
-            ? '<img src="' + u.photo_url + '" alt="">'
-            : '<div class="top-avatar-placeholder">' + initials + '</div>';
-
-          // Приз для топ-3
-          let prizeHtml = '';
-          if (rank <= 3) {
-            prizeHtml = '<img class="top-prize" src="' + TOP_PRIZES[rank - 1].image + '" alt="">';
-          }
-
-          html += '<div class="top-row' + topClass + '" style="animation-delay:' + (i * 0.05) + 's">' +
-            '<div class="top-rank">#' + rank + '</div>' +
-            '<div class="top-avatar">' + avatarHtml + '</div>' +
-            '<div class="top-user-info"><div class="top-username">' + name + '</div></div>' +
-            '<div class="top-right">' +
-              '<div class="top-amount">' + entry.total.toFixed(2) + ' <img src="ton.webp" alt="TON"></div>' +
-              prizeHtml +
-            '</div>' +
-          '</div>';
-        });
-        listEl.innerHTML = html;
+        listEl.innerHTML = buildTopUsersHtml(entries);
         topUsersLoaded = true;
       } catch (e) {
         console.error('Load top users error:', e);
         listEl.innerHTML = '<div class="top-loading">Ошибка загрузки</div>';
+      } finally {
+        topUsersLoading = false;
       }
     }
 
