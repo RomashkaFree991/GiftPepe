@@ -108,6 +108,7 @@
     width:0;height:0;
     border-left:10px solid transparent;border-right:10px solid transparent;
     border-bottom:14px solid #fff;
+    display:none; /* hidden */
   }
   .upgrade-circle-inner img{width:200px;height:200px;object-fit:contain;opacity:.35}
   .upgrade-subtitle{color:rgba(255,255,255,.4);font-size:14px;font-weight:600;margin-bottom:20px}
@@ -138,7 +139,7 @@
   .sheet-overlay.open{opacity:1;pointer-events:auto}
   .sheet{
     position:fixed;left:0;right:0;bottom:0;
-    height:55%;border-radius:28px 28px 0 0;
+    height:55%;border-radius:36px 36px 0 0;
     background:#000 url('assets/background_pepe.png') center/cover no-repeat;
     z-index:51;
     transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);
@@ -156,7 +157,7 @@
     color:#fff;font-size:14px;font-weight:700;
   }
   .sheet-close{
-    position:absolute;right:16px;top:50%;transform:translateY(-50%);
+    position:absolute;right:24px;top:50%;transform:translateY(-50%);
     width:34px;height:34px;border-radius:50%;
     background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.06);
     display:flex;align-items:center;justify-content:center;cursor:pointer;
@@ -224,6 +225,58 @@
   .modal-save{
     width:100%;height:48px;border-radius:14px;border:none;cursor:pointer;
     background:#007AFF;color:#fff;font-size:15px;font-weight:700;
+  }
+
+  /* === CRAFT === */
+  .craft-window{
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:20px;padding:12px;
+  }
+  .craft-grid{
+    display:grid;grid-template-columns:repeat(5,1fr);gap:6px;
+  }
+  .craft-cell{
+    aspect-ratio:.75;border-radius:12px;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.06);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .craft-cell span{
+    color:rgba(255,255,255,.2);font-size:10px;font-weight:600;
+  }
+
+  /* === CRASH === */
+  .crash-page{display:flex;flex-direction:column;height:100%}
+  .crash-sky{
+    flex:3;background:#000;position:relative;overflow:hidden;
+    display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+    padding-bottom:20px;border-radius:0 0 20px 20px;
+  }
+  .crash-star{
+    position:absolute;width:3px;height:3px;border-radius:50%;background:#fff;
+    animation:twinkle 2s ease-in-out infinite;
+  }
+  @keyframes twinkle{0%,100%{opacity:0}50%{opacity:1}}
+  .crash-bet-btn{
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    width:calc(100% - 32px);height:52px;border-radius:999px;border:none;cursor:pointer;
+    background:#007AFF;color:#fff;font-size:15px;font-weight:700;
+    position:relative;z-index:2;
+  }
+  .crash-ground{
+    flex:1;background:url('assets/background_pepe.png') center/cover no-repeat;
+    display:flex;align-items:center;justify-content:center;
+    padding:20px 24px;
+  }
+  .crash-wait{
+    width:100%;max-width:280px;height:100px;border-radius:16px;
+    background:transparent;
+    border:1px solid rgba(255,255,255,.12);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .crash-wait span{
+    color:rgba(255,255,255,.4);font-size:15px;font-weight:600;
   }
 
   /* === BOTTOM NAV === */
@@ -346,6 +399,36 @@
     </div>
   </div>
 
+  <!-- CRAFT -->
+  <div class="page" id="craftPage">
+    <div class="craft-window">
+      <div class="craft-grid">
+        <div class="craft-cell"><span>Пусто</span></div>
+        <div class="craft-cell"><span>Пусто</span></div>
+        <div class="craft-cell"><span>Пусто</span></div>
+        <div class="craft-cell"><span>Пусто</span></div>
+        <div class="craft-cell"><span>Пусто</span></div>
+        <div class="craft-cell"><span>Пусто</span></div>
+        <div class="craft-cell"><span>Пусто</span></div>
+        <div class="craft-cell"><span>Пусто</span></div>
+        <div class="craft-cell"><span>Пусто</span></div>
+        <div class="craft-cell"><span>Пусто</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CRASH -->
+  <div class="page" id="crashPage" style="padding-top:0;left:0;right:0">
+    <div class="crash-page">
+      <div class="crash-sky" id="crashSky">
+        <button class="crash-bet-btn">Сделать ставку</button>
+      </div>
+      <div class="crash-ground">
+        <div class="crash-wait"><span>Ожидание ставок</span></div>
+      </div>
+    </div>
+  </div>
+
   <!-- BOTTOM SHEET -->
   <div class="sheet-overlay" id="sheetOverlay"></div>
   <div class="sheet" id="sheet">
@@ -416,8 +499,8 @@
   let firstName='User',userHandle='@user',photoUrl='';
   if(tg){
     tg.ready();tg.expand();
-    try{tg.setHeaderColor('#000000')}catch(e){}
-    try{tg.setBackgroundColor('#000000')}catch(e){}
+    if(tg.requestFullscreen)tg.requestFullscreen();
+    if(tg.disableVerticalSwipes)tg.disableVerticalSwipes();
     const u=tg.initDataUnsafe?.user;
     if(u){
       firstName=u.first_name||u.username||'User';
@@ -442,7 +525,20 @@
   const nav=document.getElementById('bottomNav');
   const ind=document.getElementById('indicator');
   const items=document.querySelectorAll('.nav-item');
-  const pages={profile:document.getElementById('profilePage'),upgrade:document.getElementById('upgradePage')};
+  const pages={profile:document.getElementById('profilePage'),upgrade:document.getElementById('upgradePage'),crash:document.getElementById('crashPage'),craft:document.getElementById('craftPage')};
+
+  // Generate stars for crash
+  const sky=document.getElementById('crashSky');
+  for(let i=0;i<40;i++){
+    const s=document.createElement('div');
+    s.className='crash-star';
+    s.style.left=Math.random()*100+'%';
+    s.style.top=Math.random()*85+'%';
+    s.style.animationDelay=Math.random()*3+'s';
+    s.style.animationDuration=(1.5+Math.random()*2)+'s';
+    s.style.width=s.style.height=(1+Math.random()*2.5)+'px';
+    sky.appendChild(s);
+  }
 
   function moveIndicator(el,animate){
     const r=el.getBoundingClientRect(),n=nav.getBoundingClientRect();
