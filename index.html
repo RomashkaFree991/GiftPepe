@@ -19,8 +19,7 @@
   .user-pill{
     display:flex;align-items:center;gap:8px;
     height:38px;padding:4px 14px 4px 4px;border-radius:999px;
-    background:rgba(255,255,255,.1);
-    backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+    background:rgba(255,255,255,.1);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
     border:1px solid rgba(255,255,255,.06);
   }
   .user-avatar-small{width:30px;height:30px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.15);flex-shrink:0}
@@ -39,9 +38,7 @@
   }
   .add-btn svg{width:22px;height:22px}
 
-
-
-  /* === CONTENT PAGES === */
+  /* === PAGES === */
   .page{
     position:absolute;top:0;left:12px;right:12px;bottom:90px;
     padding-top:136px;
@@ -50,21 +47,16 @@
   .page::-webkit-scrollbar{display:none}
   .page.visible{display:block;animation:fadeIn .3s ease}
   @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-
   .section-title{color:#fff;font-size:17px;font-weight:700;margin-bottom:10px}
 
   /* === PROFILE === */
   .profile-card{
-    background:rgba(255,255,255,.08);
-    border:1px solid rgba(255,255,255,.08);
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);
     border-radius:20px;padding:20px 16px 18px;
     display:flex;flex-direction:column;align-items:center;margin-bottom:20px;
   }
   .profile-avatar-wrap{position:relative;width:88px;height:88px;margin-bottom:12px}
-  .profile-avatar{
-    width:88px;height:88px;border-radius:50%;object-fit:cover;
-    background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.1);
-  }
+  .profile-avatar{width:88px;height:88px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.1)}
   .settings-badge{
     position:absolute;bottom:-2px;left:-2px;width:26px;height:26px;border-radius:7px;
     background:rgba(255,255,255,.12);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
@@ -74,47 +66,28 @@
   .profile-name{color:#fff;font-size:18px;font-weight:700;margin-bottom:3px}
   .profile-username{color:rgba(255,255,255,.45);font-size:14px;font-weight:500}
 
-  /* Promo */
   .promo-input-wrap{
-    display:flex;align-items:center;
-    background:rgba(255,255,255,.08);backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);
-    border:1px solid rgba(255,255,255,.08);border-radius:14px;
-    padding:4px 4px 4px 14px;margin-bottom:14px;height:48px;
+    display:flex;align-items:center;background:rgba(255,255,255,.08);backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);
+    border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:4px 4px 4px 14px;margin-bottom:14px;height:48px;
   }
   .promo-input{flex:1;background:none;border:none;outline:none;color:#fff;font-size:14px;font-weight:500}
   .promo-input::placeholder{color:rgba(255,255,255,.3)}
-  .promo-btn{
-    height:40px;padding:0 16px;border-radius:12px;background:#007AFF;
-    color:#fff;font-size:13px;font-weight:600;border:none;cursor:pointer;white-space:nowrap;flex-shrink:0;
-  }
+  .promo-btn{height:40px;padding:0 16px;border-radius:12px;background:#007AFF;color:#fff;font-size:13px;font-weight:600;border:none;cursor:pointer;white-space:nowrap;flex-shrink:0}
 
-  /* Referral */
-  .referral-card{
-    background:#007AFF;border-radius:18px;padding:18px 16px;
-    display:flex;align-items:center;gap:12px;cursor:pointer;margin-bottom:20px;
-  }
+  .referral-card{background:#007AFF;border-radius:18px;padding:18px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;margin-bottom:20px}
   .referral-text{flex:1}
   .referral-text h3{color:#fff;font-size:14px;font-weight:800;margin-bottom:4px;letter-spacing:.04em;text-transform:uppercase}
   .referral-text p{color:rgba(255,255,255,.75);font-size:12px;font-weight:500;line-height:1.35}
-  .referral-arrow{
-    width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.15);
-    display:flex;align-items:center;justify-content:center;flex-shrink:0;
-  }
+  .referral-arrow{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0}
   .referral-arrow svg{width:18px;height:18px}
 
-  /* Inventory */
   .inventory-header{display:flex;align-items:center;margin-bottom:14px;gap:8px}
   .inventory-title{color:#fff;font-size:17px;font-weight:700}
   .inventory-count{color:rgba(255,255,255,.35);font-size:13px;font-weight:500}
-  .sell-all-btn{
-    margin-left:auto;display:flex;align-items:center;gap:5px;
-    height:32px;padding:0 12px;border-radius:10px;
-    border:1.5px dashed rgba(255,255,255,.2);background:none;
-    color:rgba(255,255,255,.45);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;
-  }
+  .sell-all-btn{margin-left:auto;display:flex;align-items:center;gap:5px;height:32px;padding:0 12px;border-radius:10px;border:1.5px dashed rgba(255,255,255,.2);background:none;color:rgba(255,255,255,.45);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap}
   .sell-all-btn img{width:14px;height:14px;object-fit:contain;filter:drop-shadow(0 0 3px rgba(255,200,0,.4))}
 
-  .inventory-empty{display:flex;flex-direction:column;align-items:center;padding:20px 0 20px}
+  .inventory-empty{display:flex;flex-direction:column;align-items:center;padding:30px 0 20px}
   .lottie-wrap{width:140px;height:140px;margin-bottom:18px}
   .empty-title{color:#fff;font-size:16px;font-weight:700;margin-bottom:6px}
   .empty-desc{color:rgba(255,255,255,.4);font-size:13px;font-weight:500;text-align:center;line-height:1.4;max-width:280px}
@@ -123,56 +96,134 @@
   /* === UPGRADE === */
   .upgrade-page{display:flex;flex-direction:column;align-items:center;padding-top:0}
   .upgrade-circle-outer{
-    width:260px;height:260px;border-radius:50%;
-    background:#1a1a1e;
-    display:flex;align-items:center;justify-content:center;
-    margin-bottom:24px;
+    width:260px;height:260px;border-radius:50%;background:#1a1a1e;
+    display:flex;align-items:center;justify-content:center;margin-bottom:24px;
   }
   .upgrade-circle-inner{
-    width:220px;height:220px;border-radius:50%;
-    background:#111114;
-    display:flex;align-items:center;justify-content:center;
+    width:200px;height:200px;border-radius:50%;background:#111114;
+    display:flex;align-items:center;justify-content:center;position:relative;
   }
-  .upgrade-circle-inner img{
-    width:220px;height:220px;object-fit:contain;
-    opacity:.35;
+  .circle-arrow{
+    position:absolute;top:-14px;left:50%;transform:translateX(-50%);
+    width:0;height:0;
+    border-left:10px solid transparent;border-right:10px solid transparent;
+    border-bottom:14px solid #fff;
   }
-  .upgrade-subtitle{
-    color:rgba(255,255,255,.4);font-size:14px;font-weight:600;
-    margin-bottom:20px;
-  }
+  .upgrade-circle-inner img{width:200px;height:200px;object-fit:contain;opacity:.35}
+  .upgrade-subtitle{color:rgba(255,255,255,.4);font-size:14px;font-weight:600;margin-bottom:20px}
 
-  .slots-row{
-    display:flex;align-items:center;gap:14px;
-    width:100%;padding:0 4px;
-    margin-bottom:14px;
-  }
+  .slots-row{display:flex;align-items:center;gap:14px;width:100%;padding:0 4px;margin-bottom:14px}
   .slot-cell{
-    flex:1;height:110px;border-radius:22px;
-    background:#1a1a1e;
+    flex:1;height:110px;border-radius:22px;background:#1a1a1e;
     border:1.5px dashed rgba(255,255,255,.12);
-    display:flex;align-items:center;justify-content:center;
-    cursor:pointer;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;
   }
-  .slot-cell span{
-    color:rgba(255,255,255,.15);font-size:42px;font-weight:300;line-height:1;
-  }
-  .slots-arrows{
-    color:rgba(255,255,255,.12);font-size:26px;font-weight:800;
-    flex-shrink:0;
-  }
+  .slot-cell svg{width:28px;height:28px;opacity:.2}
+  .slot-label{font-size:10px;font-weight:600;color:rgba(255,255,255,.3);letter-spacing:.01em}
+  .slots-arrows{color:rgba(255,255,255,.12);font-size:26px;font-weight:800;flex-shrink:0}
 
   .upgrade-btn{
     display:flex;align-items:center;justify-content:center;gap:8px;
-    width:calc(100% - 8px);height:52px;
-    border-radius:999px;border:none;cursor:pointer;
-    background:#007AFF;
-    color:#fff;font-size:15px;font-weight:700;
-    letter-spacing:.01em;
+    width:calc(100% - 8px);height:52px;border-radius:999px;border:none;cursor:pointer;
+    background:#007AFF;color:#fff;font-size:15px;font-weight:700;
   }
-  .upgrade-btn img{
-    width:18px;height:18px;object-fit:contain;
-    filter:brightness(0) invert(1);
+  .upgrade-btn img{width:18px;height:18px;object-fit:contain;filter:brightness(0) invert(1)}
+
+  /* === BOTTOM SHEET === */
+  .sheet-overlay{
+    position:fixed;top:0;left:0;right:0;bottom:0;
+    background:rgba(0,0,0,.5);z-index:50;
+    opacity:0;pointer-events:none;transition:opacity .3s ease;
+  }
+  .sheet-overlay.open{opacity:1;pointer-events:auto}
+  .sheet{
+    position:fixed;left:0;right:0;bottom:0;
+    height:55%;border-radius:28px 28px 0 0;
+    background:#000 url('assets/background_pepe.png') center/cover no-repeat;
+    z-index:51;
+    transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);
+    display:flex;flex-direction:column;
+  }
+  .sheet.open{transform:translateY(0)}
+  .sheet-header{
+    display:flex;align-items:center;padding:16px 16px 12px;flex-shrink:0;
+    position:relative;justify-content:center;
+  }
+  .sheet-pill{
+    height:36px;padding:0 18px;display:inline-flex;align-items:center;justify-content:center;
+    border-radius:999px;background:rgba(255,255,255,.1);
+    border:1px solid rgba(255,255,255,.06);
+    color:#fff;font-size:14px;font-weight:700;
+  }
+  .sheet-close{
+    position:absolute;right:16px;top:50%;transform:translateY(-50%);
+    width:34px;height:34px;border-radius:50%;
+    background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.06);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;
+  }
+  .sheet-close svg{width:16px;height:16px}
+  .sheet-body{flex:1;overflow-y:auto;padding:0 16px;display:flex;flex-direction:column;align-items:center}
+  .sheet-body::-webkit-scrollbar{display:none}
+  .sheet-lottie{width:140px;height:140px;margin:20px 0 18px}
+  .sheet-body .empty-title{color:#fff;font-size:16px;font-weight:700;margin-bottom:6px}
+  .sheet-body .empty-desc{color:rgba(255,255,255,.4);font-size:13px;font-weight:500;text-align:center;line-height:1.4;max-width:280px}
+  .sheet-body .empty-desc a{color:#007AFF;text-decoration:none;font-weight:600}
+
+  /* === SETTINGS MODAL === */
+  .modal-overlay{
+    position:fixed;top:0;left:0;right:0;bottom:0;
+    background:rgba(0,0,0,.6);z-index:50;
+    display:flex;align-items:center;justify-content:center;
+    opacity:0;pointer-events:none;transition:opacity .25s ease;
+  }
+  .modal-overlay.open{opacity:1;pointer-events:auto}
+  .modal{
+    width:calc(100% - 48px);max-width:320px;
+    background:#1c1c1e;border-radius:20px;
+    padding:20px;display:flex;flex-direction:column;gap:8px;
+    transform:scale(.92);transition:transform .25s ease;
+  }
+  .modal-overlay.open .modal{transform:scale(1)}
+
+  .modal-cloud{
+    display:flex;align-items:center;
+    padding:14px 16px;border-radius:14px;
+    background:rgba(255,255,255,.07);cursor:pointer;
+  }
+  .modal-cloud-text{flex:1;color:#fff;font-size:15px;font-weight:600}
+  .modal-cloud-arrow{transition:transform .3s ease;display:flex;align-items:center}
+  .modal-cloud-arrow svg{width:18px;height:18px}
+  .modal-cloud-arrow.down{transform:rotate(90deg)}
+
+  .lang-wrap{
+    overflow:hidden;max-height:0;
+    transition:max-height .35s cubic-bezier(.4,0,.2,1);
+  }
+  .lang-wrap.open{max-height:60px}
+  .lang-switcher{
+    position:relative;
+    display:flex;height:44px;border-radius:12px;
+    background:rgba(255,255,255,.07);overflow:hidden;
+    margin-top:4px;
+  }
+  .lang-switcher-indicator{
+    position:absolute;top:3px;left:3px;
+    width:calc(50% - 3px);height:38px;
+    border-radius:10px;background:#007AFF;
+    transition:transform .3s cubic-bezier(.4,0,.2,1);
+    z-index:1;
+  }
+  .lang-switcher-indicator.right{transform:translateX(calc(100% + 3px))}
+  .lang-option{
+    flex:1;display:flex;align-items:center;justify-content:center;gap:6px;
+    background:none;border:none;cursor:pointer;position:relative;z-index:2;
+    color:#fff;font-size:13px;font-weight:600;
+  }
+
+
+  .modal-save{
+    width:100%;height:48px;border-radius:14px;border:none;cursor:pointer;
+    background:#007AFF;color:#fff;font-size:15px;font-weight:700;
   }
 
   /* === BOTTOM NAV === */
@@ -195,20 +246,11 @@
     transition:transform .3s cubic-bezier(.4,0,.2,1);
   }
   .nav-icon{width:28px;height:28px;display:flex;align-items:center;justify-content:center;position:relative;z-index:2}
-  .nav-icon img{
-    width:24px;height:24px;object-fit:contain;
-    filter:brightness(0) invert(1);opacity:.4;
-  }
-  .nav-label{
-    font-size:10px;font-weight:500;color:rgba(255,255,255,.4);
-    position:relative;z-index:2;
-  }
+  .nav-icon img{width:24px;height:24px;object-fit:contain;filter:brightness(0) invert(1);opacity:.4}
+  .nav-label{font-size:10px;font-weight:500;color:rgba(255,255,255,.4);position:relative;z-index:2}
   .nav-item.active{transform:scale(1.15)}
   .nav-item.active .nav-label{color:#007AFF}
-  .nav-item.active .nav-icon img{
-    opacity:1;
-    filter:brightness(0) saturate(100%) invert(33%) sepia(100%) saturate(3000%) hue-rotate(207deg) brightness(103%) contrast(101%);
-  }
+  .nav-item.active .nav-icon img{opacity:1;filter:brightness(0) saturate(100%) invert(33%) sepia(100%) saturate(3000%) hue-rotate(207deg) brightness(103%) contrast(101%)}
 </style>
 </head>
 <body>
@@ -230,15 +272,13 @@
     </div>
   </div>
 
-
-
-  <!-- PROFILE PAGE -->
+  <!-- PROFILE -->
   <div class="page" id="profilePage">
     <div class="section-title">Профиль</div>
     <div class="profile-card">
       <div class="profile-avatar-wrap">
         <img class="profile-avatar" id="profileAvatar" src="" alt="">
-        <div class="settings-badge">
+        <div class="settings-badge" id="settingsBtn">
           <svg viewBox="0 0 24 24" fill="none">
             <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" stroke="#fff" stroke-width="1.6"/>
             <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09a1.65 1.65 0 00-1.08-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09a1.65 1.65 0 001.51-1.08 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9c.26.604.852.997 1.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1.08z" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
@@ -278,27 +318,69 @@
     </div>
   </div>
 
-  <!-- UPGRADE PAGE -->
+  <!-- UPGRADE -->
   <div class="page" id="upgradePage">
     <div class="upgrade-page">
       <div class="upgrade-circle-outer">
         <div class="upgrade-circle-inner">
+          <div class="circle-arrow"></div>
           <img src="assets/logotip.png" alt="">
         </div>
       </div>
-
       <div class="upgrade-subtitle">Выберите подарок</div>
-
       <div class="slots-row">
-        <div class="slot-cell"><span>+</span></div>
+        <div class="slot-cell" id="slotMyGifts">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg>
+          <span class="slot-label">Мои подарки</span>
+        </div>
         <div class="slots-arrows">»</div>
-        <div class="slot-cell"><span>+</span></div>
+        <div class="slot-cell">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg>
+          <span class="slot-label">Подарки для апгрейда</span>
+        </div>
       </div>
-
       <button class="upgrade-btn">
         Сделать апгрейд
         <img src="svg/rise.svg" alt="">
       </button>
+    </div>
+  </div>
+
+  <!-- BOTTOM SHEET -->
+  <div class="sheet-overlay" id="sheetOverlay"></div>
+  <div class="sheet" id="sheet">
+    <div class="sheet-header">
+      <div class="sheet-pill">Мои подарки</div>
+      <div class="sheet-close" id="sheetClose">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+    </div>
+    <div class="sheet-body">
+      <div class="sheet-lottie" id="sheetLottie"></div>
+      <div class="empty-title">Не нашли подарков?</div>
+      <div class="empty-desc">Отправьте подарок <a href="https://t.me/GiftPepe_Releyer" target="_blank">@GiftPepe_Releyer</a><br>или выиграйте в играх</div>
+    </div>
+  </div>
+
+  <!-- SETTINGS MODAL -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <div class="modal-cloud" id="langCloud">
+        <span class="modal-cloud-text">Язык</span>
+        <div class="modal-cloud-arrow" id="langArrow"><svg viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="rgba(255,255,255,.25)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="lang-wrap" id="langWrap">
+        <div class="lang-switcher">
+          <div class="lang-switcher-indicator" id="langIndicator"></div>
+          <button class="lang-option" data-lang="ru">Русский</button>
+          <button class="lang-option" data-lang="en">Eng</button>
+        </div>
+      </div>
+      <div class="modal-cloud" id="supportRow">
+        <span class="modal-cloud-text">Поддержка</span>
+        <div class="modal-cloud-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="rgba(255,255,255,.25)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <button class="modal-save" id="modalSave">Сохранить и выйти</button>
     </div>
   </div>
 
@@ -351,37 +433,29 @@
   document.getElementById('profileName').textContent=firstName;
   document.getElementById('profileUser').textContent=userHandle;
 
-  lottie.loadAnimation({
-    container:document.getElementById('lottieContainer'),
-    renderer:'svg',loop:true,autoplay:true,
-    path:'assets/PlushPepe(blue).json'
-  });
+  // Lottie — profile
+  lottie.loadAnimation({container:document.getElementById('lottieContainer'),renderer:'svg',loop:true,autoplay:true,path:'assets/PlushPepe(blue).json'});
+  // Lottie — sheet
+  let sheetLottieLoaded=false;
 
+  // Nav
   const nav=document.getElementById('bottomNav');
   const ind=document.getElementById('indicator');
   const items=document.querySelectorAll('.nav-item');
-  const pages={
-    profile:document.getElementById('profilePage'),
-    upgrade:document.getElementById('upgradePage')
-  };
+  const pages={profile:document.getElementById('profilePage'),upgrade:document.getElementById('upgradePage')};
 
   function moveIndicator(el,animate){
-    const r=el.getBoundingClientRect();
-    const n=nav.getBoundingClientRect();
-    const x=r.left+r.width/2-n.left-29;
-    const y=r.top+r.height/2-n.top-29;
+    const r=el.getBoundingClientRect(),n=nav.getBoundingClientRect();
+    const x=r.left+r.width/2-n.left-29,y=r.top+r.height/2-n.top-29;
     if(!animate)ind.style.transition='none';
     ind.style.transform=`translate(${x}px,${y}px)`;
     if(!animate)requestAnimationFrame(()=>{ind.style.transition=''});
   }
-
   function showTab(tab){
     Object.values(pages).forEach(p=>p.classList.remove('visible'));
     if(pages[tab])pages[tab].classList.add('visible');
   }
-
   requestAnimationFrame(()=>moveIndicator(document.querySelector('.nav-item.active'),false));
-
   items.forEach(item=>{
     item.addEventListener('click',()=>{
       document.querySelector('.nav-item.active')?.classList.remove('active');
@@ -390,6 +464,50 @@
       showTab(item.dataset.tab);
     });
   });
+
+  // Bottom sheet
+  const sheetOverlay=document.getElementById('sheetOverlay');
+  const sheet=document.getElementById('sheet');
+  function openSheet(){
+    sheetOverlay.classList.add('open');sheet.classList.add('open');
+    if(!sheetLottieLoaded){
+      lottie.loadAnimation({container:document.getElementById('sheetLottie'),renderer:'svg',loop:true,autoplay:true,path:'assets/PlushPepe(blue).json'});
+      sheetLottieLoaded=true;
+    }
+  }
+  function closeSheet(){sheetOverlay.classList.remove('open');sheet.classList.remove('open')}
+  document.getElementById('slotMyGifts').addEventListener('click',openSheet);
+  document.getElementById('sheetClose').addEventListener('click',closeSheet);
+  sheetOverlay.addEventListener('click',closeSheet);
+
+  // Settings modal
+  const modalOverlay=document.getElementById('modalOverlay');
+  function openModal(){modalOverlay.classList.add('open')}
+  function closeModal(){modalOverlay.classList.remove('open')}
+  document.getElementById('settingsBtn').addEventListener('click',openModal);
+  modalOverlay.addEventListener('click',e=>{if(e.target===modalOverlay)closeModal()});
+
+  // Language cloud toggle
+  document.getElementById('langCloud').addEventListener('click',()=>{
+    document.getElementById('langWrap').classList.toggle('open');
+    document.getElementById('langArrow').classList.toggle('down');
+  });
+  // Language switcher
+  const langInd=document.getElementById('langIndicator');
+  document.querySelectorAll('.lang-option').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      if(btn.dataset.lang==='en'){langInd.classList.add('right')}
+      else{langInd.classList.remove('right')}
+    });
+  });
+
+  // Support
+  document.getElementById('supportRow').addEventListener('click',()=>{
+    window.open('https://t.me/GiftPepeSupport','_blank');
+  });
+
+  // Save & close
+  document.getElementById('modalSave').addEventListener('click',closeModal);
 </script>
 </body>
 </html>
