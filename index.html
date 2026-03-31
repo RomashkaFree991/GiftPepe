@@ -13,7 +13,7 @@
 
   /* === TOP BAR === */
   .top-bar{
-    position:absolute;top:56px;left:12px;right:12px;
+    position:absolute;top:70px;left:12px;right:12px;
     display:flex;align-items:center;justify-content:space-between;z-index:10;
   }
   .user-pill{
@@ -44,7 +44,7 @@
   /* === CONTENT PAGES === */
   .page{
     position:absolute;top:0;left:12px;right:12px;bottom:90px;
-    padding-top:110px;
+    padding-top:124px;
     z-index:9;display:none;overflow-y:auto;-webkit-overflow-scrolling:touch;
   }
   .page::-webkit-scrollbar{display:none}
@@ -55,7 +55,9 @@
 
   /* === PROFILE === */
   .profile-card{
-    background:transparent;
+    background:rgba(255,255,255,.08);
+    backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);
+    border:1px solid rgba(255,255,255,.08);
     border-radius:20px;padding:20px 16px 18px;
     display:flex;flex-direction:column;align-items:center;margin-bottom:20px;
   }
@@ -123,21 +125,22 @@
   .upgrade-page{display:flex;flex-direction:column;align-items:center;padding-top:0}
   .upgrade-circle-outer{
     width:260px;height:260px;border-radius:50%;
-    background:rgba(255,255,255,.07);
+    background:#1a1a1e;
     display:flex;align-items:center;justify-content:center;
     margin-bottom:24px;
   }
   .upgrade-circle-inner{
     width:220px;height:220px;border-radius:50%;
-    background:rgba(255,255,255,.04);
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    gap:8px;
+    background:#111114;
+    display:flex;align-items:center;justify-content:center;
   }
-  .upgrade-circle-inner .circle-plus{
-    color:rgba(255,255,255,.15);font-size:48px;font-weight:300;line-height:1;
+  .upgrade-circle-inner img{
+    width:140px;height:140px;object-fit:contain;
+    filter:brightness(0) invert(1);opacity:.4;
   }
-  .upgrade-circle-inner .circle-text{
-    color:rgba(255,255,255,.3);font-size:14px;font-weight:600;
+  .upgrade-subtitle{
+    color:rgba(255,255,255,.4);font-size:14px;font-weight:600;
+    margin-bottom:20px;
   }
 
   .slots-row{
@@ -147,7 +150,7 @@
   }
   .slot-cell{
     flex:1;height:110px;border-radius:22px;
-    background:rgba(255,255,255,.06);
+    background:#1a1a1e;
     border:1.5px dashed rgba(255,255,255,.12);
     display:flex;align-items:center;justify-content:center;
     cursor:pointer;
@@ -164,7 +167,7 @@
     display:flex;align-items:center;justify-content:center;gap:8px;
     width:calc(100% - 8px);height:52px;
     border-radius:999px;border:none;cursor:pointer;
-    background:rgba(0,122,255,.13);
+    background:#007AFF;
     color:#fff;font-size:15px;font-weight:700;
     letter-spacing:.01em;
   }
@@ -281,10 +284,11 @@
     <div class="upgrade-page">
       <div class="upgrade-circle-outer">
         <div class="upgrade-circle-inner">
-          <span class="circle-plus">+</span>
-          <span class="circle-text">Выберите подарок</span>
+          <img src="logotip.svg" alt="">
         </div>
       </div>
+
+      <div class="upgrade-subtitle">Выберите подарок</div>
 
       <div class="slots-row">
         <div class="slot-cell"><span>+</span></div>
