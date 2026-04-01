@@ -42,13 +42,45 @@
   .page{
     position:absolute;top:0;left:12px;right:12px;bottom:90px;
     padding-top:136px;
-    z-index:9;display:none;overflow-y:auto;-webkit-overflow-scrolling:touch;
+    z-index:9;overflow-y:auto;-webkit-overflow-scrolling:touch;
+    visibility:hidden;opacity:0;pointer-events:none;
+    transition:opacity .25s ease;
   }
   .page::-webkit-scrollbar{display:none}
-  .page.visible{display:block;animation:pageFade .25s ease}
-  @keyframes pageFade{from{opacity:0}to{opacity:1}}
+  .page.visible{visibility:visible;opacity:1;pointer-events:auto}
+  .page *{-webkit-backface-visibility:hidden;backface-visibility:hidden}
   @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
   .section-title{color:#fff;font-size:17px;font-weight:700;margin-bottom:10px}
+
+  /* === TOP/LEADERBOARD === */
+  .top-trophy-box{
+    background:rgba(255,255,255,.06);backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);
+    border:1px solid rgba(255,255,255,.06);
+    border-radius:20px;padding:20px 16px;
+    display:flex;flex-direction:column;align-items:center;margin-bottom:16px;
+  }
+  .top-trophy-lottie{width:120px;height:120px;margin-bottom:10px}
+  .top-place-text{color:rgba(255,255,255,.45);font-size:14px;font-weight:600}
+  .top-place-text b{color:#fff}
+  .top-list{display:flex;flex-direction:column;gap:8px}
+  .top-row{
+    display:flex;align-items:center;gap:10px;
+    padding:10px 14px;border-radius:14px;
+    background:rgba(255,255,255,.06);backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);
+    border:1px solid rgba(255,255,255,.06);
+  }
+  .top-rank{
+    width:22px;text-align:center;
+    color:rgba(255,255,255,.3);font-size:13px;font-weight:800;
+    flex-shrink:0;
+  }
+  .top-rank.gold{color:#FFD60A}
+  .top-rank.silver{color:#C0C0C0}
+  .top-rank.bronze{color:#CD7F32}
+  .top-avatar{width:34px;height:34px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.1);flex-shrink:0}
+  .top-name{flex:1;color:#fff;font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .top-score{display:flex;align-items:center;gap:4px;color:#fff;font-size:13px;font-weight:700;flex-shrink:0}
+  .top-score img{width:14px;height:14px;object-fit:contain;filter:drop-shadow(0 0 3px rgba(255,200,0,.3))}
 
   /* === PROFILE === */
   .profile-card{
@@ -127,12 +159,10 @@
   .upgrade-btn{
     display:flex;align-items:center;justify-content:center;gap:8px;
     width:calc(100% - 8px);height:52px;border-radius:999px;border:none;
-    background:rgba(0,122,255,.13);
-    color:rgba(0,122,255,.4);font-size:15px;font-weight:700;
-    cursor:default;
+    background:#007AFF;color:#fff;font-size:15px;font-weight:700;
+    cursor:default;opacity:.3;
   }
-  .upgrade-btn img{width:18px;height:18px;object-fit:contain;opacity:.3;
-    filter:brightness(0) saturate(100%) invert(33%) sepia(100%) saturate(3000%) hue-rotate(207deg) brightness(103%) contrast(101%)}
+  .upgrade-btn img{width:18px;height:18px;object-fit:contain;filter:brightness(0) invert(1)}
 
   /* === BOTTOM SHEET === */
   .sheet-overlay{
@@ -380,6 +410,21 @@
   }
   .crash-timer.pop{animation:timerPop .8s ease-out forwards}
 
+  .crash-loss{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    color:#FF3B30;font-size:56px;font-weight:900;
+    z-index:4;pointer-events:none;
+    opacity:0;
+  }
+  @keyframes lossShow{
+    0%{opacity:0;transform:translate(-50%,-50%) scale(.6)}
+    15%{opacity:1;transform:translate(-50%,-50%) scale(1.05)}
+    25%{transform:translate(-50%,-50%) scale(1)}
+    85%{opacity:1}
+    100%{opacity:0}
+  }
+  .crash-loss.show{animation:lossShow 2.5s ease forwards}
+
   .crash-rocket{
     position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
     width:240px;height:240px;z-index:3;
@@ -546,6 +591,76 @@
     </div>
   </div>
 
+  <!-- TOP -->
+  <div class="page" id="topPage">
+    <div class="top-trophy-box">
+      <div class="top-trophy-lottie" id="trophyLottie"></div>
+      <div class="top-place-text">Вы в топе на <b>—</b> месте</div>
+    </div>
+    <div class="top-list">
+      <div class="top-row">
+        <span class="top-rank gold">1</span>
+        <div class="top-avatar"></div>
+        <span class="top-name">Ожидание...</span>
+        <div class="top-score">0 <img src="assets/star.png" alt=""></div>
+      </div>
+      <div class="top-row">
+        <span class="top-rank silver">2</span>
+        <div class="top-avatar"></div>
+        <span class="top-name">Ожидание...</span>
+        <div class="top-score">0 <img src="assets/star.png" alt=""></div>
+      </div>
+      <div class="top-row">
+        <span class="top-rank bronze">3</span>
+        <div class="top-avatar"></div>
+        <span class="top-name">Ожидание...</span>
+        <div class="top-score">0 <img src="assets/star.png" alt=""></div>
+      </div>
+      <div class="top-row">
+        <span class="top-rank">4</span>
+        <div class="top-avatar"></div>
+        <span class="top-name">Ожидание...</span>
+        <div class="top-score">0 <img src="assets/star.png" alt=""></div>
+      </div>
+      <div class="top-row">
+        <span class="top-rank">5</span>
+        <div class="top-avatar"></div>
+        <span class="top-name">Ожидание...</span>
+        <div class="top-score">0 <img src="assets/star.png" alt=""></div>
+      </div>
+      <div class="top-row">
+        <span class="top-rank">6</span>
+        <div class="top-avatar"></div>
+        <span class="top-name">Ожидание...</span>
+        <div class="top-score">0 <img src="assets/star.png" alt=""></div>
+      </div>
+      <div class="top-row">
+        <span class="top-rank">7</span>
+        <div class="top-avatar"></div>
+        <span class="top-name">Ожидание...</span>
+        <div class="top-score">0 <img src="assets/star.png" alt=""></div>
+      </div>
+      <div class="top-row">
+        <span class="top-rank">8</span>
+        <div class="top-avatar"></div>
+        <span class="top-name">Ожидание...</span>
+        <div class="top-score">0 <img src="assets/star.png" alt=""></div>
+      </div>
+      <div class="top-row">
+        <span class="top-rank">9</span>
+        <div class="top-avatar"></div>
+        <span class="top-name">Ожидание...</span>
+        <div class="top-score">0 <img src="assets/star.png" alt=""></div>
+      </div>
+      <div class="top-row">
+        <span class="top-rank">10</span>
+        <div class="top-avatar"></div>
+        <span class="top-name">Ожидание...</span>
+        <div class="top-score">0 <img src="assets/star.png" alt=""></div>
+      </div>
+    </div>
+  </div>
+
   <!-- PROFILE -->
   <div class="page" id="profilePage">
     <div class="section-title">Профиль</div>
@@ -653,6 +768,7 @@
       <div class="crash-sky" id="crashSky">
         <div class="crash-timer" id="crashTimer"></div>
         <div class="crash-rocket" id="crashRocket"></div>
+        <div class="crash-loss" id="crashLoss"></div>
         <div class="crash-history" id="crashHistory">
           <div class="crash-history-pill active" id="crashLivePill">Ожидание</div>
         </div>
@@ -822,7 +938,10 @@
   const nav=document.getElementById('bottomNav');
   const ind=document.getElementById('indicator');
   const items=document.querySelectorAll('.nav-item');
-  const pages={profile:document.getElementById('profilePage'),upgrade:document.getElementById('upgradePage'),crash:document.getElementById('crashPage'),craft:document.getElementById('craftPage')};
+  const pages={top:document.getElementById('topPage'),profile:document.getElementById('profilePage'),upgrade:document.getElementById('upgradePage'),crash:document.getElementById('crashPage'),craft:document.getElementById('craftPage')};
+
+  // Trophy lottie
+  lottie.loadAnimation({container:document.getElementById('trophyLottie'),renderer:'svg',loop:true,autoplay:true,path:'assets/trophy.json'});
 
   // Generate stars for crash
   const sky=document.getElementById('crashSky');
@@ -848,6 +967,7 @@
 
   let crashBetActive=false;
   let crashBetAmount=0;
+  let crashRoundLive=false;
 
   function getPillColor(x){
     if(x<=2)return 'orange';
@@ -860,13 +980,20 @@
     const player=document.getElementById('crashPlayer');
     const waitText=document.getElementById('crashWaitText');
     const waitBox=document.getElementById('crashWait');
+    const lossEl=document.getElementById('crashLoss');
     crashLivePill.textContent='Ожидание';
-    betBtn.classList.remove('dim');
-    betBtn.innerHTML='Сделать ставку';
-    crashBetActive=false;
-    player.classList.remove('visible');
-    waitText.style.display='';
-    waitBox.className='crash-wait empty';
+    crashRoundLive=false;
+    lossEl.className='crash-loss';
+    if(!crashBetActive){
+      betBtn.classList.remove('dim');
+      betBtn.innerHTML='Сделать ставку';
+      player.classList.remove('visible');
+      waitText.style.display='';
+      waitBox.className='crash-wait empty';
+    }else{
+      betBtn.classList.add('dim');
+      betBtn.innerHTML='Забрать '+crashBetAmount+' <img src="assets/star.png" alt="">';
+    }
     let count=10;
     crashTimer.textContent=count;
     crashTimer.className='crash-timer';
@@ -879,7 +1006,12 @@
       crashTimer.className='crash-timer pop';
       if(count<=0){
         crashTimer.style.display='none';
-        if(!crashBetActive)betBtn.classList.add('dim');
+        crashRoundLive=true;
+        if(crashBetActive){
+          betBtn.classList.remove('dim');
+        }else{
+          betBtn.classList.add('dim');
+        }
         crashRocket.classList.add('visible');
         crashRocket.innerHTML='';
         crashRocketAnim=lottie.loadAnimation({
@@ -900,6 +1032,10 @@
         const crashAt=2000+Math.random()*8000;
         setTimeout(()=>{
           clearInterval(crashMultInterval);
+          crashRoundLive=false;
+          // Show red loss number
+          lossEl.textContent='x'+crashMultiplier.toFixed(2);
+          lossEl.className='crash-loss show';
           const pill=document.createElement('div');
           const c=getPillColor(crashMultiplier);
           pill.className='crash-history-pill '+c;
@@ -910,6 +1046,7 @@
           if(crashRocketAnim){crashRocketAnim.destroy();crashRocketAnim=null}
           crashLivePill.textContent='Ожидание';
           crashBetActive=false;
+          crashBetAmount=0;
           betBtn.classList.remove('dim');
           betBtn.innerHTML='Сделать ставку';
           player.classList.remove('visible');
@@ -917,6 +1054,7 @@
           waitBox.className='crash-wait empty';
           setTimeout(()=>{
             crashTimer.style.display='';
+            lossEl.className='crash-loss';
             runCrashRound();
           },3000);
         },crashAt);
@@ -941,7 +1079,8 @@
     const player=document.getElementById('crashPlayer');
     const waitText=document.getElementById('crashWaitText');
     const waitBox=document.getElementById('crashWait');
-    betBtn.classList.remove('dim');
+    // During timer = dim, during round = active
+    if(crashRoundLive){betBtn.classList.remove('dim')}else{betBtn.classList.add('dim')}
     betBtn.innerHTML='Забрать '+amount+' <img src="assets/star.png" alt="">';
     waitText.style.display='none';
     waitBox.className='crash-wait has-bet';
@@ -953,7 +1092,7 @@
   }
 
   function cashOut(){
-    if(!crashBetActive)return;
+    if(!crashBetActive||!crashRoundLive)return;
     const win=Math.floor(crashBetAmount*crashMultiplier);
     updateBalance(balance+win);
     crashBetActive=false;
