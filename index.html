@@ -165,7 +165,7 @@
   .sheet-close svg{width:16px;height:16px}
   .sheet-body{flex:1;overflow-y:auto;padding:0 16px;display:flex;flex-direction:column;align-items:center}
   .sheet-body::-webkit-scrollbar{display:none}
-  .sheet-lottie{width:140px;height:140px;margin:20px 0 18px}
+  .sheet-lottie{width:140px;height:140px;margin:36px 0 18px}
   .sheet-body .empty-title{color:#fff;font-size:16px;font-weight:700;margin-bottom:6px}
   .sheet-body .empty-desc{color:rgba(255,255,255,.4);font-size:13px;font-weight:500;text-align:center;line-height:1.4;max-width:280px}
   .sheet-body .empty-desc a{color:#007AFF;text-decoration:none;font-weight:600}
@@ -228,41 +228,54 @@
   }
 
   /* === CRAFT === */
+  .craft-page{display:flex;flex-direction:column;gap:14px}
+  .craft-section-title{
+    color:#fff;font-size:15px;font-weight:700;margin-bottom:2px;
+  }
   .craft-window{
-    background:rgba(255,255,255,.08);
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:20px;padding:12px 12px 16px;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.06);
+    border-radius:20px;padding:14px;
   }
   .craft-grid{
-    display:grid;grid-template-columns:repeat(5,1fr);gap:6px;
+    display:grid;grid-template-columns:repeat(5,1fr);gap:8px;
   }
   .craft-cell{
-    aspect-ratio:.75;border-radius:12px;
-    background:rgba(255,255,255,.05);
-    border:1px solid rgba(255,255,255,.06);
+    aspect-ratio:.78;border-radius:14px;
+    background:rgba(255,255,255,.04);
+    border:1.5px dashed rgba(255,255,255,.08);
     display:flex;align-items:center;justify-content:center;
+    cursor:pointer;
+    transition:background .2s ease;
   }
   .craft-cell span{
-    color:rgba(255,255,255,.2);font-size:10px;font-weight:600;
+    color:rgba(255,255,255,.18);font-size:9px;font-weight:600;
+    text-transform:uppercase;letter-spacing:.03em;
   }
-  .craft-cost{
-    margin-top:12px;
-    background:rgba(255,255,255,.05);
+  .craft-info{
+    background:rgba(255,255,255,.06);
     border:1px solid rgba(255,255,255,.06);
-    border-radius:14px;padding:14px;
+    border-radius:20px;padding:16px;
   }
-  .craft-cost-price{
-    display:flex;align-items:center;gap:5px;
-    color:#fff;font-size:18px;font-weight:700;margin-bottom:4px;
+  .craft-info-row{
+    display:flex;align-items:center;gap:6px;margin-bottom:4px;
   }
-  .craft-cost-price img{width:18px;height:18px;object-fit:contain;filter:drop-shadow(0 0 3px rgba(255,200,0,.4))}
-  .craft-cost-label{
-    color:rgba(255,255,255,.35);font-size:12px;font-weight:600;margin-bottom:12px;
+  .craft-info-row span{
+    color:#fff;font-size:22px;font-weight:800;
   }
-  .craft-cost-btn{
-    width:100%;height:42px;border-radius:12px;border:none;
-    background:rgba(0,122,255,.2);
-    color:rgba(0,122,255,.6);font-size:13px;font-weight:700;cursor:pointer;
+  .craft-info-row img{
+    width:20px;height:20px;object-fit:contain;
+    filter:drop-shadow(0 0 4px rgba(255,200,0,.4));
+  }
+  .craft-info-label{
+    color:rgba(255,255,255,.3);font-size:12px;font-weight:600;
+    margin-bottom:16px;
+  }
+  .craft-action-btn{
+    width:100%;height:46px;border-radius:14px;border:none;
+    background:rgba(0,122,255,.15);
+    color:#fff;font-size:14px;font-weight:700;
+    cursor:default;letter-spacing:.01em;
   }
 
   /* === CRASH === */
@@ -270,13 +283,52 @@
   .crash-sky{
     flex:4;background:#000;position:relative;overflow:hidden;
     display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
-    padding-bottom:20px;border-radius:0 0 20px 20px;
+    padding-bottom:20px;
   }
   .crash-star{
     position:absolute;width:3px;height:3px;border-radius:50%;background:#fff;
     animation:twinkle 2s ease-in-out infinite;
   }
   @keyframes twinkle{0%,100%{opacity:0}50%{opacity:1}}
+
+  .crash-timer{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    color:#fff;font-size:80px;font-weight:800;
+    opacity:0;z-index:3;
+    pointer-events:none;
+  }
+  @keyframes timerPop{
+    0%{opacity:1;transform:translate(-50%,-50%) scale(1);filter:blur(0)}
+    70%{opacity:.5;transform:translate(-50%,-50%) scale(1.4);filter:blur(3px)}
+    100%{opacity:0;transform:translate(-50%,-50%) scale(1.8);filter:blur(8px)}
+  }
+  .crash-timer.pop{animation:timerPop .8s ease-out forwards}
+
+  .crash-rocket{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:180px;height:180px;z-index:3;
+    display:none;
+  }
+  .crash-rocket.visible{display:block}
+
+  .crash-history{
+    display:flex;align-items:center;gap:6px;
+    width:calc(100% - 32px);
+    margin-bottom:14px;overflow-x:auto;
+    position:relative;z-index:2;
+    -webkit-overflow-scrolling:touch;
+  }
+  .crash-history::-webkit-scrollbar{display:none}
+  .crash-history-pill{
+    height:30px;padding:0 12px;border-radius:999px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:12px;font-weight:700;white-space:nowrap;flex-shrink:0;
+    background:rgba(255,255,255,.08);color:rgba(255,255,255,.4);
+  }
+  .crash-history-pill.active{
+    background:#007AFF;color:#fff;
+  }
+
   .crash-bet-btn{
     display:flex;align-items:center;justify-content:center;gap:8px;
     width:calc(100% - 32px);height:52px;border-radius:999px;border:none;cursor:pointer;
@@ -289,7 +341,7 @@
     padding:16px 12px;
   }
   .crash-wait{
-    width:100%;height:110px;border-radius:16px;
+    width:100%;height:110px;border-radius:24px;
     background:transparent;
     border:1px solid rgba(255,255,255,.12);
     display:flex;align-items:center;justify-content:center;
@@ -420,23 +472,26 @@
 
   <!-- CRAFT -->
   <div class="page" id="craftPage">
-    <div class="craft-window">
-      <div class="craft-grid">
-        <div class="craft-cell"><span>Пусто</span></div>
-        <div class="craft-cell"><span>Пусто</span></div>
-        <div class="craft-cell"><span>Пусто</span></div>
-        <div class="craft-cell"><span>Пусто</span></div>
-        <div class="craft-cell"><span>Пусто</span></div>
-        <div class="craft-cell"><span>Пусто</span></div>
-        <div class="craft-cell"><span>Пусто</span></div>
-        <div class="craft-cell"><span>Пусто</span></div>
-        <div class="craft-cell"><span>Пусто</span></div>
-        <div class="craft-cell"><span>Пусто</span></div>
+    <div class="craft-page">
+      <div class="craft-section-title">Ваши подарки</div>
+      <div class="craft-window">
+        <div class="craft-grid">
+          <div class="craft-cell"><span>Пусто</span></div>
+          <div class="craft-cell"><span>Пусто</span></div>
+          <div class="craft-cell"><span>Пусто</span></div>
+          <div class="craft-cell"><span>Пусто</span></div>
+          <div class="craft-cell"><span>Пусто</span></div>
+          <div class="craft-cell"><span>Пусто</span></div>
+          <div class="craft-cell"><span>Пусто</span></div>
+          <div class="craft-cell"><span>Пусто</span></div>
+          <div class="craft-cell"><span>Пусто</span></div>
+          <div class="craft-cell"><span>Пусто</span></div>
+        </div>
       </div>
-      <div class="craft-cost">
-        <div class="craft-cost-price">0 <img src="assets/star.png" alt="star"></div>
-        <div class="craft-cost-label">Стоимость подарков</div>
-        <button class="craft-cost-btn">Нужно 3 подарка</button>
+      <div class="craft-info">
+        <div class="craft-info-row"><span>0</span><img src="assets/star.png" alt="star"></div>
+        <div class="craft-info-label">Стоимость подарков</div>
+        <button class="craft-action-btn">Нужно 3 подарка</button>
       </div>
     </div>
   </div>
@@ -445,6 +500,11 @@
   <div class="page" id="crashPage" style="padding-top:0;left:0;right:0">
     <div class="crash-page">
       <div class="crash-sky" id="crashSky">
+        <div class="crash-timer" id="crashTimer"></div>
+        <div class="crash-rocket" id="crashRocket"></div>
+        <div class="crash-history" id="crashHistory">
+          <div class="crash-history-pill active" id="crashLivePill">Ожидание</div>
+        </div>
         <button class="crash-bet-btn">Сделать ставку</button>
       </div>
       <div class="crash-ground">
@@ -557,12 +617,79 @@
     const s=document.createElement('div');
     s.className='crash-star';
     s.style.left=Math.random()*100+'%';
-    s.style.top=Math.random()*85+'%';
+    s.style.top=Math.random()*80+'%';
     s.style.animationDelay=Math.random()*3+'s';
     s.style.animationDuration=(1.5+Math.random()*2)+'s';
     s.style.width=s.style.height=(1+Math.random()*2.5)+'px';
     sky.appendChild(s);
   }
+
+  // Crash timer + rocket + multiplier
+  const crashTimer=document.getElementById('crashTimer');
+  const crashRocket=document.getElementById('crashRocket');
+  const crashLivePill=document.getElementById('crashLivePill');
+  const crashHistory=document.getElementById('crashHistory');
+  let crashRocketAnim=null;
+  let crashMultiplier=1.0;
+  let crashMultInterval=null;
+
+  function runCrashRound(){
+    crashLivePill.textContent='Ожидание';
+    let count=10;
+    crashTimer.textContent=count;
+    crashTimer.className='crash-timer';
+    crashRocket.classList.remove('visible');
+    if(crashRocketAnim){crashRocketAnim.destroy();crashRocketAnim=null}
+
+    function tick(){
+      crashTimer.textContent=count;
+      crashTimer.className='crash-timer pop';
+      if(count<=0){
+        // Timer done — show rocket
+        crashTimer.style.display='none';
+        crashRocket.classList.add('visible');
+        crashRocketAnim=lottie.loadAnimation({
+          container:crashRocket,renderer:'svg',loop:true,autoplay:true,
+          path:'assets/rocket.json'
+        });
+        // Start multiplier
+        crashMultiplier=1.0;
+        crashLivePill.textContent='x1.00';
+        crashMultInterval=setInterval(()=>{
+          crashMultiplier+=0.01+(Math.random()*0.05);
+          crashLivePill.textContent='x'+crashMultiplier.toFixed(2);
+        },80);
+        // Crash at random time
+        const crashAt=2000+Math.random()*8000;
+        setTimeout(()=>{
+          clearInterval(crashMultInterval);
+          // Add result pill
+          const pill=document.createElement('div');
+          pill.className='crash-history-pill';
+          pill.textContent='x'+crashMultiplier.toFixed(2);
+          crashHistory.insertBefore(pill,crashLivePill.nextSibling);
+          // Reset
+          crashRocket.classList.remove('visible');
+          if(crashRocketAnim){crashRocketAnim.destroy();crashRocketAnim=null}
+          crashLivePill.textContent='Ожидание';
+          // Next round after pause
+          setTimeout(()=>{
+            crashTimer.style.display='';
+            runCrashRound();
+          },3000);
+        },crashAt);
+        return;
+      }
+      count--;
+      setTimeout(()=>{
+        crashTimer.className='crash-timer';
+        setTimeout(tick,200);
+      },800);
+    }
+    tick();
+  }
+  // Start first round when crash tab opened
+  let crashStarted=false;
 
   function moveIndicator(el,animate){
     const r=el.getBoundingClientRect(),n=nav.getBoundingClientRect();
@@ -574,6 +701,7 @@
   function showTab(tab){
     Object.values(pages).forEach(p=>p.classList.remove('visible'));
     if(pages[tab])pages[tab].classList.add('visible');
+    if(tab==='crash'&&!crashStarted){crashStarted=true;runCrashRound()}
   }
   requestAnimationFrame(()=>moveIndicator(document.querySelector('.nav-item.active'),false));
   items.forEach(item=>{
