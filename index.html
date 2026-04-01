@@ -45,7 +45,8 @@
     z-index:9;display:none;overflow-y:auto;-webkit-overflow-scrolling:touch;
   }
   .page::-webkit-scrollbar{display:none}
-  .page.visible{display:block}
+  .page.visible{display:block;animation:pageFade .25s ease}
+  @keyframes pageFade{from{opacity:0}to{opacity:1}}
   @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
   .section-title{color:#fff;font-size:17px;font-weight:700;margin-bottom:10px}
 
@@ -125,10 +126,13 @@
 
   .upgrade-btn{
     display:flex;align-items:center;justify-content:center;gap:8px;
-    width:calc(100% - 8px);height:52px;border-radius:999px;border:none;cursor:pointer;
-    background:#007AFF;color:#fff;font-size:15px;font-weight:700;
+    width:calc(100% - 8px);height:52px;border-radius:999px;border:none;
+    background:rgba(0,122,255,.13);
+    color:rgba(0,122,255,.4);font-size:15px;font-weight:700;
+    cursor:default;
   }
-  .upgrade-btn img{width:18px;height:18px;object-fit:contain;filter:brightness(0) invert(1)}
+  .upgrade-btn img{width:18px;height:18px;object-fit:contain;opacity:.3;
+    filter:brightness(0) saturate(100%) invert(33%) sepia(100%) saturate(3000%) hue-rotate(207deg) brightness(103%) contrast(101%)}
 
   /* === BOTTOM SHEET === */
   .sheet-overlay{
@@ -378,7 +382,7 @@
 
   .crash-rocket{
     position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-    width:180px;height:180px;z-index:3;
+    width:240px;height:240px;z-index:3;
     display:none;
   }
   .crash-rocket.visible{display:block}
@@ -414,24 +418,28 @@
   .crash-bet-btn.dim{opacity:.3;cursor:default}
   .crash-bet-btn img{width:18px;height:18px;object-fit:contain;filter:drop-shadow(0 0 3px rgba(255,200,0,.4))}
   .crash-ground{
-    flex:1;background:url('assets/background_pepe.png') center/cover no-repeat;
+    flex:1;
     display:flex;align-items:center;justify-content:center;
     padding:16px 12px;
   }
   .crash-wait{
-    width:100%;height:110px;border-radius:24px;
+    width:100%;border-radius:24px;
     background:transparent;
     border:1px solid rgba(255,255,255,.12);
-    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
-    overflow:hidden;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    overflow:hidden;padding:12px;
+    transition:height .3s ease;
+    min-height:70px;
   }
+  .crash-wait.empty{height:110px}
+  .crash-wait.has-bet{height:auto}
   .crash-wait span{
     color:rgba(255,255,255,.4);font-size:15px;font-weight:600;
   }
   .crash-player{
-    display:none;width:100%;padding:10px 14px;
+    display:none;width:100%;padding:8px 10px;
     align-items:center;gap:10px;
-    background:rgba(255,255,255,.06);border-radius:14px;
+    background:rgba(255,255,255,.06);border-radius:12px;
   }
   .crash-player.visible{display:flex}
   .crash-player-avatar{width:34px;height:34px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.12)}
@@ -529,7 +537,7 @@
     </div>
     <div class="right-group">
       <div class="balance-pill">
-        <span>0</span>
+        <span id="balanceText">0</span>
         <img class="star-icon" src="assets/star.png" alt="star">
       </div>
       <button class="add-btn" id="addBtn" aria-label="Add">
@@ -651,7 +659,7 @@
         <button class="crash-bet-btn" id="crashBetBtn">Сделать ставку</button>
       </div>
       <div class="crash-ground">
-        <div class="crash-wait" id="crashWait">
+        <div class="crash-wait empty" id="crashWait">
           <span id="crashWaitText">Ожидание ставок</span>
           <div class="crash-player" id="crashPlayer">
             <img class="crash-player-avatar" id="crashPlayerAvatar" src="" alt="">
@@ -801,8 +809,14 @@
 
   // Lottie — profile
   lottie.loadAnimation({container:document.getElementById('lottieContainer'),renderer:'svg',loop:true,autoplay:true,path:'assets/PlushPepe(blue).json'});
-  // Lottie — sheet
   let sheetLottieLoaded=false;
+
+  // Balance
+  let balance=0;
+  function updateBalance(v){
+    balance=v;
+    document.getElementById('balanceText').textContent=balance;
+  }
 
   // Nav
   const nav=document.getElementById('bottomNav');
@@ -845,12 +859,14 @@
     const betBtn=document.getElementById('crashBetBtn');
     const player=document.getElementById('crashPlayer');
     const waitText=document.getElementById('crashWaitText');
+    const waitBox=document.getElementById('crashWait');
     crashLivePill.textContent='Ожидание';
     betBtn.classList.remove('dim');
     betBtn.innerHTML='Сделать ставку';
     crashBetActive=false;
     player.classList.remove('visible');
     waitText.style.display='';
+    waitBox.className='crash-wait empty';
     let count=10;
     crashTimer.textContent=count;
     crashTimer.className='crash-timer';
@@ -898,6 +914,7 @@
           betBtn.innerHTML='Сделать ставку';
           player.classList.remove('visible');
           waitText.style.display='';
+          waitBox.className='crash-wait empty';
           setTimeout(()=>{
             crashTimer.style.display='';
             runCrashRound();
@@ -916,19 +933,33 @@
   let crashStarted=false;
 
   function placeBet(amount){
+    if(balance<amount)return;
+    updateBalance(balance-amount);
     crashBetActive=true;
     crashBetAmount=amount;
     const betBtn=document.getElementById('crashBetBtn');
     const player=document.getElementById('crashPlayer');
     const waitText=document.getElementById('crashWaitText');
+    const waitBox=document.getElementById('crashWait');
     betBtn.classList.remove('dim');
     betBtn.innerHTML='Забрать '+amount+' <img src="assets/star.png" alt="">';
     waitText.style.display='none';
+    waitBox.className='crash-wait has-bet';
     player.classList.add('visible');
     document.getElementById('crashPlayerName').textContent=firstName;
     if(photoUrl)document.getElementById('crashPlayerAvatar').src=photoUrl;
     document.getElementById('crashPlayerBet').innerHTML=amount+' <img src="assets/star.png" alt="">';
     document.getElementById('crashPlayerWin').innerHTML=amount+' <img src="assets/star.png" alt="">';
+  }
+
+  function cashOut(){
+    if(!crashBetActive)return;
+    const win=Math.floor(crashBetAmount*crashMultiplier);
+    updateBalance(balance+win);
+    crashBetActive=false;
+    const betBtn=document.getElementById('crashBetBtn');
+    betBtn.classList.add('dim');
+    betBtn.innerHTML='Сделать ставку';
   }
 
   function moveIndicator(el,animate){
@@ -976,13 +1007,15 @@
   function openBet(){betOverlay.classList.add('open');betSheet.classList.add('open')}
   function closeBet(){betOverlay.classList.remove('open');betSheet.classList.remove('open')}
   document.getElementById('crashBetBtn').addEventListener('click',()=>{
-    if(!crashBetActive&&!document.getElementById('crashBetBtn').classList.contains('dim'))openBet();
+    const btn=document.getElementById('crashBetBtn');
+    if(crashBetActive){cashOut();return}
+    if(!btn.classList.contains('dim'))openBet();
   });
   document.getElementById('betClose').addEventListener('click',closeBet);
   betOverlay.addEventListener('click',closeBet);
   document.getElementById('betSubmit').addEventListener('click',()=>{
     const v=parseInt(document.getElementById('betAmount').value)||0;
-    if(v>0){placeBet(v);closeBet();document.getElementById('betAmount').value=''}
+    if(v>0&&v<=balance){placeBet(v);closeBet();document.getElementById('betAmount').value=''}
   });
 
   // Settings modal
@@ -1034,6 +1067,16 @@
       topupSubmit.innerHTML='Пополнить '+v+' <img src="assets/star.png" alt="">';
     }else{
       topupSubmit.textContent='Пополнить';
+    }
+  });
+
+  topupSubmit.addEventListener('click',()=>{
+    const v=parseInt(topupAmount.value)||0;
+    if(v>0){
+      updateBalance(balance+v);
+      topupAmount.value='';
+      topupSubmit.textContent='Пополнить';
+      closeTopup();
     }
   });
 </script>
