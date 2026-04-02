@@ -170,7 +170,7 @@
 
   .referral-page{
     position:absolute;top:0;left:0;right:0;bottom:0;
-    padding:136px 12px 104px;z-index:40;overflow-y:auto;-webkit-overflow-scrolling:touch;
+    padding:136px 12px 104px;z-index:8;overflow-y:auto;-webkit-overflow-scrolling:touch;
     opacity:0;visibility:hidden;pointer-events:none;
     transform:translateZ(0);-webkit-transform:translateZ(0);
     background:#000 url('assets/background_pepe.png') center/cover no-repeat;
@@ -344,7 +344,7 @@
   .topup-input-row{
     display:flex;align-items:center;justify-content:center;gap:10px;
     min-height:84px;padding:0 18px;border-radius:24px;
-    background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);
+    background:transparent;border:none;
   }
   .topup-amount{
     background:none;border:none;outline:none;
@@ -1332,7 +1332,7 @@
   const referralInvitedValue=document.getElementById('referralInvitedValue');
   const referralEarnedValue=document.getElementById('referralEarnedValue');
   const REFERRAL_BOT_USERNAME='GiftPepeRobot';
-  const TON_TO_STARS=100;
+  const TON_TO_STARS=90;
 
   function buildReferralLink(){
     const refId=String(tg?.initDataUnsafe?.user?.id||'guest');
