@@ -42,12 +42,12 @@
   .page{
     position:absolute;top:0;left:12px;right:12px;bottom:90px;
     padding-top:136px;
-    z-index:9;overflow-y:auto;-webkit-overflow-scrolling:touch;
-    visibility:hidden;opacity:0;pointer-events:none;
-    transition:opacity .25s ease;
+    z-index:1;overflow-y:auto;-webkit-overflow-scrolling:touch;
+    opacity:0.01;pointer-events:none;
+    transform:translateZ(0);-webkit-transform:translateZ(0);
   }
   .page::-webkit-scrollbar{display:none}
-  .page.visible{visibility:visible;opacity:1;pointer-events:auto}
+  .page.visible{opacity:1;pointer-events:auto;z-index:10}
   @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
   .section-title{color:#fff;font-size:17px;font-weight:700;margin-bottom:10px}
 
@@ -62,34 +62,34 @@
   .top-place-text{color:rgba(255,255,255,.45);font-size:14px;font-weight:600;margin-bottom:14px}
   .top-place-text b{color:#fff}
   .top-my-row{
-    width:100%;display:flex;align-items:center;gap:12px;
-    padding:12px 14px;border-radius:16px;
-    background:rgba(0,122,255,.1);border:1px solid rgba(0,122,255,.15);
+    width:100%;display:flex;align-items:center;gap:10px;
+    padding:12px 14px;border-radius:14px;
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06);
   }
-  .top-my-rank{width:24px;text-align:center;color:#007AFF;font-size:15px;font-weight:800;flex-shrink:0}
-  .top-my-avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.1);flex-shrink:0}
-  .top-my-name{flex:1;color:#fff;font-size:15px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .top-my-score{display:flex;align-items:center;gap:5px;color:#fff;font-size:15px;font-weight:800;flex-shrink:0}
-  .top-my-score img{width:18px;height:18px;object-fit:contain;filter:drop-shadow(0 0 4px rgba(255,200,0,.4))}
+  .top-my-rank{width:22px;text-align:center;color:rgba(255,255,255,.3);font-size:14px;font-weight:800;flex-shrink:0}
+  .top-my-avatar{width:36px;height:36px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.1);flex-shrink:0}
+  .top-my-name{flex:1;color:#fff;font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .top-my-score{display:flex;align-items:center;gap:4px;color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+  .top-my-score img{width:16px;height:16px;object-fit:contain;filter:drop-shadow(0 0 3px rgba(255,200,0,.3))}
   .top-list{display:flex;flex-direction:column;gap:8px}
   .top-row{
-    display:flex;align-items:center;gap:14px;
-    padding:16px 18px;border-radius:18px;
+    display:flex;align-items:center;gap:10px;
+    padding:12px 14px;border-radius:14px;
     background:rgba(255,255,255,.06);backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);
     border:1px solid rgba(255,255,255,.06);
   }
   .top-rank{
-    width:26px;text-align:center;
-    color:rgba(255,255,255,.3);font-size:16px;font-weight:800;
+    width:22px;text-align:center;
+    color:rgba(255,255,255,.3);font-size:14px;font-weight:800;
     flex-shrink:0;
   }
   .top-rank.gold{color:#FFD60A}
   .top-rank.silver{color:#C0C0C0}
   .top-rank.bronze{color:#CD7F32}
-  .top-avatar{width:46px;height:46px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.1);flex-shrink:0}
-  .top-name{flex:1;color:#fff;font-size:16px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .top-score{display:flex;align-items:center;gap:6px;color:#fff;font-size:16px;font-weight:700;flex-shrink:0}
-  .top-score img{width:20px;height:20px;object-fit:contain;filter:drop-shadow(0 0 4px rgba(255,200,0,.4))}
+  .top-avatar{width:36px;height:36px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.1);flex-shrink:0}
+  .top-name{flex:1;color:#fff;font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .top-score{display:flex;align-items:center;gap:4px;color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+  .top-score img{width:16px;height:16px;object-fit:contain;filter:drop-shadow(0 0 3px rgba(255,200,0,.3))}
 
   /* === PROFILE === */
   .profile-card{
@@ -780,7 +780,7 @@
   </div>
 
   <!-- CRASH -->
-  <div class="page" id="crashPage" style="padding-top:0;left:0;right:0">
+  <div class="page visible" id="crashPage" style="padding-top:0;left:0;right:0">
     <div class="crash-page">
       <div class="crash-sky" id="crashSky">
         <div class="crash-timer" id="crashTimer"></div>
@@ -894,7 +894,7 @@
   <!-- BOTTOM NAV -->
   <nav class="bottom-nav" id="bottomNav">
     <div class="nav-indicator" id="indicator"></div>
-    <div class="nav-item active" data-tab="top">
+    <div class="nav-item" data-tab="top">
       <div class="nav-icon"><img src="svg/trophy.svg" alt=""></div>
       <span class="nav-label">Топ</span>
     </div>
@@ -902,7 +902,7 @@
       <div class="nav-icon"><img src="svg/craft.svg" alt=""></div>
       <span class="nav-label">Крафт</span>
     </div>
-    <div class="nav-item" data-tab="crash">
+    <div class="nav-item active" data-tab="crash">
       <div class="nav-icon"><img src="svg/crash.svg" alt=""></div>
       <span class="nav-label">Краш</span>
     </div>
@@ -1143,7 +1143,10 @@
     if(pages[tab])pages[tab].classList.add('visible');
     if(tab==='crash'&&!crashStarted){crashStarted=true;runCrashRound()}
   }
-  requestAnimationFrame(()=>moveIndicator(document.querySelector('.nav-item.active'),false));
+  requestAnimationFrame(()=>{
+    moveIndicator(document.querySelector('.nav-item.active'),false);
+    crashStarted=true;runCrashRound();
+  });
   items.forEach(item=>{
     item.addEventListener('click',()=>{
       document.querySelector('.nav-item.active')?.classList.remove('active');
