@@ -168,6 +168,48 @@
     color:rgba(255,255,255,.74);font-size:10px;font-weight:700;flex-shrink:0;
   }
 
+  .referral-page{
+    position:absolute;top:0;left:12px;right:12px;bottom:90px;
+    padding-top:136px;z-index:12;overflow-y:auto;-webkit-overflow-scrolling:touch;
+    opacity:0;visibility:hidden;pointer-events:none;
+    transform:translateZ(0);-webkit-transform:translateZ(0);
+  }
+  .referral-page::-webkit-scrollbar{display:none}
+  .referral-page.visible{opacity:1;visibility:visible;pointer-events:auto;animation:fadeIn .28s ease both}
+  .back-pill{
+    display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 14px;border-radius:999px;
+    border:1px solid rgba(255,255,255,.12);background:transparent;color:#fff;cursor:pointer;
+    font-size:14px;font-weight:700;margin-bottom:14px;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  }
+  .back-pill svg{width:16px;height:16px;flex-shrink:0}
+  .referral-panel{
+    background:rgba(255,255,255,.06);backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);
+    border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:14px;
+  }
+  .referral-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .referral-stat{
+    background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);border-radius:16px;
+    padding:14px 12px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:92px;
+  }
+  .referral-stat-value{color:#fff;font-size:24px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:5px;margin-bottom:8px}
+  .referral-stat-value img{width:18px;height:18px;object-fit:contain;filter:drop-shadow(0 0 3px rgba(255,200,0,.38))}
+  .referral-stat-label{color:rgba(255,255,255,.45);font-size:12px;font-weight:600;text-align:center;line-height:1.2}
+  .referral-link-row{display:flex;align-items:center;gap:10px}
+  .referral-link-input{
+    flex:1;height:48px;border-radius:14px;border:1px solid rgba(255,255,255,.08);
+    background:rgba(255,255,255,.06);color:#fff;padding:0 14px;font-size:13px;font-weight:600;font-family:inherit;outline:none;
+  }
+  .referral-link-input::placeholder{color:rgba(255,255,255,.28)}
+  .referral-copy-btn{
+    width:48px;height:48px;border-radius:14px;border:1px solid rgba(255,255,255,.08);
+    background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;
+  }
+  .referral-copy-btn svg{width:20px;height:20px}
+  .referral-invite-btn{
+    width:100%;height:50px;border:none;border-radius:999px;cursor:pointer;
+    background:#007AFF;color:#fff;font-size:15px;font-weight:700;font-family:inherit;
+  }
+
   /* === UPGRADE === */
   .upgrade-page{display:flex;flex-direction:column;align-items:center;padding-top:0}
   .upgrade-circle-outer{
@@ -546,15 +588,15 @@
   .crash-player-name{color:#fff;font-size:15px;font-weight:700}
   .crash-player-bet{display:flex;align-items:center;gap:4px;color:rgba(255,255,255,.45);font-size:13px;font-weight:600}
   .crash-player-bet img{width:14px;height:14px;object-fit:contain;filter:drop-shadow(0 0 2px rgba(255,200,0,.3))}
-  .crash-player-win{color:#fff;font-size:17px;font-weight:800;white-space:nowrap;display:flex;align-items:center;gap:5px}
-  .crash-player-win img{width:18px;height:18px;object-fit:contain;filter:drop-shadow(0 0 3px rgba(255,200,0,.4))}
+  .crash-player-win{color:#fff;font-size:17px;font-weight:800;white-space:nowrap;display:flex;align-items:center;gap:9px;flex-shrink:0}
+  .crash-player-win .crash-win-value img{width:18px;height:18px;object-fit:contain;filter:drop-shadow(0 0 3px rgba(255,200,0,.4))}
 
   .crash-player-info{min-width:0}
   .crash-win-value{display:flex;align-items:center;gap:4px}
   .crash-win-value img{width:18px;height:18px;object-fit:contain;filter:drop-shadow(0 0 3px rgba(255,200,0,.4))}
   .crash-win-gift{
-    width:110px;height:110px;object-fit:contain;flex-shrink:0;
-    filter:drop-shadow(0 10px 16px rgba(0,0,0,.26));
+    width:144px;height:144px;object-fit:contain;flex-shrink:0;
+    filter:drop-shadow(0 12px 18px rgba(0,0,0,.28));
   }
   .crash-player-prize{
     display:none !important;flex-direction:column;gap:10px;width:100%;margin-top:12px;
@@ -834,6 +876,32 @@
     </div>
   </div>
 
+  <div class="referral-page" id="referralPage">
+    <button class="back-pill" id="referralBackBtn">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span id="referralBackText">Назад</span>
+    </button>
+    <div class="referral-panel">
+      <div class="referral-stats">
+        <div class="referral-stat">
+          <div class="referral-stat-value" id="referralInvitedValue">0</div>
+          <div class="referral-stat-label" id="referralInvitedLabel">Приглашено</div>
+        </div>
+        <div class="referral-stat">
+          <div class="referral-stat-value" id="referralEarnedValue">0 <img src="assets/star.png" alt=""></div>
+          <div class="referral-stat-label" id="referralEarnedLabel">Заработано</div>
+        </div>
+      </div>
+      <div class="referral-link-row">
+        <input class="referral-link-input" id="referralLinkInput" type="text" readonly value="">
+        <button class="referral-copy-btn" id="referralCopyBtn" aria-label="Copy referral link">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M9 9.75A2.25 2.25 0 0111.25 7.5h6A2.25 2.25 0 0119.5 9.75v7.5a2.25 2.25 0 01-2.25 2.25h-6A2.25 2.25 0 019 17.25v-7.5z" stroke="#fff" stroke-width="1.8"/><path d="M15 7.5V6.75A2.25 2.25 0 0012.75 4.5h-6A2.25 2.25 0 004.5 6.75v7.5a2.25 2.25 0 002.25 2.25H9" stroke="rgba(255,255,255,.62)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <button class="referral-invite-btn" id="referralInviteBtn">Пригласить</button>
+    </div>
+  </div>
+
   <!-- UPGRADE -->
   <div class="page" id="upgradePage">
     <div class="upgrade-page">
@@ -1095,7 +1163,7 @@
       makeContract:'Сделать контракт', addGifts:'Добавить подарки', waiting:'Ожидание', waitingBets:'Ожидание ставок', placeBet:'Сделать ставку', cashOut:'Забрать',
       giftUnlocked:'Ваш подарок', claim:'Забрать', sell:'Продать', support:'Поддержка', language:'Язык', saveAndExit:'Сохранить и выйти', topup:'Пополнение', stars:'Звезды', soonTon:'Ton (soon)',
       topupBtn:'Пополнить', bet:'Ставка', top:'Топ', craft:'Крафт', crash:'Краш', upgrade:'Апгрейд', profileNav:'Профиль', giftReady:'Подарок', giftOpened:'Подарок открыт',
-      sellAll:'Продать все', withdraw:'Вывести', withdrawSoon:'Вывод пока в разработке', giftWord1:'подарок', giftWord2:'подарка', giftWord5:'подарков'
+      sellAll:'Продать все', withdraw:'Вывести', withdrawSoon:'Вывод пока в разработке', giftWord1:'подарок', giftWord2:'подарка', giftWord5:'подарков', referralBack:'Назад', invited:'Приглашено', earned:'Заработано', invite:'Пригласить', referralLink:'Реферальная ссылка', copied:'Скопировано'
     },
     en:{
       topPlace:'You are in the top at <b>—</b> place', waitingDots:'Waiting...', profile:'Profile', promocodes:'Promo codes', promoPlaceholder:'Enter promo code', apply:'Apply',
@@ -1105,7 +1173,7 @@
       makeContract:'Make contract', addGifts:'Add gifts', waiting:'Waiting', waitingBets:'Waiting for bets', placeBet:'Place bet', cashOut:'Cash out',
       giftUnlocked:'Your gift', claim:'Claim', sell:'Sell', support:'Support', language:'Language', saveAndExit:'Save and exit', topup:'Top up', stars:'Stars', soonTon:'Ton (soon)',
       topupBtn:'Top up', bet:'Bet', top:'Top', craft:'Craft', crash:'Crash', upgrade:'Upgrade', profileNav:'Profile', giftReady:'Gift', giftOpened:'Gift opened',
-      sellAll:'Sell all', withdraw:'Withdraw', withdrawSoon:'Withdrawal is in development', giftWord1:'gift', giftWord2:'gifts', giftWord5:'gifts'
+      sellAll:'Sell all', withdraw:'Withdraw', withdrawSoon:'Withdrawal is in development', giftWord1:'gift', giftWord2:'gifts', giftWord5:'gifts', referralBack:'Back', invited:'Invited', earned:'Earned', invite:'Invite', referralLink:'Referral link', copied:'Copied'
     }
   };
   let currentLang=(localStorage.getItem('miniapp_lang')==='en')?'en':'ru';
@@ -1255,6 +1323,63 @@
 
   renderInventory();
 
+  let referralInvited=0;
+  let referralEarned=0;
+  const referralCard=document.querySelector('.referral-card');
+  const referralLinkInput=document.getElementById('referralLinkInput');
+  const referralInvitedValue=document.getElementById('referralInvitedValue');
+  const referralEarnedValue=document.getElementById('referralEarnedValue');
+
+  function buildReferralLink(){
+    const refId=String(tg?.initDataUnsafe?.user?.id||'guest');
+    try{
+      const url=new URL(window.location.href);
+      url.searchParams.set('ref',refId);
+      return url.toString();
+    }catch(err){
+      const clean=String(window.location.href||'').split('#')[0]||'';
+      const joiner=clean.includes('?')?'&':'?';
+      return clean?clean+joiner+'ref='+encodeURIComponent(refId):('ref='+refId);
+    }
+  }
+
+  function updateReferralUI(){
+    referralInvitedValue.textContent=formatStars(referralInvited);
+    referralEarnedValue.innerHTML=formatStars(referralEarned)+' <img src="assets/star.png" alt="">';
+    referralLinkInput.value=buildReferralLink();
+    referralLinkInput.placeholder=t('referralLink');
+  }
+
+  function openReferralPage(){
+    referralPage.classList.add('visible');
+  }
+  function closeReferralPage(){
+    referralPage.classList.remove('visible');
+  }
+
+  async function copyReferralLink(){
+    const link=buildReferralLink();
+    try{
+      if(navigator.clipboard?.writeText){
+        await navigator.clipboard.writeText(link);
+      }else{
+        referralLinkInput.focus();
+        referralLinkInput.select();
+        document.execCommand('copy');
+      }
+      if(tg?.showAlert) tg.showAlert(t('copied'));
+    }catch(err){
+      referralLinkInput.focus();
+      referralLinkInput.select();
+    }
+  }
+
+  function inviteByReferral(){
+    const shareUrl='https://t.me/share/url?url='+encodeURIComponent(buildReferralLink());
+    if(tg?.openTelegramLink) tg.openTelegramLink(shareUrl);
+    else window.open(shareUrl,'_blank');
+  }
+
   // Balance
   let balance=0;
   function updateBalance(v){
@@ -1268,6 +1393,7 @@
   const ind=document.getElementById('indicator');
   const items=document.querySelectorAll('.nav-item');
   const pages={top:document.getElementById('topPage'),profile:document.getElementById('profilePage'),upgrade:document.getElementById('upgradePage'),crash:document.getElementById('crashPage'),craft:document.getElementById('craftPage')};
+  const referralPage=document.getElementById('referralPage');
 
   // Trophy lottie
   lottie.loadAnimation({container:document.getElementById('trophyLottie'),renderer:'svg',loop:true,autoplay:true,path:'assets/trophy.json'});
@@ -1293,6 +1419,9 @@
   let crashRocketAnim=null;
   let crashMultiplier=1.0;
   let crashMultInterval=null;
+  let crashTickAnimationTimeout=null;
+  let crashTickNextTimeout=null;
+  let crashRoundToken=0;
 
   let crashBetActive=false;
   let crashBetAmount=0;
@@ -1352,6 +1481,11 @@
     q('.promo-btn').textContent=t('apply');
     q('.referral-text h3').textContent=t('referralTitle');
     q('.referral-text p').textContent=t('referralDesc');
+    q('#referralBackText').textContent=t('referralBack');
+    q('#referralInvitedLabel').textContent=t('invited');
+    q('#referralEarnedLabel').textContent=t('earned');
+    q('#referralInviteBtn').textContent=t('invite');
+    q('#referralLinkInput').placeholder=t('referralLink');
     q('.inventory-title').textContent=t('inventory');
     q('#inventoryEmpty .empty-title').textContent=t('noGiftsTitle');
     q('#inventoryEmpty .empty-desc').innerHTML=t('noGiftsDesc');
@@ -1388,6 +1522,7 @@
     if(crashPrizePending&&crashPrizeGift) showCrashPrize(crashPrizeGift);
     syncTopupSubmitLabel();
     syncBetSubmitLabel();
+    updateReferralUI();
     renderInventory();
     renderSheetGifts();
   }
@@ -1428,8 +1563,13 @@
   }
 
   function runCrashRound(){
+    crashRoundToken+=1;
+    const roundToken=crashRoundToken;
+    clearInterval(crashMultInterval);
     clearTimeout(crashRoundCrashTimeout);
     clearTimeout(crashRoundResetTimeout);
+    clearTimeout(crashTickAnimationTimeout);
+    clearTimeout(crashTickNextTimeout);
     const betBtn=document.getElementById('crashBetBtn');
     const player=crashPlayer;
     const waitText=crashWaitText;
@@ -1450,6 +1590,8 @@
     }else if(crashBetActive){
       betBtn.classList.add('dim');
       betBtn.innerHTML=t('cashOut')+' '+formatStars(crashBetAmount)+' <img src="assets/star.png" alt="">';
+    }else{
+      betBtn.classList.add('dim');
     }
     let count=10;
     crashTimer.textContent=count;
@@ -1460,6 +1602,7 @@
     if(crashRocketAnim){crashRocketAnim.destroy();crashRocketAnim=null}
 
     function tick(){
+      if(roundToken!==crashRoundToken)return;
       crashTimer.textContent=count;
       crashTimer.className='crash-timer pop';
       if(count<=0){
@@ -1480,6 +1623,7 @@
         crashMultiplier=1.0;
         crashLivePill.textContent='x1.00';
         crashMultInterval=setInterval(()=>{
+          if(roundToken!==crashRoundToken){clearInterval(crashMultInterval);return}
           crashMultiplier+=0.01+(Math.random()*0.05);
           crashLivePill.textContent='x'+crashMultiplier.toFixed(2);
           if(crashBetActive){
@@ -1496,6 +1640,7 @@
         },80);
         const crashAt=2000+Math.random()*8000;
         crashRoundCrashTimeout=setTimeout(()=>{
+          if(roundToken!==crashRoundToken)return;
           clearInterval(crashMultInterval);
           crashRoundLive=false;
           lossEl.textContent='x'+crashMultiplier.toFixed(2);
@@ -1506,7 +1651,11 @@
           pill.textContent='x'+crashMultiplier.toFixed(2);
           crashHistory.insertBefore(pill,crashLivePill.nextSibling);
           clearCrashHistoryOverflow();
-          if(crashBetActive) setCrashPlayerState('loss');
+          const hadActiveBet=crashBetActive;
+          if(hadActiveBet) setCrashPlayerState('loss');
+          crashBetActive=false;
+          crashBetAmount=0;
+          crashPrizeGift=null;
           crashRocket.classList.remove('visible');
           crashRocket.innerHTML='';
           if(crashRocketAnim){crashRocketAnim.destroy();crashRocketAnim=null}
@@ -1514,14 +1663,11 @@
           betBtn.classList.add('dim');
           betBtn.textContent=t('placeBet');
           crashRoundResetTimeout=setTimeout(()=>{
-            if(crashPrizePending)return;
-            crashBetActive=false;
-            crashBetAmount=0;
-            crashPrizeGift=null;
+            if(roundToken!==crashRoundToken||crashPrizePending)return;
             if(player.classList.contains('visible')){
               player.classList.add('fading');
               setTimeout(()=>{
-                if(crashPrizePending)return;
+                if(roundToken!==crashRoundToken||crashPrizePending)return;
                 player.classList.remove('visible','fading');
                 waitText.style.display='';
                 waitBox.className='crash-wait empty';
@@ -1532,10 +1678,9 @@
               waitBox.className='crash-wait empty';
               hideCrashPrize();
             }
-            betBtn.classList.remove('dim');
           },2500);
-          setTimeout(()=>{
-            if(crashPrizePending)return;
+          crashTickNextTimeout=setTimeout(()=>{
+            if(roundToken!==crashRoundToken||crashPrizePending)return;
             crashTimer.style.display='';
             lossEl.className='crash-loss';
             runCrashRound();
@@ -1544,9 +1689,10 @@
         return;
       }
       count--;
-      setTimeout(()=>{
+      crashTickAnimationTimeout=setTimeout(()=>{
+        if(roundToken!==crashRoundToken)return;
         crashTimer.className='crash-timer';
-        setTimeout(tick,200);
+        crashTickNextTimeout=setTimeout(tick,200);
       },800);
     }
     tick();
@@ -1554,7 +1700,7 @@
   let crashStarted=false;
 
   function placeBet(amount){
-    if(balance<amount||crashPrizePending)return;
+    if(crashRoundLive||balance<amount||crashPrizePending)return;
     updateBalance(balance-amount);
     crashBetActive=true;
     crashBetAmount=amount;
@@ -1642,6 +1788,7 @@
     if(!animate)requestAnimationFrame(()=>{ind.style.transition=''});
   }
   function showTab(tab){
+    closeReferralPage();
     Object.values(pages).forEach(p=>p.classList.remove('visible'));
     if(pages[tab]){
       void pages[tab].offsetWidth;
@@ -1661,6 +1808,11 @@
       showTab(item.dataset.tab);
     });
   });
+
+  referralCard.addEventListener('click',openReferralPage);
+  document.getElementById('referralBackBtn').addEventListener('click',closeReferralPage);
+  document.getElementById('referralCopyBtn').addEventListener('click',copyReferralLink);
+  document.getElementById('referralInviteBtn').addEventListener('click',inviteByReferral);
 
   // Bottom sheet (gifts)
   const sheetOverlay=document.getElementById('sheetOverlay');
@@ -1688,6 +1840,7 @@
   document.getElementById('crashBetBtn').addEventListener('click',()=>{
     const btn=document.getElementById('crashBetBtn');
     if(crashBetActive){cashOut();return}
+    if(crashRoundLive)return;
     if(!btn.classList.contains('dim'))openBet();
   });
   document.getElementById('betClose').addEventListener('click',closeBet);
