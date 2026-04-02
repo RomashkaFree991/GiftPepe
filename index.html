@@ -1449,19 +1449,60 @@
   let crashBetActive=false;
   let crashBetAmount=0;
   let crashRoundLive=false;
+  let crashRealtimeStarted=false;
+  let crashRealtimeTimer=null;
+  let crashRealtimeFrame=null;
+  let crashRealtimeState=null;
+  let crashServerOffsetMs=0;
 
   function getPillColor(x){
     if(x<=2)return 'orange';
     if(x<=5)return 'blue';
     return 'purple';
   }
-  function sampleCrashTarget(){
-    const r=Math.random();
-    if(r<0.28) return 1.01 + Math.random()*1.3;
-    if(r<0.56) return 2.0 + Math.random()*3.2;
-    if(r<0.78) return 5.2 + Math.random()*9.8;
-    if(r<0.92) return 15 + Math.random()*20;
-    return 35 + Math.random()*35;
+  function getServerNow(){
+    return Date.now()+crashServerOffsetMs;
+  }
+  function updateCrashWaitLabel(count=0){
+    crashWaitText.textContent=count>0
+      ? (currentLang==='ru' ? 'Ставок: '+count : 'Bets: '+count)
+      : t('waitingBets');
+  }
+  function renderCrashHistoryState(state){
+    const liveText=(state&&state.phase==='live')
+      ? 'x'+computeCrashMultiplier(state).toFixed(2)
+      : t('waiting');
+    crashHistory.innerHTML='';
+    crashLivePill.textContent=liveText;
+    crashHistory.appendChild(crashLivePill);
+    (state?.history||[]).slice(0,MAX_CRASH_HISTORY).forEach(entry=>{
+      const pill=document.createElement('div');
+      pill.className='crash-history-pill '+getPillColor(entry.multiplier);
+      pill.textContent='x'+Number(entry.multiplier).toFixed(2);
+      crashHistory.appendChild(pill);
+    });
+  }
+  function computeCrashMultiplier(state,now=getServerNow()){
+    if(!state)return 1;
+    if(state.phase!=='live'){
+      return Number(state.lastCrashMultiplier||state.liveMultiplier||1);
+    }
+    const elapsed=Math.max(0,now-state.liveStartAt);
+    return Math.min(Number(state.crashTarget||1),Math.exp(elapsed/Number(state.growthMs||8000)));
+  }
+  function stopCrashRocket(){
+    crashRocket.classList.remove('visible');
+    crashRocket.innerHTML='';
+    if(crashRocketAnim){crashRocketAnim.destroy();crashRocketAnim=null}
+  }
+  function startCrashRocket(){
+    if(crashRocketAnim)return;
+    crashRocket.classList.add('visible');
+    crashRocket.innerHTML='';
+    crashRocketAnim=lottie.loadAnimation({
+      container:crashRocket,renderer:'svg',loop:true,autoplay:true,
+      path:'assets/rocket.json'
+    });
   }
 
 
@@ -1570,16 +1611,17 @@
     document.querySelectorAll('.nav-label')[2].textContent=t('crash');
     document.querySelectorAll('.nav-label')[3].textContent=t('upgrade');
     document.querySelectorAll('.nav-label')[4].textContent=t('profileNav');
-    if(!crashBetActive&&!crashPrizePending) q('#crashWaitText').textContent=t('waitingBets');
-    if(!crashRoundLive&&!crashPrizePending) crashLivePill.textContent=t('waiting');
+    updateCrashWaitLabel(crashRealtimeState?.betsCount||0);
+    if(!crashRealtimeState||crashRealtimeState.phase!=='live') crashLivePill.textContent=t('waiting');
     if(crashPrizePending) crashLivePill.textContent=t('giftReady');
-    if(!crashBetActive&&!crashPrizePending) document.getElementById('crashBetBtn').textContent=t('placeBet');
+    if(!crashBetActive&&!crashPrizePending&&(!crashRealtimeState||crashRealtimeState.phase!=='live')) document.getElementById('crashBetBtn').textContent=t('placeBet');
     if(crashPrizePending&&crashPrizeGift) showCrashPrize(crashPrizeGift);
     syncTopupSubmitLabel();
     syncBetSubmitLabel();
     updateReferralUI();
     renderInventory();
     renderSheetGifts();
+    if(crashRealtimeState) renderCrashHistoryState(crashRealtimeState);
   }
   function applyLanguage(lang){
     currentLang=lang;pendingLang=lang;localStorage.setItem('miniapp_lang',lang);setLangIndicator(lang);updateLangStaticTexts();syncTopupModeUI();
@@ -1617,149 +1659,139 @@
     document.getElementById('crashPlayerWin').innerHTML='';
   }
 
-  function runCrashRound(){
-    crashRoundToken+=1;
-    const roundToken=crashRoundToken;
-    clearInterval(crashMultInterval);
-    clearTimeout(crashRoundCrashTimeout);
-    clearTimeout(crashRoundResetTimeout);
-    clearTimeout(crashTickAnimationTimeout);
-    clearTimeout(crashTickNextTimeout);
-    const betBtn=document.getElementById('crashBetBtn');
-    const player=crashPlayer;
-    const waitText=crashWaitText;
-    const waitBox=crashWait;
-    const lossEl=document.getElementById('crashLoss');
-    crashLivePill.textContent=t('waiting');
-    crashRoundLive=false;
-    lossEl.className='crash-loss';
-    if(!crashBetActive&&!crashPrizePending){
-      betBtn.classList.remove('dim');
+  function applyCrashRoundBoundary(prevState,nextState){
+    if(!prevState)return;
+    if(prevState.roundId===nextState.roundId)return;
+    if(crashBetActive&&!crashPrizePending){
+      setCrashPlayerState('loss');
+      crashBetActive=false;
+      crashBetAmount=0;
+      crashPrizeGift=null;
+      const betBtn=document.getElementById('crashBetBtn');
+      betBtn.classList.add('dim');
       betBtn.textContent=t('placeBet');
-      player.classList.remove('visible');
-      waitText.style.display='';
-      waitBox.className='crash-wait empty';
-      setCrashPlayerState(null);
-      hideCrashPrize();
-      document.getElementById('crashPlayerWin').innerHTML='';
-    }else if(crashBetActive){
-      betBtn.classList.add('dim');
-      betBtn.innerHTML=t('cashOut')+' '+formatStars(crashBetAmount)+' <img src="assets/star.png" alt="">';
-    }else{
-      betBtn.classList.add('dim');
+      setTimeout(()=>{
+        if(!crashBetActive&&!crashPrizePending) resetCrashPlayer();
+      },900);
+    }else if(!crashPrizePending){
+      resetCrashPlayer();
     }
-    let count=10;
-    crashTimer.textContent=count;
-    crashTimer.className='crash-timer';
-    crashTimer.style.display='';
-    crashRocket.classList.remove('visible');
-    crashRocket.innerHTML='';
-    if(crashRocketAnim){crashRocketAnim.destroy();crashRocketAnim=null}
+  }
+  function renderCrashRealtimeFrame(){
+    crashRealtimeFrame=requestAnimationFrame(renderCrashRealtimeFrame);
+    const state=crashRealtimeState;
+    if(!state)return;
+    const now=getServerNow();
+    const betBtn=document.getElementById('crashBetBtn');
+    const lossEl=document.getElementById('crashLoss');
+    crashRoundLive=state.phase==='live';
 
-    function tick(){
-      if(roundToken!==crashRoundToken)return;
+    if(state.phase==='countdown'){
+      const count=Math.max(0,Math.ceil((state.liveStartAt-now)/1000));
+      crashTimer.style.display='';
       crashTimer.textContent=count;
-      crashTimer.className='crash-timer pop';
-      if(count<=0){
-        crashTimer.style.display='none';
-        crashRoundLive=true;
-        closeBet();
-        if(crashBetActive&&!crashPrizePending){
-          betBtn.classList.remove('dim');
-        }else{
-          betBtn.classList.add('dim');
-        }
-        crashRocket.classList.add('visible');
-        crashRocket.innerHTML='';
-        crashRocketAnim=lottie.loadAnimation({
-          container:crashRocket,renderer:'svg',loop:true,autoplay:true,
-          path:'assets/rocket.json'
-        });
-        const crashTarget=sampleCrashTarget();
-        crashMultiplier=1.0;
-        crashLivePill.textContent='x1.00';
-        const finishCrashRound=()=>{
-          if(roundToken!==crashRoundToken)return;
-          clearInterval(crashMultInterval);
-          crashRoundLive=false;
-          lossEl.textContent='x'+crashMultiplier.toFixed(2);
-          lossEl.className='crash-loss show';
-          const pill=document.createElement('div');
-          const c=getPillColor(crashMultiplier);
-          pill.className='crash-history-pill '+c;
-          pill.textContent='x'+crashMultiplier.toFixed(2);
-          crashHistory.insertBefore(pill,crashLivePill.nextSibling);
-          clearCrashHistoryOverflow();
-          const hadActiveBet=crashBetActive;
-          if(hadActiveBet) setCrashPlayerState('loss');
-          crashBetActive=false;
-          crashBetAmount=0;
-          if(!crashPrizePending) crashPrizeGift=null;
-          crashRocket.classList.remove('visible');
-          crashRocket.innerHTML='';
-          if(crashRocketAnim){crashRocketAnim.destroy();crashRocketAnim=null}
-          crashLivePill.textContent=t('waiting');
-          betBtn.classList.add('dim');
-          betBtn.textContent=t('placeBet');
-          crashRoundResetTimeout=setTimeout(()=>{
-            if(roundToken!==crashRoundToken||crashPrizePending)return;
-            if(player.classList.contains('visible')){
-              player.classList.add('fading');
-              setTimeout(()=>{
-                if(roundToken!==crashRoundToken||crashPrizePending)return;
-                player.classList.remove('visible','fading');
-                waitText.style.display='';
-                waitBox.className='crash-wait empty';
-                hideCrashPrize();
-              },500);
-            }else{
-              waitText.style.display='';
-              waitBox.className='crash-wait empty';
-              hideCrashPrize();
-            }
-          },2500);
-          crashTickNextTimeout=setTimeout(()=>{
-            if(roundToken!==crashRoundToken||crashPrizePending)return;
-            crashTimer.style.display='';
-            lossEl.className='crash-loss';
-            runCrashRound();
-          },3500);
-        };
-        crashMultInterval=setInterval(()=>{
-          if(roundToken!==crashRoundToken){clearInterval(crashMultInterval);return}
-          const growth=0.016 + Math.random()*0.012;
-          crashMultiplier=Math.min(crashMultiplier + Math.max(0.01, crashMultiplier*growth), crashTarget);
-          crashLivePill.textContent='x'+crashMultiplier.toFixed(2);
-          if(crashBetActive){
-            const win=Math.floor(crashBetAmount*crashMultiplier);
-            const unlockedGift=getBestGiftForStars(win);
-            if(unlockedGift){
-              crashPrizeGift=unlockedGift;
-            }else if(!crashPrizePending){
-              crashPrizeGift=null;
-            }
-            renderCrashPlayerWin(win,crashPrizeGift);
-            betBtn.innerHTML=t('cashOut')+' '+formatStars(win)+' <img src="assets/star.png" alt="">';
-          }
-          if(crashMultiplier>=crashTarget-0.0001){
-            finishCrashRound();
-          }
-        },80);
-        return;
+      crashTimer.className='crash-timer';
+      stopCrashRocket();
+      lossEl.className='crash-loss';
+      crashMultiplier=1.0;
+      if(crashPrizePending) crashLivePill.textContent=t('giftReady');
+      else crashLivePill.textContent=t('waiting');
+      if(crashBetActive){
+        betBtn.classList.add('dim');
+        betBtn.innerHTML=t('cashOut')+' '+formatStars(crashBetAmount)+' <img src="assets/star.png" alt="">';
+      }else if(!crashPrizePending){
+        betBtn.classList.remove('dim');
+        betBtn.textContent=t('placeBet');
       }
-      count--;
-      crashTickAnimationTimeout=setTimeout(()=>{
-        if(roundToken!==crashRoundToken)return;
-        crashTimer.className='crash-timer';
-        crashTickNextTimeout=setTimeout(tick,200);
-      },800);
+      return;
     }
-    tick();
+
+    if(state.phase==='live'){
+      crashTimer.style.display='none';
+      lossEl.className='crash-loss';
+      startCrashRocket();
+      crashMultiplier=computeCrashMultiplier(state,now);
+      crashLivePill.textContent='x'+crashMultiplier.toFixed(2);
+      if(crashBetActive){
+        const win=Math.floor(crashBetAmount*crashMultiplier);
+        const unlockedGift=getBestGiftForStars(win);
+        if(unlockedGift){
+          crashPrizeGift=unlockedGift;
+        }else if(!crashPrizePending){
+          crashPrizeGift=null;
+        }
+        renderCrashPlayerWin(win,crashPrizeGift);
+        betBtn.classList.remove('dim');
+        betBtn.innerHTML=t('cashOut')+' '+formatStars(win)+' <img src="assets/star.png" alt="">';
+      }else if(!crashPrizePending){
+        betBtn.classList.add('dim');
+        betBtn.textContent=t('placeBet');
+      }
+      return;
+    }
+
+    crashTimer.style.display='none';
+    stopCrashRocket();
+    crashMultiplier=Number(state.lastCrashMultiplier||state.crashTarget||1);
+    lossEl.textContent='x'+crashMultiplier.toFixed(2);
+    lossEl.className='crash-loss show';
+    if(crashPrizePending) crashLivePill.textContent=t('giftReady');
+    else crashLivePill.textContent=t('waiting');
+    betBtn.classList.add('dim');
+    if(!crashBetActive&&!crashPrizePending) betBtn.textContent=t('placeBet');
+  }
+  async function refreshCrashState(silent=false){
+    try{
+      const resp=await fetch(API_BASE+'/api/crash/state');
+      const data=await resp.json();
+      if(!resp.ok) throw new Error(data.error||'Crash sync failed');
+      crashServerOffsetMs=Number(data.serverNow||Date.now())-Date.now();
+      const prevState=crashRealtimeState;
+      crashRealtimeState=data;
+      applyCrashRoundBoundary(prevState,data);
+      renderCrashHistoryState(data);
+      updateCrashWaitLabel(data.betsCount||0);
+      if(!crashRealtimeFrame) crashRealtimeFrame=requestAnimationFrame(renderCrashRealtimeFrame);
+    }catch(e){
+      if(!silent) console.warn('Crash refresh failed:',e.message);
+    }
+  }
+  function runCrashRound(){
+    if(!crashRealtimeStarted){
+      crashRealtimeStarted=true;
+      refreshCrashState(true);
+      crashRealtimeTimer=setInterval(()=>refreshCrashState(true),700);
+      if(!crashRealtimeFrame) crashRealtimeFrame=requestAnimationFrame(renderCrashRealtimeFrame);
+    }else{
+      refreshCrashState(true);
+    }
   }
   let crashStarted=false;
 
-  function placeBet(amount){
-    if(crashRoundLive||balance<amount||crashPrizePending)return;
+  async function placeBet(amount){
+    if(!crashRealtimeState||crashRealtimeState.phase!=='countdown'||balance<amount||crashPrizePending)return false;
+    try{
+      const resp=await fetch(API_BASE+'/api/crash/bet',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','x-init-data':tg?.initData||''},
+        body:JSON.stringify({amount}),
+      });
+      const data=await resp.json().catch(()=>({}));
+      if(!resp.ok) throw new Error(data.error||'Round already started');
+      if(data.state){
+        crashServerOffsetMs=Number(data.state.serverNow||Date.now())-Date.now();
+        const prevState=crashRealtimeState;
+        crashRealtimeState=data.state;
+        applyCrashRoundBoundary(prevState,data.state);
+        renderCrashHistoryState(data.state);
+        updateCrashWaitLabel(data.state.betsCount||0);
+      }else{
+        await refreshCrashState(true);
+      }
+    }catch(e){
+      tg?.showAlert?tg.showAlert(e.message):alert(e.message);
+      return false;
+    }
     updateBalance(balance-amount);
     crashBetActive=true;
     crashBetAmount=amount;
@@ -1779,6 +1811,7 @@
     if(photoUrl)document.getElementById('crashPlayerAvatar').src=photoUrl;
     document.getElementById('crashPlayerBet').innerHTML=formatStars(amount)+' <img src="assets/star.png" alt="">';
     renderCrashPlayerWin(amount,null);
+    return true;
   }
 
   function resolveCrashPrize(mode){
@@ -1801,12 +1834,6 @@
         if(crashPrizePending)return;
         resetCrashPlayer();
       },1200);
-      setTimeout(()=>{
-        if(crashPrizePending)return;
-        crashTimer.style.display='';
-        document.getElementById('crashLoss').className='crash-loss';
-        runCrashRound();
-      },2200);
     }
   }
 
@@ -1909,9 +1936,12 @@
   });
   document.getElementById('betClose').addEventListener('click',closeBet);
   betOverlay.addEventListener('click',closeBet);
-  document.getElementById('betSubmit').addEventListener('click',()=>{
+  document.getElementById('betSubmit').addEventListener('click',async()=>{
     const v=parseInt(document.getElementById('betAmount').value)||0;
-    if(v>0&&v<=balance){placeBet(v);closeBet();document.getElementById('betAmount').value=''}
+    if(v>0&&v<=balance){
+      const ok=await placeBet(v);
+      if(ok){closeBet();document.getElementById('betAmount').value=''}
+    }
   });
 
   // Settings modal
@@ -1983,13 +2013,13 @@
       });
       const {invoiceLink,error}=await resp.json();
       if(error)throw new Error(error);
+      const balanceBefore=balance;
       closeTopup();
       topupAmount.value='';
       syncTopupModeUI();
       tg.openInvoice(invoiceLink,async(status)=>{
         if(status==='paid'){
-          await new Promise(r=>setTimeout(r,1500));
-          await refreshBalance();
+          await waitForBalanceUpdate(balanceBefore);
           await refreshTop();
         }else if(status==='failed'){
           tg.showAlert?.('Оплата не прошла. Попробуй снова.');
@@ -2009,12 +2039,27 @@
 
   // ─── BACKEND HELPERS ─────────────────────────────────────────────────────────
   async function refreshBalance(){
-    if(!tg?.initData)return;
+    if(!tg?.initData)return null;
     try{
       const resp=await fetch(API_BASE+'/api/balance',{headers:{'x-init-data':tg.initData}});
       const data=await resp.json();
-      if(data.balance!==undefined)updateBalance(data.balance);
+      if(data.balance!==undefined){
+        updateBalance(data.balance);
+        return data;
+      }
     }catch(e){console.warn('Balance refresh failed:',e.message)}
+    return null;
+  }
+
+  async function waitForBalanceUpdate(previousBalance,timeoutMs=15000){
+    const started=Date.now();
+    while(Date.now()-started<timeoutMs){
+      const data=await refreshBalance();
+      if(data&&Number(data.balance)>Number(previousBalance)) return true;
+      await new Promise(r=>setTimeout(r,350));
+    }
+    await refreshBalance();
+    return false;
   }
 
   async function refreshTop(){
@@ -2030,25 +2075,23 @@
     const placeText=document.querySelector('#topPage .top-place-text');
     if(placeText)placeText.innerHTML=myRank?'Вы в топе на <b>'+myRank+'</b> месте':'Вы ещё не в топе';
     const myEntry=leaders.find(l=>String(l.id)===String(tgUserId));
-    if(myEntry){
-      const rank=leaders.indexOf(myEntry)+1;
-      document.querySelector('.top-my-rank').textContent=rank;
-      document.querySelector('.top-my-score').innerHTML=formatStars(myEntry.total_deposited)+' <img src="assets/star.png" alt="">';
-    }
+    document.querySelector('.top-my-rank').textContent=myRank||'—';
+    document.querySelector('.top-my-score').innerHTML=(myEntry?formatStars(myEntry.total_deposited):'0')+' <img src="assets/star.png" alt="">';
     const rankClasses=['gold','silver','bronze'];
     const rows=document.querySelectorAll('#topPage .top-row');
     rows.forEach((row,i)=>{
       const leader=leaders[i];
+      const rankEl=row.querySelector('.top-rank');
+      rankEl.textContent=leader?i+1:'—';
+      rankEl.className='top-rank'+(leader&&rankClasses[i]?' '+rankClasses[i]:'');
+      const nameEl=row.querySelector('.top-name');
       if(!leader){
-        row.querySelector('.top-name').textContent='—';
+        nameEl.textContent='—';
+        nameEl.dataset.locked='false';
         row.querySelector('.top-score').innerHTML='0 <img src="assets/star.png" alt="">';
         return;
       }
-      const rankEl=row.querySelector('.top-rank');
-      rankEl.textContent=i+1;
-      rankEl.className='top-rank'+(rankClasses[i]?' '+rankClasses[i]:'');
-      const nameEl=row.querySelector('.top-name');
-      nameEl.textContent=leader.first_name+(leader.username?' @'+leader.username:'');
+      nameEl.textContent=leader.first_name||'User';
       nameEl.dataset.locked='true';
       row.querySelector('.top-score').innerHTML=formatStars(leader.total_deposited)+' <img src="assets/star.png" alt="">';
       let avatarEl=row.querySelector('.top-avatar');
