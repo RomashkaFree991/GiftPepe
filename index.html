@@ -169,10 +169,11 @@
   }
 
   .referral-page{
-    position:absolute;top:0;left:12px;right:12px;bottom:90px;
-    padding-top:136px;z-index:12;overflow-y:auto;-webkit-overflow-scrolling:touch;
+    position:absolute;top:0;left:0;right:0;bottom:0;
+    padding:136px 12px 104px;z-index:40;overflow-y:auto;-webkit-overflow-scrolling:touch;
     opacity:0;visibility:hidden;pointer-events:none;
     transform:translateZ(0);-webkit-transform:translateZ(0);
+    background:#000 url('assets/background_pepe.png') center/cover no-repeat;
   }
   .referral-page::-webkit-scrollbar{display:none}
   .referral-page.visible{opacity:1;visibility:visible;pointer-events:auto;animation:fadeIn .28s ease both}
@@ -328,35 +329,36 @@
     display:flex;align-items:center;justify-content:center;cursor:pointer;
   }
   .topup-close svg{width:16px;height:16px}
-  .topup-body{padding:12px 16px 24px}
-  .topup-blocks{display:flex;gap:10px;margin-bottom:18px}
+  .topup-body{padding:16px 16px 24px;display:flex;flex-direction:column;gap:18px}
+  .topup-blocks{display:flex;gap:10px}
   .topup-block{
-    flex:1;padding:16px 12px;border-radius:16px;
+    flex:1;min-height:88px;padding:16px 12px;border-radius:18px;
     background:rgba(255,255,255,.06);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
     border:1.5px solid rgba(255,255,255,.06);
-    display:flex;flex-direction:column;align-items:center;gap:8px;
-    cursor:pointer;transition:border-color .2s ease;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+    cursor:pointer;transition:border-color .2s ease,transform .2s ease;
   }
-  .topup-block.selected{border-color:rgba(0,122,255,.5)}
-  .topup-block img{width:36px;height:36px;object-fit:contain}
-  .topup-block span{color:#fff;font-size:12px;font-weight:600}
-  .topup-block .soon{color:rgba(255,255,255,.3)}
+  .topup-block.selected{border-color:rgba(0,122,255,.75);transform:translateY(-1px)}
+  .topup-block img{width:38px;height:38px;object-fit:contain}
+  .topup-block span{color:#fff;font-size:13px;font-weight:700}
   .topup-input-row{
-    display:flex;align-items:center;justify-content:center;gap:6px;
-    margin-bottom:18px;
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    min-height:84px;padding:0 18px;border-radius:24px;
+    background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);
   }
   .topup-amount{
     background:none;border:none;outline:none;
-    color:#fff;font-size:32px;font-weight:800;
-    width:80px;text-align:center;
+    color:#fff;font-size:40px;font-weight:800;
+    width:100%;text-align:center;
     font-family:inherit;
   }
   .topup-amount::placeholder{color:rgba(255,255,255,.2)}
-  .topup-input-row img{width:28px;height:28px;object-fit:contain;filter:drop-shadow(0 0 4px rgba(255,200,0,.4))}
+  .topup-input-row img{width:34px;height:34px;object-fit:contain;filter:drop-shadow(0 0 4px rgba(255,200,0,.4))}
   .topup-submit{
-    width:100%;height:50px;border-radius:999px;border:none;cursor:pointer;
+    width:100%;height:52px;border-radius:999px;border:none;cursor:pointer;
     background:#007AFF;color:#fff;font-size:15px;font-weight:700;
     display:flex;align-items:center;justify-content:center;gap:6px;
+    margin-top:2px;
   }
   .topup-submit img{width:18px;height:18px;object-fit:contain;filter:drop-shadow(0 0 3px rgba(255,200,0,.4))}
 
@@ -595,8 +597,8 @@
   .crash-win-value{display:flex;align-items:center;gap:4px}
   .crash-win-value img{width:18px;height:18px;object-fit:contain;filter:drop-shadow(0 0 3px rgba(255,200,0,.4))}
   .crash-win-gift{
-    width:144px;height:144px;object-fit:contain;flex-shrink:0;
-    filter:drop-shadow(0 12px 18px rgba(0,0,0,.28));
+    width:28px;height:28px;object-fit:contain;flex-shrink:0;
+    filter:drop-shadow(0 8px 12px rgba(0,0,0,.24));
   }
   .crash-player-prize{
     display:none !important;flex-direction:column;gap:10px;width:100%;margin-top:12px;
@@ -630,7 +632,7 @@
 
 
   .gift-modal-overlay{
-    position:fixed;top:0;left:0;right:0;bottom:0;z-index:70;
+    position:fixed;top:0;left:0;right:0;bottom:0;z-index:120;
     background:rgba(0,0,0,.58);display:flex;align-items:center;justify-content:center;
     opacity:0;pointer-events:none;transition:opacity .25s ease;
     padding:24px;
@@ -1067,12 +1069,12 @@
         </div>
         <div class="topup-block" data-type="ton">
           <img src="assets/ton.webp" alt="ton">
-          <span class="soon">Ton (soon)</span>
+          <span>TON</span>
         </div>
       </div>
       <div class="topup-input-row">
-        <input class="topup-amount" id="topupAmount" type="number" placeholder="0" value="">
-        <img src="assets/star.png" alt="star">
+        <input class="topup-amount" id="topupAmount" type="number" inputmode="decimal" step="1" min="0" placeholder="0" value="">
+        <img id="topupUnitIcon" src="assets/star.png" alt="star">
       </div>
       <button class="topup-submit" id="topupSubmit">Пополнить</button>
     </div>
@@ -1161,7 +1163,7 @@
       noGiftsDesc:'Отправьте подарок <a href="https://t.me/GiftPepe_Releyer" target="_blank">@GiftPepe_Releyer</a><br>или выиграйте в играх', chooseGift:'Выберите подарок',
       myGifts:'Мои подарки', giftsForUpgrade:'Подарки для апгрейда', makeUpgrade:'Сделать апгрейд', yourGifts:'Ваши подарки', empty:'Пусто', giftCost:'Стоимость подарков',
       makeContract:'Сделать контракт', addGifts:'Добавить подарки', waiting:'Ожидание', waitingBets:'Ожидание ставок', placeBet:'Сделать ставку', cashOut:'Забрать',
-      giftUnlocked:'Ваш подарок', claim:'Забрать', sell:'Продать', support:'Поддержка', language:'Язык', saveAndExit:'Сохранить и выйти', topup:'Пополнение', stars:'Звезды', soonTon:'Ton (soon)',
+      giftUnlocked:'Ваш подарок', claim:'Забрать', sell:'Продать', support:'Поддержка', language:'Язык', saveAndExit:'Сохранить и выйти', topup:'Пополнение', stars:'Звезды', ton:'TON',
       topupBtn:'Пополнить', bet:'Ставка', top:'Топ', craft:'Крафт', crash:'Краш', upgrade:'Апгрейд', profileNav:'Профиль', giftReady:'Подарок', giftOpened:'Подарок открыт',
       sellAll:'Продать все', withdraw:'Вывести', withdrawSoon:'Вывод пока в разработке', giftWord1:'подарок', giftWord2:'подарка', giftWord5:'подарков', referralBack:'Назад', invited:'Приглашено', earned:'Заработано', invite:'Пригласить', referralLink:'Реферальная ссылка', copied:'Скопировано'
     },
@@ -1171,7 +1173,7 @@
       noGiftsDesc:'Send a gift to <a href="https://t.me/GiftPepe_Releyer" target="_blank">@GiftPepe_Releyer</a><br>or win one in games', chooseGift:'Choose a gift',
       myGifts:'My gifts', giftsForUpgrade:'Gifts for upgrade', makeUpgrade:'Make upgrade', yourGifts:'Your gifts', empty:'Empty', giftCost:'Gift value',
       makeContract:'Make contract', addGifts:'Add gifts', waiting:'Waiting', waitingBets:'Waiting for bets', placeBet:'Place bet', cashOut:'Cash out',
-      giftUnlocked:'Your gift', claim:'Claim', sell:'Sell', support:'Support', language:'Language', saveAndExit:'Save and exit', topup:'Top up', stars:'Stars', soonTon:'Ton (soon)',
+      giftUnlocked:'Your gift', claim:'Claim', sell:'Sell', support:'Support', language:'Language', saveAndExit:'Save and exit', topup:'Top up', stars:'Stars', ton:'TON',
       topupBtn:'Top up', bet:'Bet', top:'Top', craft:'Craft', crash:'Crash', upgrade:'Upgrade', profileNav:'Profile', giftReady:'Gift', giftOpened:'Gift opened',
       sellAll:'Sell all', withdraw:'Withdraw', withdrawSoon:'Withdrawal is in development', giftWord1:'gift', giftWord2:'gifts', giftWord5:'gifts', referralBack:'Back', invited:'Invited', earned:'Earned', invite:'Invite', referralLink:'Referral link', copied:'Copied'
     }
@@ -1329,18 +1331,12 @@
   const referralLinkInput=document.getElementById('referralLinkInput');
   const referralInvitedValue=document.getElementById('referralInvitedValue');
   const referralEarnedValue=document.getElementById('referralEarnedValue');
+  const REFERRAL_BOT_USERNAME='GiftPepeRobot';
+  const TON_TO_STARS=100;
 
   function buildReferralLink(){
     const refId=String(tg?.initDataUnsafe?.user?.id||'guest');
-    try{
-      const url=new URL(window.location.href);
-      url.searchParams.set('ref',refId);
-      return url.toString();
-    }catch(err){
-      const clean=String(window.location.href||'').split('#')[0]||'';
-      const joiner=clean.includes('?')?'&':'?';
-      return clean?clean+joiner+'ref='+encodeURIComponent(refId):('ref='+refId);
-    }
+    return 'https://t.me/'+REFERRAL_BOT_USERNAME+'?startapp='+encodeURIComponent('ref_'+refId);
   }
 
   function updateReferralUI(){
@@ -1432,6 +1428,14 @@
     if(x<=5)return 'blue';
     return 'purple';
   }
+  function sampleCrashTarget(){
+    const r=Math.random();
+    if(r<0.28) return 1.01 + Math.random()*1.3;
+    if(r<0.56) return 2.0 + Math.random()*3.2;
+    if(r<0.78) return 5.2 + Math.random()*9.8;
+    if(r<0.92) return 15 + Math.random()*20;
+    return 35 + Math.random()*35;
+  }
 
 
   const crashPlayer=document.getElementById('crashPlayer');
@@ -1462,9 +1466,33 @@
     const giftHtml=gift?'<img class="crash-win-gift" src="'+gift.image+'" alt="'+gift.name+'">':'';
     document.getElementById('crashPlayerWin').innerHTML='<span class="crash-win-value">'+formatStars(amount)+' <img src="assets/star.png" alt=""></span>'+giftHtml;
   }
+  let topupMode='stars';
+  function getTopupRawValue(){
+    const raw=String(topupAmount.value||'').replace(',', '.');
+    const value=topupMode==='ton' ? parseFloat(raw) : parseInt(raw,10);
+    return Number.isFinite(value) ? value : 0;
+  }
+  function getTopupStarsValue(){
+    const rawValue=getTopupRawValue();
+    if(rawValue<=0) return 0;
+    return topupMode==='ton' ? Math.floor(rawValue*TON_TO_STARS) : Math.floor(rawValue);
+  }
+  function syncTopupModeUI(){
+    const icon=document.getElementById('topupUnitIcon');
+    if(topupMode==='ton'){
+      topupAmount.step='0.1';
+      topupAmount.placeholder='0';
+      if(icon){icon.src='assets/ton.webp';icon.alt='ton';}
+    }else{
+      topupAmount.step='1';
+      topupAmount.placeholder='0';
+      if(icon){icon.src='assets/star.png';icon.alt='star';}
+    }
+    syncTopupSubmitLabel();
+  }
   function syncTopupSubmitLabel(){
-    const v=parseInt(topupAmount.value)||0;
-    if(v>0) topupSubmit.innerHTML=t('topupBtn')+' '+formatStars(v)+' <img src="assets/star.png" alt="">';
+    const starsValue=getTopupStarsValue();
+    if(starsValue>0) topupSubmit.innerHTML=t('topupBtn')+' '+formatStars(starsValue)+' <img src="assets/star.png" alt="">';
     else topupSubmit.textContent=t('topupBtn');
   }
   function syncBetSubmitLabel(){
@@ -1508,7 +1536,7 @@
     q('#modalSave').textContent=t('saveAndExit');
     q('#topupSheet .topup-pill').textContent=t('topup');
     document.querySelector('.topup-block[data-type="stars"] span').textContent=t('stars');
-    document.querySelector('.topup-block[data-type="ton"] span').textContent=t('soonTon');
+    document.querySelector('.topup-block[data-type="ton"] span').textContent=t('ton');
     q('#betSheet .bet-pill').textContent=t('bet');
     document.querySelectorAll('.nav-label')[0].textContent=t('top');
     document.querySelectorAll('.nav-label')[1].textContent=t('craft');
@@ -1527,7 +1555,7 @@
     renderSheetGifts();
   }
   function applyLanguage(lang){
-    currentLang=lang;pendingLang=lang;localStorage.setItem('miniapp_lang',lang);setLangIndicator(lang);updateLangStaticTexts();
+    currentLang=lang;pendingLang=lang;localStorage.setItem('miniapp_lang',lang);setLangIndicator(lang);updateLangStaticTexts();syncTopupModeUI();
   }
 
   function clearCrashHistoryOverflow(){
@@ -1620,26 +1648,10 @@
           container:crashRocket,renderer:'svg',loop:true,autoplay:true,
           path:'assets/rocket.json'
         });
+        const crashTarget=sampleCrashTarget();
         crashMultiplier=1.0;
         crashLivePill.textContent='x1.00';
-        crashMultInterval=setInterval(()=>{
-          if(roundToken!==crashRoundToken){clearInterval(crashMultInterval);return}
-          crashMultiplier+=0.01+(Math.random()*0.05);
-          crashLivePill.textContent='x'+crashMultiplier.toFixed(2);
-          if(crashBetActive){
-            const win=Math.floor(crashBetAmount*crashMultiplier);
-            const unlockedGift=getBestGiftForStars(win);
-            if(unlockedGift){
-              crashPrizeGift=unlockedGift;
-            }else{
-              crashPrizeGift=null;
-            }
-            renderCrashPlayerWin(win,crashPrizeGift);
-            betBtn.innerHTML=t('cashOut')+' '+formatStars(win)+' <img src="assets/star.png" alt="">';
-          }
-        },80);
-        const crashAt=2000+Math.random()*8000;
-        crashRoundCrashTimeout=setTimeout(()=>{
+        const finishCrashRound=()=>{
           if(roundToken!==crashRoundToken)return;
           clearInterval(crashMultInterval);
           crashRoundLive=false;
@@ -1655,7 +1667,7 @@
           if(hadActiveBet) setCrashPlayerState('loss');
           crashBetActive=false;
           crashBetAmount=0;
-          crashPrizeGift=null;
+          if(!crashPrizePending) crashPrizeGift=null;
           crashRocket.classList.remove('visible');
           crashRocket.innerHTML='';
           if(crashRocketAnim){crashRocketAnim.destroy();crashRocketAnim=null}
@@ -1685,7 +1697,27 @@
             lossEl.className='crash-loss';
             runCrashRound();
           },3500);
-        },crashAt);
+        };
+        crashMultInterval=setInterval(()=>{
+          if(roundToken!==crashRoundToken){clearInterval(crashMultInterval);return}
+          const growth=0.016 + Math.random()*0.012;
+          crashMultiplier=Math.min(crashMultiplier + Math.max(0.01, crashMultiplier*growth), crashTarget);
+          crashLivePill.textContent='x'+crashMultiplier.toFixed(2);
+          if(crashBetActive){
+            const win=Math.floor(crashBetAmount*crashMultiplier);
+            const unlockedGift=getBestGiftForStars(win);
+            if(unlockedGift){
+              crashPrizeGift=unlockedGift;
+            }else if(!crashPrizePending){
+              crashPrizeGift=null;
+            }
+            renderCrashPlayerWin(win,crashPrizeGift);
+            betBtn.innerHTML=t('cashOut')+' '+formatStars(win)+' <img src="assets/star.png" alt="">';
+          }
+          if(crashMultiplier>=crashTarget-0.0001){
+            finishCrashRound();
+          }
+        },80);
         return;
       }
       count--;
@@ -1787,12 +1819,14 @@
     ind.style.transform=`translate(${x}px,${y}px)`;
     if(!animate)requestAnimationFrame(()=>{ind.style.transition=''});
   }
+  let currentTab='crash';
   function showTab(tab){
     closeReferralPage();
     Object.values(pages).forEach(p=>p.classList.remove('visible'));
     if(pages[tab]){
       void pages[tab].offsetWidth;
       pages[tab].classList.add('visible');
+      currentTab=tab;
     }
     if(tab==='crash'&&!crashStarted){crashStarted=true;runCrashRound()}
   }
@@ -1802,10 +1836,12 @@
   });
   items.forEach(item=>{
     item.addEventListener('click',()=>{
+      const targetTab=item.dataset.tab;
+      if(targetTab===currentTab && !referralPage.classList.contains('visible')) return;
       document.querySelector('.nav-item.active')?.classList.remove('active');
       item.classList.add('active');
       moveIndicator(item,true);
-      showTab(item.dataset.tab);
+      showTab(targetTab);
     });
   });
 
@@ -1880,7 +1916,7 @@
   const topupAmount=document.getElementById('topupAmount');
   const topupSubmit=document.getElementById('topupSubmit');
 
-  function openTopup(){topupOverlay.classList.add('open');topupSheet.classList.add('open')}
+  function openTopup(){syncTopupModeUI();topupOverlay.classList.add('open');topupSheet.classList.add('open')}
   function closeTopup(){topupOverlay.classList.remove('open');topupSheet.classList.remove('open')}
 
   document.getElementById('addBtn').addEventListener('click',openTopup);
@@ -1891,21 +1927,24 @@
     block.addEventListener('click',()=>{
       document.querySelectorAll('.topup-block').forEach(b=>b.classList.remove('selected'));
       block.classList.add('selected');
+      topupMode=block.dataset.type==='ton' ? 'ton' : 'stars';
+      syncTopupModeUI();
     });
   });
 
   topupAmount.addEventListener('input',syncTopupSubmitLabel);
 
   topupSubmit.addEventListener('click',()=>{
-    const v=parseInt(topupAmount.value)||0;
-    if(v>0){
-      updateBalance(balance+v);
+    const starsValue=getTopupStarsValue();
+    if(starsValue>0){
+      updateBalance(balance+starsValue);
       topupAmount.value='';
-      syncTopupSubmitLabel();
+      syncTopupModeUI();
       closeTopup();
     }
   });
 
+  syncTopupModeUI();
   applyLanguage(currentLang);
 </script>
 </body>
