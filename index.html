@@ -48,7 +48,6 @@
   }
   .page::-webkit-scrollbar{display:none}
   .page.visible{visibility:visible;opacity:1;pointer-events:auto}
-  .page *{-webkit-backface-visibility:hidden;backface-visibility:hidden}
   @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
   .section-title{color:#fff;font-size:17px;font-weight:700;margin-bottom:10px}
 
@@ -60,27 +59,37 @@
     display:flex;flex-direction:column;align-items:center;margin-bottom:16px;
   }
   .top-trophy-lottie{width:120px;height:120px;margin-bottom:10px}
-  .top-place-text{color:rgba(255,255,255,.45);font-size:14px;font-weight:600}
+  .top-place-text{color:rgba(255,255,255,.45);font-size:14px;font-weight:600;margin-bottom:14px}
   .top-place-text b{color:#fff}
+  .top-my-row{
+    width:100%;display:flex;align-items:center;gap:12px;
+    padding:12px 14px;border-radius:16px;
+    background:rgba(0,122,255,.1);border:1px solid rgba(0,122,255,.15);
+  }
+  .top-my-rank{width:24px;text-align:center;color:#007AFF;font-size:15px;font-weight:800;flex-shrink:0}
+  .top-my-avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.1);flex-shrink:0}
+  .top-my-name{flex:1;color:#fff;font-size:15px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .top-my-score{display:flex;align-items:center;gap:5px;color:#fff;font-size:15px;font-weight:800;flex-shrink:0}
+  .top-my-score img{width:18px;height:18px;object-fit:contain;filter:drop-shadow(0 0 4px rgba(255,200,0,.4))}
   .top-list{display:flex;flex-direction:column;gap:8px}
   .top-row{
-    display:flex;align-items:center;gap:10px;
-    padding:10px 14px;border-radius:14px;
+    display:flex;align-items:center;gap:14px;
+    padding:16px 18px;border-radius:18px;
     background:rgba(255,255,255,.06);backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);
     border:1px solid rgba(255,255,255,.06);
   }
   .top-rank{
-    width:22px;text-align:center;
-    color:rgba(255,255,255,.3);font-size:13px;font-weight:800;
+    width:26px;text-align:center;
+    color:rgba(255,255,255,.3);font-size:16px;font-weight:800;
     flex-shrink:0;
   }
   .top-rank.gold{color:#FFD60A}
   .top-rank.silver{color:#C0C0C0}
   .top-rank.bronze{color:#CD7F32}
-  .top-avatar{width:34px;height:34px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.1);flex-shrink:0}
-  .top-name{flex:1;color:#fff;font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .top-score{display:flex;align-items:center;gap:4px;color:#fff;font-size:13px;font-weight:700;flex-shrink:0}
-  .top-score img{width:14px;height:14px;object-fit:contain;filter:drop-shadow(0 0 3px rgba(255,200,0,.3))}
+  .top-avatar{width:46px;height:46px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.1);flex-shrink:0}
+  .top-name{flex:1;color:#fff;font-size:16px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .top-score{display:flex;align-items:center;gap:6px;color:#fff;font-size:16px;font-weight:700;flex-shrink:0}
+  .top-score img{width:20px;height:20px;object-fit:contain;filter:drop-shadow(0 0 4px rgba(255,200,0,.4))}
 
   /* === PROFILE === */
   .profile-card{
@@ -482,18 +491,20 @@
     color:rgba(255,255,255,.4);font-size:15px;font-weight:600;
   }
   .crash-player{
-    display:none;width:100%;padding:8px 10px;
-    align-items:center;gap:10px;
-    background:rgba(255,255,255,.06);border-radius:12px;
+    display:none;width:100%;padding:12px 14px;
+    align-items:center;gap:12px;
+    background:rgba(255,255,255,.06);border-radius:16px;
+    transition:opacity .5s ease;
   }
   .crash-player.visible{display:flex}
-  .crash-player-avatar{width:34px;height:34px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.12)}
+  .crash-player.fading{opacity:0}
+  .crash-player-avatar{width:44px;height:44px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.12)}
   .crash-player-info{flex:1}
-  .crash-player-name{color:#fff;font-size:13px;font-weight:700}
-  .crash-player-bet{display:flex;align-items:center;gap:3px;color:rgba(255,255,255,.45);font-size:11px;font-weight:600}
-  .crash-player-bet img{width:12px;height:12px;object-fit:contain;filter:drop-shadow(0 0 2px rgba(255,200,0,.3))}
-  .crash-player-win{color:#fff;font-size:15px;font-weight:800;white-space:nowrap;display:flex;align-items:center;gap:3px}
-  .crash-player-win img{width:14px;height:14px;object-fit:contain;filter:drop-shadow(0 0 2px rgba(255,200,0,.3))}
+  .crash-player-name{color:#fff;font-size:15px;font-weight:700}
+  .crash-player-bet{display:flex;align-items:center;gap:4px;color:rgba(255,255,255,.45);font-size:13px;font-weight:600}
+  .crash-player-bet img{width:14px;height:14px;object-fit:contain;filter:drop-shadow(0 0 2px rgba(255,200,0,.3))}
+  .crash-player-win{color:#fff;font-size:17px;font-weight:800;white-space:nowrap;display:flex;align-items:center;gap:5px}
+  .crash-player-win img{width:18px;height:18px;object-fit:contain;filter:drop-shadow(0 0 3px rgba(255,200,0,.4))}
 
   /* === BET SHEET === */
   .bet-overlay{
@@ -596,6 +607,12 @@
     <div class="top-trophy-box">
       <div class="top-trophy-lottie" id="trophyLottie"></div>
       <div class="top-place-text">Вы в топе на <b>—</b> месте</div>
+      <div class="top-my-row">
+        <span class="top-my-rank">—</span>
+        <img class="top-my-avatar" id="topMyAvatar" src="" alt="">
+        <span class="top-my-name" id="topMyName">User</span>
+        <div class="top-my-score">0 <img src="assets/star.png" alt=""></div>
+      </div>
     </div>
     <div class="top-list">
       <div class="top-row">
@@ -1007,6 +1024,8 @@
       if(count<=0){
         crashTimer.style.display='none';
         crashRoundLive=true;
+        // Close bet sheet if open
+        closeBet();
         if(crashBetActive){
           betBtn.classList.remove('dim');
         }else{
@@ -1033,7 +1052,6 @@
         setTimeout(()=>{
           clearInterval(crashMultInterval);
           crashRoundLive=false;
-          // Show red loss number
           lossEl.textContent='x'+crashMultiplier.toFixed(2);
           lossEl.className='crash-loss show';
           const pill=document.createElement('div');
@@ -1045,18 +1063,30 @@
           crashRocket.innerHTML='';
           if(crashRocketAnim){crashRocketAnim.destroy();crashRocketAnim=null}
           crashLivePill.textContent='Ожидание';
-          crashBetActive=false;
-          crashBetAmount=0;
-          betBtn.classList.remove('dim');
+          betBtn.classList.add('dim');
           betBtn.innerHTML='Сделать ставку';
-          player.classList.remove('visible');
-          waitText.style.display='';
-          waitBox.className='crash-wait empty';
+          // Keep bet card visible during red numbers
+          setTimeout(()=>{
+            crashBetActive=false;
+            crashBetAmount=0;
+            if(player.classList.contains('visible')){
+              player.classList.add('fading');
+              setTimeout(()=>{
+                player.classList.remove('visible','fading');
+                waitText.style.display='';
+                waitBox.className='crash-wait empty';
+              },500);
+            }else{
+              waitText.style.display='';
+              waitBox.className='crash-wait empty';
+            }
+            betBtn.classList.remove('dim');
+          },2500);
           setTimeout(()=>{
             crashTimer.style.display='';
             lossEl.className='crash-loss';
             runCrashRound();
-          },3000);
+          },3500);
         },crashAt);
         return;
       }
