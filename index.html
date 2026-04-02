@@ -1126,9 +1126,27 @@
 </div>
 
 <script>
+  // ─── BACKEND URL — замени после деплоя ────────────────────────────────────
+  const API_BASE='https://backend-deployer--timtim000666.replit.app';
+
   const tg=window.Telegram?.WebApp;
-  let firstName='User',userHandle='@user',photoUrl='';
-  if(tg){
+  let firstName='User',userHandle='@user',photoUrl='',tgUserId=null;
+
+  function applyUserToUI(){
+    document.getElementById('usernameTop').textContent=firstName;
+    document.getElementById('profileName').textContent=firstName;
+    document.getElementById('profileUser').textContent=userHandle;
+    document.getElementById('topMyName').textContent=firstName;
+    if(photoUrl){
+      document.getElementById('avatarSmall').src=photoUrl;
+      document.getElementById('profileAvatar').src=photoUrl;
+      document.getElementById('topMyAvatar').src=photoUrl;
+      document.getElementById('crashPlayerAvatar').src=photoUrl;
+    }
+  }
+
+  async function initUser(){
+    if(!tg)return;
     tg.ready();tg.expand();
     if(tg.requestFullscreen)tg.requestFullscreen();
     if(tg.disableVerticalSwipes)tg.disableVerticalSwipes();
@@ -1137,18 +1155,27 @@
       firstName=u.first_name||u.username||'User';
       userHandle=u.username?'@'+u.username:'@user';
       photoUrl=u.photo_url||'';
-      document.getElementById('usernameTop').textContent=firstName;
-      if(photoUrl){
-        document.getElementById('avatarSmall').src=photoUrl;
-        document.getElementById('profileAvatar').src=photoUrl;
-        document.getElementById('topMyAvatar').src=photoUrl;
-        document.getElementById('crashPlayerAvatar').src=photoUrl;
-      }
+      tgUserId=u.id;
+      applyUserToUI();
     }
+    try{
+      const resp=await fetch(API_BASE+'/api/init',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({initData:tg.initData||''}),
+      });
+      const data=await resp.json();
+      if(data.id){
+        firstName=data.first_name||firstName;
+        userHandle=data.username?'@'+data.username:userHandle;
+        photoUrl=data.photo_url||photoUrl;
+        tgUserId=data.id;
+        updateBalance(data.balance??0);
+        applyUserToUI();
+      }
+    }catch(e){console.warn('Backend init failed:',e.message)}
   }
-  document.getElementById('profileName').textContent=firstName;
-  document.getElementById('profileUser').textContent=userHandle;
-  document.getElementById('topMyName').textContent=firstName;
+  initUser();
 
   // Lottie — profile
   lottie.loadAnimation({container:document.getElementById('lottieContainer'),renderer:'svg',loop:true,autoplay:true,path:'assets/PlushPepe(blue).json'});
@@ -1829,6 +1856,7 @@
       currentTab=tab;
     }
     if(tab==='crash'&&!crashStarted){crashStarted=true;runCrashRound()}
+    if(tab==='top')refreshTop();
   }
   requestAnimationFrame(()=>{
     moveIndicator(document.querySelector('.nav-item.active'),false);
@@ -1934,18 +1962,108 @@
 
   topupAmount.addEventListener('input',syncTopupSubmitLabel);
 
-  topupSubmit.addEventListener('click',()=>{
+  topupSubmit.addEventListener('click',async()=>{
+    if(topupMode==='ton'){
+      tg?.showAlert?tg.showAlert('TON оплата скоро!'):alert('TON оплата скоро!');
+      return;
+    }
     const starsValue=getTopupStarsValue();
-    if(starsValue>0){
-      updateBalance(balance+starsValue);
+    if(starsValue<=0)return;
+    if(!tg?.openInvoice){
+      tg?.showAlert?tg.showAlert('Открой в Telegram для оплаты'):alert('Открой в Telegram для оплаты');
+      return;
+    }
+    topupSubmit.disabled=true;
+    topupSubmit.innerHTML='Создаём инвойс...';
+    try{
+      const resp=await fetch(API_BASE+'/api/invoice',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({initData:tg.initData||'',amount:starsValue}),
+      });
+      const {invoiceLink,error}=await resp.json();
+      if(error)throw new Error(error);
+      closeTopup();
       topupAmount.value='';
       syncTopupModeUI();
-      closeTopup();
+      tg.openInvoice(invoiceLink,async(status)=>{
+        if(status==='paid'){
+          await new Promise(r=>setTimeout(r,1500));
+          await refreshBalance();
+          await refreshTop();
+        }else if(status==='failed'){
+          tg.showAlert?.('Оплата не прошла. Попробуй снова.');
+        }
+      });
+    }catch(e){
+      console.error('Invoice error:',e);
+      tg?.showAlert?tg.showAlert('Ошибка: '+e.message):alert('Ошибка: '+e.message);
+    }finally{
+      topupSubmit.disabled=false;
+      syncTopupSubmitLabel();
     }
   });
 
   syncTopupModeUI();
   applyLanguage(currentLang);
+
+  // ─── BACKEND HELPERS ─────────────────────────────────────────────────────────
+  async function refreshBalance(){
+    if(!tg?.initData)return;
+    try{
+      const resp=await fetch(API_BASE+'/api/balance',{headers:{'x-init-data':tg.initData}});
+      const data=await resp.json();
+      if(data.balance!==undefined)updateBalance(data.balance);
+    }catch(e){console.warn('Balance refresh failed:',e.message)}
+  }
+
+  async function refreshTop(){
+    try{
+      const url=API_BASE+'/api/top'+(tgUserId?'?userId='+tgUserId:'');
+      const resp=await fetch(url);
+      const {leaders=[],myRank}=await resp.json();
+      renderTop(leaders,myRank);
+    }catch(e){console.warn('Top refresh failed:',e.message)}
+  }
+
+  function renderTop(leaders,myRank){
+    const placeText=document.querySelector('#topPage .top-place-text');
+    if(placeText)placeText.innerHTML=myRank?'Вы в топе на <b>'+myRank+'</b> месте':'Вы ещё не в топе';
+    const myEntry=leaders.find(l=>String(l.id)===String(tgUserId));
+    if(myEntry){
+      const rank=leaders.indexOf(myEntry)+1;
+      document.querySelector('.top-my-rank').textContent=rank;
+      document.querySelector('.top-my-score').innerHTML=formatStars(myEntry.total_deposited)+' <img src="assets/star.png" alt="">';
+    }
+    const rankClasses=['gold','silver','bronze'];
+    const rows=document.querySelectorAll('#topPage .top-row');
+    rows.forEach((row,i)=>{
+      const leader=leaders[i];
+      if(!leader){
+        row.querySelector('.top-name').textContent='—';
+        row.querySelector('.top-score').innerHTML='0 <img src="assets/star.png" alt="">';
+        return;
+      }
+      const rankEl=row.querySelector('.top-rank');
+      rankEl.textContent=i+1;
+      rankEl.className='top-rank'+(rankClasses[i]?' '+rankClasses[i]:'');
+      const nameEl=row.querySelector('.top-name');
+      nameEl.textContent=leader.first_name+(leader.username?' @'+leader.username:'');
+      nameEl.dataset.locked='true';
+      row.querySelector('.top-score').innerHTML=formatStars(leader.total_deposited)+' <img src="assets/star.png" alt="">';
+      let avatarEl=row.querySelector('.top-avatar');
+      if(leader.photo_url){
+        if(avatarEl.tagName==='DIV'){
+          const img=document.createElement('img');
+          img.className='top-avatar';img.alt='';
+          avatarEl.replaceWith(img);avatarEl=img;
+        }
+        avatarEl.src=leader.photo_url;
+      }
+    });
+  }
+
+  refreshTop();
 </script>
 </body>
 </html>
