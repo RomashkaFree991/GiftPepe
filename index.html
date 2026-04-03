@@ -16,31 +16,40 @@
     display:flex;align-items:center;justify-content:center;
     overflow:hidden;
     transition:opacity .28s ease,visibility .28s ease;
-    background:#000 url('assets/background_pepe.png') center center/cover no-repeat;
+    background:#000 url('assets/background_pepe.png') center/cover no-repeat;
   }
   .boot-screen.hidden{opacity:0;visibility:hidden;pointer-events:none}
-  .boot-screen__backdrop{display:none}
+  .boot-screen__backdrop{
+    position:absolute;inset:0;
+    display:none;
+    background:none;
+    backdrop-filter:none;-webkit-backdrop-filter:none;
+  }
   .boot-screen__content{
     position:relative;z-index:1;
-    width:100%;height:100%;
+    width:auto;
+    padding:0;
+    border-radius:0;
+    background:none;
+    border:none;
+    backdrop-filter:none;-webkit-backdrop-filter:none;
     display:flex;align-items:center;justify-content:center;
-    padding:0;margin:0;
   }
   .boot-spinner{
-    width:96px;height:96px;border-radius:50%;
+    width:92px;height:92px;border-radius:50%;
     position:relative;
-    background:conic-gradient(from 0deg, rgba(255,255,255,.08), rgba(255,255,255,.96) 24%, rgba(255,255,255,.18) 58%, rgba(255,255,255,.06) 100%);
-    animation:bootSpin .85s linear infinite;
-    box-shadow:0 0 34px rgba(255,255,255,.2);
+    background:conic-gradient(from 0deg, rgba(0,122,255,.08), rgba(0,122,255,.98) 24%, rgba(0,122,255,.18) 58%, rgba(0,122,255,.06) 100%);
+    animation:bootSpin .8s linear infinite;
+    box-shadow:0 0 34px rgba(0,122,255,.34);
   }
   .boot-spinner::before{
     content:'';position:absolute;inset:10px;border-radius:50%;
-    background:rgba(0,0,0,.62);
-    box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);
+    background:rgba(0,0,0,.9);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.03);
   }
   .boot-spinner::after{
     content:'';position:absolute;inset:24px;border-radius:50%;
-    background:radial-gradient(circle, rgba(255,255,255,.32), rgba(255,255,255,.08) 55%, rgba(0,0,0,0) 72%);
+    background:radial-gradient(circle, rgba(0,122,255,.36), rgba(0,122,255,.1) 55%, rgba(0,0,0,0) 72%);
   }
   @keyframes bootSpin{to{transform:rotate(360deg)}}
   .boot-title,.boot-subtitle{display:none}
@@ -595,7 +604,7 @@
     pointer-events:auto;touch-action:manipulation;-webkit-user-select:none;user-select:none;
     -webkit-appearance:none;appearance:none;transform:translateZ(0);
   }
-  .crash-bet-btn.dim,.crash-bet-btn:disabled{opacity:.3;cursor:default;pointer-events:none}
+  .crash-bet-btn.dim{opacity:.3;cursor:default}
   .crash-bet-btn img{width:18px;height:18px;object-fit:contain;filter:drop-shadow(0 0 3px rgba(255,200,0,.4))}
   .crash-ground{
     flex:1;
@@ -1611,6 +1620,15 @@
     }
     crashWaitText.textContent=t('waitingBets');
   }
+  function setCrashBetButtonState({disabled=false, label=null, html=null}={}){
+    const betBtn=document.getElementById('crashBetBtn');
+    if(!betBtn)return;
+    betBtn.classList.toggle('dim', !!disabled);
+    betBtn.disabled=!!disabled;
+    betBtn.style.pointerEvents=disabled?'none':'auto';
+    if(html!==null) betBtn.innerHTML=html;
+    else if(label!==null) betBtn.textContent=label;
+  }
   function renderCrashOtherBets(list=[]){
     if(!crashOthers)return;
     const others=(Array.isArray(list)?list:[]).filter(player=>String(player.userId)!==String(tgUserId));
@@ -1826,7 +1844,7 @@
     updateCrashWaitLabel(crashRealtimeState?.betsCount||0);
     if(!crashRealtimeState||crashRealtimeState.phase!=='live') crashLivePill.textContent=t('waiting');
     if(crashPrizePending) crashLivePill.textContent=t('giftReady');
-    if(!crashBetActive&&!crashPrizePending&&(!crashRealtimeState||crashRealtimeState.phase!=='live')) document.getElementById('crashBetBtn').textContent=t('placeBet');
+    if(!crashBetActive&&!crashPrizePending&&(!crashRealtimeState||crashRealtimeState.phase!=='live')) setCrashBetButtonState({disabled:false, label:t('placeBet')});
     if(crashPrizePending&&crashPrizeGift) showCrashPrize(crashPrizeGift);
     syncTopupSubmitLabel();
     syncBetSubmitLabel();
@@ -1956,8 +1974,7 @@
       crashBetAmount=0;
       crashPrizeGift=null;
       const betBtn=document.getElementById('crashBetBtn');
-      betBtn.classList.add('dim');
-      betBtn.textContent=t('placeBet');
+      setCrashBetButtonState({disabled:true, label:t('placeBet')});
       setTimeout(()=>{
         if(!crashBetActive&&!crashPrizePending) resetCrashPlayer();
       },900);
@@ -1970,7 +1987,6 @@
     const state=crashRealtimeState;
     if(!state)return;
     const now=getServerNow();
-    const betBtn=document.getElementById('crashBetBtn');
     const lossEl=document.getElementById('crashLoss');
     const displayPhase=deriveCrashDisplayPhase(state,now);
     maybeRefreshCrashBoundary(state,now);
@@ -1978,21 +1994,28 @@
     crashRoundLive=displayPhase==='live';
     updateCrashOtherBetsLive({...state, phase: displayPhase});
 
+    crashTimer.style.display='none';
+    crashTimer.textContent='';
+
     if(displayPhase==='countdown'){
       closeBet();
-      crashTimer.style.display='none';
-      crashTimer.textContent='';
-      crashTimer.className='crash-timer';
       stopCrashRocket();
       lossEl.className='crash-loss';
       crashMultiplier=1.0;
-      if(crashPrizePending) crashLivePill.textContent=t('giftReady');
-      else crashLivePill.textContent=t('waiting');
+      crashLivePill.textContent=crashPrizePending ? t('giftReady') : t('waitingBets');
+
       if(crashBetActive){
-        setCrashBetButtonState(true,t('cashOut')+' '+formatStars(crashBetAmount)+' <img src="assets/star.png" alt="">',true);
-      }else if(!crashPrizePending){
+        setCrashBetButtonState({
+          disabled:true,
+          html:formatStars(crashBetAmount)+' <img src="assets/star.png" alt="">'
+        });
+      }else if(crashPrizePending){
+        setCrashBetButtonState({disabled:true, label:t('giftOpened')});
+      }else if(crashBetSettled){
+        setCrashBetButtonState({disabled:true, label:t('placeBet')});
+      }else{
         crashRoundLocked=false;
-        setCrashBetButtonState(false,t('placeBet'));
+        setCrashBetButtonState({disabled:false, label:t('placeBet')});
       }
       return;
     }
@@ -2002,25 +2025,26 @@
       lossEl.className='crash-loss';
       startCrashRocket();
       crashMultiplier=computeCrashMultiplier({...state, phase:'live'},now);
-      crashTimer.style.display='none';
       crashLivePill.textContent='x'+crashMultiplier.toFixed(2);
+
       if(crashBetSettled){
-        setCrashBetButtonState(true,t('placeBet'));
+        setCrashBetButtonState({disabled:true, label:t('placeBet')});
       }else if(crashBetActive){
         const win=Math.floor(crashBetAmount*crashMultiplier);
         renderCrashPlayerWin(win,null);
-        setCrashBetButtonState(false,t('cashOut')+' '+formatStars(win)+' <img src="assets/star.png" alt="">',true);
-      }else if(!crashPrizePending){
-        setCrashBetButtonState(true,t('placeBet'));
+        setCrashBetButtonState({
+          disabled:false,
+          html:t('cashOut')+' '+formatStars(win)+' <img src="assets/star.png" alt="">'
+        });
+      }else if(crashPrizePending){
+        setCrashBetButtonState({disabled:true, label:t('giftOpened')});
+      }else{
+        setCrashBetButtonState({disabled:true, label:t('placeBet')});
       }
       return;
     }
 
     closeBet();
-    const nextRoundAt=Number(state.nextRoundAt||0);
-    crashTimer.style.display='none';
-    crashTimer.textContent='';
-    crashTimer.className='crash-timer';
     stopCrashRocket();
     crashMultiplier=Number(state.crashTarget||state.lastCrashMultiplier||1);
     lossEl.textContent='x'+crashMultiplier.toFixed(2);
@@ -2038,9 +2062,13 @@
       setCrashPlayerState('win');
       renderCrashPlayerWin(crashSettledPayout,null);
     }
-    if(crashPrizePending) crashLivePill.textContent=t('giftReady');
-    else crashLivePill.textContent=t('waiting');
-    setCrashBetButtonState(true,!crashBetActive&&!crashPrizePending?t('placeBet'):undefined);
+    crashLivePill.textContent=crashPrizePending ? t('giftReady') : t('waiting');
+
+    if(crashPrizePending){
+      setCrashBetButtonState({disabled:true, label:t('giftOpened')});
+    }else{
+      setCrashBetButtonState({disabled:true, label:t('placeBet')});
+    }
   }
   async function refreshCrashState(silent=false){
     try{
@@ -2075,7 +2103,7 @@
   let crashStarted=false;
 
   async function placeBet(amount){
-    if(!crashRealtimeState||deriveCrashDisplayPhase(crashRealtimeState)!=='countdown'||isCrashTimerVisible()||balance<amount||crashPrizePending)return false;
+    if(!crashRealtimeState||deriveCrashDisplayPhase(crashRealtimeState)!=='countdown'||balance<amount||crashPrizePending)return false;
     let data=null;
     try{
       const resp=await fetch(API_BASE+'/api/crash/bet',{
@@ -2111,9 +2139,11 @@
     crashPrizeGift=null;
     setCrashPlayerState(null);
     hideCrashPrize();
-    const betBtn=document.getElementById('crashBetBtn');
-    if(crashRoundLive){betBtn.classList.remove('dim')}else{betBtn.classList.add('dim')}
-    betBtn.innerHTML=t('cashOut')+' '+formatStars(amount)+' <img src="assets/star.png" alt="">';
+    if(crashRoundLive){
+      setCrashBetButtonState({disabled:false, html:t('cashOut')+' '+formatStars(amount)+' <img src="assets/star.png" alt="">'});
+    }else{
+      setCrashBetButtonState({disabled:true, html:formatStars(amount)+' <img src="assets/star.png" alt="">'});
+    }
     renderCrashPlayerCard(amount);
     renderCrashPlayerWin(amount,null);
     return true;
@@ -2136,8 +2166,7 @@
       crashPrizeGift=null;
       hideCrashPrize();
       setCrashPlayerState('win');
-      document.getElementById('crashBetBtn').classList.add('dim');
-      document.getElementById('crashBetBtn').textContent=t('placeBet');
+      setCrashBetButtonState({disabled:true, label:t('placeBet')});
 
       if(Number.isFinite(Number(data.newBalance))) updateBalance(Number(data.newBalance));
       if(Array.isArray(data.items)) inventoryItems=data.items;
@@ -2206,8 +2235,7 @@
         showCrashPrize(crashPrizeGift);
         renderCrashPlayerWin(win,crashPrizeGift);
         setCrashPlayerState('win');
-        betBtn.classList.add('dim');
-        betBtn.textContent=t('giftOpened');
+        setCrashBetButtonState({disabled:true, label:t('giftOpened')});
         return;
       }
 
@@ -2215,8 +2243,7 @@
       hideCrashPrize();
       renderCrashPlayerWin(win,null);
       setCrashPlayerState('win');
-      betBtn.classList.add('dim');
-      betBtn.textContent=t('placeBet');
+      setCrashBetButtonState({disabled:true, label:t('placeBet')});
     }catch(e){
       tg?.showAlert?tg.showAlert(e.message):alert(e.message);
     }
@@ -2379,19 +2406,6 @@
   const betSheet=document.getElementById('betSheet');
   function openBet(){betOverlay.classList.add('open');betSheet.classList.add('open')}
   function closeBet(){betOverlay.classList.remove('open');betSheet.classList.remove('open')}
-  function isCrashTimerVisible(){
-    return crashTimer&&window.getComputedStyle(crashTimer).display!=='none'&&String(crashTimer.textContent||'').trim()!=='';
-  }
-  function setCrashBetButtonState(disabled,labelHtml,useHtml=false){
-    const betBtn=document.getElementById('crashBetBtn');
-    if(!betBtn)return;
-    betBtn.disabled=!!disabled;
-    betBtn.classList.toggle('dim',!!disabled);
-    if(typeof labelHtml==='string'){
-      if(useHtml) betBtn.innerHTML=labelHtml;
-      else betBtn.textContent=labelHtml;
-    }
-  }
   let crashBetPressLockUntil=0;
   function handleCrashBetPress(ev){
     ev?.preventDefault?.();
@@ -2400,9 +2414,12 @@
     if(now<crashBetPressLockUntil)return;
     crashBetPressLockUntil=now+180;
     const phase=deriveCrashDisplayPhase(crashRealtimeState);
-    if(crashBetActive && phase==='live'){cashOut();return}
     if(crashPrizePending)return;
-    if(isCrashTimerVisible()) return;
+    if(crashBetActive){
+      if(phase==='live') cashOut();
+      return;
+    }
+    if(crashBetSettled)return;
     if(phase!=='countdown'){
       if(crashRealtimeState) refreshCrashState(true);
       return;
