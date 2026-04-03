@@ -27,21 +27,35 @@
   .boot-screen__content{
     position:relative;z-index:1;
     width:min(320px,calc(100vw - 40px));
-    padding:28px 22px 24px;border-radius:28px;
+    padding:30px 22px 24px;border-radius:28px;
     background:rgba(255,255,255,.08);
     border:1px solid rgba(255,255,255,.08);
     backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);
     display:flex;flex-direction:column;align-items:center;justify-content:center;
     text-align:center;
   }
+  .boot-orb{
+    width:92px;height:92px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:18px;position:relative;
+    background:radial-gradient(circle at 50% 45%, rgba(255,255,255,.08), rgba(255,255,255,.02) 62%, rgba(0,0,0,.24) 100%);
+    box-shadow:0 0 0 1px rgba(255,255,255,.06), 0 14px 40px rgba(0,0,0,.35), inset 0 0 24px rgba(255,255,255,.04);
+  }
   .boot-spinner{
-    width:64px;height:64px;border-radius:50%;
-    border:4px solid rgba(255,255,255,.12);
-    border-top-color:#007AFF;
-    border-right-color:rgba(255,255,255,.55);
+    width:74px;height:74px;border-radius:50%;
+    position:relative;
+    background:conic-gradient(from 0deg, rgba(0,122,255,.12), rgba(0,122,255,.96) 28%, rgba(0,122,255,.18) 62%, rgba(0,122,255,.08) 100%);
     animation:bootSpin .9s linear infinite;
-    box-shadow:0 0 24px rgba(0,122,255,.18);
-    margin-bottom:18px;
+    box-shadow:0 0 28px rgba(0,122,255,.28);
+  }
+  .boot-spinner::before{
+    content:'';position:absolute;inset:9px;border-radius:50%;
+    background:rgba(0,0,0,.92);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.04);
+  }
+  .boot-spinner::after{
+    content:'';position:absolute;inset:20px;border-radius:50%;
+    background:radial-gradient(circle, rgba(0,122,255,.28), rgba(0,122,255,.08) 55%, rgba(0,0,0,0) 70%);
   }
   @keyframes bootSpin{to{transform:rotate(360deg)}}
   .boot-title{color:#fff;font-size:20px;font-weight:800;margin-bottom:8px}
@@ -592,7 +606,8 @@
     display:flex;align-items:center;justify-content:center;gap:8px;
     width:calc(100% - 32px);height:52px;border-radius:999px;border:none;cursor:pointer;
     background:#007AFF;color:#fff;font-size:15px;font-weight:700;
-    position:relative;z-index:2;transition:opacity .3s ease;
+    position:relative;z-index:8;transition:opacity .3s ease;
+    pointer-events:auto;touch-action:manipulation;-webkit-user-select:none;user-select:none;
   }
   .crash-bet-btn.dim{opacity:.3;cursor:default}
   .crash-bet-btn img{width:18px;height:18px;object-fit:contain;filter:drop-shadow(0 0 3px rgba(255,200,0,.4))}
@@ -1693,6 +1708,21 @@
     return state.phase;
   }
 
+  let crashBoundaryRefreshDueAt=0;
+  function maybeRefreshCrashBoundary(state, now=getServerNow()){
+    if(!state) return;
+    const candidates=[state.countdownEndsAt, state.liveEndsAt, state.nextRoundAt]
+      .map((v)=>Number(v||0))
+      .filter(Boolean);
+    if(!candidates.length) return;
+    const nextAt=Math.min(...candidates.filter((v)=>v>=now-250));
+    if(!nextAt) return;
+    if(nextAt-now<=180 && Date.now()>=crashBoundaryRefreshDueAt){
+      crashBoundaryRefreshDueAt=Date.now()+220;
+      refreshCrashState(true);
+    }
+  }
+
 
   const crashPlayer=document.getElementById('crashPlayer');
   const crashWait=document.getElementById('crashWait');
@@ -1950,13 +1980,14 @@
     const betBtn=document.getElementById('crashBetBtn');
     const lossEl=document.getElementById('crashLoss');
     const displayPhase=deriveCrashDisplayPhase(state,now);
+    maybeRefreshCrashBoundary(state,now);
     crashDisplayPhase=displayPhase;
     crashRoundLive=displayPhase==='live';
     updateCrashOtherBetsLive({...state, phase: displayPhase});
 
     if(displayPhase==='countdown'){
       const endsAt=Number(state.countdownEndsAt||state.liveStartAt||0);
-      const count=Math.max(0,Math.ceil((endsAt-now)/1000));
+      const count=Math.max(1,Math.ceil((endsAt-now)/1000));
       closeBet();
       crashTimer.style.display='';
       crashTimer.textContent=String(count);
@@ -2347,21 +2378,33 @@
   const betSheet=document.getElementById('betSheet');
   function openBet(){betOverlay.classList.add('open');betSheet.classList.add('open')}
   function closeBet(){betOverlay.classList.remove('open');betSheet.classList.remove('open')}
-  document.getElementById('crashBetBtn').addEventListener('click',()=>{
+  function handleCrashBetPress(ev){
+    ev?.preventDefault?.();
+    ev?.stopPropagation?.();
     if(crashBetActive){cashOut();return}
     if(crashPrizePending)return;
-    if(crashRoundLive||deriveCrashDisplayPhase(crashRealtimeState)!=='countdown') return;
+    const phase=deriveCrashDisplayPhase(crashRealtimeState);
+    if(phase!=='countdown'){
+      if(crashRealtimeState) refreshCrashState(true);
+      return;
+    }
     openBet();
-  });
+  }
+  const crashBetBtnEl=document.getElementById('crashBetBtn');
+  crashBetBtnEl.addEventListener('click',handleCrashBetPress);
+  crashBetBtnEl.addEventListener('touchend',handleCrashBetPress,{passive:false});
   document.getElementById('betClose').addEventListener('click',closeBet);
   betOverlay.addEventListener('click',closeBet);
-  document.getElementById('betSubmit').addEventListener('click',async()=>{
+  async function submitCrashBet(){
     const v=parseInt(document.getElementById('betAmount').value)||0;
     if(v>0&&v<=balance){
       const ok=await placeBet(v);
       if(ok){closeBet();document.getElementById('betAmount').value=''}
     }
-  });
+  }
+  const betSubmitEl=document.getElementById('betSubmit');
+  betSubmitEl.addEventListener('click',submitCrashBet);
+  betSubmitEl.addEventListener('touchend',(e)=>{e.preventDefault();submitCrashBet();},{passive:false});
 
   // Settings modal
   const modalOverlay=document.getElementById('modalOverlay');
