@@ -652,19 +652,26 @@
     background:rgba(255,255,255,.06);
     border:1px solid rgba(255,255,255,.08);
     backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+    min-height:66px;
   }
   .crash-bet-cloud-avatar{
-    width:32px;height:32px;border-radius:50%;object-fit:cover;flex-shrink:0;
+    width:36px;height:36px;border-radius:50%;object-fit:cover;flex-shrink:0;
     background:rgba(255,255,255,.1);
   }
+  .crash-bet-cloud-info{min-width:0;display:flex;flex-direction:column;gap:3px;flex:1}
   .crash-bet-cloud-name{
     color:#fff;font-size:13px;font-weight:700;
     white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-    max-width:120px;
+    max-width:140px;
   }
+  .crash-bet-cloud-bet{
+    display:flex;align-items:center;gap:4px;
+    color:rgba(255,255,255,.45);font-size:12px;font-weight:600;
+  }
+  .crash-bet-cloud-bet img{width:13px;height:13px;object-fit:contain}
   .crash-bet-cloud-amount{
     margin-left:auto;display:flex;align-items:center;gap:4px;
-    color:rgba(255,255,255,.76);font-size:12px;font-weight:700;flex-shrink:0;
+    color:#fff;font-size:13px;font-weight:800;flex-shrink:0;min-width:64px;justify-content:flex-end;
   }
   .crash-bet-cloud-amount img{width:13px;height:13px;object-fit:contain}
   .crash-player-prize{
@@ -1536,6 +1543,8 @@
   let crashRoundLocked=false;
   let crashBetSettled=false;
   let crashSettledPayout=0;
+  let crashDisplayPhase='countdown';
+  let lastCrashDisplayState=null;
 
   function getPillColor(x){
     if(x<=2)return 'orange';
@@ -1547,7 +1556,7 @@
   }
   function updateCrashWaitLabel(count=0){
     if(count>0){
-      crashWaitText.innerHTML='<span class="crash-bets-cloud">'+count+'</span>';
+      crashWaitText.textContent=t('waitingBets');
       return;
     }
     crashWaitText.textContent=t('waitingBets');
@@ -1559,14 +1568,31 @@
     others.slice(0,6).forEach(player=>{
       const row=document.createElement('div');
       row.className='crash-bet-cloud';
+      row.dataset.betAmount=String(Number(player.betAmount||player.amount||0));
+      row.dataset.payout=String(Number(player.currentPayout||player.amount||0));
       const avatar=player.photoUrl
         ? '<img class="crash-bet-cloud-avatar" src="'+player.photoUrl+'" alt="">'
         : '<div class="crash-bet-cloud-avatar"></div>';
       row.innerHTML=
         avatar+
-        '<div class="crash-bet-cloud-name">'+(player.firstName||'User')+'</div>'+
-        '<div class="crash-bet-cloud-amount">'+formatStars(player.amount||0)+' <img src="assets/star.png" alt=""></div>';
+        '<div class="crash-bet-cloud-info">'+
+          '<div class="crash-bet-cloud-name">'+(player.firstName||'User')+'</div>'+
+          '<div class="crash-bet-cloud-bet">'+formatStars(player.betAmount||player.amount||0)+' <img src="assets/star.png" alt=""></div>'+
+        '</div>'+
+        '<div class="crash-bet-cloud-amount">'+formatStars(player.currentPayout||player.amount||0)+' <img src="assets/star.png" alt=""></div>';
       crashOthers.appendChild(row);
+    });
+  }
+  function updateCrashOtherBetsLive(state){
+    const multiplier=computeCrashMultiplier(state);
+    crashOthers.querySelectorAll('.crash-bet-cloud').forEach(row=>{
+      const betAmount=Number(row.dataset.betAmount||0);
+      let value=betAmount;
+      if(state?.phase==='live') value=Math.floor(betAmount*multiplier);
+      else if(state?.phase==='ended') value=Math.floor(betAmount*Number(state.lastCrashMultiplier||1));
+      row.dataset.payout=String(value);
+      const amountEl=row.querySelector('.crash-bet-cloud-amount');
+      if(amountEl) amountEl.innerHTML=formatStars(value)+' <img src="assets/star.png" alt="">';
     });
   }
   function renderCrashHistoryState(state){
@@ -1588,7 +1614,11 @@
     if(state.phase!=='live'){
       return Number(state.lastCrashMultiplier||state.liveMultiplier||1);
     }
-    const elapsed=Math.max(0,now-state.liveStartAt);
+    if(state.liveEndsAt && now>=Number(state.liveEndsAt)){
+      return Number(state.crashTarget||state.lastCrashMultiplier||1);
+    }
+    const startAt=Number(state.liveStartAt||state.countdownEndsAt||now);
+    const elapsed=Math.max(0,now-startAt);
     return Math.min(Number(state.crashTarget||1),Math.exp(elapsed/Number(state.growthMs||8000)));
   }
   function stopCrashRocket(){
@@ -1604,6 +1634,14 @@
       container:crashRocket,renderer:'svg',loop:true,autoplay:true,
       path:'assets/rocket.json'
     });
+  }
+
+  function deriveCrashDisplayPhase(state, now=getServerNow()){
+    if(!state) return 'countdown';
+    if(state.phase==='countdown' && Number(state.countdownEndsAt||0) && now>=Number(state.countdownEndsAt||0)) return 'live';
+    if(state.phase==='live' && Number(state.liveEndsAt||0) && now>=Number(state.liveEndsAt||0)) return 'ended';
+    if(state.phase==='ended' && Number(state.nextRoundAt||0) && now>=Number(state.nextRoundAt||0)) return 'countdown';
+    return state.phase;
   }
 
 
@@ -1843,12 +1881,17 @@
     const now=getServerNow();
     const betBtn=document.getElementById('crashBetBtn');
     const lossEl=document.getElementById('crashLoss');
-    crashRoundLive=state.phase==='live';
+    const displayPhase=deriveCrashDisplayPhase(state,now);
+    crashDisplayPhase=displayPhase;
+    crashRoundLive=displayPhase==='live';
+    updateCrashOtherBetsLive({...state, phase: displayPhase});
 
-    if(state.phase==='countdown'){
-      const count=Math.max(0,Math.ceil((state.liveStartAt-now)/1000));
+    if(displayPhase==='countdown'){
+      const endsAt=Number(state.countdownEndsAt||state.liveStartAt||0);
+      const count=Math.max(0,Math.ceil((endsAt-now)/1000));
+      closeBet();
       crashTimer.style.display='';
-      crashTimer.textContent=count;
+      crashTimer.textContent=String(count);
       crashTimer.className='crash-timer';
       stopCrashRocket();
       lossEl.className='crash-loss';
@@ -1868,13 +1911,12 @@
       return;
     }
 
-    if(state.phase==='live'){
+    if(displayPhase==='live'){
+      closeBet();
       lossEl.className='crash-loss';
       startCrashRocket();
-      crashMultiplier=computeCrashMultiplier(state,now);
-      crashTimer.style.display='';
-      crashTimer.textContent='x'+crashMultiplier.toFixed(2);
-      crashTimer.className='crash-timer';
+      crashMultiplier=computeCrashMultiplier({...state, phase:'live'},now);
+      crashTimer.style.display='none';
       crashLivePill.textContent='x'+crashMultiplier.toFixed(2);
       if(crashBetSettled){
         betBtn.classList.add('dim');
@@ -1897,14 +1939,17 @@
       return;
     }
 
-    const resetCount=Math.max(0,Math.ceil((state.nextRoundAt-now)/1000));
-    crashTimer.style.display='';
-    crashTimer.textContent=resetCount;
-    crashTimer.className='crash-timer';
+    closeBet();
+    crashTimer.style.display='none';
     stopCrashRocket();
-    crashMultiplier=Number(state.lastCrashMultiplier||state.crashTarget||1);
+    crashMultiplier=Number(state.crashTarget||state.lastCrashMultiplier||1);
     lossEl.textContent='x'+crashMultiplier.toFixed(2);
-    lossEl.className='crash-loss show';
+    if(lastCrashDisplayState!==state.roundId+':ended'){
+      lossEl.className='crash-loss';
+      void lossEl.offsetWidth;
+      lossEl.className='crash-loss show';
+      lastCrashDisplayState=state.roundId+':ended';
+    }
     if(crashBetActive&&!crashPrizePending){
       crashBetActive=false;
       setCrashPlayerState('loss');
@@ -1942,7 +1987,7 @@
     if(!crashRealtimeStarted){
       crashRealtimeStarted=true;
       refreshCrashState(true);
-      crashRealtimeTimer=setInterval(()=>refreshCrashState(true),700);
+      crashRealtimeTimer=setInterval(()=>refreshCrashState(true),250);
       if(!crashRealtimeFrame) crashRealtimeFrame=requestAnimationFrame(renderCrashRealtimeFrame);
     }else{
       refreshCrashState(true);
@@ -1951,7 +1996,7 @@
   let crashStarted=false;
 
   async function placeBet(amount){
-    if(!crashRealtimeState||crashRealtimeState.phase!=='countdown'||balance<amount||crashPrizePending||crashRoundLocked)return false;
+    if(!crashRealtimeState||deriveCrashDisplayPhase(crashRealtimeState)!=='countdown'||balance<amount||crashPrizePending||crashRoundLocked)return false;
     let data=null;
     try{
       const resp=await fetch(API_BASE+'/api/crash/bet',{
@@ -2019,7 +2064,11 @@
   }
 
   async function cashOut(){
-    if(!crashBetActive||!crashRoundLive)return;
+    if(!crashBetActive||!crashRoundLive) return;
+    if(crashRealtimeState?.liveEndsAt && getServerNow()>=Number(crashRealtimeState.liveEndsAt)){
+      await refreshCrashState(true);
+      return;
+    }
     const betBtn=document.getElementById('crashBetBtn');
     try{
       const resp=await fetch(API_BASE+'/api/crash/cashout',{
@@ -2188,7 +2237,7 @@
   document.getElementById('crashBetBtn').addEventListener('click',()=>{
     const btn=document.getElementById('crashBetBtn');
     if(crashBetActive){cashOut();return}
-    if(crashRoundLive)return;
+    if(crashRoundLive||deriveCrashDisplayPhase(crashRealtimeState)!=='countdown') return;
     if(!btn.classList.contains('dim'))openBet();
   });
   document.getElementById('betClose').addEventListener('click',closeBet);
@@ -2268,7 +2317,7 @@
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify({initData:tg.initData||'',amount:starsValue}),
       });
-      const {invoiceLink,error}=await resp.json();
+      const {invoiceLink,invoiceId,error}=await resp.json();
       if(error)throw new Error(error);
       const balanceBefore=balance;
       closeTopup();
@@ -2276,8 +2325,8 @@
       syncTopupModeUI();
       tg.openInvoice(invoiceLink,async(status)=>{
         if(status==='paid'){
-          await waitForBalanceUpdate(balanceBefore);
-          await refreshTop();
+          updateBalance(balanceBefore+starsValue);
+          await waitForPaymentApply(invoiceId,balanceBefore,starsValue);
         }else if(status==='failed'){
           tg.showAlert?.('Оплата не прошла. Попробуй снова.');
         }
@@ -2309,15 +2358,24 @@
     return null;
   }
 
-  async function waitForBalanceUpdate(previousBalance,timeoutMs=15000){
+  async function waitForPaymentApply(invoiceId,previousBalance,starsValue,timeoutMs=12000){
     const started=Date.now();
     while(Date.now()-started<timeoutMs){
-      const data=await refreshBalance();
-      if(data&&Number(data.balance)>Number(previousBalance)) return true;
-      await new Promise(r=>setTimeout(r,350));
+      try{
+        const resp=await fetch(API_BASE+'/api/payment-status?invoiceId='+encodeURIComponent(invoiceId),{
+          headers:{'x-init-data':tg?.initData||''}
+        });
+        const data=await resp.json();
+        if(resp.ok&&data.applied){
+          await Promise.all([refreshBalance(),refreshTop(),refreshReferral()]);
+          return true;
+        }
+      }catch(e){}
+      await Promise.all([refreshBalance(),refreshTop()]);
+      await new Promise(r=>setTimeout(r,200));
     }
-    await refreshBalance();
-    return false;
+    await Promise.all([refreshBalance(),refreshTop(),refreshReferral()]);
+    return Number(balance)>=Number(previousBalance)+Number(starsValue||0);
   }
 
   async function refreshReferral(){
