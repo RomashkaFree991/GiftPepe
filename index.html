@@ -1979,11 +1979,9 @@
     updateCrashOtherBetsLive({...state, phase: displayPhase});
 
     if(displayPhase==='countdown'){
-      const endsAt=Number(state.countdownEndsAt||state.liveStartAt||0);
-      const count=endsAt>now?Math.max(1,Math.ceil((endsAt-now)/1000)):0;
       closeBet();
-      crashTimer.style.display='';
-      crashTimer.textContent=String(count);
+      crashTimer.style.display='none';
+      crashTimer.textContent='';
       crashTimer.className='crash-timer';
       stopCrashRocket();
       lossEl.className='crash-loss';
@@ -1994,7 +1992,7 @@
         setCrashBetButtonState(true,t('cashOut')+' '+formatStars(crashBetAmount)+' <img src="assets/star.png" alt="">',true);
       }else if(!crashPrizePending){
         crashRoundLocked=false;
-        setCrashBetButtonState(true,t('placeBet'));
+        setCrashBetButtonState(false,t('placeBet'));
       }
       return;
     }
@@ -2020,9 +2018,8 @@
 
     closeBet();
     const nextRoundAt=Number(state.nextRoundAt||0);
-    const resetCount=nextRoundAt>now?Math.max(1,Math.ceil((nextRoundAt-now)/1000)):0;
-    crashTimer.style.display='';
-    crashTimer.textContent=String(resetCount);
+    crashTimer.style.display='none';
+    crashTimer.textContent='';
     crashTimer.className='crash-timer';
     stopCrashRocket();
     crashMultiplier=Number(state.crashTarget||state.lastCrashMultiplier||1);
