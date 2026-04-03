@@ -21,34 +21,37 @@
   .boot-screen.hidden{opacity:0;visibility:hidden;pointer-events:none}
   .boot-screen__backdrop{
     position:absolute;inset:0;
-    background:radial-gradient(circle at center, rgba(0,122,255,.12), rgba(0,0,0,.62) 58%, rgba(0,0,0,.88) 100%);
-    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    background:radial-gradient(circle at center, rgba(10,132,255,.22) 0%, rgba(10,132,255,.08) 24%, rgba(0,0,0,.58) 62%, rgba(0,0,0,.9) 100%);
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
   }
   .boot-screen__content{
     position:relative;z-index:1;
-    width:auto;
-    padding:0;
-    border-radius:0;
-    background:none;
-    border:none;
-    backdrop-filter:none;-webkit-backdrop-filter:none;
+    width:132px;height:132px;
+    border-radius:50%;
+    background:rgba(7,7,9,.42);
+    border:1px solid rgba(255,255,255,.06);
+    box-shadow:0 18px 60px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.05);
     display:flex;align-items:center;justify-content:center;
+    backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
   }
   .boot-spinner{
-    width:92px;height:92px;border-radius:50%;
+    width:86px;height:86px;border-radius:50%;
     position:relative;
-    background:conic-gradient(from 0deg, rgba(0,122,255,.08), rgba(0,122,255,.98) 24%, rgba(0,122,255,.18) 58%, rgba(0,122,255,.06) 100%);
-    animation:bootSpin .8s linear infinite;
-    box-shadow:0 0 34px rgba(0,122,255,.34);
+    border:5px solid rgba(255,255,255,.09);
+    border-top-color:#0A84FF;
+    border-right-color:rgba(10,132,255,.85);
+    animation:bootSpin .75s linear infinite;
+    box-shadow:0 0 28px rgba(10,132,255,.34);
   }
   .boot-spinner::before{
-    content:'';position:absolute;inset:10px;border-radius:50%;
-    background:rgba(0,0,0,.9);
-    box-shadow:inset 0 0 0 1px rgba(255,255,255,.03);
+    content:'';position:absolute;inset:9px;border-radius:50%;
+    border:1px solid rgba(255,255,255,.05);
+    background:radial-gradient(circle, rgba(10,132,255,.18), rgba(10,132,255,.04) 58%, rgba(0,0,0,0) 78%);
   }
   .boot-spinner::after{
-    content:'';position:absolute;inset:24px;border-radius:50%;
-    background:radial-gradient(circle, rgba(0,122,255,.36), rgba(0,122,255,.1) 55%, rgba(0,0,0,0) 72%);
+    content:'';position:absolute;inset:22px;border-radius:50%;
+    background:rgba(0,0,0,.56);
+    box-shadow:inset 0 0 18px rgba(10,132,255,.08);
   }
   @keyframes bootSpin{to{transform:rotate(360deg)}}
   .boot-title,.boot-subtitle{display:none}
@@ -684,7 +687,7 @@
   }
   .crash-bet-cloud-amount img{width:13px;height:13px;object-fit:contain}
   .crash-player-prize{
-    display:none !important;flex-direction:column;gap:10px;width:100%;margin-top:12px;
+    display:none;flex-direction:column;gap:10px;width:100%;margin-top:12px;
   }
   .crash-player-prize.visible{display:flex}
   .crash-player-prize-card{
@@ -1287,7 +1290,7 @@
       makeContract:'Сделать контракт', addGifts:'Добавить подарки', waiting:'Ожидание', waitingBets:'Ожидание ставок', placeBet:'Сделать ставку', cashOut:'Забрать',
       giftUnlocked:'Ваш подарок', claim:'Забрать', sell:'Продать', support:'Поддержка', language:'Язык', saveAndExit:'Сохранить и выйти', topup:'Пополнение', stars:'Звезды', ton:'TON',
       topupBtn:'Пополнить', bet:'Ставка', top:'Топ', craft:'Крафт', crash:'Краш', upgrade:'Апгрейд', profileNav:'Профиль', giftReady:'Подарок', giftOpened:'Подарок открыт',
-      sellAll:'Продать все', withdraw:'Вывести', withdrawSoon:'Вывод пока в разработке', giftWord1:'подарок', giftWord2:'подарка', giftWord5:'подарков', referralBack:'Назад', invited:'Приглашено', earned:'Заработано', invite:'Пригласить', referralLink:'Реферальная ссылка', copied:'Скопировано'
+      sellAll:'Продать все', withdraw:'Вывести', withdrawSoon:'Подарок отправляется в Telegram…', giftWord1:'подарок', giftWord2:'подарка', giftWord5:'подарков', referralBack:'Назад', invited:'Приглашено', earned:'Заработано', invite:'Пригласить', referralLink:'Реферальная ссылка', copied:'Скопировано'
     },
     en:{
       topPlace:'You are in the top at <b>—</b> place', waitingDots:'Waiting...', profile:'Profile', promocodes:'Promo codes', promoPlaceholder:'Enter promo code', apply:'Apply',
@@ -1297,7 +1300,7 @@
       makeContract:'Make contract', addGifts:'Add gifts', waiting:'Waiting', waitingBets:'Waiting for bets', placeBet:'Place bet', cashOut:'Cash out',
       giftUnlocked:'Your gift', claim:'Claim', sell:'Sell', support:'Support', language:'Language', saveAndExit:'Save and exit', topup:'Top up', stars:'Stars', ton:'TON',
       topupBtn:'Top up', bet:'Bet', top:'Top', craft:'Craft', crash:'Crash', upgrade:'Upgrade', profileNav:'Profile', giftReady:'Gift', giftOpened:'Gift opened',
-      sellAll:'Sell all', withdraw:'Withdraw', withdrawSoon:'Withdrawal is in development', giftWord1:'gift', giftWord2:'gifts', giftWord5:'gifts', referralBack:'Back', invited:'Invited', earned:'Earned', invite:'Invite', referralLink:'Referral link', copied:'Copied'
+      sellAll:'Sell all', withdraw:'Withdraw', withdrawSoon:'Gift is being sent to Telegram…', giftWord1:'gift', giftWord2:'gifts', giftWord5:'gifts', referralBack:'Back', invited:'Invited', earned:'Earned', invite:'Invite', referralLink:'Referral link', copied:'Copied'
     }
   };
   let currentLang=(localStorage.getItem('miniapp_lang')==='en')?'en':'ru';
@@ -1306,7 +1309,7 @@
   function setLangIndicator(lang){
     if(lang==='en'){langInd.classList.add('right')}else{langInd.classList.remove('right')}
   }
-  const INVENTORY_HOLD_MS=20*60*1000;
+  const INVENTORY_HOLD_MS=0;
   const MAX_CRASH_HISTORY=10;
   let inventoryItems=[];
   let crashPrizeGift=null;
@@ -1358,6 +1361,15 @@
     const ts=raw?new Date(raw).getTime():0;
     return Number.isFinite(ts)?ts:0;
   }
+  function canWithdrawItem(item){
+    return true;
+  }
+  function dismissKeyboard(inputEl=null){
+    try{inputEl?.blur?.()}catch(e){}
+    try{document.activeElement?.blur?.()}catch(e){}
+    try{if(tg?.hideKeyboard) tg.hideKeyboard()}catch(e){}
+    try{if(window.Telegram?.WebApp?.hideKeyboard) window.Telegram.WebApp.hideKeyboard()}catch(e){}
+  }
 
   function renderInventory(){
     updateInventorySummary();
@@ -1380,7 +1392,7 @@
           </button>
           <button class="inventory-withdraw-btn" data-action="withdraw">
             <span>${t('withdraw')}</span>
-            <span class="inventory-timer-pill">${formatInventoryTime(getItemWithdrawAt(item)-Date.now())}</span>
+            <span class="inventory-timer-pill">${canWithdrawItem(item)?'now':formatInventoryTime(getItemWithdrawAt(item)-Date.now())}</span>
           </button>
         </div>
       </div>
@@ -1432,7 +1444,13 @@
     if(!card)return;
     const item=inventoryItems.find(entry=>String(entry.id)===String(card.dataset.id));
     if(!item)return;
+
     if(e.target.closest('[data-action="sell"]')){
+      const prevItems=[...inventoryItems];
+      const prevBalance=balance;
+      inventoryItems=inventoryItems.filter(entry=>String(entry.id)!==String(item.id));
+      renderInventory();
+      updateBalance(balance+Number(item.price||0));
       try{
         const resp=await fetch(API_BASE+'/api/inventory/sell',{
           method:'POST',
@@ -1445,18 +1463,46 @@
         if(Number.isFinite(Number(data.newBalance))) updateBalance(Number(data.newBalance));
         renderInventory();
       }catch(err){
+        inventoryItems=prevItems;
+        updateBalance(prevBalance);
+        renderInventory();
         tg?.showAlert?tg.showAlert(err.message):alert(err.message);
       }
       return;
     }
+
     if(e.target.closest('[data-action="withdraw"]')){
-      if(window.Telegram?.WebApp?.showAlert) window.Telegram.WebApp.showAlert(t('withdrawSoon'));
-      else alert(t('withdrawSoon'));
+      dismissKeyboard();
+      const prevItems=[...inventoryItems];
+      inventoryItems=inventoryItems.filter(entry=>String(entry.id)!==String(item.id));
+      renderInventory();
+      try{
+        const resp=await fetch(API_BASE+'/api/inventory/withdraw',{
+          method:'POST',
+          headers:{'Content-Type':'application/json','x-init-data':tg?.initData||''},
+          body:JSON.stringify({giftId:item.id}),
+        });
+        const data=await resp.json().catch(()=>({}));
+        if(!resp.ok) throw new Error(data.error||'Withdraw failed');
+        if(Array.isArray(data.items)) inventoryItems=data.items;
+        renderInventory();
+        if(data.message && tg?.showAlert) tg.showAlert(data.message);
+      }catch(err){
+        inventoryItems=prevItems;
+        renderInventory();
+        tg?.showAlert?tg.showAlert(err.message):alert(err.message);
+      }
     }
   });
 
   sellAllBtn.addEventListener('click',async()=>{
     if(!inventoryItems.length)return;
+    const prevItems=[...inventoryItems];
+    const prevBalance=balance;
+    const soldTotal=inventoryItems.reduce((sum,item)=>sum+Number(item.price||0),0);
+    inventoryItems=[];
+    renderInventory();
+    updateBalance(balance+soldTotal);
     try{
       const resp=await fetch(API_BASE+'/api/inventory/sell-all',{
         method:'POST',
@@ -1468,6 +1514,9 @@
       if(Number.isFinite(Number(data.newBalance))) updateBalance(Number(data.newBalance));
       renderInventory();
     }catch(err){
+      inventoryItems=prevItems;
+      updateBalance(prevBalance);
+      renderInventory();
       tg?.showAlert?tg.showAlert(err.message):alert(err.message);
     }
   });
@@ -1833,7 +1882,7 @@
     document.querySelectorAll('.nav-label')[4].textContent=t('profileNav');
     updateCrashWaitLabel(crashRealtimeState?.betsCount||0);
     if(!crashRealtimeState||crashRealtimeState.phase!=='live') crashLivePill.textContent=t('waiting');
-    if(crashPrizePending) crashLivePill.textContent=t('giftReady');
+    if(crashPrizePending){ crashLivePill.textContent=t('giftReady'); closeBet(); }
     if(!crashBetActive&&!crashPrizePending&&(!crashRealtimeState||crashRealtimeState.phase!=='live')) document.getElementById('crashBetBtn').textContent=t('placeBet');
     if(crashPrizePending&&crashPrizeGift) showCrashPrize(crashPrizeGift);
     syncTopupSubmitLabel();
@@ -1858,8 +1907,23 @@
     giftModalImage.removeAttribute('src');
     giftModalName.textContent='';
     giftModalPrice.innerHTML='';
+    crashPrizeImage.removeAttribute('src');
+    crashPrizeImage.removeAttribute('alt');
+    crashPrizeName.textContent='';
+    crashPrizePrice.innerHTML='';
+    crashPrizeSellBtn.innerHTML='';
+    crashPrizeClaimBtn.textContent=t('claim');
   }
   function showCrashPrize(gift){
+    if(!gift)return;
+    crashPrizeImage.src=gift.image;
+    crashPrizeImage.alt=gift.name||'';
+    crashPrizeName.textContent=gift.name||'';
+    crashPrizePrice.innerHTML=formatStars(gift.price)+' <img src="assets/star.png" alt="">';
+    crashPrizeSellBtn.innerHTML=t('sell')+' '+formatStars(gift.price)+' <img src="assets/star.png" alt="">';
+    crashPrizeClaimBtn.textContent=t('claim');
+    crashPrizeBlock.classList.add('visible');
+
     giftModalImage.src=gift.image;
     giftModalName.textContent=gift.name;
     giftModalPrice.innerHTML=formatStars(gift.price)+' <img src="assets/star.png" alt="">';
@@ -1995,16 +2059,12 @@
       stopCrashRocket();
       lossEl.className='crash-loss';
       crashMultiplier=1.0;
-      if(crashPrizePending){
-        crashLivePill.textContent=t('giftReady');
-        closeBet();
-      }else{
-        crashLivePill.textContent=t('waiting');
-      }
+      if(crashPrizePending){ crashLivePill.textContent=t('giftReady'); closeBet(); }
+      else crashLivePill.textContent=t('waiting');
       if(crashBetActive){
+        closeBet();
         betBtn.classList.add('dim');
         betBtn.innerHTML=t('cashOut')+' '+formatStars(crashBetAmount)+' <img src="assets/star.png" alt="">';
-        closeBet();
       }else if(!crashPrizePending){
         crashRoundLocked=false;
         betBtn.classList.remove('dim');
@@ -2058,7 +2118,7 @@
       setCrashPlayerState('win');
       renderCrashPlayerWin(crashSettledPayout,null);
     }
-    if(crashPrizePending) crashLivePill.textContent=t('giftReady');
+    if(crashPrizePending){ crashLivePill.textContent=t('giftReady'); closeBet(); }
     else crashLivePill.textContent=t('waiting');
     betBtn.classList.add('dim');
     if(!crashBetActive&&!crashPrizePending) betBtn.textContent=t('placeBet');
@@ -2140,8 +2200,11 @@
     return true;
   }
 
+  let crashPrizeResolveBusy=false;
   async function resolveCrashPrize(mode){
-    if(!crashPrizePending||!crashPrizeGift)return;
+    if(!crashPrizePending||!crashPrizeGift||crashPrizeResolveBusy)return;
+    crashPrizeResolveBusy=true;
+    dismissKeyboard();
     try{
       const resp=await fetch(API_BASE+'/api/crash/prize/resolve',{
         method:'POST',
@@ -2183,6 +2246,8 @@
       }
     }catch(err){
       tg?.showAlert?tg.showAlert(err.message):alert(err.message);
+    }finally{
+      crashPrizeResolveBusy=false;
     }
   }
 
@@ -2427,16 +2492,19 @@
     const now=Date.now();
     if(now<crashBetSubmitLockUntil)return;
     crashBetSubmitLockUntil=now+240;
-    const v=parseInt(document.getElementById('betAmount').value)||0;
+    const betAmountInput=document.getElementById('betAmount');
+    const v=parseInt(betAmountInput.value)||0;
     if(v>0&&v<=balance){
+      dismissKeyboard(betAmountInput);
+      closeBet();
+      const prevValue=betAmountInput.value;
+      betAmountInput.value='';
       const ok=await placeBet(v);
-      if(ok){closeBet();document.getElementById('betAmount').value=''}
+      if(!ok) betAmountInput.value=prevValue;
     }
   }
   const betSubmitEl=document.getElementById('betSubmit');
-  ['pointerdown','click'].forEach((eventName)=>{
-    betSubmitEl.addEventListener(eventName,submitCrashBet,{passive:false});
-  });
+  betSubmitEl.addEventListener('click',submitCrashBet,{passive:false});
 
   // Settings modal
   const modalOverlay=document.getElementById('modalOverlay');
