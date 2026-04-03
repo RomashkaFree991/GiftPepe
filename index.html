@@ -16,39 +16,31 @@
     display:flex;align-items:center;justify-content:center;
     overflow:hidden;
     transition:opacity .28s ease,visibility .28s ease;
-    background:#000 url('assets/background_pepe.png') center/cover no-repeat;
+    background:#000 url('assets/background_pepe.png') center center/cover no-repeat;
   }
   .boot-screen.hidden{opacity:0;visibility:hidden;pointer-events:none}
-  .boot-screen__backdrop{
-    position:absolute;inset:0;
-    background:radial-gradient(circle at center, rgba(0,122,255,.12), rgba(0,0,0,.62) 58%, rgba(0,0,0,.88) 100%);
-    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-  }
+  .boot-screen__backdrop{display:none}
   .boot-screen__content{
     position:relative;z-index:1;
-    width:auto;
-    padding:0;
-    border-radius:0;
-    background:none;
-    border:none;
-    backdrop-filter:none;-webkit-backdrop-filter:none;
+    width:100%;height:100%;
     display:flex;align-items:center;justify-content:center;
+    padding:0;margin:0;
   }
   .boot-spinner{
-    width:92px;height:92px;border-radius:50%;
+    width:96px;height:96px;border-radius:50%;
     position:relative;
-    background:conic-gradient(from 0deg, rgba(0,122,255,.08), rgba(0,122,255,.98) 24%, rgba(0,122,255,.18) 58%, rgba(0,122,255,.06) 100%);
-    animation:bootSpin .8s linear infinite;
-    box-shadow:0 0 34px rgba(0,122,255,.34);
+    background:conic-gradient(from 0deg, rgba(255,255,255,.08), rgba(255,255,255,.96) 24%, rgba(255,255,255,.18) 58%, rgba(255,255,255,.06) 100%);
+    animation:bootSpin .85s linear infinite;
+    box-shadow:0 0 34px rgba(255,255,255,.2);
   }
   .boot-spinner::before{
     content:'';position:absolute;inset:10px;border-radius:50%;
-    background:rgba(0,0,0,.9);
-    box-shadow:inset 0 0 0 1px rgba(255,255,255,.03);
+    background:rgba(0,0,0,.62);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);
   }
   .boot-spinner::after{
     content:'';position:absolute;inset:24px;border-radius:50%;
-    background:radial-gradient(circle, rgba(0,122,255,.36), rgba(0,122,255,.1) 55%, rgba(0,0,0,0) 72%);
+    background:radial-gradient(circle, rgba(255,255,255,.32), rgba(255,255,255,.08) 55%, rgba(0,0,0,0) 72%);
   }
   @keyframes bootSpin{to{transform:rotate(360deg)}}
   .boot-title,.boot-subtitle{display:none}
@@ -603,7 +595,7 @@
     pointer-events:auto;touch-action:manipulation;-webkit-user-select:none;user-select:none;
     -webkit-appearance:none;appearance:none;transform:translateZ(0);
   }
-  .crash-bet-btn.dim{opacity:.3;cursor:default}
+  .crash-bet-btn.dim,.crash-bet-btn:disabled{opacity:.3;cursor:default;pointer-events:none}
   .crash-bet-btn img{width:18px;height:18px;object-fit:contain;filter:drop-shadow(0 0 3px rgba(255,200,0,.4))}
   .crash-ground{
     flex:1;
@@ -1999,12 +1991,10 @@
       if(crashPrizePending) crashLivePill.textContent=t('giftReady');
       else crashLivePill.textContent=t('waiting');
       if(crashBetActive){
-        betBtn.classList.add('dim');
-        betBtn.innerHTML=t('cashOut')+' '+formatStars(crashBetAmount)+' <img src="assets/star.png" alt="">';
+        setCrashBetButtonState(true,t('cashOut')+' '+formatStars(crashBetAmount)+' <img src="assets/star.png" alt="">',true);
       }else if(!crashPrizePending){
         crashRoundLocked=false;
-        betBtn.classList.remove('dim');
-        betBtn.textContent=t('placeBet');
+        setCrashBetButtonState(true,t('placeBet'));
       }
       return;
     }
@@ -2017,16 +2007,13 @@
       crashTimer.style.display='none';
       crashLivePill.textContent='x'+crashMultiplier.toFixed(2);
       if(crashBetSettled){
-        betBtn.classList.add('dim');
-        betBtn.textContent=t('placeBet');
+        setCrashBetButtonState(true,t('placeBet'));
       }else if(crashBetActive){
         const win=Math.floor(crashBetAmount*crashMultiplier);
         renderCrashPlayerWin(win,null);
-        betBtn.classList.remove('dim');
-        betBtn.innerHTML=t('cashOut')+' '+formatStars(win)+' <img src="assets/star.png" alt="">';
+        setCrashBetButtonState(false,t('cashOut')+' '+formatStars(win)+' <img src="assets/star.png" alt="">',true);
       }else if(!crashPrizePending){
-        betBtn.classList.add('dim');
-        betBtn.textContent=t('placeBet');
+        setCrashBetButtonState(true,t('placeBet'));
       }
       return;
     }
@@ -2056,8 +2043,7 @@
     }
     if(crashPrizePending) crashLivePill.textContent=t('giftReady');
     else crashLivePill.textContent=t('waiting');
-    betBtn.classList.add('dim');
-    if(!crashBetActive&&!crashPrizePending) betBtn.textContent=t('placeBet');
+    setCrashBetButtonState(true,!crashBetActive&&!crashPrizePending?t('placeBet'):undefined);
   }
   async function refreshCrashState(silent=false){
     try{
@@ -2092,7 +2078,7 @@
   let crashStarted=false;
 
   async function placeBet(amount){
-    if(!crashRealtimeState||deriveCrashDisplayPhase(crashRealtimeState)!=='countdown'||balance<amount||crashPrizePending)return false;
+    if(!crashRealtimeState||deriveCrashDisplayPhase(crashRealtimeState)!=='countdown'||isCrashTimerVisible()||balance<amount||crashPrizePending)return false;
     let data=null;
     try{
       const resp=await fetch(API_BASE+'/api/crash/bet',{
@@ -2396,6 +2382,19 @@
   const betSheet=document.getElementById('betSheet');
   function openBet(){betOverlay.classList.add('open');betSheet.classList.add('open')}
   function closeBet(){betOverlay.classList.remove('open');betSheet.classList.remove('open')}
+  function isCrashTimerVisible(){
+    return crashTimer&&window.getComputedStyle(crashTimer).display!=='none'&&String(crashTimer.textContent||'').trim()!=='';
+  }
+  function setCrashBetButtonState(disabled,labelHtml,useHtml=false){
+    const betBtn=document.getElementById('crashBetBtn');
+    if(!betBtn)return;
+    betBtn.disabled=!!disabled;
+    betBtn.classList.toggle('dim',!!disabled);
+    if(typeof labelHtml==='string'){
+      if(useHtml) betBtn.innerHTML=labelHtml;
+      else betBtn.textContent=labelHtml;
+    }
+  }
   let crashBetPressLockUntil=0;
   function handleCrashBetPress(ev){
     ev?.preventDefault?.();
@@ -2406,6 +2405,7 @@
     const phase=deriveCrashDisplayPhase(crashRealtimeState);
     if(crashBetActive && phase==='live'){cashOut();return}
     if(crashPrizePending)return;
+    if(isCrashTimerVisible()) return;
     if(phase!=='countdown'){
       if(crashRealtimeState) refreshCrashState(true);
       return;
