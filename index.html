@@ -1344,6 +1344,12 @@
     sellAllBtn.style.opacity=count? '1':'.45';
     sellAllBtn.style.pointerEvents=count? 'auto':'none';
   }
+  function getItemWithdrawAt(item){
+    const raw=item?.withdrawAt||item?.withdraw_available_at||item?.withdrawAtMs||0;
+    const ts=raw?new Date(raw).getTime():0;
+    return Number.isFinite(ts)?ts:0;
+  }
+
   function renderInventory(){
     updateInventorySummary();
     if(!inventoryItems.length){
@@ -1356,7 +1362,7 @@
     inventoryEmpty.style.display='none';
     inventoryGrid.classList.add('visible');
     inventoryGrid.innerHTML=inventoryItems.map(item=>`
-      <div class="inventory-card" data-id="${item.uid}">
+      <div class="inventory-card" data-id="${item.id}">
         <img class="inventory-card-image" src="${item.image}" alt="${item.name}">
         <div class="inventory-card-name">${item.name}</div>
         <div class="inventory-actions">
@@ -1365,7 +1371,7 @@
           </button>
           <button class="inventory-withdraw-btn" data-action="withdraw">
             <span>${t('withdraw')}</span>
-            <span class="inventory-timer-pill">${formatInventoryTime(item.withdrawAt-Date.now())}</span>
+            <span class="inventory-timer-pill">${formatInventoryTime(getItemWithdrawAt(item)-Date.now())}</span>
           </button>
         </div>
       </div>
@@ -1388,7 +1394,7 @@
     sheetEmptyDesc.style.display='none';
     sheetGifts.classList.add('visible');
     sheetGifts.innerHTML=inventoryItems.map(item=>`
-      <div class="sheet-gift-card" data-id="${item.uid}">
+      <div class="sheet-gift-card" data-id="${item.id}">
         <img src="${item.image}" alt="${item.name}">
         <div class="sheet-gift-name">${item.name}</div>
         <div class="sheet-gift-price">${formatStars(item.price)} <img src="assets/star.png" alt=""></div>
@@ -1397,12 +1403,13 @@
   }
 
   function addGiftToInventory(gift){
+    if(!gift)return;
     inventoryItems.unshift({
-      uid:String(Date.now())+Math.random().toString(16).slice(2),
+      id:'temp_'+String(Date.now()),
       name:gift.name,
       price:gift.price,
       image:gift.image,
-      withdrawAt:Date.now()+INVENTORY_HOLD_MS
+      withdrawAt:new Date(Date.now()+INVENTORY_HOLD_MS).toISOString()
     });
     renderInventory();
   }
@@ -1411,15 +1418,26 @@
     if(inventoryItems.length) renderInventory();
   },30000);
 
-  inventoryGrid.addEventListener('click',e=>{
+  inventoryGrid.addEventListener('click',async e=>{
     const card=e.target.closest('.inventory-card');
     if(!card)return;
-    const item=inventoryItems.find(entry=>entry.uid===card.dataset.id);
+    const item=inventoryItems.find(entry=>String(entry.id)===String(card.dataset.id));
     if(!item)return;
     if(e.target.closest('[data-action="sell"]')){
-      inventoryItems=inventoryItems.filter(entry=>entry.uid!==item.uid);
-      updateBalance(balance+item.price);
-      renderInventory();
+      try{
+        const resp=await fetch(API_BASE+'/api/inventory/sell',{
+          method:'POST',
+          headers:{'Content-Type':'application/json','x-init-data':tg?.initData||''},
+          body:JSON.stringify({giftId:item.id}),
+        });
+        const data=await resp.json().catch(()=>({}));
+        if(!resp.ok) throw new Error(data.error||'Sell failed');
+        if(Array.isArray(data.items)) inventoryItems=data.items;
+        if(Number.isFinite(Number(data.newBalance))) updateBalance(Number(data.newBalance));
+        renderInventory();
+      }catch(err){
+        tg?.showAlert?tg.showAlert(err.message):alert(err.message);
+      }
       return;
     }
     if(e.target.closest('[data-action="withdraw"]')){
@@ -1428,28 +1446,40 @@
     }
   });
 
-  sellAllBtn.addEventListener('click',()=>{
+  sellAllBtn.addEventListener('click',async()=>{
     if(!inventoryItems.length)return;
-    const total=inventoryItems.reduce((sum,item)=>sum+item.price,0);
-    inventoryItems=[];
-    updateBalance(balance+total);
-    renderInventory();
+    try{
+      const resp=await fetch(API_BASE+'/api/inventory/sell-all',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','x-init-data':tg?.initData||''},
+      });
+      const data=await resp.json().catch(()=>({}));
+      if(!resp.ok) throw new Error(data.error||'Sell all failed');
+      inventoryItems=Array.isArray(data.items)?data.items:[];
+      if(Number.isFinite(Number(data.newBalance))) updateBalance(Number(data.newBalance));
+      renderInventory();
+    }catch(err){
+      tg?.showAlert?tg.showAlert(err.message):alert(err.message);
+    }
   });
 
   renderInventory();
 
   let referralInvited=0;
   let referralEarned=0;
+  let referralCode='';
   const referralCard=document.querySelector('.referral-card');
   const referralLinkInput=document.getElementById('referralLinkInput');
   const referralInvitedValue=document.getElementById('referralInvitedValue');
   const referralEarnedValue=document.getElementById('referralEarnedValue');
+  const promoInput=document.querySelector('.promo-input');
+  const promoBtn=document.querySelector('.promo-btn');
   const REFERRAL_BOT_USERNAME='GiftPepeRobot';
   const TON_TO_STARS=90;
 
   function buildReferralLink(){
-    const refId=String(tg?.initDataUnsafe?.user?.id||'guest');
-    return 'https://t.me/'+REFERRAL_BOT_USERNAME+'?startapp='+encodeURIComponent('ref_'+refId);
+    const refId=String(referralCode||('ref_'+String(tg?.initDataUnsafe?.user?.id||'guest')));
+    return 'https://t.me/'+REFERRAL_BOT_USERNAME+'?startapp='+encodeURIComponent(refId);
   }
 
   function updateReferralUI(){
@@ -1491,10 +1521,29 @@
 
   // Balance
   let balance=0;
+  let topCache={leaders:[],myRank:null};
   function updateBalance(v){
-    balance=v;
+    balance=Number(v||0);
     document.getElementById('balanceText').textContent=formatStars(balance);
     updateInventorySummary();
+  }
+
+  function applyOptimisticDeposit(starsValue){
+    const amount=Number(starsValue||0);
+    if(amount<=0)return;
+    updateBalance(balance+amount);
+    const leaders=Array.isArray(topCache.leaders)?topCache.leaders.map(item=>({...item})):[]; 
+    let me=leaders.find(item=>String(item.id)===String(tgUserId));
+    if(!me){
+      me={id:tgUserId,first_name:firstName||'User',photo_url:photoUrl||'',total_deposited:0};
+      leaders.push(me);
+    }
+    me.total_deposited=Number(me.total_deposited||0)+amount;
+    leaders.sort((a,b)=>Number(b.total_deposited||0)-Number(a.total_deposited||0));
+    const topLeaders=leaders.slice(0,10);
+    const myTopIndex=leaders.findIndex(item=>String(item.id)===String(tgUserId));
+    topCache={leaders:topLeaders,myRank:myTopIndex>=0?myTopIndex+1:topCache.myRank};
+    renderTop(topCache.leaders,topCache.myRank);
   }
 
   // Nav
@@ -1812,9 +1861,27 @@
   }
 
   function syncCrashViewerBet(state){
+    const pendingPrize=state?.pendingPrize||null;
     const viewerBet=state?.viewerBet||null;
+
+    if(pendingPrize){
+      crashPrizeGift=pendingPrize;
+      crashPrizePending=true;
+      crashBetActive=false;
+      crashBetSettled=true;
+      crashSettledPayout=Number(viewerBet?.payout||0);
+      renderCrashPlayerCard(Number(viewerBet?.amount||0));
+      renderCrashPlayerWin(crashSettledPayout,pendingPrize);
+      setCrashPlayerState('win');
+      showCrashPrize(pendingPrize);
+      return;
+    }
+
     if(!viewerBet){
-      if(!crashPrizePending&&!crashBetActive&&!crashBetSettled) return;
+      if(!crashPrizePending&&!crashBetActive&&!crashBetSettled){
+        crashRoundLocked=false;
+        return;
+      }
       if(!crashPrizePending&&state?.phase==='countdown'){
         resetCrashPlayer();
       }
@@ -1859,6 +1926,7 @@
   function applyCrashRoundBoundary(prevState,nextState){
     if(!prevState)return;
     if(prevState.roundId===nextState.roundId)return;
+    crashRoundLocked=false;
     if(crashBetActive&&!crashPrizePending){
       setCrashPlayerState('loss');
       crashBetActive=false;
@@ -1901,10 +1969,8 @@
       if(crashBetActive){
         betBtn.classList.add('dim');
         betBtn.innerHTML=t('cashOut')+' '+formatStars(crashBetAmount)+' <img src="assets/star.png" alt="">';
-      }else if(crashRoundLocked&&!crashPrizePending){
-        betBtn.classList.add('dim');
-        betBtn.textContent=t('placeBet');
       }else if(!crashPrizePending){
+        crashRoundLocked=false;
         betBtn.classList.remove('dim');
         betBtn.textContent=t('placeBet');
       }
@@ -1923,13 +1989,7 @@
         betBtn.textContent=t('placeBet');
       }else if(crashBetActive){
         const win=Math.floor(crashBetAmount*crashMultiplier);
-        const unlockedGift=getBestGiftForStars(win);
-        if(unlockedGift){
-          crashPrizeGift=unlockedGift;
-        }else if(!crashPrizePending){
-          crashPrizeGift=null;
-        }
-        renderCrashPlayerWin(win,crashPrizeGift);
+        renderCrashPlayerWin(win,null);
         betBtn.classList.remove('dim');
         betBtn.innerHTML=t('cashOut')+' '+formatStars(win)+' <img src="assets/star.png" alt="">';
       }else if(!crashPrizePending){
@@ -1987,7 +2047,7 @@
     if(!crashRealtimeStarted){
       crashRealtimeStarted=true;
       refreshCrashState(true);
-      crashRealtimeTimer=setInterval(()=>refreshCrashState(true),250);
+      crashRealtimeTimer=setInterval(()=>refreshCrashState(true),120);
       if(!crashRealtimeFrame) crashRealtimeFrame=requestAnimationFrame(renderCrashRealtimeFrame);
     }else{
       refreshCrashState(true);
@@ -1996,7 +2056,7 @@
   let crashStarted=false;
 
   async function placeBet(amount){
-    if(!crashRealtimeState||deriveCrashDisplayPhase(crashRealtimeState)!=='countdown'||balance<amount||crashPrizePending||crashRoundLocked)return false;
+    if(!crashRealtimeState||deriveCrashDisplayPhase(crashRealtimeState)!=='countdown'||balance<amount||crashPrizePending)return false;
     let data=null;
     try{
       const resp=await fetch(API_BASE+'/api/crash/bet',{
@@ -2040,26 +2100,49 @@
     return true;
   }
 
-  function resolveCrashPrize(mode){
+  async function resolveCrashPrize(mode){
     if(!crashPrizePending||!crashPrizeGift)return;
-    if(mode==='sell'){
-      updateBalance(balance+crashPrizeGift.price);
-    }else{
-      addGiftToInventory(crashPrizeGift);
-    }
-    crashPrizePending=false;
-    crashBetActive=false;
-    crashBetAmount=0;
-    crashPrizeGift=null;
-    hideCrashPrize();
-    setCrashPlayerState('win');
-    document.getElementById('crashBetBtn').classList.add('dim');
-    document.getElementById('crashBetBtn').textContent=t('placeBet');
-    if(!crashRoundLive){
-      crashRoundResetTimeout=setTimeout(()=>{
-        if(crashPrizePending)return;
-        resetCrashPlayer();
-      },1200);
+    try{
+      const resp=await fetch(API_BASE+'/api/crash/prize/resolve',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','x-init-data':tg?.initData||''},
+        body:JSON.stringify({action:mode}),
+      });
+      const data=await resp.json().catch(()=>({}));
+      if(!resp.ok) throw new Error(data.error||'Prize resolve failed');
+
+      crashPrizePending=false;
+      crashBetActive=false;
+      crashBetAmount=0;
+      crashPrizeGift=null;
+      hideCrashPrize();
+      setCrashPlayerState('win');
+      document.getElementById('crashBetBtn').classList.add('dim');
+      document.getElementById('crashBetBtn').textContent=t('placeBet');
+
+      if(Number.isFinite(Number(data.newBalance))) updateBalance(Number(data.newBalance));
+      if(Array.isArray(data.items)) inventoryItems=data.items;
+      renderInventory();
+
+      if(data.state){
+        crashServerOffsetMs=Number(data.state.serverNow||Date.now())-Date.now();
+        const prevState=crashRealtimeState;
+        crashRealtimeState=data.state;
+        applyCrashRoundBoundary(prevState,data.state);
+        syncCrashViewerBet(data.state);
+        renderCrashHistoryState(data.state);
+        renderCrashOtherBets(data.state.activeBets||[]);
+        updateCrashWaitLabel(data.state.betsCount||0);
+      }
+
+      if(!crashRoundLive){
+        crashRoundResetTimeout=setTimeout(()=>{
+          if(crashPrizePending)return;
+          resetCrashPlayer();
+        },1200);
+      }
+    }catch(err){
+      tg?.showAlert?tg.showAlert(err.message):alert(err.message);
     }
   }
 
@@ -2098,7 +2181,8 @@
       crashRoundLocked=true;
       crashBetSettled=true;
       crashSettledPayout=win;
-      if(crashPrizeGift){
+      if(data.pendingPrize){
+        crashPrizeGift=data.pendingPrize;
         crashPrizePending=true;
         showCrashPrize(crashPrizeGift);
         renderCrashPlayerWin(win,crashPrizeGift);
@@ -2177,7 +2261,7 @@
   async function bootstrapApp(){
     showBootState(
       currentLang==='en'?'Loading...':'Загрузка...',
-      currentLang==='en'?'Loading balance, top, crash and referral data':'Подгружаем баланс, топ, краш и рефералку'
+      currentLang==='en'?'Loading balance, top, crash, referral and gifts':'Подгружаем баланс, топ, краш, рефералку и подарки'
     );
     try{
       await initUser();
@@ -2185,6 +2269,7 @@
         refreshBalance(),
         refreshTop(),
         refreshReferral(),
+        refreshInventory(),
         refreshCrashState(true),
       ]);
       if(!crashStarted){
@@ -2211,6 +2296,34 @@
   document.getElementById('referralCopyBtn').addEventListener('click',copyReferralLink);
   document.getElementById('referralInviteBtn').addEventListener('click',inviteByReferral);
 
+  promoBtn?.addEventListener('click',async()=>{
+    const code=String(promoInput?.value||'').trim();
+    if(!code)return;
+    try{
+      promoBtn.disabled=true;
+      const resp=await fetch(API_BASE+'/api/promo/redeem',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','x-init-data':tg?.initData||''},
+        body:JSON.stringify({code}),
+      });
+      const data=await resp.json().catch(()=>({}));
+      if(!resp.ok) throw new Error(data.error||'Промокод недоступен');
+      if(Number.isFinite(Number(data.balance))) updateBalance(Number(data.balance));
+      if(data.referral){
+        referralInvited=Number(data.referral.invitedCount||referralInvited||0);
+        referralEarned=Number(data.referral.earned||referralEarned||0);
+        updateReferralUI();
+      }
+      promoInput.value='';
+      await Promise.all([refreshTop(),refreshReferral()]);
+      tg?.showAlert?tg.showAlert(data.message||('+'+formatStars(data.reward)+' ⭐')):alert(data.message||('+'+formatStars(data.reward)+' ⭐'));
+    }catch(err){
+      tg?.showAlert?tg.showAlert(err.message):alert(err.message);
+    }finally{
+      promoBtn.disabled=false;
+    }
+  });
+
   // Bottom sheet (gifts)
   const sheetOverlay=document.getElementById('sheetOverlay');
   const sheet=document.getElementById('sheet');
@@ -2235,10 +2348,10 @@
   function openBet(){betOverlay.classList.add('open');betSheet.classList.add('open')}
   function closeBet(){betOverlay.classList.remove('open');betSheet.classList.remove('open')}
   document.getElementById('crashBetBtn').addEventListener('click',()=>{
-    const btn=document.getElementById('crashBetBtn');
     if(crashBetActive){cashOut();return}
+    if(crashPrizePending)return;
     if(crashRoundLive||deriveCrashDisplayPhase(crashRealtimeState)!=='countdown') return;
-    if(!btn.classList.contains('dim'))openBet();
+    openBet();
   });
   document.getElementById('betClose').addEventListener('click',closeBet);
   betOverlay.addEventListener('click',closeBet);
@@ -2325,7 +2438,7 @@
       syncTopupModeUI();
       tg.openInvoice(invoiceLink,async(status)=>{
         if(status==='paid'){
-          updateBalance(balanceBefore+starsValue);
+          applyOptimisticDeposit(starsValue);
           await waitForPaymentApply(invoiceId,balanceBefore,starsValue);
         }else if(status==='failed'){
           tg.showAlert?.('Оплата не прошла. Попробуй снова.');
@@ -2343,6 +2456,22 @@
   syncTopupModeUI();
   applyLanguage(currentLang);
   bootstrapApp();
+
+  setInterval(()=>{
+    if(!tg?.initData) return;
+    refreshReferral();
+    refreshInventory();
+  },5000);
+
+  document.addEventListener('visibilitychange',()=>{
+    if(document.visibilityState==='visible'){
+      refreshBalance();
+      refreshTop();
+      refreshReferral();
+      refreshInventory();
+      refreshCrashState(true);
+    }
+  });
 
   // ─── BACKEND HELPERS ─────────────────────────────────────────────────────────
   async function refreshBalance(){
@@ -2367,15 +2496,44 @@
         });
         const data=await resp.json();
         if(resp.ok&&data.applied){
+          if(Number.isFinite(Number(data.balance))) updateBalance(Number(data.balance));
+          if(data.referral){
+            referralInvited=Number(data.referral.invitedCount||referralInvited||0);
+            referralEarned=Number(data.referral.earned||referralEarned||0);
+            updateReferralUI();
+          }
           await Promise.all([refreshBalance(),refreshTop(),refreshReferral()]);
           return true;
         }
       }catch(e){}
-      await Promise.all([refreshBalance(),refreshTop()]);
-      await new Promise(r=>setTimeout(r,200));
+      await Promise.all([refreshBalance(),refreshTop(),refreshReferral()]);
+      await new Promise(r=>setTimeout(r,100));
     }
     await Promise.all([refreshBalance(),refreshTop(),refreshReferral()]);
     return Number(balance)>=Number(previousBalance)+Number(starsValue||0);
+  }
+
+  async function refreshInventory(){
+    if(!tg?.initData)return null;
+    try{
+      const resp=await fetch(API_BASE+'/api/inventory',{headers:{'x-init-data':tg.initData}});
+      const data=await resp.json();
+      if(resp.ok){
+        inventoryItems=Array.isArray(data.items)?data.items:[];
+        renderInventory();
+        if(data.pendingPrize){
+          crashPrizeGift=data.pendingPrize;
+          crashPrizePending=true;
+          showCrashPrize(data.pendingPrize);
+        }else if(crashPrizePending&&!crashBetActive){
+          hideCrashPrize();
+          crashPrizePending=false;
+          crashPrizeGift=null;
+        }
+        return data;
+      }
+    }catch(e){console.warn('Inventory refresh failed:',e.message)}
+    return null;
   }
 
   async function refreshReferral(){
@@ -2386,6 +2544,7 @@
       if(resp.ok){
         referralInvited=Number(data.invitedCount||0);
         referralEarned=Number(data.earned||0);
+        referralCode=String(data.referrerLink||referralCode||'');
         updateReferralUI();
         return data;
       }
@@ -2398,13 +2557,16 @@
       const url=API_BASE+'/api/top'+(tgUserId?'?userId='+tgUserId:'');
       const resp=await fetch(url);
       const {leaders=[],myRank}=await resp.json();
+      topCache={leaders,myRank};
       renderTop(leaders,myRank);
     }catch(e){console.warn('Top refresh failed:',e.message)}
   }
 
   function renderTop(leaders,myRank){
     const placeText=document.querySelector('#topPage .top-place-text');
-    if(placeText)placeText.innerHTML=myRank?'Вы в топе на <b>'+myRank+'</b> месте':'Вы ещё не в топе';
+    if(placeText) placeText.innerHTML=myRank
+      ? (currentLang==='en' ? 'You are in the top at <b>'+myRank+'</b> place' : 'Вы в топе на <b>'+myRank+'</b> месте')
+      : (currentLang==='en' ? 'You are not in the top yet' : 'Вы ещё не в топе');
     const myEntry=leaders.find(l=>String(l.id)===String(tgUserId));
     document.querySelector('.top-my-rank').textContent=myRank||'—';
     document.querySelector('.top-my-score').innerHTML=(myEntry?formatStars(myEntry.total_deposited):'0')+' <img src="assets/star.png" alt="">';
