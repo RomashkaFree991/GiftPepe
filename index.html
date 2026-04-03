@@ -21,9 +21,8 @@
   .boot-screen.hidden{opacity:0;visibility:hidden;pointer-events:none}
   .boot-screen__backdrop{
     position:absolute;inset:0;
-    display:none;
-    background:none;
-    backdrop-filter:none;-webkit-backdrop-filter:none;
+    background:radial-gradient(circle at center, rgba(0,122,255,.12), rgba(0,0,0,.62) 58%, rgba(0,0,0,.88) 100%);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
   }
   .boot-screen__content{
     position:relative;z-index:1;
@@ -1620,15 +1619,6 @@
     }
     crashWaitText.textContent=t('waitingBets');
   }
-  function setCrashBetButtonState({disabled=false, label=null, html=null}={}){
-    const betBtn=document.getElementById('crashBetBtn');
-    if(!betBtn)return;
-    betBtn.classList.toggle('dim', !!disabled);
-    betBtn.disabled=!!disabled;
-    betBtn.style.pointerEvents=disabled?'none':'auto';
-    if(html!==null) betBtn.innerHTML=html;
-    else if(label!==null) betBtn.textContent=label;
-  }
   function renderCrashOtherBets(list=[]){
     if(!crashOthers)return;
     const others=(Array.isArray(list)?list:[]).filter(player=>String(player.userId)!==String(tgUserId));
@@ -1844,7 +1834,7 @@
     updateCrashWaitLabel(crashRealtimeState?.betsCount||0);
     if(!crashRealtimeState||crashRealtimeState.phase!=='live') crashLivePill.textContent=t('waiting');
     if(crashPrizePending) crashLivePill.textContent=t('giftReady');
-    if(!crashBetActive&&!crashPrizePending&&(!crashRealtimeState||crashRealtimeState.phase!=='live')) setCrashBetButtonState({disabled:false, label:t('placeBet')});
+    if(!crashBetActive&&!crashPrizePending&&(!crashRealtimeState||crashRealtimeState.phase!=='live')) document.getElementById('crashBetBtn').textContent=t('placeBet');
     if(crashPrizePending&&crashPrizeGift) showCrashPrize(crashPrizeGift);
     syncTopupSubmitLabel();
     syncBetSubmitLabel();
@@ -1974,7 +1964,8 @@
       crashBetAmount=0;
       crashPrizeGift=null;
       const betBtn=document.getElementById('crashBetBtn');
-      setCrashBetButtonState({disabled:true, label:t('placeBet')});
+      betBtn.classList.add('dim');
+      betBtn.textContent=t('placeBet');
       setTimeout(()=>{
         if(!crashBetActive&&!crashPrizePending) resetCrashPlayer();
       },900);
@@ -1987,6 +1978,7 @@
     const state=crashRealtimeState;
     if(!state)return;
     const now=getServerNow();
+    const betBtn=document.getElementById('crashBetBtn');
     const lossEl=document.getElementById('crashLoss');
     const displayPhase=deriveCrashDisplayPhase(state,now);
     maybeRefreshCrashBoundary(state,now);
@@ -1994,28 +1986,29 @@
     crashRoundLive=displayPhase==='live';
     updateCrashOtherBetsLive({...state, phase: displayPhase});
 
-    crashTimer.style.display='none';
-    crashTimer.textContent='';
-
     if(displayPhase==='countdown'){
-      closeBet();
+      const endsAt=Number(state.countdownEndsAt||state.liveStartAt||0);
+      const count=endsAt>now?Math.max(1,Math.ceil((endsAt-now)/1000)):0;
+      crashTimer.style.display='';
+      crashTimer.textContent=String(count);
+      crashTimer.className='crash-timer';
       stopCrashRocket();
       lossEl.className='crash-loss';
       crashMultiplier=1.0;
-      crashLivePill.textContent=crashPrizePending ? t('giftReady') : t('waitingBets');
-
-      if(crashBetActive){
-        setCrashBetButtonState({
-          disabled:true,
-          html:formatStars(crashBetAmount)+' <img src="assets/star.png" alt="">'
-        });
-      }else if(crashPrizePending){
-        setCrashBetButtonState({disabled:true, label:t('giftOpened')});
-      }else if(crashBetSettled){
-        setCrashBetButtonState({disabled:true, label:t('placeBet')});
+      if(crashPrizePending){
+        crashLivePill.textContent=t('giftReady');
+        closeBet();
       }else{
+        crashLivePill.textContent=t('waiting');
+      }
+      if(crashBetActive){
+        betBtn.classList.add('dim');
+        betBtn.innerHTML=t('cashOut')+' '+formatStars(crashBetAmount)+' <img src="assets/star.png" alt="">';
+        closeBet();
+      }else if(!crashPrizePending){
         crashRoundLocked=false;
-        setCrashBetButtonState({disabled:false, label:t('placeBet')});
+        betBtn.classList.remove('dim');
+        betBtn.textContent=t('placeBet');
       }
       return;
     }
@@ -2025,26 +2018,29 @@
       lossEl.className='crash-loss';
       startCrashRocket();
       crashMultiplier=computeCrashMultiplier({...state, phase:'live'},now);
+      crashTimer.style.display='none';
       crashLivePill.textContent='x'+crashMultiplier.toFixed(2);
-
       if(crashBetSettled){
-        setCrashBetButtonState({disabled:true, label:t('placeBet')});
+        betBtn.classList.add('dim');
+        betBtn.textContent=t('placeBet');
       }else if(crashBetActive){
         const win=Math.floor(crashBetAmount*crashMultiplier);
         renderCrashPlayerWin(win,null);
-        setCrashBetButtonState({
-          disabled:false,
-          html:t('cashOut')+' '+formatStars(win)+' <img src="assets/star.png" alt="">'
-        });
-      }else if(crashPrizePending){
-        setCrashBetButtonState({disabled:true, label:t('giftOpened')});
-      }else{
-        setCrashBetButtonState({disabled:true, label:t('placeBet')});
+        betBtn.classList.remove('dim');
+        betBtn.innerHTML=t('cashOut')+' '+formatStars(win)+' <img src="assets/star.png" alt="">';
+      }else if(!crashPrizePending){
+        betBtn.classList.add('dim');
+        betBtn.textContent=t('placeBet');
       }
       return;
     }
 
     closeBet();
+    const nextRoundAt=Number(state.nextRoundAt||0);
+    const resetCount=nextRoundAt>now?Math.max(1,Math.ceil((nextRoundAt-now)/1000)):0;
+    crashTimer.style.display='';
+    crashTimer.textContent=String(resetCount);
+    crashTimer.className='crash-timer';
     stopCrashRocket();
     crashMultiplier=Number(state.crashTarget||state.lastCrashMultiplier||1);
     lossEl.textContent='x'+crashMultiplier.toFixed(2);
@@ -2062,13 +2058,10 @@
       setCrashPlayerState('win');
       renderCrashPlayerWin(crashSettledPayout,null);
     }
-    crashLivePill.textContent=crashPrizePending ? t('giftReady') : t('waiting');
-
-    if(crashPrizePending){
-      setCrashBetButtonState({disabled:true, label:t('giftOpened')});
-    }else{
-      setCrashBetButtonState({disabled:true, label:t('placeBet')});
-    }
+    if(crashPrizePending) crashLivePill.textContent=t('giftReady');
+    else crashLivePill.textContent=t('waiting');
+    betBtn.classList.add('dim');
+    if(!crashBetActive&&!crashPrizePending) betBtn.textContent=t('placeBet');
   }
   async function refreshCrashState(silent=false){
     try{
@@ -2139,11 +2132,9 @@
     crashPrizeGift=null;
     setCrashPlayerState(null);
     hideCrashPrize();
-    if(crashRoundLive){
-      setCrashBetButtonState({disabled:false, html:t('cashOut')+' '+formatStars(amount)+' <img src="assets/star.png" alt="">'});
-    }else{
-      setCrashBetButtonState({disabled:true, html:formatStars(amount)+' <img src="assets/star.png" alt="">'});
-    }
+    const betBtn=document.getElementById('crashBetBtn');
+    if(crashRoundLive){betBtn.classList.remove('dim')}else{betBtn.classList.add('dim')}
+    betBtn.innerHTML=t('cashOut')+' '+formatStars(amount)+' <img src="assets/star.png" alt="">';
     renderCrashPlayerCard(amount);
     renderCrashPlayerWin(amount,null);
     return true;
@@ -2166,7 +2157,8 @@
       crashPrizeGift=null;
       hideCrashPrize();
       setCrashPlayerState('win');
-      setCrashBetButtonState({disabled:true, label:t('placeBet')});
+      document.getElementById('crashBetBtn').classList.add('dim');
+      document.getElementById('crashBetBtn').textContent=t('placeBet');
 
       if(Number.isFinite(Number(data.newBalance))) updateBalance(Number(data.newBalance));
       if(Array.isArray(data.items)) inventoryItems=data.items;
@@ -2235,7 +2227,8 @@
         showCrashPrize(crashPrizeGift);
         renderCrashPlayerWin(win,crashPrizeGift);
         setCrashPlayerState('win');
-        setCrashBetButtonState({disabled:true, label:t('giftOpened')});
+        betBtn.classList.add('dim');
+        betBtn.textContent=t('giftOpened');
         return;
       }
 
@@ -2243,7 +2236,8 @@
       hideCrashPrize();
       renderCrashPlayerWin(win,null);
       setCrashPlayerState('win');
-      setCrashBetButtonState({disabled:true, label:t('placeBet')});
+      betBtn.classList.add('dim');
+      betBtn.textContent=t('placeBet');
     }catch(e){
       tg?.showAlert?tg.showAlert(e.message):alert(e.message);
     }
@@ -2414,12 +2408,8 @@
     if(now<crashBetPressLockUntil)return;
     crashBetPressLockUntil=now+180;
     const phase=deriveCrashDisplayPhase(crashRealtimeState);
+    if(crashBetActive && phase==='live'){cashOut();return}
     if(crashPrizePending)return;
-    if(crashBetActive){
-      if(phase==='live') cashOut();
-      return;
-    }
-    if(crashBetSettled)return;
     if(phase!=='countdown'){
       if(crashRealtimeState) refreshCrashState(true);
       return;
@@ -2427,15 +2417,7 @@
     openBet();
   }
   const crashBetBtnEl=document.getElementById('crashBetBtn');
-  ['click','touchstart','touchend','pointerup','mouseup'].forEach((eventName)=>{
-    crashBetBtnEl.addEventListener(eventName,handleCrashBetPress,{passive:false});
-  });
-  document.addEventListener('click',(e)=>{
-    if(e.target&&e.target.closest&&e.target.closest('#crashBetBtn')) handleCrashBetPress(e);
-  },true);
-  document.addEventListener('pointerup',(e)=>{
-    if(e.target&&e.target.closest&&e.target.closest('#crashBetBtn')) handleCrashBetPress(e);
-  },true);
+  crashBetBtnEl.addEventListener('click',handleCrashBetPress,{passive:false});
   document.getElementById('betClose').addEventListener('click',closeBet);
   betOverlay.addEventListener('click',closeBet);
   let crashBetSubmitLockUntil=0;
