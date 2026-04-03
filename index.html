@@ -1126,6 +1126,9 @@
 </div>
 
 <script>
+
+
+
   // ─── BACKEND URL — замени после деплоя ────────────────────────────────────
   const API_BASE='https://backend-deployer--timtim000666.replit.app';
 
@@ -1772,10 +1775,12 @@
     }
 
     if(state.phase==='live'){
-      crashTimer.style.display='none';
       lossEl.className='crash-loss';
       startCrashRocket();
       crashMultiplier=computeCrashMultiplier(state,now);
+      crashTimer.style.display='';
+      crashTimer.textContent='x'+crashMultiplier.toFixed(2);
+      crashTimer.className='crash-timer';
       crashLivePill.textContent='x'+crashMultiplier.toFixed(2);
       if(crashBetSettled){
         betBtn.classList.add('dim');
@@ -2214,6 +2219,7 @@
   }
 
   refreshTop();
+
 </script>
 </body>
 </html>
