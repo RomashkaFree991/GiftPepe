@@ -655,7 +655,10 @@
     border:1px solid rgba(255,255,255,.08);
     backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
     min-height:66px;
+    transition:border-color .18s ease, box-shadow .18s ease, background .18s ease;
   }
+  .crash-bet-cloud.win-state{border-color:rgba(52,199,89,.92);box-shadow:0 0 0 1px rgba(52,199,89,.16),0 0 20px rgba(52,199,89,.12)}
+  .crash-bet-cloud.loss-state{border-color:rgba(255,59,48,.92);box-shadow:0 0 0 1px rgba(255,59,48,.14),0 0 20px rgba(255,59,48,.12)}
   .crash-bet-cloud-avatar{
     width:36px;height:36px;border-radius:50%;object-fit:cover;flex-shrink:0;
     background:rgba(255,255,255,.1);
@@ -1288,7 +1291,7 @@
     try{
       const resp=await fetch(API_BASE+'/api/init',{
         method:'POST',
-        headers:{'Content-Type':'application/json'},
+        headers:{'Content-Type':'application/json','x-init-data':tg?.initData||''},
         body:JSON.stringify({initData:tg.initData||''}),
       });
       const data=await resp.json();
@@ -1707,12 +1710,11 @@
     return '';
   }
   function getCrashPreviewGift(stars){
-    const best=getBestGiftForStars(Number(stars||0));
-    if(best) return best;
-    return GIFT_CATALOG[0]||null;
+    return getBestGiftForStars(Number(stars||0))||null;
   }
   function buildCrashGiftBadge(gift){
     const safeGift=gift||null;
+    if(!safeGift) return '';
     const src=resolveGiftImage(safeGift);
     const title=(safeGift?.name||'Gift');
     if(src){
@@ -1723,9 +1725,13 @@
   function updateCrashGiftBadge(container,gift){
     if(!container)return;
     const safeGift=gift||null;
+    let badge=container.querySelector('.crash-bet-cloud-gift-wrap');
+    if(!safeGift){
+      badge?.remove();
+      return;
+    }
     const nextImage=String(resolveGiftImage(safeGift)||'');
     const nextName=String(safeGift?.name||'Gift');
-    let badge=container.querySelector('.crash-bet-cloud-gift-wrap');
     if(!badge){
       container.insertAdjacentHTML('beforeend',buildCrashGiftBadge(safeGift));
       badge=container.querySelector('.crash-bet-cloud-gift-wrap:last-child');
@@ -1771,12 +1777,17 @@
     crashOthers.innerHTML='';
     others.slice(0,6).forEach(player=>{
       const betAmount=Number(player.betAmount||player.amount||0);
-      const payout=Number(player.currentPayout||player.payout||player.amount||0);
+      const status=String(player.status||'active');
+      const payout=Number(player.displayAmount||player.currentPayout||player.payout||player.amount||0);
       const gift=player.previewGift||getCrashPreviewGift(payout)||null;
       const row=document.createElement('div');
       row.className='crash-bet-cloud';
+      if(status==='won') row.classList.add('win-state');
+      if(status==='lost') row.classList.add('loss-state');
       row.dataset.betAmount=String(betAmount);
       row.dataset.payout=String(payout);
+      row.dataset.status=status;
+      row.dataset.settled=(status==='won'||status==='lost')?'1':'0';
       row.dataset.giftId=String(gift?.id||gift?.giftId||'');
       row.dataset.giftName=String(gift?.name||'');
       row.dataset.giftImage=String(resolveGiftImage(gift)||'');
@@ -1804,12 +1815,24 @@
   function updateCrashOtherBetsLive(state){
     const multiplier=computeCrashMultiplier(state);
     crashOthers.querySelectorAll('.crash-bet-cloud').forEach(row=>{
+      if(row.dataset.settled==='1') return;
       const betAmount=Number(row.dataset.betAmount||0);
       let value=betAmount;
-      if(state?.phase==='live') value=Math.floor(betAmount*multiplier);
-      else if(state?.phase==='ended') value=Math.floor(betAmount*Number(state.lastCrashMultiplier||1));
-      row.dataset.payout=String(value);
+      let status='pending';
+      if(state?.phase==='live'){
+        value=Math.floor(betAmount*multiplier);
+        status='active';
+      }else if(state?.phase==='ended'){
+        value=betAmount;
+        status='lost';
+      }
       const gift=getCrashPreviewGift(value);
+      row.dataset.payout=String(value);
+      row.dataset.status=status;
+      if(status==='lost'){
+        row.dataset.settled='1';
+        row.classList.add('loss-state');
+      }
       row.dataset.giftId=String(gift?.id||gift?.giftId||'');
       row.dataset.giftName=String(gift?.name||'');
       row.dataset.giftImage=String(resolveGiftImage(gift)||'');
@@ -1937,12 +1960,7 @@
   }
 
   function renderCrashPlayerWin(amount,gift=null){
-    const lockedGift=(crashPrizePending||crashBetSettled)&&crashPrizeGift?normalizeCrashPrizeGift(crashPrizeGift):null;
-    const explicitGift=gift?normalizeCrashPrizeGift(gift):null;
-    const safeGift=explicitGift||lockedGift||getCrashPreviewGift(amount)||null;
-    const giftSrc=resolveGiftImage(safeGift);
-    const giftHtml=giftSrc?'<img class="crash-win-gift" src="'+giftSrc+'" alt="'+(safeGift?.name||'Gift')+'">':'';
-    document.getElementById('crashPlayerWin').innerHTML='<span class="crash-win-value">'+formatStars(amount)+' <img src="assets/star.png" alt=""></span>'+giftHtml;
+    document.getElementById('crashPlayerWin').innerHTML='<span class="crash-win-value">'+formatStars(amount)+' <img src="assets/star.png" alt=""></span>';
   }
   let topupMode='stars';
   function getTopupRawValue(){
@@ -2112,11 +2130,10 @@
       giftModalImage.alt=normalizedGift.name||'Gift';
     }else{
       crashPrizeImage.removeAttribute('src');
-      crashPrizeImage.alt='';
+      crashPrizeImage.removeAttribute('alt');
       giftModalImage.removeAttribute('src');
       giftModalImage.alt='';
     }
-
     crashPrizeName.textContent=normalizedGift.name;
     crashPrizePrice.innerHTML=formatStars(normalizedGift.price)+' <img src="assets/star.png" alt="">';
     crashPrizeSellBtn.innerHTML=t('sell')+' '+formatStars(normalizedGift.price)+' <img src="assets/star.png" alt="">';
@@ -2154,7 +2171,7 @@
     document.getElementById('crashPlayerName').textContent=firstName;
     if(photoUrl) document.getElementById('crashPlayerAvatar').src=photoUrl;
     document.getElementById('crashPlayerBet').innerHTML=formatStars(amount)+' <img src="assets/star.png" alt="">';
-    crashPrizeBlock.classList.remove('visible');
+    if(!crashPrizePending) crashPrizeBlock.classList.remove('visible');
   }
 
   function syncCrashViewerBet(state){
@@ -2173,7 +2190,7 @@
     if(pendingPrize){
       enterPendingCrashPrize(
         pendingPrize,
-        Number(viewerBet?.payout||crashSettledPayout||0),
+        Number(viewerBet?.displayAmount||viewerBet?.payout||crashSettledPayout||0),
         Number(viewerBet?.amount||crashBetAmount||0),
         { autoOpen: !giftModalOverlay.classList.contains('open') }
       );
@@ -2192,40 +2209,52 @@
         renderCrashPlayerWin(crashSettledPayout||crashBetAmount,crashPrizeGift);
         return;
       }
-      if(!crashPrizePending&&!crashBetActive&&!crashBetSettled){
-        crashRoundLocked=false;
+      if(crashResultState==='loss'&&crashBetAmount>0&&!crashPrizePending){
+        renderCrashPlayerCard(crashBetAmount);
+        renderCrashPlayerWin(crashSettledPayout||crashBetAmount,crashPrizeGift||getCrashPreviewGift(crashBetAmount));
+        setCrashPlayerState('loss');
         return;
       }
-      if(!crashPrizePending&&state?.phase==='countdown'){
-        resetCrashPlayer();
+      if(!crashPrizePending&&!crashBetActive&&!crashBetSettled){
+        crashRoundLocked=false;
       }
       return;
     }
 
+    const betAmount=Number(viewerBet.amount||0);
+    const displayAmount=Number(viewerBet.displayAmount||viewerBet.currentPayout||viewerBet.payout||betAmount||0);
+    const previewGift=viewerBet.previewGift||getCrashPreviewGift(displayAmount)||null;
     crashRoundLocked=true;
-    crashBetAmount=Number(viewerBet.amount||0);
+    crashBetAmount=betAmount;
     renderCrashPlayerCard(crashBetAmount);
 
-    if(viewerBet.cashedOut){
+    if(viewerBet.status==='won'||viewerBet.cashedOut){
       crashCashoutBusy=false;
       crashBetSyncPending=false;
       crashBetActive=false;
       crashBetSettled=true;
-      crashSettledPayout=Number(viewerBet.payout||0);
+      crashSettledPayout=displayAmount||Number(viewerBet.payout||0)||crashBetAmount;
+      if(previewGift) crashPrizeGift=previewGift;
       setCrashPlayerState('win');
+      renderCrashPlayerWin(crashSettledPayout||crashBetAmount,crashPrizeGift);
+      return;
+    }
+
+    if(viewerBet.status==='lost'||state?.phase==='ended'){
+      crashCashoutBusy=false;
+      crashBetSyncPending=false;
+      crashBetActive=false;
+      crashBetSettled=false;
+      crashSettledPayout=displayAmount||crashBetAmount;
+      crashPrizeGift=previewGift;
+      setCrashPlayerState('loss');
       renderCrashPlayerWin(crashSettledPayout||crashBetAmount,crashPrizeGift);
       return;
     }
 
     crashBetSettled=false;
     crashSettledPayout=0;
-    if(state?.phase==='ended'){
-      crashBetActive=false;
-      setCrashPlayerState('loss');
-      renderCrashPlayerWin(0,null);
-      return;
-    }
-
+    crashPrizeGift=previewGift;
     crashBetActive=true;
     setCrashPlayerState(null);
     if(state?.phase==='live'){
@@ -2236,29 +2265,31 @@
     }
   }
 
-
   function applyCrashRoundBoundary(prevState,nextState){
     if(!prevState)return;
     if(prevState.roundId===nextState.roundId)return;
-    if(crashCashoutBusy||crashBetSettled||crashPrizePending){
-      crashRoundLocked=true;
-      return;
-    }
     if(!crashPrizePending) crashPrizeModalAutoKey='';
     crashRoundLocked=false;
-    if(crashBetActive&&!crashPrizePending){
+
+    if(crashCashoutBusy||crashBetSettled||crashPrizePending){
+      return;
+    }
+    if(crashResultState==='loss'&&crashBetAmount>0){
+      renderCrashPlayerCard(crashBetAmount);
+      renderCrashPlayerWin(crashSettledPayout||crashBetAmount,crashPrizeGift||getCrashPreviewGift(crashBetAmount));
       setCrashPlayerState('loss');
+      return;
+    }
+    if(crashBetActive&&!crashPrizePending){
       crashBetActive=false;
-      crashBetAmount=0;
-      crashPrizeGift=null;
+      crashSettledPayout=crashBetAmount;
+      crashPrizeGift=getCrashPreviewGift(crashBetAmount);
+      setCrashPlayerState('loss');
+      renderCrashPlayerCard(crashBetAmount);
+      renderCrashPlayerWin(crashBetAmount,crashPrizeGift);
       const betBtn=document.getElementById('crashBetBtn');
       betBtn.classList.add('dim');
       betBtn.textContent=t('placeBet');
-      setTimeout(()=>{
-        if(!crashBetActive&&!crashPrizePending) resetCrashPlayer();
-      },900);
-    }else if(!crashPrizePending){
-      resetCrashPlayer();
     }
   }
   function renderCrashRealtimeFrame(){
@@ -2588,17 +2619,17 @@
     const prevSettledPayout=crashSettledPayout;
     const liveMultiplier=computeCrashMultiplier(crashRealtimeState);
     const livePayout=Math.max(0,Math.floor(Number(crashBetAmount||0)*liveMultiplier));
-    const lockedPreviewGift=normalizeCrashPrizeGift(getCrashPreviewGift(livePayout)||null);
+    const optimisticGift=getCrashPreviewGift(livePayout)||null;
 
     crashCashoutBusy=true;
     crashBetActive=false;
     crashRoundLocked=true;
     crashBetSettled=true;
     crashSettledPayout=livePayout;
-    crashPrizeGift=lockedPreviewGift;
+    crashPrizeGift=optimisticGift;
     crashPrizePending=false;
     renderCrashPlayerCard(crashBetAmount);
-    renderCrashPlayerWin(livePayout,lockedPreviewGift);
+    renderCrashPlayerWin(livePayout,optimisticGift);
     setCrashPlayerState('win');
     betBtn.classList.add('dim');
     betBtn.textContent=t('giftOpened');
@@ -2611,7 +2642,7 @@
           roundId:crashRealtimeState?.roundId||0,
           clientPayout:livePayout,
           clientMultiplier:Number.isFinite(liveMultiplier)?Number(liveMultiplier.toFixed(4)):1,
-          selectedGift:lockedPreviewGift,
+          selectedGift:optimisticGift||null,
         }),
       });
       const data=await resp.json().catch(()=>({}));
@@ -2637,9 +2668,9 @@
       crashRoundLocked=true;
       crashBetSettled=true;
       crashSettledPayout=win;
-      const finalGift=normalizeCrashPrizeGift(data.awardedGift||data.pendingPrize||lockedPreviewGift||null);
-      if(finalGift){
-        enterPendingCrashPrize(finalGift,win,crashBetAmount,{force:true,autoOpen:true});
+      const finalPrize=data.pendingPrize||data.awardedGift||null;
+      if(finalPrize){
+        enterPendingCrashPrize(finalPrize,win,crashBetAmount,{force:true,autoOpen:true});
         return;
       }
 
@@ -2955,6 +2986,8 @@
           await waitForPaymentApply(invoiceId,balanceBefore,starsValue);
         }else if(status==='failed'){
           tg.showAlert?.('Оплата не прошла. Попробуй снова.');
+        }else if(status==='cancelled'){
+          tg.showAlert?.('Оплата отменена.');
         }
       });
     }catch(e){
@@ -3000,7 +3033,7 @@
     return null;
   }
 
-  async function waitForPaymentApply(invoiceId,previousBalance,starsValue,timeoutMs=12000){
+  async function waitForPaymentApply(invoiceId,previousBalance,starsValue,timeoutMs=6000){
     const started=Date.now();
     while(Date.now()-started<timeoutMs){
       try{
@@ -3019,8 +3052,7 @@
           return true;
         }
       }catch(e){}
-      await Promise.all([refreshBalance(),refreshTop(),refreshReferral()]);
-      await new Promise(r=>setTimeout(r,100));
+      await new Promise(r=>setTimeout(r,250));
     }
     await Promise.all([refreshBalance(),refreshTop(),refreshReferral()]);
     return Number(balance)>=Number(previousBalance)+Number(starsValue||0);
