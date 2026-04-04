@@ -2104,21 +2104,25 @@
     const normalizedGift=normalizeCrashPrizeGift(gift);
     if(!normalizedGift)return;
     const giftImage=resolveGiftImage(normalizedGift);
-    crashPrizeBlock.classList.remove('visible');
-    crashPrizeImage.removeAttribute('src');
-    crashPrizeImage.removeAttribute('alt');
-    crashPrizeName.textContent='';
-    crashPrizePrice.innerHTML='';
-    crashPrizeSellBtn.innerHTML='';
-    crashPrizeClaimBtn.textContent=t('claim');
 
     if(giftImage){
+      crashPrizeImage.src=giftImage;
+      crashPrizeImage.alt=normalizedGift.name||'Gift';
       giftModalImage.src=giftImage;
       giftModalImage.alt=normalizedGift.name||'Gift';
     }else{
+      crashPrizeImage.removeAttribute('src');
+      crashPrizeImage.removeAttribute('alt');
       giftModalImage.removeAttribute('src');
       giftModalImage.alt='';
     }
+
+    crashPrizeName.textContent=normalizedGift.name;
+    crashPrizePrice.innerHTML=formatStars(normalizedGift.price)+' <img src="assets/star.png" alt="">';
+    crashPrizeSellBtn.innerHTML=t('sell')+' '+formatStars(normalizedGift.price)+' <img src="assets/star.png" alt="">';
+    crashPrizeClaimBtn.textContent=t('claim');
+    crashPrizeBlock.classList.add('visible');
+
     giftModalName.textContent=normalizedGift.name;
     giftModalPrice.innerHTML=formatStars(normalizedGift.price)+' <img src="assets/star.png" alt="">';
     giftModalSellBtn.innerHTML=t('sell')+' '+formatStars(normalizedGift.price)+' <img src="assets/star.png" alt="">';
@@ -2236,7 +2240,20 @@
   function applyCrashRoundBoundary(prevState,nextState){
     if(!prevState)return;
     if(prevState.roundId===nextState.roundId)return;
+
+    const hasLockedWin=!!(crashCashoutBusy||crashBetSettled||crashPrizePending);
     if(!crashPrizePending) crashPrizeModalAutoKey='';
+
+    if(hasLockedWin){
+      crashRoundLocked=true;
+      if(crashBetAmount>0){
+        renderCrashPlayerCard(crashBetAmount);
+        renderCrashPlayerWin(crashSettledPayout||crashBetAmount,crashPrizeGift);
+        setCrashPlayerState('win');
+      }
+      return;
+    }
+
     crashRoundLocked=false;
     if(crashBetActive&&!crashPrizePending){
       setCrashPlayerState('loss');
@@ -2247,7 +2264,7 @@
       betBtn.classList.add('dim');
       betBtn.textContent=t('placeBet');
       setTimeout(()=>{
-        if(!crashBetActive&&!crashPrizePending) resetCrashPlayer();
+        if(!crashBetActive&&!crashPrizePending&&!crashBetSettled) resetCrashPlayer();
       },900);
     }else if(!crashPrizePending){
       resetCrashPlayer();
@@ -2580,17 +2597,17 @@
     const prevSettledPayout=crashSettledPayout;
     const liveMultiplier=computeCrashMultiplier(crashRealtimeState);
     const livePayout=Math.max(0,Math.floor(Number(crashBetAmount||0)*liveMultiplier));
-    const optimisticGift=getCrashPreviewGift(livePayout)||null;
 
     crashCashoutBusy=true;
     crashBetActive=false;
     crashRoundLocked=true;
     crashBetSettled=true;
     crashSettledPayout=livePayout;
-    crashPrizeGift=optimisticGift;
+    crashPrizeGift=null;
     crashPrizePending=false;
+    hideCrashPrize();
     renderCrashPlayerCard(crashBetAmount);
-    renderCrashPlayerWin(livePayout,optimisticGift);
+    renderCrashPlayerWin(livePayout,null);
     setCrashPlayerState('win');
     betBtn.classList.add('dim');
     betBtn.textContent=t('giftOpened');
@@ -2608,18 +2625,9 @@
       const data=await resp.json().catch(()=>({}));
       if(!resp.ok) throw new Error(data.error||'Cash out failed');
 
-      if(data.state){
-        crashServerOffsetMs=Number(data.state.serverNow||Date.now())-Date.now();
-        const prevState=crashRealtimeState;
-        crashRealtimeState=data.state;
-        applyCrashRoundBoundary(prevState,data.state);
-        syncCrashViewerBet(data.state);
-        renderCrashHistoryState(data.state);
-        renderCrashOtherBets(data.state.activeBets||[]);
-        updateCrashWaitLabel(data.state.betsCount||0);
-      }
-
       const win=Number(data.payout||0);
+      const awardedGift=normalizeCrashPrizeGift(data.awardedGift||data.pendingPrize||data.state?.pendingPrize||null);
+
       if(Number.isFinite(Number(data.newBalance))) updateBalance(Number(data.newBalance));
       else updateBalance(prevBalance+win);
 
@@ -2628,17 +2636,32 @@
       crashRoundLocked=true;
       crashBetSettled=true;
       crashSettledPayout=win;
-      if(data.pendingPrize){
-        enterPendingCrashPrize(data.pendingPrize,win,crashBetAmount,{force:true,autoOpen:true});
+      crashPrizeGift=awardedGift;
+
+      if(data.state){
+        crashServerOffsetMs=Number(data.state.serverNow||Date.now())-Date.now();
+        const prevState=crashRealtimeState;
+        crashRealtimeState=data.state;
+        applyCrashRoundBoundary(prevState,data.state);
+        renderCrashHistoryState(data.state);
+        renderCrashOtherBets(data.state.activeBets||[]);
+        updateCrashWaitLabel(data.state.betsCount||0);
+      }
+
+      if(awardedGift){
+        enterPendingCrashPrize(awardedGift,win,crashBetAmount,{force:true,autoOpen:true});
         return;
       }
 
-      crashPrizeGift=null;
       hideCrashPrize();
+      renderCrashPlayerCard(crashBetAmount);
       renderCrashPlayerWin(win,null);
       setCrashPlayerState('win');
       betBtn.classList.add('dim');
       betBtn.textContent=t('placeBet');
+      if(data.state){
+        syncCrashViewerBet(data.state);
+      }
     }catch(e){
       crashCashoutBusy=false;
       crashPrizePending=prevPrizePending;
