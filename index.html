@@ -664,7 +664,7 @@
   .crash-bet-cloud-name{
     color:#fff;font-size:13px;font-weight:700;
     white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-    max-width:140px;
+    max-width:110px;
   }
   .crash-bet-cloud-bet{
     display:flex;align-items:center;gap:4px;
@@ -672,16 +672,29 @@
   }
   .crash-bet-cloud-bet img{width:13px;height:13px;object-fit:contain}
   .crash-bet-cloud-right{
-    margin-left:auto;display:flex;align-items:center;gap:8px;flex-shrink:0;
+    margin-left:auto;
+    display:flex;align-items:center;justify-content:flex-end;gap:8px;
+    flex-shrink:0;min-width:112px;
   }
   .crash-bet-cloud-amount{
     display:flex;align-items:center;gap:4px;
-    color:#fff;font-size:13px;font-weight:800;flex-shrink:0;min-width:64px;justify-content:flex-end;
+    color:#fff;font-size:13px;font-weight:800;flex-shrink:0;justify-content:flex-end;
+    white-space:nowrap;
   }
   .crash-bet-cloud-amount img{width:13px;height:13px;object-fit:contain}
+  .crash-bet-cloud-gift-wrap{
+    width:42px;height:42px;border-radius:12px;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
+    overflow:hidden;
+  }
   .crash-bet-cloud-gift{
-    width:38px;height:38px;object-fit:contain;flex-shrink:0;
+    width:34px;height:34px;object-fit:contain;display:block;flex-shrink:0;
     filter:drop-shadow(0 8px 12px rgba(0,0,0,.24));
+  }
+  .crash-bet-cloud-gift-fallback{
+    color:rgba(255,255,255,.92);font-size:18px;line-height:1;
   }
   .crash-player-prize{
     display:none;flex-direction:column;gap:10px;width:100%;margin-top:12px;
@@ -1673,6 +1686,20 @@
     }
     return '';
   }
+  function getCrashPreviewGift(stars){
+    const best=getBestGiftForStars(Number(stars||0));
+    if(best) return best;
+    return GIFT_CATALOG[0]||null;
+  }
+  function buildCrashGiftBadge(gift){
+    const safeGift=gift||null;
+    const src=resolveGiftImage(safeGift);
+    const title=(safeGift?.name||'Gift');
+    if(src){
+      return '<div class="crash-bet-cloud-gift-wrap" title="'+title+'"><img class="crash-bet-cloud-gift" src="'+src+'" alt="'+title+'"></div>';
+    }
+    return '<div class="crash-bet-cloud-gift-wrap" title="'+title+'"><span class="crash-bet-cloud-gift-fallback">🎁</span></div>';
+  }
   function normalizeInventoryGift(item,fallbackId=''){
     if(!item) return null;
     return {
@@ -1698,7 +1725,7 @@
     others.slice(0,6).forEach(player=>{
       const betAmount=Number(player.betAmount||player.amount||0);
       const payout=Number(player.currentPayout||player.payout||player.amount||0);
-      const gift=player.previewGift||getBestGiftForStars(payout)||null;
+      const gift=player.previewGift||getCrashPreviewGift(payout)||null;
       const row=document.createElement('div');
       row.className='crash-bet-cloud';
       row.dataset.betAmount=String(betAmount);
@@ -1709,9 +1736,6 @@
       const avatar=player.photoUrl
         ? '<img class="crash-bet-cloud-avatar" src="'+player.photoUrl+'" alt="">'
         : '<div class="crash-bet-cloud-avatar"></div>';
-      const giftHtml=gift
-        ? '<img class="crash-bet-cloud-gift" src="'+resolveGiftImage(gift)+'" alt="'+(gift.name||'Gift')+'" title="'+(gift.name||'Gift')+'">'
-        : '';
       row.innerHTML=
         avatar+
         '<div class="crash-bet-cloud-info">'+
@@ -1720,7 +1744,7 @@
         '</div>'+
         '<div class="crash-bet-cloud-right">'+
           '<div class="crash-bet-cloud-amount">'+formatStars(payout)+' <img src="assets/star.png" alt=""></div>'+
-          giftHtml+
+          buildCrashGiftBadge(gift)+
         '</div>';
       crashOthers.appendChild(row);
     });
@@ -1733,30 +1757,21 @@
       if(state?.phase==='live') value=Math.floor(betAmount*multiplier);
       else if(state?.phase==='ended') value=Math.floor(betAmount*Number(state.lastCrashMultiplier||1));
       row.dataset.payout=String(value);
-      const gift=getBestGiftForStars(value);
+      const gift=getCrashPreviewGift(value);
       row.dataset.giftId=String(gift?.id||gift?.giftId||'');
       row.dataset.giftName=String(gift?.name||'');
       row.dataset.giftImage=String(resolveGiftImage(gift)||'');
       const amountEl=row.querySelector('.crash-bet-cloud-amount');
       if(amountEl) amountEl.innerHTML=formatStars(value)+' <img src="assets/star.png" alt="">';
-      const giftEl=row.querySelector('.crash-bet-cloud-gift');
-      const giftSrc=resolveGiftImage(gift);
-      if(giftEl && giftSrc){
-        giftEl.src=giftSrc;
-        giftEl.alt=gift?.name||'Gift';
-        giftEl.title=gift?.name||'Gift';
-      }else if(!giftEl && giftSrc){
-        const rightEl=row.querySelector('.crash-bet-cloud-right');
-        if(rightEl){
-          const img=document.createElement('img');
-          img.className='crash-bet-cloud-gift';
-          img.src=giftSrc;
-          img.alt=gift?.name||'Gift';
-          img.title=gift?.name||'Gift';
-          rightEl.appendChild(img);
+      const rightEl=row.querySelector('.crash-bet-cloud-right');
+      if(rightEl){
+        const currentBadge=rightEl.querySelector('.crash-bet-cloud-gift-wrap');
+        const nextBadgeHtml=buildCrashGiftBadge(gift);
+        if(currentBadge){
+          currentBadge.outerHTML=nextBadgeHtml;
+        }else{
+          rightEl.insertAdjacentHTML('beforeend', nextBadgeHtml);
         }
-      }else if(giftEl && !giftSrc){
-        giftEl.remove();
       }
     });
   }
@@ -1858,7 +1873,9 @@
   }
 
   function renderCrashPlayerWin(amount,gift=null){
-    const giftHtml=gift?'<img class="crash-win-gift" src="'+resolveGiftImage(gift)+'" alt="'+(gift.name||'')+'">':'';
+    const safeGift=gift||getCrashPreviewGift(amount)||null;
+    const giftSrc=resolveGiftImage(safeGift);
+    const giftHtml=giftSrc?'<img class="crash-win-gift" src="'+giftSrc+'" alt="'+(safeGift?.name||'Gift')+'">':'';
     document.getElementById('crashPlayerWin').innerHTML='<span class="crash-win-value">'+formatStars(amount)+' <img src="assets/star.png" alt=""></span>'+giftHtml;
   }
   let topupMode='stars';
