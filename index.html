@@ -16,43 +16,33 @@
     display:flex;align-items:center;justify-content:center;
     overflow:hidden;
     transition:opacity .28s ease,visibility .28s ease;
-    background:#000 url('assets/background_pepe.png') center/cover no-repeat;
+    background:url('assets/background_pepe.png') center/cover no-repeat;
   }
   .boot-screen.hidden{opacity:0;visibility:hidden;pointer-events:none}
   .boot-screen__backdrop{
     position:absolute;inset:0;
-    background:radial-gradient(circle at center, rgba(10,132,255,.22) 0%, rgba(10,132,255,.08) 24%, rgba(0,0,0,.58) 62%, rgba(0,0,0,.9) 100%);
-    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    background:linear-gradient(180deg, rgba(0,0,0,.12), rgba(0,0,0,.28));
+    backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);
   }
   .boot-screen__content{
     position:relative;z-index:1;
-    width:132px;height:132px;
-    border-radius:50%;
-    background:rgba(7,7,9,.42);
-    border:1px solid rgba(255,255,255,.06);
-    box-shadow:0 18px 60px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.05);
+    width:118px;height:118px;
     display:flex;align-items:center;justify-content:center;
-    backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+    background:transparent;border:none;box-shadow:none;
+    backdrop-filter:none;-webkit-backdrop-filter:none;
   }
   .boot-spinner{
-    width:86px;height:86px;border-radius:50%;
+    width:88px;height:88px;border-radius:50%;
     position:relative;
-    border:5px solid rgba(255,255,255,.09);
+    border:4px solid rgba(255,255,255,.16);
     border-top-color:#0A84FF;
-    border-right-color:rgba(10,132,255,.85);
-    animation:bootSpin .75s linear infinite;
-    box-shadow:0 0 28px rgba(10,132,255,.34);
+    border-right-color:rgba(10,132,255,.92);
+    background:transparent;
+    animation:bootSpin .78s linear infinite;
+    box-shadow:0 0 24px rgba(10,132,255,.22);
   }
-  .boot-spinner::before{
-    content:'';position:absolute;inset:9px;border-radius:50%;
-    border:1px solid rgba(255,255,255,.05);
-    background:radial-gradient(circle, rgba(10,132,255,.18), rgba(10,132,255,.04) 58%, rgba(0,0,0,0) 78%);
-  }
-  .boot-spinner::after{
-    content:'';position:absolute;inset:22px;border-radius:50%;
-    background:rgba(0,0,0,.56);
-    box-shadow:inset 0 0 18px rgba(10,132,255,.08);
-  }
+  .boot-spinner::before,
+  .boot-spinner::after{content:none;}
   @keyframes bootSpin{to{transform:rotate(360deg)}}
   .boot-title,.boot-subtitle{display:none}
   .boot-retry{
@@ -194,7 +184,7 @@
     display:flex;flex-direction:column;align-items:center;min-height:198px;
   }
   .inventory-card-image{
-    width:82px;height:82px;object-fit:contain;flex-shrink:0;margin-bottom:8px;
+    width:98px;height:98px;object-fit:contain;flex-shrink:0;margin-bottom:8px;
     filter:drop-shadow(0 10px 18px rgba(0,0,0,.24));
   }
   .inventory-card-name{
@@ -338,7 +328,7 @@
   .sheet-gifts{display:none;width:100%;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding-top:8px}
   .sheet-gifts.visible{display:grid}
   .sheet-gift-card{padding:12px 10px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;align-items:center;gap:8px}
-  .sheet-gift-card img{width:74px;height:74px;object-fit:contain;filter:drop-shadow(0 10px 18px rgba(0,0,0,.24))}
+  .sheet-gift-card img{width:90px;height:90px;object-fit:contain;filter:drop-shadow(0 10px 18px rgba(0,0,0,.24))}
   .sheet-gift-name{color:#fff;font-size:12px;font-weight:700;text-align:center;line-height:1.2;min-height:30px}
   .sheet-gift-price{display:flex;align-items:center;justify-content:center;gap:4px;color:rgba(255,255,255,.65);font-size:12px;font-weight:700}
   .sheet-gift-price img{width:14px;height:14px;object-fit:contain}
@@ -650,7 +640,7 @@
   .crash-win-value{display:flex;align-items:center;gap:4px}
   .crash-win-value img{width:18px;height:18px;object-fit:contain;filter:drop-shadow(0 0 3px rgba(255,200,0,.4))}
   .crash-win-gift{
-    width:28px;height:28px;object-fit:contain;flex-shrink:0;
+    width:34px;height:34px;object-fit:contain;flex-shrink:0;
     filter:drop-shadow(0 8px 12px rgba(0,0,0,.24));
   }
   .crash-bets-stack{
@@ -681,22 +671,29 @@
     color:rgba(255,255,255,.45);font-size:12px;font-weight:600;
   }
   .crash-bet-cloud-bet img{width:13px;height:13px;object-fit:contain}
+  .crash-bet-cloud-right{
+    margin-left:auto;display:flex;align-items:center;gap:8px;flex-shrink:0;
+  }
   .crash-bet-cloud-amount{
-    margin-left:auto;display:flex;align-items:center;gap:4px;
+    display:flex;align-items:center;gap:4px;
     color:#fff;font-size:13px;font-weight:800;flex-shrink:0;min-width:64px;justify-content:flex-end;
   }
   .crash-bet-cloud-amount img{width:13px;height:13px;object-fit:contain}
+  .crash-bet-cloud-gift{
+    width:38px;height:38px;object-fit:contain;flex-shrink:0;
+    filter:drop-shadow(0 8px 12px rgba(0,0,0,.24));
+  }
   .crash-player-prize{
     display:none;flex-direction:column;gap:10px;width:100%;margin-top:12px;
   }
-  .crash-player-prize.visible{display:none}
+  .crash-player-prize.visible{display:flex}
   .crash-player-prize-card{
     display:flex;align-items:center;gap:10px;
     padding:10px 12px;border-radius:14px;
     background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
   }
   .crash-player-prize-image{
-    width:54px;height:54px;object-fit:contain;flex-shrink:0;
+    width:72px;height:72px;object-fit:contain;flex-shrink:0;
     filter:drop-shadow(0 8px 14px rgba(0,0,0,.24));
   }
   .crash-player-prize-title{color:#fff;font-size:13px;font-weight:700;line-height:1.2}
@@ -738,7 +735,7 @@
     background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.08);
     color:#fff;font-size:13px;font-weight:700;
   }
-  .gift-modal-image{width:148px;height:148px;display:block;object-fit:contain;margin:8px auto 10px;filter:drop-shadow(0 16px 24px rgba(0,0,0,.28))}
+  .gift-modal-image{width:172px;height:172px;display:block;object-fit:contain;margin:8px auto 10px;filter:drop-shadow(0 16px 24px rgba(0,0,0,.28))}
   .gift-modal-title{color:#fff;font-size:18px;font-weight:800;text-align:center;line-height:1.2;margin-bottom:8px}
   .gift-modal-price{display:flex;align-items:center;justify-content:center;gap:6px;color:rgba(255,255,255,.72);font-size:14px;font-weight:700;margin-bottom:16px}
   .gift-modal-price img{width:17px;height:17px;object-fit:contain}
@@ -1287,7 +1284,7 @@
       referralTitle:'РЕФЕРАЛЬНАЯ СИСТЕМА', referralDesc:'Приглашайте людей, чтобы получать бонусы', inventory:'Инвентарь', noGiftsTitle:'Не нашли подарков?',
       noGiftsDesc:'Отправьте подарок <a href="https://t.me/GiftPepe_Releyer" target="_blank">@GiftPepe_Releyer</a><br>или выиграйте в играх', chooseGift:'Выберите подарок',
       myGifts:'Мои подарки', giftsForUpgrade:'Подарки для апгрейда', makeUpgrade:'Сделать апгрейд', yourGifts:'Ваши подарки', empty:'Пусто', giftCost:'Стоимость подарков',
-      makeContract:'Сделать контракт', addGifts:'Добавить подарки', waiting:'Ожидание', waitingBets:'', placeBet:'Сделать ставку', cashOut:'Забрать',
+      makeContract:'Сделать контракт', addGifts:'Добавить подарки', waiting:'Ожидание', waitingBets:'Ожидание ставок', placeBet:'Сделать ставку', cashOut:'Забрать',
       giftUnlocked:'Ваш подарок', claim:'Забрать', sell:'Продать', support:'Поддержка', language:'Язык', saveAndExit:'Сохранить и выйти', topup:'Пополнение', stars:'Звезды', ton:'TON',
       topupBtn:'Пополнить', bet:'Ставка', top:'Топ', craft:'Крафт', crash:'Краш', upgrade:'Апгрейд', profileNav:'Профиль', giftReady:'Подарок', giftOpened:'Подарок открыт',
       sellAll:'Продать все', withdraw:'Вывести', withdrawSoon:'Подарок отправляется в Telegram…', giftWord1:'подарок', giftWord2:'подарка', giftWord5:'подарков', referralBack:'Назад', invited:'Приглашено', earned:'Заработано', invite:'Пригласить', referralLink:'Реферальная ссылка', copied:'Скопировано'
@@ -1297,7 +1294,7 @@
       referralTitle:'REFERRAL SYSTEM', referralDesc:'Invite people to get bonuses', inventory:'Inventory', noGiftsTitle:'No gifts found?',
       noGiftsDesc:'Send a gift to <a href="https://t.me/GiftPepe_Releyer" target="_blank">@GiftPepe_Releyer</a><br>or win one in games', chooseGift:'Choose a gift',
       myGifts:'My gifts', giftsForUpgrade:'Gifts for upgrade', makeUpgrade:'Make upgrade', yourGifts:'Your gifts', empty:'Empty', giftCost:'Gift value',
-      makeContract:'Make contract', addGifts:'Add gifts', waiting:'Waiting', waitingBets:'', placeBet:'Place bet', cashOut:'Cash out',
+      makeContract:'Make contract', addGifts:'Add gifts', waiting:'Waiting', waitingBets:'Waiting for bets', placeBet:'Place bet', cashOut:'Cash out',
       giftUnlocked:'Your gift', claim:'Claim', sell:'Sell', support:'Support', language:'Language', saveAndExit:'Save and exit', topup:'Top up', stars:'Stars', ton:'TON',
       topupBtn:'Top up', bet:'Bet', top:'Top', craft:'Craft', crash:'Crash', upgrade:'Upgrade', profileNav:'Profile', giftReady:'Gift', giftOpened:'Gift opened',
       sellAll:'Sell all', withdraw:'Withdraw', withdrawSoon:'Gift is being sent to Telegram…', giftWord1:'gift', giftWord2:'gifts', giftWord5:'gifts', referralBack:'Back', invited:'Invited', earned:'Earned', invite:'Invite', referralLink:'Referral link', copied:'Copied'
@@ -1661,10 +1658,19 @@
     return Date.now()+crashServerOffsetMs;
   }
   function resolveGiftImage(gift){
-    const image=String(gift?.image||'').trim();
-    const id=String(gift?.giftId||gift?.id||'').trim();
+    const image=String(gift?.image||gift?.gift_image||'').trim();
+    const id=String(gift?.giftId||gift?.gift_id||gift?.id||'').trim();
+    const name=String(gift?.name||gift?.gift_name||'').trim().toLowerCase();
     if(image) return image;
-    if(id) return 'https://cdn.changes.tg/gifts/originals/'+id+'/Original.png';
+    if(id){
+      const byId=GIFT_CATALOG.find(entry=>String(entry.id||entry.giftId||'').trim()===id);
+      if(byId?.image) return String(byId.image).trim();
+      return 'https://cdn.changes.tg/gifts/originals/'+id+'/Original.png';
+    }
+    if(name){
+      const byName=GIFT_CATALOG.find(entry=>String(entry.name||'').trim().toLowerCase()===name);
+      if(byName?.image) return String(byName.image).trim();
+    }
     return '';
   }
   function normalizeInventoryGift(item,fallbackId=''){
@@ -1679,29 +1685,43 @@
       createdAt:item.createdAt||item.created_at||new Date().toISOString(),
     };
   }
-  function updateCrashWaitLabel(){
-    crashWaitText.textContent='';
-    crashWaitText.style.display='none';
+  function updateCrashWaitLabel(betsCount=0){
+    const hasPlayerCard=crashPlayer.classList.contains('visible');
+    const shouldShow=!hasPlayerCard&&!crashPrizePending&&Number(betsCount||0)===0;
+    crashWaitText.textContent=shouldShow ? t('waitingBets') : '';
+    crashWaitText.style.display=shouldShow ? 'block' : 'none';
   }
   function renderCrashOtherBets(list=[]){
     if(!crashOthers)return;
     const others=(Array.isArray(list)?list:[]).filter(player=>String(player.userId)!==String(tgUserId));
     crashOthers.innerHTML='';
     others.slice(0,6).forEach(player=>{
+      const betAmount=Number(player.betAmount||player.amount||0);
+      const payout=Number(player.currentPayout||player.payout||player.amount||0);
+      const gift=player.previewGift||getBestGiftForStars(payout)||null;
       const row=document.createElement('div');
       row.className='crash-bet-cloud';
-      row.dataset.betAmount=String(Number(player.betAmount||player.amount||0));
-      row.dataset.payout=String(Number(player.currentPayout||player.amount||0));
+      row.dataset.betAmount=String(betAmount);
+      row.dataset.payout=String(payout);
+      row.dataset.giftId=String(gift?.id||gift?.giftId||'');
+      row.dataset.giftName=String(gift?.name||'');
+      row.dataset.giftImage=String(resolveGiftImage(gift)||'');
       const avatar=player.photoUrl
         ? '<img class="crash-bet-cloud-avatar" src="'+player.photoUrl+'" alt="">'
         : '<div class="crash-bet-cloud-avatar"></div>';
+      const giftHtml=gift
+        ? '<img class="crash-bet-cloud-gift" src="'+resolveGiftImage(gift)+'" alt="'+(gift.name||'Gift')+'" title="'+(gift.name||'Gift')+'">'
+        : '';
       row.innerHTML=
         avatar+
         '<div class="crash-bet-cloud-info">'+
           '<div class="crash-bet-cloud-name">'+(player.firstName||'User')+'</div>'+
-          '<div class="crash-bet-cloud-bet">'+formatStars(player.betAmount||player.amount||0)+' <img src="assets/star.png" alt=""></div>'+
+          '<div class="crash-bet-cloud-bet">'+formatStars(betAmount)+' <img src="assets/star.png" alt=""></div>'+
         '</div>'+
-        '<div class="crash-bet-cloud-amount">'+formatStars(player.currentPayout||player.amount||0)+' <img src="assets/star.png" alt=""></div>';
+        '<div class="crash-bet-cloud-right">'+
+          '<div class="crash-bet-cloud-amount">'+formatStars(payout)+' <img src="assets/star.png" alt=""></div>'+
+          giftHtml+
+        '</div>';
       crashOthers.appendChild(row);
     });
   }
@@ -1713,8 +1733,31 @@
       if(state?.phase==='live') value=Math.floor(betAmount*multiplier);
       else if(state?.phase==='ended') value=Math.floor(betAmount*Number(state.lastCrashMultiplier||1));
       row.dataset.payout=String(value);
+      const gift=getBestGiftForStars(value);
+      row.dataset.giftId=String(gift?.id||gift?.giftId||'');
+      row.dataset.giftName=String(gift?.name||'');
+      row.dataset.giftImage=String(resolveGiftImage(gift)||'');
       const amountEl=row.querySelector('.crash-bet-cloud-amount');
       if(amountEl) amountEl.innerHTML=formatStars(value)+' <img src="assets/star.png" alt="">';
+      const giftEl=row.querySelector('.crash-bet-cloud-gift');
+      const giftSrc=resolveGiftImage(gift);
+      if(giftEl && giftSrc){
+        giftEl.src=giftSrc;
+        giftEl.alt=gift?.name||'Gift';
+        giftEl.title=gift?.name||'Gift';
+      }else if(!giftEl && giftSrc){
+        const rightEl=row.querySelector('.crash-bet-cloud-right');
+        if(rightEl){
+          const img=document.createElement('img');
+          img.className='crash-bet-cloud-gift';
+          img.src=giftSrc;
+          img.alt=gift?.name||'Gift';
+          img.title=gift?.name||'Gift';
+          rightEl.appendChild(img);
+        }
+      }else if(giftEl && !giftSrc){
+        giftEl.remove();
+      }
     });
   }
   function renderCrashHistoryState(state){
@@ -1939,7 +1982,7 @@
     crashPrizePrice.innerHTML=formatStars(gift.price)+' <img src="assets/star.png" alt="">';
     crashPrizeSellBtn.innerHTML=t('sell')+' '+formatStars(gift.price)+' <img src="assets/star.png" alt="">';
     crashPrizeClaimBtn.textContent=t('claim');
-    crashPrizeBlock.classList.remove('visible');
+    crashPrizeBlock.classList.add('visible');
 
     giftModalImage.src=giftImage;
     giftModalName.textContent=gift.name;
@@ -1961,6 +2004,7 @@
     setCrashPlayerState(null);
     document.getElementById('crashPlayerBet').innerHTML='';
     document.getElementById('crashPlayerWin').innerHTML='';
+    updateCrashWaitLabel(crashRealtimeState?.betsCount||0);
   }
 
   function renderCrashPlayerCard(amount){
@@ -2070,7 +2114,7 @@
 
     if(displayPhase==='countdown'){
       const endsAt=Number(state.countdownEndsAt||state.liveStartAt||0);
-      const count=endsAt>now?Math.max(1,Math.ceil((endsAt-now)/1000)):0;
+      const count=Math.max(1,Math.ceil(Math.max(0,endsAt-now)/1000));
       crashTimer.style.display='';
       crashTimer.textContent=String(count);
       crashTimer.className='crash-timer';
@@ -2342,10 +2386,16 @@
     }
     const betBtn=document.getElementById('crashBetBtn');
     try{
+      const liveMultiplier=computeCrashMultiplier(crashRealtimeState);
+      const livePayout=Math.max(0,Math.floor(Number(crashBetAmount||0)*liveMultiplier));
       const resp=await fetch(API_BASE+'/api/crash/cashout',{
         method:'POST',
         headers:{'Content-Type':'application/json','x-init-data':tg?.initData||''},
-        body:JSON.stringify({roundId:crashRealtimeState?.roundId||0}),
+        body:JSON.stringify({
+          roundId:crashRealtimeState?.roundId||0,
+          clientPayout:livePayout,
+          clientMultiplier:Number.isFinite(liveMultiplier)?Number(liveMultiplier.toFixed(4)):1,
+        }),
       });
       const data=await resp.json().catch(()=>({}));
       if(!resp.ok) throw new Error(data.error||'Cash out failed');
