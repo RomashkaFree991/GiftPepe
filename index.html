@@ -1908,6 +1908,7 @@
   const giftModalSellBtn=document.getElementById('giftModalSellBtn');
   const giftModalClaimBtn=document.getElementById('giftModalClaimBtn');
   let crashResultState=null;
+  let crashPrizeModalAutoKey='';
 
   function setCrashPlayerState(state){
     crashResultState=state||null;
@@ -2025,6 +2026,39 @@
     if(!crashPrizePending||!crashPrizeGift)return;
     giftModalOverlay.classList.add('open');
   }
+  function getCrashPrizeKey(gift){
+    if(!gift) return '';
+    return [String(gift.id||gift.giftId||''),String(gift.name||''),String(gift.price||0)].join('|');
+  }
+  function maybeAutoOpenGiftModal(gift){
+    const key=getCrashPrizeKey(gift);
+    if(!key||crashPrizeModalAutoKey===key)return;
+    crashPrizeModalAutoKey=key;
+    openGiftModal();
+  }
+  function enterPendingCrashPrize(gift,payout=0){
+    if(!gift)return;
+    crashPrizeGift=gift;
+    crashPrizePending=true;
+    crashCashoutBusy=false;
+    crashBetSyncPending=false;
+    crashBetActive=false;
+    crashBetSettled=false;
+    crashSettledPayout=Number(payout||0);
+    crashRoundLocked=false;
+    crashPlayer.classList.remove('visible','fading');
+    crashWait.className='crash-wait empty';
+    crashWaitText.style.display='none';
+    document.getElementById('crashPlayerBet').innerHTML='';
+    document.getElementById('crashPlayerWin').innerHTML='';
+    setCrashPlayerState(null);
+    showCrashPrize(gift);
+    maybeAutoOpenGiftModal(gift);
+    const betBtn=document.getElementById('crashBetBtn');
+    betBtn.classList.add('dim');
+    betBtn.textContent=t('giftOpened');
+    updateCrashWaitLabel(crashRealtimeState?.betsCount||0);
+  }
   function hideCrashPrize(){
     giftModalOverlay.classList.remove('open');
     crashPrizeBlock.classList.remove('visible');
@@ -2089,15 +2123,7 @@
     const viewerBet=state?.viewerBet||null;
 
     if(pendingPrize){
-      crashPrizeGift=pendingPrize;
-      crashPrizePending=true;
-      crashBetActive=false;
-      crashBetSettled=true;
-      crashSettledPayout=Number(viewerBet?.payout||0);
-      renderCrashPlayerCard(Number(viewerBet?.amount||0));
-      renderCrashPlayerWin(crashSettledPayout,pendingPrize);
-      setCrashPlayerState('win');
-      showCrashPrize(pendingPrize);
+      enterPendingCrashPrize(pendingPrize,Number(viewerBet?.payout||crashSettledPayout||0));
       return;
     }
 
@@ -2160,9 +2186,11 @@
     }
   }
 
+
   function applyCrashRoundBoundary(prevState,nextState){
     if(!prevState)return;
     if(prevState.roundId===nextState.roundId)return;
+    if(!crashPrizePending) crashPrizeModalAutoKey='';
     crashRoundLocked=false;
     if(crashBetActive&&!crashPrizePending){
       setCrashPlayerState('loss');
@@ -2391,10 +2419,14 @@
     crashBetActive=false;
     crashBetAmount=0;
     crashPrizeGift=null;
+    crashCashoutBusy=false;
+    crashBetSettled=false;
+    crashSettledPayout=0;
+    crashRoundLocked=false;
+    crashPrizeModalAutoKey='';
     hideCrashPrize();
-    setCrashPlayerState('win');
-    document.getElementById('crashBetBtn').classList.add('dim');
-    document.getElementById('crashBetBtn').textContent=t('placeBet');
+    giftModalOverlay.classList.remove('open');
+    resetCrashPlayer();
 
     if(mode==='sell'){
       updateBalance(balance+Number(prize.price||0));
@@ -2441,12 +2473,8 @@
         refreshCrashState(true);
       }
 
-      if(!crashRoundLive){
-        clearTimeout(crashRoundResetTimeout);
-        crashRoundResetTimeout=setTimeout(()=>{
-          if(crashPrizePending)return;
-          resetCrashPlayer();
-        },180);
+      if(!crashRoundLive&&!crashPrizePending){
+        resetCrashPlayer();
       }
     }catch(err){
       updateBalance(prevBalance);
@@ -2456,7 +2484,10 @@
       crashPrizeGift=prevPrizeGift;
       crashBetActive=prevBetActive;
       crashBetAmount=prevBetAmount;
-      if(prevPrizePending&&prevPrizeGift) showCrashPrize(prevPrizeGift);
+      if(prevPrizePending&&prevPrizeGift){
+        showCrashPrize(prevPrizeGift);
+        maybeAutoOpenGiftModal(prevPrizeGift);
+      }
       tg?.showAlert?tg.showAlert(err.message):alert(err.message);
     }finally{
       crashPrizeResolveBusy=false;
@@ -2523,17 +2554,11 @@
 
       crashCashoutBusy=false;
       crashBetActive=false;
-      crashRoundLocked=true;
-      crashBetSettled=true;
+      crashRoundLocked=false;
+      crashBetSettled=false;
       crashSettledPayout=win;
       if(data.pendingPrize){
-        crashPrizeGift=data.pendingPrize;
-        crashPrizePending=true;
-        showCrashPrize(crashPrizeGift);
-        renderCrashPlayerWin(win,crashPrizeGift);
-        setCrashPlayerState('win');
-        betBtn.classList.add('dim');
-        betBtn.textContent=t('giftOpened');
+        enterPendingCrashPrize(data.pendingPrize,win);
         return;
       }
 
@@ -2928,13 +2953,12 @@
         inventoryItems=Array.isArray(data.items)?data.items.map(item=>normalizeInventoryGift(item)).filter(Boolean):[];
         renderInventory();
         if(data.pendingPrize){
-          crashPrizeGift=data.pendingPrize;
-          crashPrizePending=true;
-          showCrashPrize(data.pendingPrize);
+          enterPendingCrashPrize(data.pendingPrize,crashSettledPayout);
         }else if(crashPrizePending&&!crashBetActive){
           hideCrashPrize();
           crashPrizePending=false;
           crashPrizeGift=null;
+          crashPrizeModalAutoKey='';
         }
         return data;
       }
