@@ -692,9 +692,26 @@
   .crash-bet-cloud-gift{
     width:34px;height:34px;object-fit:contain;display:block;flex-shrink:0;
     filter:drop-shadow(0 8px 12px rgba(0,0,0,.24));
+    transition:opacity .2s ease, transform .2s ease;
+    opacity:1;transform:scale(1);
+  }
+  .crash-bet-cloud-gift-wrap{
+    transition:transform .2s ease, opacity .2s ease, border-color .2s ease, background .2s ease;
+  }
+  .crash-bet-cloud-gift-wrap.is-changing{
+    transform:scale(1.04);
+    border-color:rgba(255,255,255,.18);
+    background:rgba(255,255,255,.11);
+  }
+  .crash-bet-cloud-gift-wrap.is-changing .crash-bet-cloud-gift,
+  .crash-bet-cloud-gift-wrap.is-changing .crash-bet-cloud-gift-fallback{
+    opacity:.3;
+    transform:scale(.9);
   }
   .crash-bet-cloud-gift-fallback{
     color:rgba(255,255,255,.92);font-size:18px;line-height:1;
+    transition:opacity .2s ease, transform .2s ease;
+    opacity:1;transform:scale(1);
   }
   .crash-player-prize{
     display:none;flex-direction:column;gap:10px;width:100%;margin-top:12px;
@@ -715,7 +732,8 @@
     color:rgba(255,255,255,.5);font-size:12px;font-weight:600;
   }
   .crash-player-prize-price img{width:13px;height:13px;object-fit:contain}
-  .crash-player-prize-actions{display:flex;align-items:center;gap:8px}
+  .crash-player-prize-actions{display:none;align-items:center;gap:8px}
+  .crash-player-prize-card{cursor:pointer}
   .crash-prize-sell,.crash-prize-claim{
     flex:1;height:40px;border:none;border-radius:12px;cursor:pointer;
     display:flex;align-items:center;justify-content:center;gap:4px;
@@ -1324,6 +1342,8 @@
   let inventoryItems=[];
   let crashPrizeGift=null;
   let crashPrizePending=false;
+  let crashBetSyncPending=false;
+  let crashCashoutBusy=false;
   let crashRoundCrashTimeout=null;
   let crashRoundResetTimeout=null;
   const inventoryGrid=document.getElementById('inventoryGrid');
@@ -1700,6 +1720,33 @@
     }
     return '<div class="crash-bet-cloud-gift-wrap" title="'+title+'"><span class="crash-bet-cloud-gift-fallback">🎁</span></div>';
   }
+  function updateCrashGiftBadge(container,gift){
+    if(!container)return;
+    const safeGift=gift||null;
+    const nextImage=String(resolveGiftImage(safeGift)||'');
+    const nextName=String(safeGift?.name||'Gift');
+    let badge=container.querySelector('.crash-bet-cloud-gift-wrap');
+    if(!badge){
+      container.insertAdjacentHTML('beforeend',buildCrashGiftBadge(safeGift));
+      badge=container.querySelector('.crash-bet-cloud-gift-wrap:last-child');
+      if(!badge)return;
+    }
+    const currentImage=badge.dataset.giftImage||'';
+    const currentName=badge.dataset.giftName||'';
+    if(currentImage===nextImage && currentName===nextName)return;
+
+    badge.dataset.giftImage=nextImage;
+    badge.dataset.giftName=nextName;
+    badge.setAttribute('title',nextName);
+    badge.classList.add('is-changing');
+
+    setTimeout(()=>{
+      badge.innerHTML=nextImage
+        ? '<img class="crash-bet-cloud-gift" src="'+nextImage+'" alt="'+nextName+'">'
+        : '<span class="crash-bet-cloud-gift-fallback">🎁</span>';
+      badge.classList.remove('is-changing');
+    },120);
+  }
   function normalizeInventoryGift(item,fallbackId=''){
     if(!item) return null;
     return {
@@ -1746,6 +1793,11 @@
           '<div class="crash-bet-cloud-amount">'+formatStars(payout)+' <img src="assets/star.png" alt=""></div>'+
           buildCrashGiftBadge(gift)+
         '</div>';
+      const badge=row.querySelector('.crash-bet-cloud-gift-wrap');
+      if(badge){
+        badge.dataset.giftImage=String(resolveGiftImage(gift)||'');
+        badge.dataset.giftName=String(gift?.name||'Gift');
+      }
       crashOthers.appendChild(row);
     });
   }
@@ -1764,15 +1816,7 @@
       const amountEl=row.querySelector('.crash-bet-cloud-amount');
       if(amountEl) amountEl.innerHTML=formatStars(value)+' <img src="assets/star.png" alt="">';
       const rightEl=row.querySelector('.crash-bet-cloud-right');
-      if(rightEl){
-        const currentBadge=rightEl.querySelector('.crash-bet-cloud-gift-wrap');
-        const nextBadgeHtml=buildCrashGiftBadge(gift);
-        if(currentBadge){
-          currentBadge.outerHTML=nextBadgeHtml;
-        }else{
-          rightEl.insertAdjacentHTML('beforeend', nextBadgeHtml);
-        }
-      }
+      if(rightEl) updateCrashGiftBadge(rightEl,gift);
     });
   }
   function renderCrashHistoryState(state){
@@ -1977,6 +2021,10 @@
       crashHistory.removeChild(crashHistory.lastElementChild);
     }
   }
+  function openGiftModal(){
+    if(!crashPrizePending||!crashPrizeGift)return;
+    giftModalOverlay.classList.add('open');
+  }
   function hideCrashPrize(){
     giftModalOverlay.classList.remove('open');
     crashPrizeBlock.classList.remove('visible');
@@ -2006,13 +2054,15 @@
     giftModalPrice.innerHTML=formatStars(gift.price)+' <img src="assets/star.png" alt="">';
     giftModalSellBtn.innerHTML=t('sell')+' '+formatStars(gift.price)+' <img src="assets/star.png" alt="">';
     giftModalClaimBtn.textContent=t('claim');
-    giftModalOverlay.classList.add('open');
   }
   function resetCrashPlayer(){
     hideCrashPrize();
     crashPrizeGift=null;
     crashPrizePending=false;
+    crashBetSyncPending=false;
+    crashCashoutBusy=false;
     crashRoundLocked=false;
+    crashCashoutBusy=false;
     crashBetSettled=false;
     crashSettledPayout=0;
     crashPlayer.classList.remove('visible','fading');
@@ -2052,6 +2102,17 @@
     }
 
     if(!viewerBet){
+      if(crashBetSyncPending&&crashBetActive&&state?.phase==='countdown'){
+        renderCrashPlayerCard(crashBetAmount);
+        renderCrashPlayerWin(crashBetAmount,null);
+        return;
+      }
+      if(crashCashoutBusy&&crashBetSettled){
+        setCrashPlayerState('win');
+        renderCrashPlayerCard(crashBetAmount);
+        renderCrashPlayerWin(crashSettledPayout,crashPrizeGift);
+        return;
+      }
       if(!crashPrizePending&&!crashBetActive&&!crashBetSettled){
         crashRoundLocked=false;
         return;
@@ -2067,6 +2128,8 @@
     renderCrashPlayerCard(crashBetAmount);
 
     if(viewerBet.cashedOut){
+      crashCashoutBusy=false;
+      crashBetSyncPending=false;
       crashBetActive=false;
       crashBetSettled=true;
       crashSettledPayout=Number(viewerBet.payout||0);
@@ -2159,9 +2222,9 @@
       crashMultiplier=computeCrashMultiplier({...state, phase:'live'},now);
       crashTimer.style.display='none';
       crashLivePill.textContent='x'+crashMultiplier.toFixed(2);
-      if(crashBetSettled){
+      if(crashCashoutBusy||crashBetSettled){
         betBtn.classList.add('dim');
-        betBtn.textContent=t('placeBet');
+        betBtn.textContent=crashPrizePending?t('giftOpened'):t('placeBet');
       }else if(crashBetActive){
         const win=Math.floor(crashBetAmount*crashMultiplier);
         renderCrashPlayerWin(win,null);
@@ -2187,11 +2250,11 @@
       lossEl.className='crash-loss show';
       lastCrashDisplayState=state.roundId+':ended';
     }
-    if(crashBetActive&&!crashPrizePending){
+    if(crashBetActive&&!crashPrizePending&&!crashCashoutBusy){
       crashBetActive=false;
       setCrashPlayerState('loss');
     }
-    if(crashBetSettled){
+    if(crashCashoutBusy||crashBetSettled){
       setCrashPlayerState('win');
       renderCrashPlayerWin(crashSettledPayout,null);
     }
@@ -2246,6 +2309,8 @@
 
     updateBalance(balance-amount);
     crashRoundLocked=true;
+    crashBetSyncPending=true;
+    crashCashoutBusy=false;
     crashBetSettled=false;
     crashSettledPayout=0;
     crashBetActive=true;
@@ -2281,6 +2346,7 @@
         await refreshCrashState(true);
       }
       if(Number.isFinite(Number(data?.newBalance))) updateBalance(Number(data.newBalance));
+      crashBetSyncPending=false;
       return true;
     }catch(e){
       updateBalance(prevBalance);
@@ -2291,6 +2357,8 @@
       crashBetSettled=prevBetSettled;
       crashSettledPayout=prevSettledPayout;
       crashRoundLocked=prevRoundLocked;
+      crashBetSyncPending=false;
+      crashCashoutBusy=false;
       if(prevPrizePending&&prevPrizeGift) showCrashPrize(prevPrizeGift);
       else hideCrashPrize();
       if(prevBetActive&&prevBetAmount){
@@ -2396,15 +2464,36 @@
   }
 
   async function cashOut(){
-    if(!crashBetActive||!crashRoundLive) return;
+    if(!crashBetActive||!crashRoundLive||crashCashoutBusy) return;
     if(crashRealtimeState?.liveEndsAt && getServerNow()>=Number(crashRealtimeState.liveEndsAt)){
       await refreshCrashState(true);
       return;
     }
     const betBtn=document.getElementById('crashBetBtn');
+    const prevBalance=balance;
+    const prevPrizePending=crashPrizePending;
+    const prevPrizeGift=crashPrizeGift;
+    const prevBetActive=crashBetActive;
+    const prevBetSettled=crashBetSettled;
+    const prevSettledPayout=crashSettledPayout;
+    const liveMultiplier=computeCrashMultiplier(crashRealtimeState);
+    const livePayout=Math.max(0,Math.floor(Number(crashBetAmount||0)*liveMultiplier));
+    const optimisticGift=getCrashPreviewGift(livePayout)||null;
+
+    crashCashoutBusy=true;
+    crashBetActive=false;
+    crashRoundLocked=true;
+    crashBetSettled=true;
+    crashSettledPayout=livePayout;
+    crashPrizeGift=optimisticGift;
+    crashPrizePending=false;
+    renderCrashPlayerCard(crashBetAmount);
+    renderCrashPlayerWin(livePayout,optimisticGift);
+    setCrashPlayerState('win');
+    betBtn.classList.add('dim');
+    betBtn.textContent=t('giftOpened');
+
     try{
-      const liveMultiplier=computeCrashMultiplier(crashRealtimeState);
-      const livePayout=Math.max(0,Math.floor(Number(crashBetAmount||0)*liveMultiplier));
       const resp=await fetch(API_BASE+'/api/crash/cashout',{
         method:'POST',
         headers:{'Content-Type':'application/json','x-init-data':tg?.initData||''},
@@ -2430,8 +2519,9 @@
 
       const win=Number(data.payout||0);
       if(Number.isFinite(Number(data.newBalance))) updateBalance(Number(data.newBalance));
-      else updateBalance(balance+win);
+      else updateBalance(prevBalance+win);
 
+      crashCashoutBusy=false;
       crashBetActive=false;
       crashRoundLocked=true;
       crashBetSettled=true;
@@ -2454,6 +2544,27 @@
       betBtn.classList.add('dim');
       betBtn.textContent=t('placeBet');
     }catch(e){
+      crashCashoutBusy=false;
+      crashPrizePending=prevPrizePending;
+      crashPrizeGift=prevPrizeGift;
+      crashBetActive=prevBetActive;
+      crashBetSettled=prevBetSettled;
+      crashSettledPayout=prevSettledPayout;
+      if(prevPrizePending&&prevPrizeGift) showCrashPrize(prevPrizeGift);
+      else hideCrashPrize();
+      if(prevBetActive){
+        renderCrashPlayerCard(crashBetAmount);
+        renderCrashPlayerWin(crashBetAmount,null);
+        setCrashPlayerState(null);
+        betBtn.classList.remove('dim');
+        betBtn.innerHTML=t('cashOut')+' '+formatStars(crashBetAmount)+' <img src="assets/star.png" alt="">';
+      }else if(prevBetSettled){
+        renderCrashPlayerCard(crashBetAmount);
+        renderCrashPlayerWin(prevSettledPayout,prevPrizeGift);
+      }else{
+        resetCrashPlayer();
+      }
+      updateBalance(prevBalance);
       tg?.showAlert?tg.showAlert(e.message):alert(e.message);
     }
   }
@@ -2475,6 +2586,8 @@
   bindFastTap(crashPrizeClaimBtn,()=>resolveCrashPrize('claim'));
   bindFastTap(giftModalSellBtn,()=>resolveCrashPrize('sell'));
   bindFastTap(giftModalClaimBtn,()=>resolveCrashPrize('claim'));
+  document.querySelector('.crash-player-prize-card')?.addEventListener('click',openGiftModal);
+  giftModalOverlay.addEventListener('click',e=>{if(e.target===giftModalOverlay) giftModalOverlay.classList.remove('open')});
 
   function moveIndicator(el,animate){
     const r=el.getBoundingClientRect(),n=nav.getBoundingClientRect();
@@ -2624,7 +2737,7 @@
     crashBetPressLockUntil=now+180;
     const phase=deriveCrashDisplayPhase(crashRealtimeState);
     if(crashBetActive && phase==='live'){cashOut();return}
-    if(crashPrizePending)return;
+    if(crashPrizePending){openGiftModal();return;}
     if(phase!=='countdown'){
       if(crashRealtimeState) refreshCrashState(true);
       return;
