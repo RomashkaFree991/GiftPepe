@@ -1909,6 +1909,25 @@
   const giftModalClaimBtn=document.getElementById('giftModalClaimBtn');
   let crashResultState=null;
   let crashPrizeModalAutoKey='';
+  let crashPrizeResolveToken='';
+
+  function normalizeCrashPrizeGift(gift){
+    if(!gift) return null;
+    const rawId=String(gift.id||gift.giftId||gift.gift_id||'').trim();
+    const rawName=String(gift.name||gift.gift_name||'').trim();
+    const rawPrice=Number(gift.price||gift.gift_price||0);
+    const byId=rawId?GIFT_CATALOG.find(entry=>String(entry.id||entry.giftId||'').trim()===rawId):null;
+    const byName=rawName?GIFT_CATALOG.find(entry=>String(entry.name||'').trim().toLowerCase()===rawName.toLowerCase()):null;
+    const catalogGift=byId||byName||null;
+    const giftId=String(gift.giftId||gift.gift_id||rawId||catalogGift?.id||'').trim();
+    return {
+      id: rawId||giftId,
+      giftId,
+      name: rawName||String(catalogGift?.name||'Gift'),
+      price: rawPrice||Number(catalogGift?.price||0),
+      image: String(gift.image||gift.gift_image||catalogGift?.image||resolveGiftImage({...gift,id:rawId||giftId,giftId,name:rawName,price:rawPrice})||'').trim(),
+    };
+  }
 
   function setCrashPlayerState(state){
     crashResultState=state||null;
@@ -1918,7 +1937,9 @@
   }
 
   function renderCrashPlayerWin(amount,gift=null){
-    const safeGift=gift||getCrashPreviewGift(amount)||null;
+    const lockedGift=(crashPrizePending||crashBetSettled)&&crashPrizeGift?normalizeCrashPrizeGift(crashPrizeGift):null;
+    const explicitGift=gift?normalizeCrashPrizeGift(gift):null;
+    const safeGift=explicitGift||lockedGift||getCrashPreviewGift(amount)||null;
     const giftSrc=resolveGiftImage(safeGift);
     const giftHtml=giftSrc?'<img class="crash-win-gift" src="'+giftSrc+'" alt="'+(safeGift?.name||'Gift')+'">':'';
     document.getElementById('crashPlayerWin').innerHTML='<span class="crash-win-value">'+formatStars(amount)+' <img src="assets/star.png" alt=""></span>'+giftHtml;
@@ -2024,21 +2045,28 @@
   }
   function openGiftModal(){
     if(!crashPrizePending||!crashPrizeGift)return;
+    crashPrizeModalAutoKey=getCrashPrizeKey(crashPrizeGift);
     giftModalOverlay.classList.add('open');
   }
   function getCrashPrizeKey(gift){
     if(!gift) return '';
-    return [String(gift.id||gift.giftId||''),String(gift.name||''),String(gift.price||0)].join('|');
+    const normalized=normalizeCrashPrizeGift(gift)||gift;
+    return [String(normalized.id||normalized.giftId||''),String(normalized.name||''),String(normalized.price||0)].join('|');
   }
   function maybeAutoOpenGiftModal(gift){
     const key=getCrashPrizeKey(gift);
-    if(!key||crashPrizeModalAutoKey===key)return;
+    if(!key||crashPrizeModalAutoKey===key||crashPrizeResolveBusy)return;
     crashPrizeModalAutoKey=key;
     openGiftModal();
   }
-  function enterPendingCrashPrize(gift,payout=0,betAmount=crashBetAmount){
-    if(!gift)return;
-    crashPrizeGift=gift;
+  function enterPendingCrashPrize(gift,payout=0,betAmount=crashBetAmount,options={}){
+    const normalizedGift=normalizeCrashPrizeGift(gift);
+    if(!normalizedGift)return;
+    const currentKey=getCrashPrizeKey(crashPrizeGift);
+    const nextKey=getCrashPrizeKey(normalizedGift);
+    const hasLockedPrize=!!(crashPrizePending&&currentKey);
+    if(hasLockedPrize&&currentKey!==nextKey&&!options.force)return;
+    crashPrizeGift=normalizedGift;
     crashPrizePending=true;
     crashCashoutBusy=false;
     crashBetSyncPending=false;
@@ -2049,11 +2077,11 @@
     crashBetAmount=Number(betAmount||crashBetAmount||0);
     if(crashBetAmount>0){
       renderCrashPlayerCard(crashBetAmount);
-      renderCrashPlayerWin(crashSettledPayout||crashBetAmount,null);
+      renderCrashPlayerWin(crashSettledPayout||crashBetAmount,normalizedGift);
       setCrashPlayerState('win');
     }
-    showCrashPrize(gift);
-    maybeAutoOpenGiftModal(gift);
+    showCrashPrize(normalizedGift);
+    if(options.autoOpen!==false) maybeAutoOpenGiftModal(normalizedGift);
     const betBtn=document.getElementById('crashBetBtn');
     betBtn.classList.add('dim');
     betBtn.textContent=t('giftOpened');
@@ -2073,8 +2101,9 @@
     crashPrizeClaimBtn.textContent=t('claim');
   }
   function showCrashPrize(gift){
-    if(!gift)return;
-    const giftImage=resolveGiftImage(gift);
+    const normalizedGift=normalizeCrashPrizeGift(gift);
+    if(!normalizedGift)return;
+    const giftImage=resolveGiftImage(normalizedGift);
     crashPrizeBlock.classList.remove('visible');
     crashPrizeImage.removeAttribute('src');
     crashPrizeImage.removeAttribute('alt');
@@ -2083,10 +2112,16 @@
     crashPrizeSellBtn.innerHTML='';
     crashPrizeClaimBtn.textContent=t('claim');
 
-    giftModalImage.src=giftImage;
-    giftModalName.textContent=gift.name;
-    giftModalPrice.innerHTML=formatStars(gift.price)+' <img src="assets/star.png" alt="">';
-    giftModalSellBtn.innerHTML=t('sell')+' '+formatStars(gift.price)+' <img src="assets/star.png" alt="">';
+    if(giftImage){
+      giftModalImage.src=giftImage;
+      giftModalImage.alt=normalizedGift.name||'Gift';
+    }else{
+      giftModalImage.removeAttribute('src');
+      giftModalImage.alt='';
+    }
+    giftModalName.textContent=normalizedGift.name;
+    giftModalPrice.innerHTML=formatStars(normalizedGift.price)+' <img src="assets/star.png" alt="">';
+    giftModalSellBtn.innerHTML=t('sell')+' '+formatStars(normalizedGift.price)+' <img src="assets/star.png" alt="">';
     giftModalClaimBtn.textContent=t('claim');
   }
   function resetCrashPlayer(){
@@ -2122,11 +2157,21 @@
     const pendingPrize=state?.pendingPrize||null;
     const viewerBet=state?.viewerBet||null;
 
+    if(crashPrizeResolveBusy){
+      if(crashBetAmount>0&&crashBetSettled){
+        renderCrashPlayerCard(crashBetAmount);
+        renderCrashPlayerWin(crashSettledPayout||crashBetAmount,crashPrizeGift);
+        setCrashPlayerState('win');
+      }
+      return;
+    }
+
     if(pendingPrize){
       enterPendingCrashPrize(
         pendingPrize,
         Number(viewerBet?.payout||crashSettledPayout||0),
-        Number(viewerBet?.amount||crashBetAmount||0)
+        Number(viewerBet?.amount||crashBetAmount||0),
+        { autoOpen: !giftModalOverlay.classList.contains('open') }
       );
       return;
     }
@@ -2137,10 +2182,10 @@
         renderCrashPlayerWin(crashBetAmount,null);
         return;
       }
-      if(crashCashoutBusy&&crashBetSettled){
+      if((crashCashoutBusy||crashBetSettled)&&crashBetAmount>0){
         setCrashPlayerState('win');
         renderCrashPlayerCard(crashBetAmount);
-        renderCrashPlayerWin(crashSettledPayout,crashPrizeGift);
+        renderCrashPlayerWin(crashSettledPayout||crashBetAmount,crashPrizeGift);
         return;
       }
       if(!crashPrizePending&&!crashBetActive&&!crashBetSettled){
@@ -2163,11 +2208,8 @@
       crashBetActive=false;
       crashBetSettled=true;
       crashSettledPayout=Number(viewerBet.payout||0);
-      hideCrashPrize();
-      crashPrizePending=false;
-      crashPrizeGift=null;
       setCrashPlayerState('win');
-      renderCrashPlayerWin(crashSettledPayout,null);
+      renderCrashPlayerWin(crashSettledPayout||crashBetAmount,crashPrizeGift);
       return;
     }
 
@@ -2288,7 +2330,7 @@
     }
     if(crashCashoutBusy||crashBetSettled){
       setCrashPlayerState('win');
-      renderCrashPlayerWin(crashSettledPayout,null);
+      renderCrashPlayerWin(crashSettledPayout||crashBetAmount,crashPrizeGift);
     }
     if(crashPrizePending){ crashLivePill.textContent=t('giftReady'); closeBet(); }
     else crashLivePill.textContent=t('waiting');
@@ -2365,6 +2407,8 @@
       });
       data=await resp.json().catch(()=>({}));
       if(!resp.ok) throw new Error(data.error||'Round already started');
+      crashPrizeModalAutoKey='';
+      crashPrizeResolveToken='';
       if(data.state){
         crashServerOffsetMs=Number(data.state.serverNow||Date.now())-Date.now();
         const prevState=crashRealtimeState;
@@ -2418,14 +2462,15 @@
     const prevPrizeGift=crashPrizeGift;
     const prevBetActive=crashBetActive;
     const prevBetAmount=crashBetAmount;
+    const prevSettledPayout=crashSettledPayout;
 
     crashPrizePending=false;
     crashBetActive=false;
-    crashPrizeGift=null;
+    crashPrizeGift=prevPrizeGift;
     crashCashoutBusy=false;
     crashBetSettled=true;
     crashRoundLocked=true;
-    crashPrizeModalAutoKey='';
+    crashPrizeResolveToken=getCrashPrizeKey(prevPrizeGift||prize);
     hideCrashPrize();
     giftModalOverlay.classList.remove('open');
     if(crashBetAmount>0){
@@ -2450,10 +2495,19 @@
       const data=await resp.json().catch(()=>({}));
       if(!resp.ok) throw new Error(data.error||'Prize resolve failed');
 
+      crashPrizeModalAutoKey='';
+      crashPrizeResolveToken='';
       if(mode==='sell'){
         if(Number.isFinite(Number(data.newBalance))) updateBalance(Number(data.newBalance));
       }else{
-        const confirmedGift=normalizeInventoryGift(data.claimedGift||prize,prize.id);
+        const confirmedGift=normalizeInventoryGift({
+          ...prize,
+          ...(data.claimedGift||{}),
+          giftId:data?.claimedGift?.giftId||data?.claimedGift?.gift_id||prize.giftId||prize.id,
+          name:data?.claimedGift?.name||prize.name,
+          price:Number(data?.claimedGift?.price||prize.price||0),
+          image:data?.claimedGift?.image||data?.claimedGift?.gift_image||prize.image||''
+        },prize.id);
         if(Array.isArray(data.items) && data.items.length){
           const rest=data.items
             .map(item=>normalizeInventoryGift(item))
@@ -2492,8 +2546,10 @@
       crashPrizeGift=prevPrizeGift;
       crashBetActive=prevBetActive;
       crashBetAmount=prevBetAmount;
+      crashSettledPayout=prevSettledPayout;
       crashBetSettled=true;
       crashRoundLocked=true;
+      crashPrizeResolveToken='';
       if(prevPrizePending&&prevPrizeGift){
         showCrashPrize(prevPrizeGift);
         maybeAutoOpenGiftModal(prevPrizeGift);
@@ -2569,11 +2625,11 @@
 
       crashCashoutBusy=false;
       crashBetActive=false;
-      crashRoundLocked=false;
-      crashBetSettled=false;
+      crashRoundLocked=true;
+      crashBetSettled=true;
       crashSettledPayout=win;
       if(data.pendingPrize){
-        enterPendingCrashPrize(data.pendingPrize,win,crashBetAmount);
+        enterPendingCrashPrize(data.pendingPrize,win,crashBetAmount,{force:true,autoOpen:true});
         return;
       }
 
@@ -2968,9 +3024,9 @@
       if(resp.ok){
         inventoryItems=Array.isArray(data.items)?data.items.map(item=>normalizeInventoryGift(item)).filter(Boolean):[];
         renderInventory();
-        if(data.pendingPrize){
-          enterPendingCrashPrize(data.pendingPrize,crashSettledPayout);
-        }else if(crashPrizePending&&!crashBetActive){
+        if(data.pendingPrize&&!crashPrizeResolveBusy){
+          enterPendingCrashPrize(data.pendingPrize,crashSettledPayout,crashBetAmount,{autoOpen:false});
+        }else if(crashPrizePending&&!crashBetActive&&!crashPrizeResolveBusy){
           hideCrashPrize();
           crashPrizePending=false;
           crashPrizeGift=null;
