@@ -230,7 +230,7 @@
   .back-pill{
     display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 14px;border-radius:999px;
     border:1px solid rgba(255,255,255,.12);background:transparent;color:#fff;cursor:pointer;
-    font-size:14px;font-weight:700;margin-bottom:14px;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+    font-size:14px;font-weight:700;margin-bottom:14px;backdrop-filter:none;-webkit-backdrop-filter:none;
   }
   .back-pill svg{width:16px;height:16px;flex-shrink:0}
   .referral-panel{
@@ -622,7 +622,7 @@
     transition:height .3s ease;
     min-height:70px;
   }
-  .crash-wait.empty{height:110px}
+  .crash-wait.empty{height:70px}
   .crash-wait.has-bet{height:auto}
   .crash-wait span{
     color:rgba(255,255,255,.4);font-size:15px;font-weight:600;
@@ -689,7 +689,7 @@
   .crash-player-prize{
     display:none;flex-direction:column;gap:10px;width:100%;margin-top:12px;
   }
-  .crash-player-prize.visible{display:flex}
+  .crash-player-prize.visible{display:none}
   .crash-player-prize-card{
     display:flex;align-items:center;gap:10px;
     padding:10px 12px;border-radius:14px;
@@ -1068,7 +1068,7 @@
       </div>
       <div class="crash-ground">
         <div class="crash-wait empty" id="crashWait">
-          <span id="crashWaitText">Ожидание ставок</span>
+          <span id="crashWaitText"></span>
           <div class="crash-player" id="crashPlayer">
             <img class="crash-player-avatar" id="crashPlayerAvatar" src="" alt="">
             <div class="crash-player-info">
@@ -1287,7 +1287,7 @@
       referralTitle:'РЕФЕРАЛЬНАЯ СИСТЕМА', referralDesc:'Приглашайте людей, чтобы получать бонусы', inventory:'Инвентарь', noGiftsTitle:'Не нашли подарков?',
       noGiftsDesc:'Отправьте подарок <a href="https://t.me/GiftPepe_Releyer" target="_blank">@GiftPepe_Releyer</a><br>или выиграйте в играх', chooseGift:'Выберите подарок',
       myGifts:'Мои подарки', giftsForUpgrade:'Подарки для апгрейда', makeUpgrade:'Сделать апгрейд', yourGifts:'Ваши подарки', empty:'Пусто', giftCost:'Стоимость подарков',
-      makeContract:'Сделать контракт', addGifts:'Добавить подарки', waiting:'Ожидание', waitingBets:'Ожидание ставок', placeBet:'Сделать ставку', cashOut:'Забрать',
+      makeContract:'Сделать контракт', addGifts:'Добавить подарки', waiting:'Ожидание', waitingBets:'', placeBet:'Сделать ставку', cashOut:'Забрать',
       giftUnlocked:'Ваш подарок', claim:'Забрать', sell:'Продать', support:'Поддержка', language:'Язык', saveAndExit:'Сохранить и выйти', topup:'Пополнение', stars:'Звезды', ton:'TON',
       topupBtn:'Пополнить', bet:'Ставка', top:'Топ', craft:'Крафт', crash:'Краш', upgrade:'Апгрейд', profileNav:'Профиль', giftReady:'Подарок', giftOpened:'Подарок открыт',
       sellAll:'Продать все', withdraw:'Вывести', withdrawSoon:'Подарок отправляется в Telegram…', giftWord1:'подарок', giftWord2:'подарка', giftWord5:'подарков', referralBack:'Назад', invited:'Приглашено', earned:'Заработано', invite:'Пригласить', referralLink:'Реферальная ссылка', copied:'Скопировано'
@@ -1297,7 +1297,7 @@
       referralTitle:'REFERRAL SYSTEM', referralDesc:'Invite people to get bonuses', inventory:'Inventory', noGiftsTitle:'No gifts found?',
       noGiftsDesc:'Send a gift to <a href="https://t.me/GiftPepe_Releyer" target="_blank">@GiftPepe_Releyer</a><br>or win one in games', chooseGift:'Choose a gift',
       myGifts:'My gifts', giftsForUpgrade:'Gifts for upgrade', makeUpgrade:'Make upgrade', yourGifts:'Your gifts', empty:'Empty', giftCost:'Gift value',
-      makeContract:'Make contract', addGifts:'Add gifts', waiting:'Waiting', waitingBets:'Waiting for bets', placeBet:'Place bet', cashOut:'Cash out',
+      makeContract:'Make contract', addGifts:'Add gifts', waiting:'Waiting', waitingBets:'', placeBet:'Place bet', cashOut:'Cash out',
       giftUnlocked:'Your gift', claim:'Claim', sell:'Sell', support:'Support', language:'Language', saveAndExit:'Save and exit', topup:'Top up', stars:'Stars', ton:'TON',
       topupBtn:'Top up', bet:'Bet', top:'Top', craft:'Craft', crash:'Crash', upgrade:'Upgrade', profileNav:'Profile', giftReady:'Gift', giftOpened:'Gift opened',
       sellAll:'Sell all', withdraw:'Withdraw', withdrawSoon:'Gift is being sent to Telegram…', giftWord1:'gift', giftWord2:'gifts', giftWord5:'gifts', referralBack:'Back', invited:'Invited', earned:'Earned', invite:'Invite', referralLink:'Referral link', copied:'Copied'
@@ -1384,7 +1384,7 @@
     inventoryGrid.classList.add('visible');
     inventoryGrid.innerHTML=inventoryItems.map(item=>`
       <div class="inventory-card" data-id="${item.id}">
-        <img class="inventory-card-image" src="${item.image}" alt="${item.name}">
+        <img class="inventory-card-image" src="${resolveGiftImage(item)}" alt="${item.name}">
         <div class="inventory-card-name">${item.name}</div>
         <div class="inventory-actions">
           <button class="inventory-sell-btn" data-action="sell">
@@ -1416,7 +1416,7 @@
     sheetGifts.classList.add('visible');
     sheetGifts.innerHTML=inventoryItems.map(item=>`
       <div class="sheet-gift-card" data-id="${item.id}">
-        <img src="${item.image}" alt="${item.name}">
+        <img src="${resolveGiftImage(item)}" alt="${item.name}">
         <div class="sheet-gift-name">${item.name}</div>
         <div class="sheet-gift-price">${formatStars(item.price)} <img src="assets/star.png" alt=""></div>
       </div>
@@ -1429,7 +1429,7 @@
       id:'temp_'+String(Date.now()),
       name:gift.name,
       price:gift.price,
-      image:gift.image,
+      image:resolveGiftImage(gift),
       withdrawAt:new Date(Date.now()+INVENTORY_HOLD_MS).toISOString()
     });
     renderInventory();
@@ -1459,7 +1459,7 @@
         });
         const data=await resp.json().catch(()=>({}));
         if(!resp.ok) throw new Error(data.error||'Sell failed');
-        if(Array.isArray(data.items)) inventoryItems=data.items;
+        if(Array.isArray(data.items)) inventoryItems=data.items.map(item=>normalizeInventoryGift(item)).filter(Boolean);
         if(Number.isFinite(Number(data.newBalance))) updateBalance(Number(data.newBalance));
         renderInventory();
       }catch(err){
@@ -1484,9 +1484,8 @@
         });
         const data=await resp.json().catch(()=>({}));
         if(!resp.ok) throw new Error(data.error||'Withdraw failed');
-        if(Array.isArray(data.items)) inventoryItems=data.items;
+        if(Array.isArray(data.items)) inventoryItems=data.items.map(item=>normalizeInventoryGift(item)).filter(Boolean);
         renderInventory();
-        if(data.message && tg?.showAlert) tg.showAlert(data.message);
       }catch(err){
         inventoryItems=prevItems;
         renderInventory();
@@ -1510,7 +1509,7 @@
       });
       const data=await resp.json().catch(()=>({}));
       if(!resp.ok) throw new Error(data.error||'Sell all failed');
-      inventoryItems=Array.isArray(data.items)?data.items:[];
+      inventoryItems=Array.isArray(data.items)?data.items.map(item=>normalizeInventoryGift(item)).filter(Boolean):[];
       if(Number.isFinite(Number(data.newBalance))) updateBalance(Number(data.newBalance));
       renderInventory();
     }catch(err){
@@ -1661,12 +1660,28 @@
   function getServerNow(){
     return Date.now()+crashServerOffsetMs;
   }
-  function updateCrashWaitLabel(count=0){
-    if(count>0){
-      crashWaitText.textContent=t('waitingBets');
-      return;
-    }
-    crashWaitText.textContent=t('waitingBets');
+  function resolveGiftImage(gift){
+    const image=String(gift?.image||'').trim();
+    const id=String(gift?.giftId||gift?.id||'').trim();
+    if(image) return image;
+    if(id) return 'https://cdn.changes.tg/gifts/originals/'+id+'/Original.png';
+    return '';
+  }
+  function normalizeInventoryGift(item,fallbackId=''){
+    if(!item) return null;
+    return {
+      id:item.id||fallbackId||('temp_'+Date.now()),
+      giftId:String(item.giftId||item.id||''),
+      name:String(item.name||'Gift'),
+      price:Number(item.price||0),
+      image:resolveGiftImage(item),
+      withdrawAt:item.withdrawAt||item.withdraw_available_at||new Date().toISOString(),
+      createdAt:item.createdAt||item.created_at||new Date().toISOString(),
+    };
+  }
+  function updateCrashWaitLabel(){
+    crashWaitText.textContent='';
+    crashWaitText.style.display='none';
   }
   function renderCrashOtherBets(list=[]){
     if(!crashOthers)return;
@@ -1800,7 +1815,7 @@
   }
 
   function renderCrashPlayerWin(amount,gift=null){
-    const giftHtml=gift?'<img class="crash-win-gift" src="'+gift.image+'" alt="'+gift.name+'">':'';
+    const giftHtml=gift?'<img class="crash-win-gift" src="'+resolveGiftImage(gift)+'" alt="'+(gift.name||'')+'">':'';
     document.getElementById('crashPlayerWin').innerHTML='<span class="crash-win-value">'+formatStars(amount)+' <img src="assets/star.png" alt=""></span>'+giftHtml;
   }
   let topupMode='stars';
@@ -1880,11 +1895,12 @@
     document.querySelectorAll('.nav-label')[2].textContent=t('crash');
     document.querySelectorAll('.nav-label')[3].textContent=t('upgrade');
     document.querySelectorAll('.nav-label')[4].textContent=t('profileNav');
-    updateCrashWaitLabel(crashRealtimeState?.betsCount||0);
+    updateCrashWaitLabel();
     if(!crashRealtimeState||crashRealtimeState.phase!=='live') crashLivePill.textContent=t('waiting');
     if(crashPrizePending){ crashLivePill.textContent=t('giftReady'); closeBet(); }
     if(!crashBetActive&&!crashPrizePending&&(!crashRealtimeState||crashRealtimeState.phase!=='live')) document.getElementById('crashBetBtn').textContent=t('placeBet');
     if(crashPrizePending&&crashPrizeGift) showCrashPrize(crashPrizeGift);
+    crashPrizeBlock.classList.remove('visible');
     syncTopupSubmitLabel();
     syncBetSubmitLabel();
     updateReferralUI();
@@ -1916,15 +1932,16 @@
   }
   function showCrashPrize(gift){
     if(!gift)return;
-    crashPrizeImage.src=gift.image;
+    const giftImage=resolveGiftImage(gift);
+    crashPrizeImage.src=giftImage;
     crashPrizeImage.alt=gift.name||'';
     crashPrizeName.textContent=gift.name||'';
     crashPrizePrice.innerHTML=formatStars(gift.price)+' <img src="assets/star.png" alt="">';
     crashPrizeSellBtn.innerHTML=t('sell')+' '+formatStars(gift.price)+' <img src="assets/star.png" alt="">';
     crashPrizeClaimBtn.textContent=t('claim');
-    crashPrizeBlock.classList.add('visible');
+    crashPrizeBlock.classList.remove('visible');
 
-    giftModalImage.src=gift.image;
+    giftModalImage.src=giftImage;
     giftModalName.textContent=gift.name;
     giftModalPrice.innerHTML=formatStars(gift.price)+' <img src="assets/star.png" alt="">';
     giftModalSellBtn.innerHTML=t('sell')+' '+formatStars(gift.price)+' <img src="assets/star.png" alt="">';
@@ -1939,7 +1956,7 @@
     crashBetSettled=false;
     crashSettledPayout=0;
     crashPlayer.classList.remove('visible','fading');
-    crashWaitText.style.display='';
+    crashWaitText.style.display='none';
     crashWait.className='crash-wait empty';
     setCrashPlayerState(null);
     document.getElementById('crashPlayerBet').innerHTML='';
@@ -1953,6 +1970,7 @@
     document.getElementById('crashPlayerName').textContent=firstName;
     if(photoUrl) document.getElementById('crashPlayerAvatar').src=photoUrl;
     document.getElementById('crashPlayerBet').innerHTML=formatStars(amount)+' <img src="assets/star.png" alt="">';
+    crashPrizeBlock.classList.remove('visible');
   }
 
   function syncCrashViewerBet(state){
@@ -2096,10 +2114,8 @@
     }
 
     closeBet();
-    const nextRoundAt=Number(state.nextRoundAt||0);
-    const resetCount=nextRoundAt>now?Math.max(1,Math.ceil((nextRoundAt-now)/1000)):0;
-    crashTimer.style.display='';
-    crashTimer.textContent=String(resetCount);
+    crashTimer.style.display='none';
+    crashTimer.textContent='';
     crashTimer.className='crash-timer';
     stopCrashRocket();
     crashMultiplier=Number(state.crashTarget||state.lastCrashMultiplier||1);
@@ -2157,6 +2173,31 @@
 
   async function placeBet(amount){
     if(!crashRealtimeState||deriveCrashDisplayPhase(crashRealtimeState)!=='countdown'||balance<amount||crashPrizePending)return false;
+    const prevBalance=balance;
+    const prevPrizePending=crashPrizePending;
+    const prevPrizeGift=crashPrizeGift;
+    const prevBetActive=crashBetActive;
+    const prevBetAmount=crashBetAmount;
+    const prevBetSettled=crashBetSettled;
+    const prevSettledPayout=crashSettledPayout;
+    const prevRoundLocked=crashRoundLocked;
+    const betBtn=document.getElementById('crashBetBtn');
+
+    updateBalance(balance-amount);
+    crashRoundLocked=true;
+    crashBetSettled=false;
+    crashSettledPayout=0;
+    crashBetActive=true;
+    crashBetAmount=amount;
+    crashPrizeGift=null;
+    crashPrizePending=false;
+    setCrashPlayerState(null);
+    hideCrashPrize();
+    if(crashRoundLive){betBtn.classList.remove('dim')}else{betBtn.classList.add('dim')}
+    betBtn.innerHTML=t('cashOut')+' '+formatStars(amount)+' <img src="assets/star.png" alt="">';
+    renderCrashPlayerCard(amount);
+    renderCrashPlayerWin(amount,null);
+
     let data=null;
     try{
       const resp=await fetch(API_BASE+'/api/crash/bet',{
@@ -2178,26 +2219,29 @@
       }else{
         await refreshCrashState(true);
       }
+      if(Number.isFinite(Number(data?.newBalance))) updateBalance(Number(data.newBalance));
+      return true;
     }catch(e){
+      updateBalance(prevBalance);
+      crashPrizePending=prevPrizePending;
+      crashPrizeGift=prevPrizeGift;
+      crashBetActive=prevBetActive;
+      crashBetAmount=prevBetAmount;
+      crashBetSettled=prevBetSettled;
+      crashSettledPayout=prevSettledPayout;
+      crashRoundLocked=prevRoundLocked;
+      if(prevPrizePending&&prevPrizeGift) showCrashPrize(prevPrizeGift);
+      else hideCrashPrize();
+      if(prevBetActive&&prevBetAmount){
+        renderCrashPlayerCard(prevBetAmount);
+        renderCrashPlayerWin(prevBetSettled?prevSettledPayout:prevBetAmount,prevPrizePending?prevPrizeGift:null);
+      }else{
+        resetCrashPlayer();
+      }
+      refreshCrashState(true);
       tg?.showAlert?tg.showAlert(e.message):alert(e.message);
       return false;
     }
-    if(Number.isFinite(Number(data?.newBalance))) updateBalance(Number(data.newBalance));
-    else updateBalance(balance-amount);
-    crashRoundLocked=true;
-    crashBetSettled=false;
-    crashSettledPayout=0;
-    crashBetActive=true;
-    crashBetAmount=amount;
-    crashPrizeGift=null;
-    setCrashPlayerState(null);
-    hideCrashPrize();
-    const betBtn=document.getElementById('crashBetBtn');
-    if(crashRoundLive){betBtn.classList.remove('dim')}else{betBtn.classList.add('dim')}
-    betBtn.innerHTML=t('cashOut')+' '+formatStars(amount)+' <img src="assets/star.png" alt="">';
-    renderCrashPlayerCard(amount);
-    renderCrashPlayerWin(amount,null);
-    return true;
   }
 
   let crashPrizeResolveBusy=false;
@@ -2205,6 +2249,31 @@
     if(!crashPrizePending||!crashPrizeGift||crashPrizeResolveBusy)return;
     crashPrizeResolveBusy=true;
     dismissKeyboard();
+
+    const prize=normalizeInventoryGift(crashPrizeGift,'temp_claim_'+Date.now());
+    const prevBalance=balance;
+    const prevItems=[...inventoryItems];
+    const prevPrizePending=crashPrizePending;
+    const prevPrizeGift=crashPrizeGift;
+    const prevBetActive=crashBetActive;
+    const prevBetAmount=crashBetAmount;
+
+    crashPrizePending=false;
+    crashBetActive=false;
+    crashBetAmount=0;
+    crashPrizeGift=null;
+    hideCrashPrize();
+    setCrashPlayerState('win');
+    document.getElementById('crashBetBtn').classList.add('dim');
+    document.getElementById('crashBetBtn').textContent=t('placeBet');
+
+    if(mode==='sell'){
+      updateBalance(balance+Number(prize.price||0));
+    }else{
+      inventoryItems=[prize,...inventoryItems.filter(item=>String(item.id)!==String(prize.id))];
+      renderInventory();
+    }
+
     try{
       const resp=await fetch(API_BASE+'/api/crash/prize/resolve',{
         method:'POST',
@@ -2214,18 +2283,21 @@
       const data=await resp.json().catch(()=>({}));
       if(!resp.ok) throw new Error(data.error||'Prize resolve failed');
 
-      crashPrizePending=false;
-      crashBetActive=false;
-      crashBetAmount=0;
-      crashPrizeGift=null;
-      hideCrashPrize();
-      setCrashPlayerState('win');
-      document.getElementById('crashBetBtn').classList.add('dim');
-      document.getElementById('crashBetBtn').textContent=t('placeBet');
-
-      if(Number.isFinite(Number(data.newBalance))) updateBalance(Number(data.newBalance));
-      if(Array.isArray(data.items)) inventoryItems=data.items;
-      renderInventory();
+      if(mode==='sell'){
+        if(Number.isFinite(Number(data.newBalance))) updateBalance(Number(data.newBalance));
+      }else{
+        const confirmedGift=normalizeInventoryGift(data.claimedGift||prize,prize.id);
+        if(Array.isArray(data.items) && data.items.length){
+          const rest=data.items
+            .map(item=>normalizeInventoryGift(item))
+            .filter(Boolean)
+            .filter(item=>!(String(item.id)===String(confirmedGift.id)|| (String(item.giftId||'')===String(confirmedGift.giftId||'') && Number(item.price||0)===Number(confirmedGift.price||0) && String(item.name||'')===String(confirmedGift.name||''))));
+          inventoryItems=[confirmedGift,...rest];
+        }else{
+          inventoryItems=[confirmedGift,...inventoryItems.filter(item=>String(item.id)!==String(prize.id))];
+        }
+        renderInventory();
+      }
 
       if(data.state){
         crashServerOffsetMs=Number(data.state.serverNow||Date.now())-Date.now();
@@ -2236,15 +2308,26 @@
         renderCrashHistoryState(data.state);
         renderCrashOtherBets(data.state.activeBets||[]);
         updateCrashWaitLabel(data.state.betsCount||0);
+      }else{
+        refreshCrashState(true);
       }
 
       if(!crashRoundLive){
+        clearTimeout(crashRoundResetTimeout);
         crashRoundResetTimeout=setTimeout(()=>{
           if(crashPrizePending)return;
           resetCrashPlayer();
-        },1200);
+        },180);
       }
     }catch(err){
+      updateBalance(prevBalance);
+      inventoryItems=prevItems;
+      renderInventory();
+      crashPrizePending=prevPrizePending;
+      crashPrizeGift=prevPrizeGift;
+      crashBetActive=prevBetActive;
+      crashBetAmount=prevBetAmount;
+      if(prevPrizePending&&prevPrizeGift) showCrashPrize(prevPrizeGift);
       tg?.showAlert?tg.showAlert(err.message):alert(err.message);
     }finally{
       crashPrizeResolveBusy=false;
@@ -2662,7 +2745,7 @@
       const resp=await fetch(API_BASE+'/api/inventory',{headers:{'x-init-data':tg.initData}});
       const data=await resp.json();
       if(resp.ok){
-        inventoryItems=Array.isArray(data.items)?data.items:[];
+        inventoryItems=Array.isArray(data.items)?data.items.map(item=>normalizeInventoryGift(item)).filter(Boolean):[];
         renderInventory();
         if(data.pendingPrize){
           crashPrizeGift=data.pendingPrize;
