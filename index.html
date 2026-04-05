@@ -164,10 +164,10 @@
   .referral-arrow{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0}
   .referral-arrow svg{width:18px;height:18px}
 
-  .inventory-header{display:flex;align-items:center;margin-bottom:14px;gap:8px}
-  .inventory-title{color:#fff;font-size:17px;font-weight:700}
-  .inventory-count{color:rgba(255,255,255,.35);font-size:13px;font-weight:500}
-  .sell-all-btn{margin-left:auto;display:flex;align-items:center;gap:5px;height:32px;padding:0 12px;border-radius:10px;border:1.5px dashed rgba(255,255,255,.2);background:none;color:rgba(255,255,255,.45);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap}
+  .inventory-header{display:flex;align-items:center;flex-wrap:nowrap;margin-bottom:14px;gap:8px;min-width:0}
+  .inventory-title{color:#fff;font-size:17px;font-weight:700;flex-shrink:0}
+  .inventory-count{color:rgba(255,255,255,.35);font-size:12px;font-weight:600;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1 1 auto;text-align:right}
+  .sell-all-btn{margin-left:0;display:flex;align-items:center;gap:5px;height:32px;padding:0 12px;border-radius:10px;border:1.5px dashed rgba(255,255,255,.2);background:none;color:rgba(255,255,255,.45);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0}
   .sell-all-btn img{width:14px;height:14px;object-fit:contain;filter:drop-shadow(0 0 3px rgba(255,200,0,.4))}
 
   .inventory-empty{display:flex;flex-direction:column;align-items:center;padding:30px 0 20px}
@@ -254,32 +254,34 @@
   /* === UPGRADE === */
   .upgrade-page{display:flex;flex-direction:column;align-items:center;padding-top:0}
   .upgrade-circle-outer{
-    width:260px;height:260px;border-radius:50%;background:#1a1a1e;
-    display:flex;align-items:center;justify-content:center;margin-bottom:24px;
+    width:260px;height:260px;border-radius:50%;
+    position:relative;display:flex;align-items:center;justify-content:center;margin-bottom:24px;
   }
-  .upgrade-circle-inner{
-    width:200px;height:200px;border-radius:50%;background:#111114;
-    display:flex;align-items:center;justify-content:center;position:relative;overflow:visible;
-  }
-  .circle-arrow{
-    position:absolute;top:-26px;left:50%;transform:translateX(-50%);
-    width:56px;height:30px;border-radius:999px;background:#0A84FF;
-    box-shadow:0 10px 24px rgba(10,132,255,.34);z-index:4;
-  }
-  .circle-arrow::after{
-    content:'';position:absolute;left:50%;bottom:-10px;transform:translateX(-50%);
-    width:20px;height:14px;background:#0A84FF;clip-path:polygon(50% 100%, 0 0, 100% 0);
-    filter:drop-shadow(0 6px 10px rgba(10,132,255,.28));
-  }
-  .upgrade-wheel-window{position:relative;width:190px;height:190px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
-  .upgrade-wheel-disc{
+  .upgrade-ring{
     position:absolute;inset:0;border-radius:50%;
     background:conic-gradient(from -90deg, #0A84FF 0deg, #0A84FF 0deg, rgba(255,255,255,.12) 0deg, rgba(255,255,255,.12) 360deg);
-    box-shadow:inset 0 0 0 10px rgba(255,255,255,.04), 0 16px 30px rgba(0,0,0,.22);
+    box-shadow:inset 0 0 0 12px rgba(255,255,255,.04), 0 16px 30px rgba(0,0,0,.22);
     transition:background .24s ease, transform 4.6s cubic-bezier(.12,.88,.14,1);will-change:transform;
   }
-  .upgrade-wheel-disc::after{content:'';position:absolute;inset:16px;border-radius:50%;background:radial-gradient(circle at 50% 45%, rgba(255,255,255,.05), rgba(0,0,0,.22));box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);}
-  .upgrade-wheel-logo{position:relative;z-index:2;width:110px;height:110px;object-fit:contain;filter:drop-shadow(0 10px 18px rgba(0,0,0,.24));pointer-events:none;}
+  .upgrade-ring::after{content:'';position:absolute;inset:18px;border-radius:50%;background:#151519;box-shadow:inset 0 0 0 1px rgba(255,255,255,.04);}
+  .upgrade-circle-inner{
+    width:188px;height:188px;border-radius:50%;background:#101013;
+    display:flex;align-items:center;justify-content:center;position:relative;overflow:visible;z-index:2;
+    box-shadow:0 10px 22px rgba(0,0,0,.18), inset 0 0 0 1px rgba(255,255,255,.04);
+  }
+  .circle-arrow{
+    position:absolute;top:-36px;left:50%;transform:translateX(-50%);
+    width:38px;height:18px;border-radius:999px;background:#0A84FF;
+    box-shadow:0 10px 24px rgba(10,132,255,.26);z-index:5;
+  }
+  .circle-arrow::after{
+    content:'';position:absolute;left:50%;bottom:-11px;transform:translateX(-50%);
+    width:12px;height:16px;background:#0A84FF;clip-path:polygon(50% 100%, 0 0, 100% 0);
+    filter:drop-shadow(0 6px 10px rgba(10,132,255,.22));
+  }
+  .upgrade-wheel-window{position:relative;width:188px;height:188px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+  .upgrade-wheel-disc{display:none}
+  .upgrade-wheel-logo{position:relative;z-index:2;width:112px;height:112px;object-fit:contain;filter:drop-shadow(0 10px 18px rgba(0,0,0,.24));pointer-events:none;}
   .upgrade-wheel-center-glow{position:absolute;z-index:1;width:126px;height:126px;border-radius:50%;background:radial-gradient(circle, rgba(255,255,255,.08), rgba(255,255,255,0));pointer-events:none;}
   .upgrade-subtitle{color:rgba(255,255,255,.4);font-size:14px;font-weight:600;margin-bottom:12px}
   .upgrade-chance{color:#fff;font-size:16px;font-weight:700;margin-bottom:20px;opacity:.92}
@@ -290,7 +292,7 @@
     border:1.5px dashed rgba(255,255,255,.12);
     display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;transition:border-color .2s ease, box-shadow .2s ease, transform .2s ease;overflow:hidden;padding:10px;
   }
-  .slot-cell.active{border-color:rgba(10,132,255,.92);box-shadow:0 0 0 1px rgba(10,132,255,.16),0 0 20px rgba(10,132,255,.12);transform:translateY(-1px)}
+  .slot-cell.active{border-color:rgba(255,255,255,.12);box-shadow:none;transform:none}
   .slot-cell svg{width:28px;height:28px;opacity:.2}
   .slot-cell img{width:64px;height:64px;object-fit:contain;filter:drop-shadow(0 8px 14px rgba(0,0,0,.22))}
   .slot-label{font-size:10px;font-weight:600;color:rgba(255,255,255,.3);letter-spacing:.01em;text-align:center}
@@ -347,7 +349,7 @@
   .sheet-gifts{display:none;width:100%;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding-top:8px}
   .sheet-gifts.visible{display:grid}
   .sheet-gift-card{padding:12px 10px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;align-items:center;gap:8px;transition:border-color .22s ease, box-shadow .22s ease, transform .22s ease}
-  .sheet-gift-card.selected{border-color:rgba(10,132,255,.96);box-shadow:0 0 0 1px rgba(10,132,255,.16),0 0 24px rgba(10,132,255,.12);transform:translateY(-1px)}
+  .sheet-gift-card.selected{border-color:rgba(255,255,255,.08);box-shadow:none;transform:none}
   .sheet-gift-card img{width:90px;height:90px;object-fit:contain;filter:drop-shadow(0 10px 18px rgba(0,0,0,.24))}
   .sheet-gift-name{color:#fff;font-size:12px;font-weight:700;text-align:center;line-height:1.2;min-height:30px}
   .sheet-gift-price{display:flex;align-items:center;justify-content:center;gap:4px;color:rgba(255,255,255,.65);font-size:12px;font-weight:700}
@@ -358,7 +360,7 @@
   .sheet-add-btn{
     width:calc(100% - 24px);height:52px;margin:0 12px 14px;border:none;border-radius:999px;
     background:#0A84FF;color:#fff;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;
-    box-shadow:0 12px 24px rgba(10,132,255,.26);
+    box-shadow:none;
     opacity:0;transform:translateY(120%);pointer-events:none;transition:transform .28s ease, opacity .22s ease;
   }
   .sheet-add-btn.visible{opacity:1;transform:translateY(0);pointer-events:auto}
@@ -1061,7 +1063,8 @@
   <!-- UPGRADE -->
   <div class="page" id="upgradePage">
     <div class="upgrade-page">
-      <div class="upgrade-circle-outer">
+      <div class="upgrade-circle-outer" id="upgradeCircleOuter">
+        <div class="upgrade-ring" id="upgradeRing"></div>
         <div class="upgrade-circle-inner" id="upgradeWheel">
           <div class="circle-arrow"></div>
           <div class="upgrade-wheel-window">
@@ -1432,7 +1435,7 @@
   function updateInventorySummary(){
     const count=inventoryItems.length;
     const total=inventoryItems.reduce((sum,item)=>sum+item.price,0);
-    inventoryCountEl.textContent=count+' '+giftCountWord(count);
+    inventoryCountEl.textContent=count ? (count+' '+giftCountWord(count)+' · '+formatStars(total)+'⭐') : ('0 '+giftCountWord(0));
     sellAllBtn.innerHTML=t('sellAll')+' '+formatStars(total)+' <img src="assets/star.png" alt="star">';
     sellAllBtn.style.opacity=count? '1':'.45';
     sellAllBtn.style.pointerEvents=count? 'auto':'none';
@@ -1509,7 +1512,7 @@
     sheetEmptyDesc.style.display='none';
     sheetGifts.classList.add('visible');
     sheetGifts.innerHTML=items.map(item=>`
-      <div class="sheet-gift-card ${sheetSelectedGiftId===String(item._sheetId)?'selected':''}" data-id="${item._sheetId}">
+      <div class="sheet-gift-card" data-id="${item._sheetId}">
         <img src="${resolveGiftImage(item)}" alt="${item.name}">
         <div class="sheet-gift-name">${item.name}</div>
         <div class="sheet-gift-price">${formatStars(item.price)} <img src="assets/star.png" alt=""></div>
@@ -1529,6 +1532,8 @@
   const slotSourceEl=document.getElementById('slotMyGifts');
   const slotTargetEl=document.getElementById('slotUpgradeGift');
   const upgradeWheelEl=document.getElementById('upgradeWheel');
+  const upgradeCircleOuterEl=document.getElementById('upgradeCircleOuter');
+  const upgradeRingEl=document.getElementById('upgradeRing');
   const upgradeWheelDisc=document.getElementById('upgradeWheelDisc');
   const upgradeModalOverlay=document.getElementById('upgradeModalOverlay');
   const upgradeModalImage=document.getElementById('upgradeModalImage');
@@ -1552,8 +1557,14 @@
   function renderUpgradeWheel(rotation=upgradeWheelRotation){
     const chance=getUpgradeChance();
     const blueDeg=Math.max(0,Math.min(360,(chance/100)*360));
-    upgradeWheelDisc.style.background='conic-gradient(from -90deg, #0A84FF 0deg '+blueDeg+'deg, rgba(255,255,255,.12) '+blueDeg+'deg 360deg)';
-    upgradeWheelDisc.style.transform='rotate('+rotation+'deg)';
+    if(upgradeRingEl){
+      upgradeRingEl.style.background='conic-gradient(from -90deg, #0A84FF 0deg '+blueDeg+'deg, rgba(255,255,255,.12) '+blueDeg+'deg 360deg)';
+      upgradeRingEl.style.transform='rotate('+rotation+'deg)';
+    }
+    if(upgradeWheelDisc){
+      upgradeWheelDisc.style.background='transparent';
+      upgradeWheelDisc.style.transform='rotate(0deg)';
+    }
   }
   function renderUpgradeUI(){
     slotSourceEl.innerHTML=formatSlotContent(upgradeSourceGift,t('myGifts'));
@@ -1821,6 +1832,7 @@
   let crashBetSettled=false;
   let crashSettledPayout=0;
   let crashDisplayPhase='countdown';
+  let crashCountdownIntroUntil=0;
   let lastCrashDisplayState=null;
 
   function getPillColor(x){
@@ -2426,6 +2438,7 @@
     if(prevState.roundId===nextState.roundId)return;
     if(!crashPrizePending) crashPrizeModalAutoKey='';
     crashRoundLocked=false;
+    crashCountdownIntroUntil=Date.now()+320;
 
     if(crashPrizePending||crashCashoutBusy){
       return;
@@ -2467,7 +2480,7 @@
 
     if(displayPhase==='countdown'){
       const endsAt=Number(state.countdownEndsAt||state.liveStartAt||0);
-      const count=Math.min(10,Math.max(1,Math.ceil(Math.max(0,endsAt-now)/1000))); 
+      const count=(Date.now()<crashCountdownIntroUntil)?10:Math.min(10,Math.max(1,Math.ceil(Math.max(0,endsAt-now)/1000))); 
       crashTimer.style.display='';
       crashTimer.textContent=String(count);
       crashTimer.className='crash-timer';
@@ -2569,7 +2582,10 @@
   let crashStarted=false;
 
   async function placeBet(amount){
-    if(!crashRealtimeState||deriveCrashDisplayPhase(crashRealtimeState)!=='countdown'||balance<amount||crashPrizePending)return false;
+    if(!crashRealtimeState||balance<amount||crashPrizePending)return false;
+    const phase=deriveCrashDisplayPhase(crashRealtimeState);
+    const lateStartGrace=!!(phase==='live' && Number(crashRealtimeState.liveStartAt||0) && (getServerNow()-Number(crashRealtimeState.liveStartAt||0))<=900);
+    if(phase!=='countdown' && !lateStartGrace) return false;
     const prevBalance=balance;
     const prevPrizePending=crashPrizePending;
     const prevPrizeGift=crashPrizeGift;
@@ -2602,7 +2618,7 @@
       const resp=await fetch(API_BASE+'/api/crash/bet',{
         method:'POST',
         headers:{'Content-Type':'application/json','x-init-data':tg?.initData||''},
-        body:JSON.stringify({amount}),
+        body:JSON.stringify({amount, roundId:crashRealtimeState?.roundId||0, clientPhase:phase}),
       });
       data=await resp.json().catch(()=>({}));
       if(!resp.ok) throw new Error(data.error||'Round already started');
@@ -2765,19 +2781,19 @@
   }
 
   function crashRenderedGiftForCashout(){
-    if(crashRenderedWinGift){
-      return {...crashRenderedWinGift};
+    const payout=Math.max(0,Math.floor(Number(crashBetAmount||0)*computeCrashMultiplier(crashRealtimeState)));
+    if(payout>0){
+      return withCrashGiftValue(getCrashPreviewGift(payout)||null,payout);
     }
     const fallbackAmount=crashRenderedWinAmount||crashSettledPayout||crashBetAmount||0;
     return withCrashGiftValue(getCrashPreviewGift(fallbackAmount)||null,fallbackAmount);
   }
 
   async function cashOut(){
-    if(!crashBetActive||!crashRoundLive||crashCashoutBusy) return;
-    if(crashRealtimeState?.liveEndsAt && getServerNow()>=Number(crashRealtimeState.liveEndsAt)){
-      await refreshCrashState(true);
-      return;
-    }
+    const now=getServerNow();
+    const liveEndsAt=Number(crashRealtimeState?.liveEndsAt||0);
+    const endedGrace=!!(liveEndsAt && serverNow>=liveEndsAt && serverNow<=liveEndsAt+1800);
+    if(!crashBetActive||crashCashoutBusy||(!crashRoundLive&&!endedGrace)) return;
     const betBtn=document.getElementById('crashBetBtn');
     const prevBalance=balance;
     const prevPrizePending=crashPrizePending;
@@ -2787,8 +2803,8 @@
     const prevSettledPayout=crashSettledPayout;
     const liveMultiplier=computeCrashMultiplier(crashRealtimeState);
     const livePayout=Math.max(0,Math.floor(Number(crashBetAmount||0)*liveMultiplier));
-    const visualGift=crashRenderedGiftForCashout();
-    const optimisticGift=withCrashGiftValue(visualGift||getCrashPreviewGift(livePayout)||null,livePayout);
+    const visualGift=withCrashGiftValue(getCrashPreviewGift(livePayout)||null,livePayout);
+    const optimisticGift=visualGift||null;
 
     crashCashoutBusy=true;
     crashBetActive=false;
@@ -2829,8 +2845,7 @@
       }
 
       const win=Number(data.payout||0);
-      if(Number.isFinite(Number(data.newBalance))) updateBalance(Number(data.newBalance));
-      else updateBalance(prevBalance+win);
+      updateBalance(prevBalance);
 
       crashCashoutBusy=false;
       crashBetActive=false;
@@ -3073,12 +3088,16 @@
       ? (Math.random()*Math.max(10,blueDeg-8))+4
       : (blueDeg + Math.random()*Math.max(10,360-blueDeg-8)+4) % 360;
     const finalRotation=upgradeWheelRotation + 360*7 + (360-targetDeg);
-    upgradeWheelDisc.style.transition='transform 4.6s cubic-bezier(.12,.88,.14,1)';
-    requestAnimationFrame(()=>{ upgradeWheelDisc.style.transform='rotate('+finalRotation+'deg)'; });
+    if(upgradeRingEl){
+      upgradeRingEl.style.transition='transform 4.6s cubic-bezier(.12,.88,.14,1)';
+      requestAnimationFrame(()=>{ upgradeRingEl.style.transform='rotate('+finalRotation+'deg)'; });
+    }
     setTimeout(()=>{
       upgradeWheelRotation=((finalRotation%360)+360)%360;
-      upgradeWheelDisc.style.transition='';
-      upgradeWheelDisc.style.transform='rotate('+upgradeWheelRotation+'deg)';
+      if(upgradeRingEl){
+        upgradeRingEl.style.transition='';
+        upgradeRingEl.style.transform='rotate('+upgradeWheelRotation+'deg)';
+      }
       inventoryItems=inventoryItems.filter(item=>String(item.id)!==String(upgradeSourceGift.id));
       if(isWin){
         const newId='upgrade_'+Date.now();
@@ -3116,7 +3135,10 @@
     if(now<crashBetPressLockUntil)return;
     crashBetPressLockUntil=now+180;
     const phase=deriveCrashDisplayPhase(crashRealtimeState);
-    if(crashBetActive && phase==='live'){cashOut();return}
+    const serverNow=getServerNow();
+    const liveEndsAt=Number(crashRealtimeState?.liveEndsAt||0);
+    const endedGrace=!!(liveEndsAt && serverNow>=liveEndsAt && serverNow<=liveEndsAt+1800);
+    if(crashBetActive && (phase==='live'||endedGrace)){cashOut();return}
     if(crashPrizePending){openGiftModal();return;}
     if(phase!=='countdown'){
       if(crashRealtimeState) refreshCrashState(true);
