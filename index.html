@@ -259,20 +259,28 @@
   }
   .upgrade-circle-inner{
     width:200px;height:200px;border-radius:50%;background:#111114;
-    display:flex;align-items:center;justify-content:center;position:relative;
+    display:flex;align-items:center;justify-content:center;position:relative;overflow:visible;
   }
   .circle-arrow{
-    position:absolute;top:-16px;left:50%;transform:translateX(-50%);
-    width:34px;height:22px;border-radius:999px;background:#0A84FF;
-    box-shadow:0 8px 22px rgba(10,132,255,.32);display:flex;align-items:center;justify-content:center;z-index:3;
+    position:absolute;top:-26px;left:50%;transform:translateX(-50%);
+    width:56px;height:30px;border-radius:999px;background:#0A84FF;
+    box-shadow:0 10px 24px rgba(10,132,255,.34);z-index:4;
   }
-  .circle-arrow::before{content:'';width:12px;height:12px;border-right:3px solid #fff;border-bottom:3px solid #fff;transform:rotate(45deg) translateY(-1px);border-radius:2px}
-  .upgrade-wheel-window{position:relative;width:190px;height:190px;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 45%, rgba(255,255,255,.08), rgba(0,0,0,.12));}
-  .upgrade-wheel-track{display:flex;align-items:center;gap:14px;will-change:transform;transform:translateX(0);padding:0 120px;}
-  .upgrade-wheel-item{width:94px;height:94px;border-radius:26px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 18px rgba(0,0,0,.18);flex-shrink:0;}
-  .upgrade-wheel-item img{width:72px;height:72px;object-fit:contain;filter:drop-shadow(0 10px 18px rgba(0,0,0,.24));}
-  .upgrade-wheel-placeholder{position:absolute;width:132px;height:132px;object-fit:contain;opacity:.26;pointer-events:none;transition:opacity .22s ease;}
-  .upgrade-circle-inner.spinning .upgrade-wheel-placeholder{opacity:0}
+  .circle-arrow::after{
+    content:'';position:absolute;left:50%;bottom:-10px;transform:translateX(-50%);
+    width:20px;height:14px;background:#0A84FF;clip-path:polygon(50% 100%, 0 0, 100% 0);
+    filter:drop-shadow(0 6px 10px rgba(10,132,255,.28));
+  }
+  .upgrade-wheel-window{position:relative;width:190px;height:190px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+  .upgrade-wheel-disc{
+    position:absolute;inset:0;border-radius:50%;
+    background:conic-gradient(from -90deg, #0A84FF 0deg, #0A84FF 0deg, rgba(255,255,255,.12) 0deg, rgba(255,255,255,.12) 360deg);
+    box-shadow:inset 0 0 0 10px rgba(255,255,255,.04), 0 16px 30px rgba(0,0,0,.22);
+    transition:background .24s ease, transform 4.6s cubic-bezier(.12,.88,.14,1);will-change:transform;
+  }
+  .upgrade-wheel-disc::after{content:'';position:absolute;inset:16px;border-radius:50%;background:radial-gradient(circle at 50% 45%, rgba(255,255,255,.05), rgba(0,0,0,.22));box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);}
+  .upgrade-wheel-logo{position:relative;z-index:2;width:110px;height:110px;object-fit:contain;filter:drop-shadow(0 10px 18px rgba(0,0,0,.24));pointer-events:none;}
+  .upgrade-wheel-center-glow{position:absolute;z-index:1;width:126px;height:126px;border-radius:50%;background:radial-gradient(circle, rgba(255,255,255,.08), rgba(255,255,255,0));pointer-events:none;}
   .upgrade-subtitle{color:rgba(255,255,255,.4);font-size:14px;font-weight:600;margin-bottom:12px}
   .upgrade-chance{color:#fff;font-size:16px;font-weight:700;margin-bottom:20px;opacity:.92}
 
@@ -347,6 +355,14 @@
   .sheet-body .empty-title{color:#fff;font-size:16px;font-weight:700;margin-bottom:6px}
   .sheet-body .empty-desc{color:rgba(255,255,255,.4);font-size:13px;font-weight:500;text-align:center;line-height:1.4;max-width:280px}
   .sheet-body .empty-desc a{color:#007AFF;text-decoration:none;font-weight:600}
+  .sheet-add-btn{
+    width:calc(100% - 24px);height:52px;margin:0 12px 14px;border:none;border-radius:999px;
+    background:#0A84FF;color:#fff;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;
+    box-shadow:0 12px 24px rgba(10,132,255,.26);
+    opacity:0;transform:translateY(120%);pointer-events:none;transition:transform .28s ease, opacity .22s ease;
+  }
+  .sheet-add-btn.visible{opacity:1;transform:translateY(0);pointer-events:auto}
+  .sheet-add-btn:active{transform:translateY(0) scale(.99)}
 
   /* === TOPUP SHEET === */
   .topup-overlay{
@@ -1048,8 +1064,11 @@
       <div class="upgrade-circle-outer">
         <div class="upgrade-circle-inner" id="upgradeWheel">
           <div class="circle-arrow"></div>
-          <div class="upgrade-wheel-window"><div class="upgrade-wheel-track" id="upgradeWheelTrack"></div></div>
-          <img class="upgrade-wheel-placeholder" src="assets/logotip.png" alt="">
+          <div class="upgrade-wheel-window">
+            <div class="upgrade-wheel-disc" id="upgradeWheelDisc"></div>
+            <div class="upgrade-wheel-center-glow"></div>
+            <img class="upgrade-wheel-logo" id="upgradeWheelLogo" src="assets/logotip.png" alt="">
+          </div>
         </div>
       </div>
       <div class="upgrade-subtitle">Выберите подарок</div>
@@ -1150,6 +1169,18 @@
       <div class="gift-modal-actions">
         <button class="crash-prize-sell" id="giftModalSellBtn"></button>
         <button class="crash-prize-claim" id="giftModalClaimBtn">Забрать</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="gift-modal-overlay" id="upgradeModalOverlay">
+    <div class="gift-modal">
+      <div class="gift-modal-head"><div class="gift-modal-pill" id="upgradeModalPill">Ваш подарок</div></div>
+      <img class="gift-modal-image" id="upgradeModalImage" src="" alt="">
+      <div class="gift-modal-title" id="upgradeModalName"></div>
+      <div class="gift-modal-price" id="upgradeModalPrice"></div>
+      <div class="gift-modal-actions">
+        <button class="crash-prize-claim" id="upgradeModalCloseBtn">OK</button>
       </div>
     </div>
   </div>
@@ -1360,6 +1391,8 @@
   let inventoryItems=[];
   let crashPrizeGift=null;
   let crashPrizePending=false;
+  let crashRenderedWinGift=null;
+  let crashRenderedWinAmount=0;
   let crashBetSyncPending=false;
   let crashCashoutBusy=false;
   let crashRoundCrashTimeout=null;
@@ -1496,7 +1529,13 @@
   const slotSourceEl=document.getElementById('slotMyGifts');
   const slotTargetEl=document.getElementById('slotUpgradeGift');
   const upgradeWheelEl=document.getElementById('upgradeWheel');
-  const upgradeWheelTrack=document.getElementById('upgradeWheelTrack');
+  const upgradeWheelDisc=document.getElementById('upgradeWheelDisc');
+  const upgradeModalOverlay=document.getElementById('upgradeModalOverlay');
+  const upgradeModalImage=document.getElementById('upgradeModalImage');
+  const upgradeModalName=document.getElementById('upgradeModalName');
+  const upgradeModalPrice=document.getElementById('upgradeModalPrice');
+  const upgradeModalCloseBtn=document.getElementById('upgradeModalCloseBtn');
+  let upgradeWheelRotation=0;
 
   function getUpgradeChance(source=upgradeSourceGift,target=upgradeTargetGift){
     const from=Number(source?.price||0);
@@ -1510,6 +1549,12 @@
     }
     return '<img src="'+resolveGiftImage(gift)+'" alt="'+gift.name+'"><div class="slot-label">'+gift.name+'</div><div class="slot-price">'+formatStars(gift.price)+' <img src="assets/star.png" alt=""></div>';
   }
+  function renderUpgradeWheel(rotation=upgradeWheelRotation){
+    const chance=getUpgradeChance();
+    const blueDeg=Math.max(0,Math.min(360,(chance/100)*360));
+    upgradeWheelDisc.style.background='conic-gradient(from -90deg, #0A84FF 0deg '+blueDeg+'deg, rgba(255,255,255,.12) '+blueDeg+'deg 360deg)';
+    upgradeWheelDisc.style.transform='rotate('+rotation+'deg)';
+  }
   function renderUpgradeUI(){
     slotSourceEl.innerHTML=formatSlotContent(upgradeSourceGift,t('myGifts'));
     slotTargetEl.innerHTML=formatSlotContent(upgradeTargetGift,t('giftsForUpgrade'));
@@ -1520,14 +1565,7 @@
     const canUpgrade=!!(upgradeSourceGift&&upgradeTargetGift&&!upgradeSpinBusy);
     upgradeBtnEl.classList.toggle('active',canUpgrade);
     upgradeBtnEl.classList.toggle('dim',!canUpgrade);
-    if(!upgradeSpinBusy && !upgradeWheelTrack.children.length){
-      const source=upgradeSourceGift||GIFT_CATALOG[Math.max(0,GIFT_CATALOG.length-1)]||null;
-      const target=upgradeTargetGift||GIFT_CATALOG[Math.max(0,GIFT_CATALOG.length-3)]||null;
-      const base=[source,target].filter(Boolean);
-      upgradeWheelTrack.innerHTML=base.length?base.map(item=>'<div class="upgrade-wheel-item"><img src="'+resolveGiftImage(item)+'" alt="'+item.name+'"></div>').join(''):'<div class="upgrade-wheel-item"><img src="assets/logotip.png" alt="logo"></div>';
-      upgradeWheelTrack.style.transition='none';
-      upgradeWheelTrack.style.transform='translateX(0px)';
-    }
+    renderUpgradeWheel();
   }
   function getSheetItems(){
     if(sheetMode==='upgrade-source'){
@@ -2071,7 +2109,11 @@
   }
 
   function renderCrashPlayerWin(amount,gift=null){
-    const displayGift=withCrashGiftValue(gift||getCrashPreviewGift(amount),amount);
+    const explicitGift=gift?normalizeCrashPrizeGift(gift):null;
+    const sourceGift=explicitGift||(crashPrizePending||crashBetSettled?crashPrizeGift:null)||getCrashPreviewGift(amount);
+    const displayGift=withCrashGiftValue(sourceGift,amount);
+    crashRenderedWinGift=displayGift?{...displayGift}:null;
+    crashRenderedWinAmount=Number(amount||0);
     document.getElementById('crashPlayerWin').innerHTML='<span class="crash-win-value">'+formatStars(amount)+' <img src="assets/star.png" alt=""></span>'+(displayGift?buildCrashGiftBadge(displayGift):'');
   }
   let topupMode='stars';
@@ -2267,6 +2309,8 @@
     crashCashoutBusy=false;
     crashBetSettled=false;
     crashSettledPayout=0;
+    crashRenderedWinGift=null;
+    crashRenderedWinAmount=0;
     crashPlayer.classList.remove('visible','fading');
     crashWaitText.style.display='none';
     crashWait.className='crash-wait empty';
@@ -2720,6 +2764,14 @@
     }
   }
 
+  function crashRenderedGiftForCashout(){
+    if(crashRenderedWinGift){
+      return {...crashRenderedWinGift};
+    }
+    const fallbackAmount=crashRenderedWinAmount||crashSettledPayout||crashBetAmount||0;
+    return withCrashGiftValue(getCrashPreviewGift(fallbackAmount)||null,fallbackAmount);
+  }
+
   async function cashOut(){
     if(!crashBetActive||!crashRoundLive||crashCashoutBusy) return;
     if(crashRealtimeState?.liveEndsAt && getServerNow()>=Number(crashRealtimeState.liveEndsAt)){
@@ -2735,7 +2787,8 @@
     const prevSettledPayout=crashSettledPayout;
     const liveMultiplier=computeCrashMultiplier(crashRealtimeState);
     const livePayout=Math.max(0,Math.floor(Number(crashBetAmount||0)*liveMultiplier));
-    const optimisticGift=withCrashGiftValue(getCrashPreviewGift(livePayout)||null,livePayout);
+    const visualGift=crashRenderedGiftForCashout();
+    const optimisticGift=withCrashGiftValue(visualGift||getCrashPreviewGift(livePayout)||null,livePayout);
 
     crashCashoutBusy=true;
     crashBetActive=false;
@@ -2989,59 +3042,65 @@
     closeSheet();
     renderUpgradeUI();
   });
+  function openUpgradeResultModal(gift){
+    if(!gift) return;
+    const normalized=normalizeCrashPrizeGift(gift);
+    const image=resolveGiftImage(normalized);
+    document.getElementById('upgradeModalPill').textContent=t('giftUnlocked');
+    if(image){
+      upgradeModalImage.src=image;
+      upgradeModalImage.alt=normalized.name||'Gift';
+    }else{
+      upgradeModalImage.removeAttribute('src');
+      upgradeModalImage.alt='';
+    }
+    upgradeModalName.textContent=normalized.name||'Gift';
+    upgradeModalPrice.innerHTML=formatStars(normalized.price||0)+' <img src="assets/star.png" alt="">';
+    upgradeModalOverlay.classList.add('open');
+  }
+  upgradeModalCloseBtn.addEventListener('click',()=>upgradeModalOverlay.classList.remove('open'));
+  upgradeModalOverlay.addEventListener('click',e=>{if(e.target===upgradeModalOverlay) upgradeModalOverlay.classList.remove('open')});
+
   upgradeBtnEl.addEventListener('click',async()=>{
     if(upgradeSpinBusy||!upgradeSourceGift||!upgradeTargetGift) return;
     const chance=getUpgradeChance();
     if(!chance) return;
     upgradeSpinBusy=true;
     renderUpgradeUI();
-    const losePool=GIFT_CATALOG.filter(item=>String(item.id)!==String(upgradeTargetGift.id||upgradeTargetGift.giftId||'') && Number(item.price||0)>=Number(upgradeSourceGift.price||0));
-    const fallbackLose=losePool[Math.floor(Math.random()*Math.max(1,losePool.length))] || upgradeSourceGift;
     const isWin=Math.random()*100<chance;
-    const finalGift=isWin ? upgradeTargetGift : fallbackLose;
-    const reel=[];
-    const pool=GIFT_CATALOG.filter(item=>Number(item.price||0)>=Number(upgradeSourceGift.price||0));
-    for(let i=0;i<22;i+=1){
-      const item=pool[Math.floor(Math.random()*Math.max(1,pool.length))] || finalGift;
-      reel.push(item);
-    }
-    const stopIndex=18;
-    reel[stopIndex]=finalGift;
-    upgradeWheelTrack.innerHTML=reel.map(item=>'<div class="upgrade-wheel-item"><img src="'+resolveGiftImage(item)+'" alt="'+item.name+'"></div>').join('');
-    upgradeWheelEl.classList.add('spinning');
-    const itemWidth=108;
-    const offset=-(stopIndex*itemWidth)+54;
-    upgradeWheelTrack.style.transition='none';
-    upgradeWheelTrack.style.transform='translateX(220px)';
-    requestAnimationFrame(()=>{
-      requestAnimationFrame(()=>{
-        upgradeWheelTrack.style.transition='transform 4.2s cubic-bezier(.12,.88,.14,1)';
-        upgradeWheelTrack.style.transform='translateX('+offset+'px)';
-      });
-    });
+    const blueDeg=Math.max(12,Math.min(348,(chance/100)*360));
+    const targetDeg=isWin
+      ? (Math.random()*Math.max(10,blueDeg-8))+4
+      : (blueDeg + Math.random()*Math.max(10,360-blueDeg-8)+4) % 360;
+    const finalRotation=upgradeWheelRotation + 360*7 + (360-targetDeg);
+    upgradeWheelDisc.style.transition='transform 4.6s cubic-bezier(.12,.88,.14,1)';
+    requestAnimationFrame(()=>{ upgradeWheelDisc.style.transform='rotate('+finalRotation+'deg)'; });
     setTimeout(()=>{
+      upgradeWheelRotation=((finalRotation%360)+360)%360;
+      upgradeWheelDisc.style.transition='';
+      upgradeWheelDisc.style.transform='rotate('+upgradeWheelRotation+'deg)';
       inventoryItems=inventoryItems.filter(item=>String(item.id)!==String(upgradeSourceGift.id));
       if(isWin){
-        inventoryItems.unshift(normalizeInventoryGift({
-          id:'upgrade_'+Date.now(),
+        const newId='upgrade_'+Date.now();
+        const wonGift=normalizeInventoryGift({
+          id:newId,
           giftId:upgradeTargetGift.id||upgradeTargetGift.giftId,
           name:upgradeTargetGift.name,
           price:upgradeTargetGift.price,
           image:resolveGiftImage(upgradeTargetGift),
           withdrawAt:new Date(Date.now()+INVENTORY_HOLD_MS).toISOString(),
-        },'upgrade_'+Date.now()));
+        },newId);
+        inventoryItems.unshift(wonGift);
+        openUpgradeResultModal(wonGift);
+      } else {
+        tg?.showAlert?tg.showAlert('Апгрейд не удался'):alert('Апгрейд не удался');
       }
       renderInventory();
-      const title=isWin ? 'Апгрейд успешен' : 'Апгрейд не удался';
-      const msg=isWin ? ('Вы выиграли '+upgradeTargetGift.name) : ('Подарок '+upgradeSourceGift.name+' сгорел');
       upgradeSourceGift=null;
       upgradeTargetGift=null;
       upgradeSpinBusy=false;
-      upgradeWheelEl.classList.remove('spinning');
-      upgradeWheelTrack.style.transition='none';
       renderUpgradeUI();
-      if(tg?.showAlert) tg.showAlert(title+'\n'+msg); else alert(title+'\n'+msg);
-    },4300);
+    },4700);
   });
 
   // Bet sheet
