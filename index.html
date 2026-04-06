@@ -259,7 +259,7 @@
   }
   .upgrade-ring{
     position:absolute;inset:0;border-radius:50%;
-    background:conic-gradient(from -90deg, #0A84FF 0deg, #0A84FF 0deg, rgba(255,255,255,.12) 0deg, rgba(255,255,255,.12) 360deg);
+    background:conic-gradient(from 0deg, #0A84FF 0deg, #0A84FF 0deg, rgba(255,255,255,.12) 0deg, rgba(255,255,255,.12) 360deg);
     box-shadow:inset 0 0 0 12px rgba(255,255,255,.04), 0 16px 30px rgba(0,0,0,.22);
     transition:background .36s ease;will-change:transform;
   }
@@ -270,7 +270,7 @@
     box-shadow:0 10px 22px rgba(0,0,0,.18), inset 0 0 0 1px rgba(255,255,255,.04);
   }
   .circle-arrow{
-    position:absolute;top:-44px;left:50%;transform:translateX(-50%);
+    position:absolute;top:-58px;left:50%;transform:translateX(-50%);
     width:22px;height:40px;object-fit:contain;z-index:6;pointer-events:none;
     filter:brightness(0) invert(1) saturate(0%) brightness(2.2) drop-shadow(0 6px 10px rgba(255,255,255,.12));
   }
@@ -346,8 +346,17 @@
   .sheet-lottie{width:140px;height:140px;margin:36px 0 18px}
   .sheet-gifts{display:none;width:100%;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding-top:8px}
   .sheet-gifts.visible{display:grid}
-  .sheet-gift-card{padding:12px 10px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;align-items:center;gap:8px;transition:border-color .22s ease, box-shadow .22s ease, transform .22s ease}
+  .sheet-gift-card{padding:12px 10px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;transition:border-color .22s ease, box-shadow .22s ease, transform .22s ease, opacity .22s ease, filter .22s ease}
   .sheet-gift-card.selected{border-color:#0A84FF;box-shadow:0 0 0 1px rgba(10,132,255,.22), 0 12px 24px rgba(10,132,255,.12);transform:translateY(-1px)}
+  .sheet-gift-card.in-craft{opacity:.52;filter:saturate(.65)}
+  .sheet-gift-card.in-craft.selected{border-color:rgba(255,255,255,.08);box-shadow:none;transform:none}
+  .sheet-gift-status{
+    position:absolute;top:8px;right:8px;
+    display:inline-flex;align-items:center;justify-content:center;
+    min-width:54px;height:20px;padding:0 8px;border-radius:999px;
+    background:rgba(0,0,0,.42);border:1px solid rgba(255,255,255,.08);
+    color:#fff;font-size:10px;font-weight:700;
+  }
   .crash-bet-cloud{animation:crashBetIn .22s ease both}
   .crash-bet-cloud.fading-out{animation:crashBetOut .28s ease both}
   @keyframes crashBetIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
@@ -510,9 +519,10 @@
     aspect-ratio:.78;border-radius:14px;
     background:rgba(255,255,255,.04);
     border:1.5px dashed rgba(255,255,255,.08);
-    display:flex;align-items:center;justify-content:center;
-    cursor:pointer;
-    transition:background .2s ease;
+    display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+    cursor:pointer;position:relative;overflow:hidden;
+    padding:10px 6px 8px;
+    transition:background .2s ease, opacity .22s ease, transform .22s ease;
   }
   .craft-cell span{
     color:rgba(255,255,255,.18);font-size:9px;font-weight:600;
@@ -546,11 +556,19 @@
   }
   .craft-action-btn.active{background:#007AFF;color:#fff;cursor:pointer}
 
-  .craft-cell.active{border-color:rgba(10,132,255,.72);box-shadow:0 0 0 1px rgba(10,132,255,.22) inset, 0 8px 18px rgba(10,132,255,.12)}
-  .craft-cell img{width:56px;height:56px;object-fit:contain;filter:drop-shadow(0 8px 14px rgba(0,0,0,.24));margin-bottom:6px}
-  .craft-cell .craft-cell-name{color:#fff;font-size:11px;font-weight:700;text-align:center;line-height:1.1;max-width:100%}
-  .craft-cell .craft-cell-price{color:rgba(255,255,255,.72);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:4px;margin-top:4px}
+  .craft-cell.active{border-color:rgba(255,255,255,.08);box-shadow:none;background:rgba(255,255,255,.06)}
+  .craft-cell img{width:56px;height:56px;object-fit:contain;filter:drop-shadow(0 8px 14px rgba(0,0,0,.24));margin:0 0 6px;flex-shrink:0}
+  .craft-cell .craft-cell-name{color:#fff;font-size:11px;font-weight:700;text-align:center;line-height:1.1;max-width:100%;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:24px}
+  .craft-cell .craft-cell-price{color:rgba(255,255,255,.72);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:4px;margin-top:auto;padding-top:4px;min-height:16px}
   .craft-cell .craft-cell-price img{width:12px;height:12px;margin:0;filter:none}
+  .craft-cell.removing{opacity:.12;transform:scale(.96)}
+  .craft-cell .craft-cell-badge{
+    position:absolute;top:7px;right:7px;
+    display:inline-flex;align-items:center;justify-content:center;
+    min-width:44px;height:18px;padding:0 7px;border-radius:999px;
+    background:rgba(0,0,0,.36);border:1px solid rgba(255,255,255,.08);
+    color:rgba(255,255,255,.72);font-size:9px;font-weight:700;letter-spacing:.02em;
+  }
 
   .craft-add-btn{
     width:100%;height:50px;border-radius:999px;border:none;cursor:pointer;
@@ -826,7 +844,7 @@
     position:fixed;left:0;right:0;bottom:0;
     border-radius:36px 36px 0 0;
     background:#000 url('assets/background_pepe.png') center/cover no-repeat;
-    z-index:51;min-height:356px;
+    z-index:51;min-height:0;
     transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);
     display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom,0);
   }
@@ -848,7 +866,7 @@
     display:flex;align-items:center;justify-content:center;cursor:pointer;
   }
   .bet-close svg{width:16px;height:16px}
-  .bet-body{padding:26px 16px 18px}
+  .bet-body{padding:22px 16px 12px}
   .bet-input-row{
     display:flex;align-items:center;justify-content:center;gap:6px;
     margin-bottom:18px;
@@ -1532,13 +1550,18 @@
     sheetEmptyTitle.style.display='none';
     sheetEmptyDesc.style.display='none';
     sheetGifts.classList.add('visible');
-    sheetGifts.innerHTML=items.map(item=>`
-      <div class="sheet-gift-card ${String(item._sheetId)===String(sheetSelectedGiftId)?'selected':''}" data-id="${item._sheetId}">
+    sheetGifts.innerHTML=items.map(item=>{
+      const inCraft=sheetMode==='craft' && !!item._inCraft;
+      const selected=String(item._sheetId)===String(sheetSelectedGiftId) && !inCraft;
+      return `
+      <div class="sheet-gift-card ${selected?'selected':''} ${inCraft?'in-craft':''}" data-id="${item._sheetId}">
+        ${inCraft?'<div class="sheet-gift-status">В крафте</div>':''}
         <img src="${resolveGiftImage(item)}" alt="${item.name}">
         <div class="sheet-gift-name">${item.name}</div>
         <div class="sheet-gift-price">${formatStars(item.price)} <img src="assets/star.png" alt=""></div>
       </div>
-    `).join('');
+    `;
+    }).join('');
   }
 
 
@@ -1549,13 +1572,16 @@
   let craftGifts=[];
   let craftBusy=false;
 
+  let craftRemovingGiftIds=[];
   function renderCraftUI(){
     if(!craftGrid) return;
+    craftSelectedGiftIds=craftGifts.map(item=>String(item.id));
     const cells=[];
     for(let i=0;i<10;i+=1){
       const gift=craftGifts[i]||null;
       if(gift){
-        cells.push('<div class="craft-cell active" data-id="'+gift.id+'"><img src="'+resolveGiftImage(gift)+'" alt="'+gift.name+'"><div class="craft-cell-name">'+gift.name+'</div><div class="craft-cell-price">'+formatStars(gift.price)+' <img src="assets/star.png" alt=""></div></div>');
+        const removing=craftRemovingGiftIds.includes(String(gift.id));
+        cells.push('<div class="craft-cell active '+(removing?'removing':'')+'" data-id="'+gift.id+'"><div class="craft-cell-badge">'+(removing?'Уходит':'В крафте')+'</div><img src="'+resolveGiftImage(gift)+'" alt="'+gift.name+'"><div class="craft-cell-name">'+gift.name+'</div><div class="craft-cell-price">'+formatStars(gift.price)+' <img src="assets/star.png" alt=""></div></div>');
       }else{
         cells.push('<div class="craft-cell"><span>'+t('empty')+'</span></div>');
       }
@@ -1566,6 +1592,24 @@
     const canCraft=!craftBusy && craftGifts.length>=3;
     craftActionBtn.classList.toggle('active',canCraft);
     craftActionBtn.disabled=!canCraft;
+    craftActionBtn.textContent=craftBusy?'Создаём контракт...':t('makeContract');
+  }
+
+  async function animateCraftConsumptionSequence(snapshot){
+    craftRemovingGiftIds=[];
+    for(const gift of snapshot){
+      const id=String(gift.id);
+      craftRemovingGiftIds=[...craftRemovingGiftIds,id];
+      renderCraftUI();
+      await new Promise(resolve=>setTimeout(resolve,160));
+      craftGifts=craftGifts.filter(item=>String(item.id)!==id);
+      craftSelectedGiftIds=craftGifts.map(item=>String(item.id));
+      renderCraftUI();
+      await new Promise(resolve=>setTimeout(resolve,95));
+    }
+    craftRemovingGiftIds=[];
+    renderCraftUI();
+    await new Promise(resolve=>setTimeout(resolve,220));
   }
 
   const sheetTitle=document.querySelector('.sheet-pill');
@@ -1605,7 +1649,7 @@
       const eased=1-Math.pow(1-p,3);
       upgradeDisplayedBlueDeg=startDeg+(targetDeg-startDeg)*eased;
       if(upgradeRingEl){
-        upgradeRingEl.style.background='conic-gradient(from -90deg, #0A84FF 0deg '+upgradeDisplayedBlueDeg+'deg, rgba(255,255,255,.12) '+upgradeDisplayedBlueDeg+'deg 360deg)';
+        upgradeRingEl.style.background='conic-gradient(from 0deg, #0A84FF 0deg '+upgradeDisplayedBlueDeg+'deg, rgba(255,255,255,.12) '+upgradeDisplayedBlueDeg+'deg 360deg)';
       }
       if(p<1) requestAnimationFrame(step);
     }
@@ -1630,7 +1674,7 @@
     if(upgradeRingEl){
       if(options.instant){
         upgradeDisplayedBlueDeg=blueDeg;
-        upgradeRingEl.style.background='conic-gradient(from -90deg, #0A84FF 0deg '+blueDeg+'deg, rgba(255,255,255,.12) '+blueDeg+'deg 360deg)';
+        upgradeRingEl.style.background='conic-gradient(from 0deg, #0A84FF 0deg '+blueDeg+'deg, rgba(255,255,255,.12) '+blueDeg+'deg 360deg)';
       }else{
         animateUpgradeFill(blueDeg, options.fillDuration||420);
       }
@@ -1691,9 +1735,11 @@
       return GIFT_CATALOG.filter(item=>Number(item.price||0)>minPrice).map(item=>({...item, _sheetId:String(item.id||item.giftId||item.name)}));
     }
     if(sheetMode==='craft'){
-      return inventoryItems
-        .filter(item=>!craftSelectedGiftIds.includes(String(item.id)))
-        .map(item=>({...item, _sheetId:String(item.id)}));
+      return inventoryItems.map(item=>({
+        ...item,
+        _sheetId:String(item.id),
+        _inCraft:craftSelectedGiftIds.includes(String(item.id))
+      }));
     }
     return inventoryItems.map(item=>({...item, _sheetId:String(item.id)}));
   }
@@ -2527,7 +2573,7 @@
       if((crashCashoutBusy||crashBetSettled)&&crashBetAmount>0){
         setCrashPlayerState('win');
         renderCrashPlayerCard(crashBetAmount);
-        renderCrashPlayerWin(crashSettledPayout||crashBetAmount,crashPrizeGift);
+        renderCrashPlayerWin(crashSettledPayout||crashRenderedWinAmount||crashBetAmount,crashPrizeGift||crashRenderedWinGift);
         return;
       }
       if(crashResultState==='loss'&&crashBetAmount>0&&!crashPrizePending){
@@ -2538,6 +2584,15 @@
       }
       if(!crashPrizePending&&!crashBetActive&&!crashBetSettled){
         crashRoundLocked=false;
+      }
+      return;
+    }
+
+    if(crashCashoutBusy && viewerBet){
+      if(crashBetAmount>0){
+        setCrashPlayerState('win');
+        renderCrashPlayerCard(crashBetAmount);
+        renderCrashPlayerWin(crashSettledPayout||crashRenderedWinAmount||crashBetAmount,crashPrizeGift||crashRenderedWinGift);
       }
       return;
     }
@@ -2843,7 +2898,7 @@
     giftModalOverlay.classList.remove('open');
     if(crashBetAmount>0){
       renderCrashPlayerCard(crashBetAmount);
-      renderCrashPlayerWin(crashSettledPayout||Number(prize.price||0)||crashBetAmount,null);
+      renderCrashPlayerWin(crashSettledPayout||Number(prize.price||0)||crashBetAmount,prize);
       setCrashPlayerState('win');
     }
 
@@ -2903,7 +2958,7 @@
 
       if(!crashRoundLive&&!crashPrizePending&&crashBetSettled&&crashBetAmount>0){
         renderCrashPlayerCard(crashBetAmount);
-        renderCrashPlayerWin(crashSettledPayout||crashBetAmount,null);
+        renderCrashPlayerWin(crashSettledPayout||crashBetAmount,prize);
         setCrashPlayerState('win');
       }
     }catch(err){
@@ -3211,6 +3266,7 @@
     const card=e.target.closest('.sheet-gift-card');
     if(!card) return;
     if(sheetMode==='inventory') return;
+    if(sheetMode==='craft' && card.classList.contains('in-craft')) return;
     sheetSelectedGiftId=String(card.dataset.id||'');
     renderSheetGifts();
   });
@@ -3231,6 +3287,7 @@
       const normalized=normalizeInventoryGift(selected,selected.id||selected._sheetId);
       if(normalized && craftGifts.length<10 && !craftGifts.some(item=>String(item.id)===String(normalized.id))){
         craftGifts=[...craftGifts, normalized];
+        craftSelectedGiftIds=craftGifts.map(item=>String(item.id));
       }
       sheetSelectedGiftId='';
       closeSheet();
@@ -3246,25 +3303,34 @@
     if(!cell) return;
     const id=String(cell.dataset.id||'');
     craftGifts=craftGifts.filter(item=>String(item.id)!==id);
+    craftSelectedGiftIds=craftGifts.map(item=>String(item.id));
     renderCraftUI();
   });
   craftActionBtn?.addEventListener('click', async()=>{
     if(craftBusy || craftGifts.length<3) return;
+    const snapshot=craftGifts.map(item=>({...item}));
     craftBusy=true;
     renderCraftUI();
     try{
+      const animationPromise=animateCraftConsumptionSequence(snapshot);
       const resp=await fetch(API_BASE+'/api/craft/spin',{
         method:'POST',
         headers:{'Content-Type':'application/json','x-init-data':tg?.initData||''},
-        body:JSON.stringify({giftIds:craftGifts.map(item=>item.id)})
+        body:JSON.stringify({giftIds:snapshot.map(item=>item.id)})
       });
       const data=await resp.json().catch(()=>({}));
       if(!resp.ok) throw new Error(data.error||'Craft failed');
+      await animationPromise;
       inventoryItems=Array.isArray(data.items)?data.items.map(item=>normalizeInventoryGift(item)).filter(Boolean):inventoryItems;
       craftGifts=[];
+      craftSelectedGiftIds=[];
+      craftRemovingGiftIds=[];
       renderInventory();
       openUpgradeResultModal(normalizeInventoryGift(data.wonGift,data.wonGift?.id||('craft_'+Date.now())));
     }catch(err){
+      craftGifts=snapshot;
+      craftSelectedGiftIds=craftGifts.map(item=>String(item.id));
+      craftRemovingGiftIds=[];
       tg?.showAlert?tg.showAlert(err.message):alert(err.message);
     }finally{
       craftBusy=false;
