@@ -166,7 +166,7 @@
 
   .inventory-header{display:flex;align-items:center;flex-wrap:nowrap;margin-bottom:14px;gap:8px;min-width:0}
   .inventory-title{color:#fff;font-size:17px;font-weight:700;flex-shrink:0}
-  .inventory-count{margin-left:auto;display:inline-flex;align-items:center;justify-content:center;height:26px;padding:0 10px;border-radius:999px;color:rgba(255,255,255,.78);font-size:12px;font-weight:700;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:0 1 auto;text-align:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+  .inventory-count{margin-left:auto;display:inline-flex;align-items:center;justify-content:center;height:26px;padding:0;color:rgba(255,255,255,.58);font-size:12px;font-weight:700;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:0 1 auto;text-align:right;background:none;border:none;backdrop-filter:none;-webkit-backdrop-filter:none}
   .sell-all-btn{margin-left:0;display:flex;align-items:center;gap:5px;height:32px;padding:0 12px;border-radius:10px;border:1.5px dashed rgba(255,255,255,.2);background:none;color:rgba(255,255,255,.45);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0}
   .sell-all-btn img{width:14px;height:14px;object-fit:contain;filter:drop-shadow(0 0 3px rgba(255,200,0,.4))}
 
@@ -259,7 +259,7 @@
   }
   .upgrade-ring{
     position:absolute;inset:0;border-radius:50%;
-    background:conic-gradient(from 0deg, #0A84FF 0deg, #0A84FF 0deg, rgba(255,255,255,.12) 0deg, rgba(255,255,255,.12) 360deg);
+    background:conic-gradient(from -90deg, #0A84FF 0deg, #0A84FF 0deg, rgba(255,255,255,.12) 0deg, rgba(255,255,255,.12) 360deg);
     box-shadow:inset 0 0 0 12px rgba(255,255,255,.04), 0 16px 30px rgba(0,0,0,.22);
     transition:background .24s ease;will-change:transform;
   }
@@ -270,9 +270,9 @@
     box-shadow:0 10px 22px rgba(0,0,0,.18), inset 0 0 0 1px rgba(255,255,255,.04);
   }
   .circle-arrow{
-    position:absolute;top:-70px;left:50%;transform:translateX(-50%);
+    position:absolute;top:-56px;left:50%;transform:translateX(-50%);
     width:22px;height:40px;object-fit:contain;z-index:6;pointer-events:none;
-    filter:brightness(0) invert(1) drop-shadow(0 8px 14px rgba(255,255,255,.16));
+    filter:brightness(0) invert(1) saturate(0%) brightness(2) drop-shadow(0 8px 14px rgba(255,255,255,.16));
   }
   .upgrade-wheel-window{position:relative;width:188px;height:188px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
   .upgrade-wheel-disc{display:none}
@@ -348,6 +348,10 @@
   .sheet-gifts.visible{display:grid}
   .sheet-gift-card{padding:12px 10px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;align-items:center;gap:8px;transition:border-color .22s ease, box-shadow .22s ease, transform .22s ease}
   .sheet-gift-card.selected{border-color:#0A84FF;box-shadow:0 0 0 1px rgba(10,132,255,.22), 0 12px 24px rgba(10,132,255,.12);transform:translateY(-1px)}
+  .crash-bet-cloud{animation:crashBetIn .22s ease both}
+  .crash-bet-cloud.fading-out{animation:crashBetOut .28s ease both}
+  @keyframes crashBetIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes crashBetOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-6px)}}
   .sheet-gift-card img{width:90px;height:90px;object-fit:contain;filter:drop-shadow(0 10px 18px rgba(0,0,0,.24))}
   .sheet-gift-name{color:#fff;font-size:12px;font-weight:700;text-align:center;line-height:1.2;min-height:30px}
   .sheet-gift-price{display:flex;align-items:center;justify-content:center;gap:4px;color:rgba(255,255,255,.65);font-size:12px;font-weight:700}
@@ -815,7 +819,7 @@
     position:fixed;left:0;right:0;bottom:0;
     border-radius:36px 36px 0 0;
     background:#000 url('assets/background_pepe.png') center/cover no-repeat;
-    z-index:51;min-height:272px;
+    z-index:51;min-height:340px;
     transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);
     display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom,0);
   }
@@ -837,7 +841,7 @@
     display:flex;align-items:center;justify-content:center;cursor:pointer;
   }
   .bet-close svg{width:16px;height:16px}
-  .bet-body{padding:20px 16px 34px}
+  .bet-body{padding:26px 16px 42px}
   .bet-input-row{
     display:flex;align-items:center;justify-content:center;gap:6px;
     margin-bottom:18px;
@@ -858,9 +862,9 @@
   .bottom-nav{
     position:absolute;bottom:14px;left:12px;right:12px;padding:8px 6px;
     display:flex;align-items:center;justify-content:space-around;
-    background:rgba(14,14,18,.34);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-    border:1px solid rgba(255,255,255,.06);border-radius:999px;z-index:18;
-    box-shadow:0 12px 28px rgba(0,0,0,.18);
+    background:rgba(88,88,96,.22);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    border:1px solid rgba(255,255,255,.07);border-radius:999px;z-index:18;
+    box-shadow:0 10px 22px rgba(0,0,0,.14);
   }
   .nav-indicator{
     position:absolute;width:58px;height:58px;border-radius:50%;
@@ -1410,7 +1414,8 @@
   const sheetLottieEl=document.getElementById('sheetLottie');
 
   function formatStars(v){
-    return Number(v||0).toLocaleString(currentLang==='en'?'en-US':'ru-RU');
+    const n=Math.max(0,Math.floor(Number(v||0)));
+    return String(n).replace(/\B(?=(\d{3})+(?!\d))/g,' ');
   }
   function formatCompactStars(v){
     const num=Math.max(0,Number(v||0));
@@ -1441,7 +1446,7 @@
   function updateInventorySummary(){
     const count=inventoryItems.length;
     const total=inventoryItems.reduce((sum,item)=>sum+item.price,0);
-    inventoryCountEl.textContent=count ? (count+' '+giftCountWord(count)+' · '+formatCompactStars(total)+'⭐') : ('0 '+giftCountWord(0));
+    inventoryCountEl.textContent=count ? (count+' '+giftCountWord(count)) : ('0 '+giftCountWord(0));
     sellAllBtn.innerHTML=t('sellAll')+' '+formatStars(total)+' <img src="assets/star.png" alt="star">';
     sellAllBtn.style.opacity=count? '1':'.45';
     sellAllBtn.style.pointerEvents=count? 'auto':'none';
@@ -1506,11 +1511,11 @@
     if(!items.length){
       sheetGifts.classList.remove('visible');
       sheetGifts.innerHTML='';
-      sheetLottieEl.style.display=isUpgradeMode?'none':'block';
+      sheetLottieEl.style.display='block';
       sheetEmptyTitle.style.display='block';
       sheetEmptyDesc.style.display='block';
-      sheetEmptyTitle.textContent=isUpgradeMode?'Нет доступных подарков':t('noGiftsTitle');
-      sheetEmptyDesc.innerHTML=isUpgradeMode?'Добавьте или выберите другой подарок':'Отправьте подарок <a href="https://t.me/GiftPepe_Releyer" target="_blank">@GiftPepe_Releyer</a><br>или выиграйте в играх';
+      sheetEmptyTitle.textContent=t('noGiftsTitle');
+      sheetEmptyDesc.innerHTML='Отправьте подарок <a href="https://t.me/GiftPepe_Releyer" target="_blank">@GiftPepe_Releyer</a><br>или выиграйте в играх';
       return;
     }
     sheetLottieEl.style.display='none';
@@ -1547,6 +1552,27 @@
   const upgradeModalPrice=document.getElementById('upgradeModalPrice');
   const upgradeModalCloseBtn=document.getElementById('upgradeModalCloseBtn');
   let upgradeWheelRotation=0;
+  let upgradeDisplayedBlueDeg=0;
+  let upgradeBlueDegAnim=0;
+
+  function animateUpgradeFill(targetDeg,duration=420){
+    targetDeg=Math.max(0,Math.min(360,Number(targetDeg||0)));
+    upgradeBlueDegAnim+=1;
+    const token=upgradeBlueDegAnim;
+    const startDeg=Number(upgradeDisplayedBlueDeg||0);
+    const start=performance.now();
+    function step(now){
+      if(token!==upgradeBlueDegAnim) return;
+      const p=Math.min(1,(now-start)/duration);
+      const eased=1-Math.pow(1-p,3);
+      upgradeDisplayedBlueDeg=startDeg+(targetDeg-startDeg)*eased;
+      if(upgradeRingEl){
+        upgradeRingEl.style.background='conic-gradient(from -90deg, #0A84FF 0deg '+upgradeDisplayedBlueDeg+'deg, rgba(255,255,255,.12) '+upgradeDisplayedBlueDeg+'deg 360deg)';
+      }
+      if(p<1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
 
   function getUpgradeChance(source=upgradeSourceGift,target=upgradeTargetGift){
     const from=Number(source?.price||0);
@@ -1560,11 +1586,16 @@
     }
     return '<img src="'+resolveGiftImage(gift)+'" alt="'+gift.name+'"><div class="slot-label">'+gift.name+'</div><div class="slot-price">'+formatStars(gift.price)+' <img src="assets/star.png" alt=""></div>';
   }
-  function renderUpgradeWheel(rotation=upgradeWheelRotation){
+  function renderUpgradeWheel(rotation=upgradeWheelRotation,options={}){
     const chance=getUpgradeChance();
     const blueDeg=Math.max(0,Math.min(360,(chance/100)*360));
     if(upgradeRingEl){
-      upgradeRingEl.style.background='conic-gradient(from 0deg, #0A84FF 0deg '+blueDeg+'deg, rgba(255,255,255,.12) '+blueDeg+'deg 360deg)';
+      if(options.instant){
+        upgradeDisplayedBlueDeg=blueDeg;
+        upgradeRingEl.style.background='conic-gradient(from -90deg, #0A84FF 0deg '+blueDeg+'deg, rgba(255,255,255,.12) '+blueDeg+'deg 360deg)';
+      }else{
+        animateUpgradeFill(blueDeg, options.fillDuration||420);
+      }
       upgradeRingEl.style.transform='rotate('+rotation+'deg)';
     }
     if(upgradeWheelDisc){
@@ -1611,7 +1642,7 @@
     const canUpgrade=!!(upgradeSourceGift&&upgradeTargetGift&&!upgradeSpinBusy);
     upgradeBtnEl.classList.toggle('active',canUpgrade);
     upgradeBtnEl.classList.toggle('dim',!canUpgrade);
-    renderUpgradeWheel();
+    renderUpgradeWheel(upgradeWheelRotation,{fillDuration:520});
   }
   function getSheetItems(){
     if(sheetMode==='upgrade-source'){
@@ -1964,28 +1995,25 @@
   }
   function renderCrashOtherBets(list=[]){
     if(!crashOthers)return;
-    const others=(Array.isArray(list)?list:[]).filter(player=>String(player.userId)!==String(tgUserId));
-    crashOthers.innerHTML='';
-    others.slice(0,6).forEach(player=>{
+    const others=(Array.isArray(list)?list:[]).filter(player=>String(player.userId)!==String(tgUserId)).slice(0,6);
+    const nextIds=new Set(others.map(player=>String(player.userId)));
+    Array.from(crashOthers.querySelectorAll('.crash-bet-cloud')).forEach(row=>{
+      if(!nextIds.has(String(row.dataset.userId||'')) && !row.classList.contains('fading-out')){
+        row.classList.add('fading-out');
+        setTimeout(()=>row.remove(),260);
+      }
+    });
+    others.forEach(player=>{
+      const userId=String(player.userId||'');
       const betAmount=Number(player.betAmount||player.amount||0);
       const status=String(player.status||'active');
       const payout=Number(player.displayAmount||player.currentPayout||player.payout||player.amount||0);
       const gift=withCrashGiftValue(player.previewGift||getCrashPreviewGift(payout)||null,payout);
-      const row=document.createElement('div');
-      row.className='crash-bet-cloud';
-      if(status==='won') row.classList.add('win-state');
-      if(status==='lost') row.classList.add('loss-state');
-      row.dataset.betAmount=String(betAmount);
-      row.dataset.payout=String(payout);
-      row.dataset.status=status;
-      row.dataset.settled=(status==='won'||status==='lost')?'1':'0';
-      row.dataset.giftId=String(gift?.id||gift?.giftId||'');
-      row.dataset.giftName=String(gift?.name||'');
-      row.dataset.giftImage=String(resolveGiftImage(gift)||'');
+      let row=crashOthers.querySelector('.crash-bet-cloud[data-user-id="'+userId+'"]');
       const avatar=player.photoUrl
         ? '<img class="crash-bet-cloud-avatar" src="'+player.photoUrl+'" alt="">'
         : '<div class="crash-bet-cloud-avatar"></div>';
-      row.innerHTML=
+      const rowHtml=
         avatar+
         '<div class="crash-bet-cloud-info">'+
           '<div class="crash-bet-cloud-name">'+(player.firstName||'User')+'</div>'+
@@ -1995,15 +2023,32 @@
           '<div class="crash-bet-cloud-amount">'+formatStars(payout)+' <img src="assets/star.png" alt=""></div>'+
           buildCrashGiftBadge(gift)+
         '</div>';
+      if(!row){
+        row=document.createElement('div');
+        row.className='crash-bet-cloud';
+        row.dataset.userId=userId;
+        crashOthers.appendChild(row);
+      }else{
+        row.classList.remove('fading-out');
+      }
+      row.classList.toggle('win-state',status==='won');
+      row.classList.toggle('loss-state',status==='lost');
+      row.dataset.betAmount=String(betAmount);
+      row.dataset.payout=String(payout);
+      row.dataset.status=status;
+      row.dataset.settled=(status==='won'||status==='lost')?'1':'0';
+      row.dataset.giftId=String(gift?.id||gift?.giftId||'');
+      row.dataset.giftName=String(gift?.name||'');
+      row.dataset.giftImage=String(resolveGiftImage(gift)||'');
+      row.innerHTML=rowHtml;
       const badge=row.querySelector('.crash-bet-cloud-gift-wrap');
       if(badge){
         badge.dataset.giftImage=String(resolveGiftImage(gift)||'');
         badge.dataset.giftName=String(gift?.name||'Gift');
       }
-      crashOthers.appendChild(row);
     });
   }
-  function updateCrashOtherBetsLive(state){
+    function updateCrashOtherBetsLive(state){
     const multiplier=computeCrashMultiplier(state);
     crashOthers.querySelectorAll('.crash-bet-cloud').forEach(row=>{
       if(row.dataset.settled==='1') return;
@@ -2358,6 +2403,19 @@
     crashSettledPayout=0;
     crashRenderedWinGift=null;
     crashRenderedWinAmount=0;
+    if(crashPlayer.classList.contains('visible') && !crashPlayer.classList.contains('fading')){
+      crashPlayer.classList.add('fading');
+      setTimeout(()=>{
+        crashPlayer.classList.remove('visible','fading');
+        setCrashPlayerState(null);
+        document.getElementById('crashPlayerBet').innerHTML='';
+        document.getElementById('crashPlayerWin').innerHTML='';
+        crashWaitText.style.display='none';
+        crashWait.className='crash-wait empty';
+        updateCrashWaitLabel(crashRealtimeState?.betsCount||0);
+      },220);
+      return;
+    }
     crashPlayer.classList.remove('visible','fading');
     crashWaitText.style.display='none';
     crashWait.className='crash-wait empty';
@@ -2370,6 +2428,7 @@
   function renderCrashPlayerCard(amount){
     crashWaitText.style.display='none';
     crashWait.className='crash-wait has-bet';
+    crashPlayer.classList.remove('fading');
     crashPlayer.classList.add('visible');
     document.getElementById('crashPlayerName').textContent=firstName;
     if(photoUrl) document.getElementById('crashPlayerAvatar').src=photoUrl;
@@ -2864,7 +2923,7 @@
           roundId:crashRealtimeState?.roundId||0,
           clientPayout:livePayout,
           clientMultiplier:Number.isFinite(liveMultiplier)?Number(liveMultiplier.toFixed(4)):1,
-          selectedGift:optimisticGift||null,
+          selectedGift:previewGift||optimisticGift||null,
         }),
       });
       const data=await resp.json().catch(()=>({}));
@@ -3067,8 +3126,24 @@
   // Bottom sheet (gifts)
   const sheetOverlay=document.getElementById('sheetOverlay');
   const sheet=document.getElementById('sheet');
-  document.getElementById('slotMyGifts').addEventListener('click',()=>openSheet('upgrade-source'));
-  document.getElementById('slotUpgradeGift').addEventListener('click',()=>{ if(!upgradeSourceGift) return; openSheet('upgrade-target'); });
+  document.getElementById('slotMyGifts').addEventListener('click',()=>{
+    if(upgradeSourceGift){
+      upgradeSourceGift=null;
+      upgradeTargetGift=null;
+      renderUpgradeUI();
+      return;
+    }
+    openSheet('upgrade-source');
+  });
+  document.getElementById('slotUpgradeGift').addEventListener('click',()=>{
+    if(upgradeTargetGift){
+      upgradeTargetGift=null;
+      renderUpgradeUI();
+      return;
+    }
+    if(!upgradeSourceGift) return;
+    openSheet('upgrade-target');
+  });
   document.getElementById('sheetClose').addEventListener('click',closeSheet);
   sheetOverlay.addEventListener('click',closeSheet);
   // Craft add gifts opens same sheet
@@ -3137,13 +3212,11 @@
       const data=await resp.json().catch(()=>({}));
       if(!resp.ok) throw new Error(data.error||'Upgrade failed');
       const serverChance=Number(data.chance||chance);
-      const blueDeg=Math.max(12,Math.min(348,(serverChance/100)*360));
       const isWin=!!data.isWin;
-      const targetDeg=isWin
-        ? (Math.random()*Math.max(10,blueDeg-18))+9
-        : ((blueDeg + Math.random()*Math.max(20,360-blueDeg-18)+9) % 360);
-      const finalRotation=upgradeWheelRotation + 360*8 + (360-targetDeg);
-      await animateUpgradeRotation(finalRotation,8400);
+      const landingAngle=((Number(data.landingAngle)||0)%360+360)%360;
+      animateUpgradeFill(Math.max(12,Math.min(348,(serverChance/100)*360)),620);
+      const finalRotation=upgradeWheelRotation - (360*8 + landingAngle);
+      await animateUpgradeRotation(finalRotation,8000);
       inventoryItems=Array.isArray(data.items)?data.items.map(item=>normalizeInventoryGift(item)).filter(Boolean):inventoryItems;
       if(isWin && data.wonGift){
         openUpgradeResultModal(normalizeInventoryGift(data.wonGift,data.wonGift?.id||('upgrade_'+Date.now())));
@@ -3168,12 +3241,18 @@
   function openBet(){betOverlay.classList.add('open');betSheet.classList.add('open')}
   function closeBet(){betOverlay.classList.remove('open');betSheet.classList.remove('open')}
   let crashBetPressLockUntil=0;
+  let crashBetLastPointerDownAt=0;
   function handleCrashBetPress(ev){
     ev?.preventDefault?.();
     ev?.stopPropagation?.();
     const now=Date.now();
+    if(ev?.type==='pointerdown'){
+      crashBetLastPointerDownAt=now;
+    }else if(ev?.type==='click' && (now-crashBetLastPointerDownAt)<700){
+      return;
+    }
     if(now<crashBetPressLockUntil)return;
-    crashBetPressLockUntil=now+180;
+    crashBetPressLockUntil=now+420;
     const phase=deriveCrashDisplayPhase(crashRealtimeState);
     const serverNow=getServerNow();
     const liveEndsAt=Number(crashRealtimeState?.liveEndsAt||0);
