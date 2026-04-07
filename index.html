@@ -6,6 +6,7 @@
 <title>Mini App</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+<script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',Roboto,sans-serif;background:#000 url('assets/background_pepe.png') center/cover no-repeat}
@@ -26,20 +27,20 @@
   }
   .boot-screen__content{
     position:relative;z-index:1;
-    width:118px;height:118px;
+    width:86px;height:86px;
     display:flex;align-items:center;justify-content:center;
     background:transparent;border:none;box-shadow:none;
     backdrop-filter:none;-webkit-backdrop-filter:none;
   }
   .boot-spinner{
-    width:88px;height:88px;border-radius:50%;
+    width:58px;height:58px;border-radius:50%;
     position:relative;
-    border:4px solid rgba(255,255,255,.16);
+    border:3px solid rgba(255,255,255,.16);
     border-top-color:#0A84FF;
     border-right-color:rgba(10,132,255,.92);
     background:transparent;
     animation:bootSpin .78s linear infinite;
-    box-shadow:0 0 24px rgba(10,132,255,.22);
+    box-shadow:0 0 18px rgba(10,132,255,.22);
   }
   .boot-spinner::before,
   .boot-spinner::after{content:none;}
@@ -129,8 +130,11 @@
   .top-rank.bronze{color:#CD7F32}
   .top-avatar{width:36px;height:36px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.1);flex-shrink:0}
   .top-name{flex:1;color:#fff;font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .top-score{display:flex;align-items:center;gap:4px;color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+  .top-score{display:flex;align-items:center;gap:6px;color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+  .top-score-value{display:inline-flex;align-items:center;gap:4px}
   .top-score img{width:16px;height:16px;object-fit:contain;filter:drop-shadow(0 0 3px rgba(255,200,0,.3))}
+  .top-score-label{color:rgba(255,255,255,.34);font-size:10px;font-weight:700;letter-spacing:.02em;text-transform:uppercase}
+  .top-gift-badge{width:32px;height:32px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 8px 14px rgba(0,0,0,.22))}
 
   /* === PROFILE === */
   .profile-card{
@@ -522,11 +526,13 @@
     display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
     cursor:pointer;position:relative;overflow:hidden;
     padding:10px 6px 8px;
-    transition:background .2s ease, opacity .22s ease, transform .22s ease;
+    transition:background .2s ease, opacity .62s ease, transform .62s ease;
   }
   .craft-cell span{
     color:rgba(255,255,255,.18);font-size:9px;font-weight:600;
     text-transform:uppercase;letter-spacing:.03em;
+    display:flex;align-items:center;justify-content:center;
+    width:100%;flex:1;transform:translateY(12px);
   }
   .craft-info{
     background:rgba(255,255,255,.06);
@@ -561,14 +567,10 @@
   .craft-cell .craft-cell-name{color:#fff;font-size:11px;font-weight:700;text-align:center;line-height:1.1;max-width:100%;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:24px}
   .craft-cell .craft-cell-price{color:rgba(255,255,255,.72);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:4px;margin-top:auto;padding-top:4px;min-height:16px}
   .craft-cell .craft-cell-price img{width:12px;height:12px;margin:0;filter:none}
-  .craft-cell.removing{opacity:.12;transform:scale(.96)}
-  .craft-cell .craft-cell-badge{
-    position:absolute;top:7px;right:7px;
-    display:inline-flex;align-items:center;justify-content:center;
-    min-width:44px;height:18px;padding:0 7px;border-radius:999px;
-    background:rgba(0,0,0,.36);border:1px solid rgba(255,255,255,.08);
-    color:rgba(255,255,255,.72);font-size:9px;font-weight:700;letter-spacing:.02em;
-  }
+  .craft-cell.entering{animation:craftCellIn .34s ease both}
+  .craft-cell.removing{opacity:.08;transform:scale(.92)}
+  .craft-cell .craft-cell-badge{display:none}
+  @keyframes craftCellIn{from{opacity:0;transform:translateY(8px) scale(.94)}to{opacity:1;transform:translateY(0) scale(1)}}
 
   .craft-add-btn{
     width:100%;height:50px;border-radius:999px;border:none;cursor:pointer;
@@ -1573,6 +1575,7 @@
   let craftBusy=false;
 
   let craftRemovingGiftIds=[];
+  let craftAppearingGiftIds=[];
   function renderCraftUI(){
     if(!craftGrid) return;
     craftSelectedGiftIds=craftGifts.map(item=>String(item.id));
@@ -1580,8 +1583,10 @@
     for(let i=0;i<10;i+=1){
       const gift=craftGifts[i]||null;
       if(gift){
-        const removing=craftRemovingGiftIds.includes(String(gift.id));
-        cells.push('<div class="craft-cell active '+(removing?'removing':'')+'" data-id="'+gift.id+'"><div class="craft-cell-badge">'+(removing?'Уходит':'В крафте')+'</div><img src="'+resolveGiftImage(gift)+'" alt="'+gift.name+'"><div class="craft-cell-name">'+gift.name+'</div><div class="craft-cell-price">'+formatStars(gift.price)+' <img src="assets/star.png" alt=""></div></div>');
+        const id=String(gift.id);
+        const removing=craftRemovingGiftIds.includes(id);
+        const entering=craftAppearingGiftIds.includes(id);
+        cells.push('<div class="craft-cell active '+(removing?'removing ':'')+(entering?'entering':'')+'" data-id="'+gift.id+'"><img src="'+resolveGiftImage(gift)+'" alt="'+gift.name+'"><div class="craft-cell-name">'+gift.name+'</div><div class="craft-cell-price">'+formatStars(gift.price)+' <img src="assets/star.png" alt=""></div></div>');
       }else{
         cells.push('<div class="craft-cell"><span>'+t('empty')+'</span></div>');
       }
@@ -1595,21 +1600,33 @@
     craftActionBtn.textContent=craftBusy?'Создаём контракт...':t('makeContract');
   }
 
+  function clearCraftSelection(){
+    craftGifts=[];
+    craftSelectedGiftIds=[];
+    craftRemovingGiftIds=[];
+    craftAppearingGiftIds=[];
+    renderCraftUI();
+    renderSheetGifts();
+  }
+
   async function animateCraftConsumptionSequence(snapshot){
     craftRemovingGiftIds=[];
+    const totalDuration=Math.max(5200,snapshot.length*620);
+    const stepDuration=Math.max(420,Math.floor(totalDuration/Math.max(1,snapshot.length)));
     for(const gift of snapshot){
       const id=String(gift.id);
       craftRemovingGiftIds=[...craftRemovingGiftIds,id];
       renderCraftUI();
-      await new Promise(resolve=>setTimeout(resolve,160));
+      await new Promise(resolve=>setTimeout(resolve,Math.floor(stepDuration*0.68)));
       craftGifts=craftGifts.filter(item=>String(item.id)!==id);
       craftSelectedGiftIds=craftGifts.map(item=>String(item.id));
+      craftRemovingGiftIds=craftRemovingGiftIds.filter(item=>item!==id);
       renderCraftUI();
-      await new Promise(resolve=>setTimeout(resolve,95));
+      await new Promise(resolve=>setTimeout(resolve,Math.max(90,Math.floor(stepDuration*0.32))));
     }
     craftRemovingGiftIds=[];
     renderCraftUI();
-    await new Promise(resolve=>setTimeout(resolve,220));
+    await new Promise(resolve=>setTimeout(resolve,280));
   }
 
   const sheetTitle=document.querySelector('.sheet-pill');
@@ -1871,6 +1888,88 @@
   const promoBtn=document.querySelector('.promo-btn');
   const REFERRAL_BOT_USERNAME='GiftPepeRobot';
   const TON_TO_STARS=90;
+  const TON_DESTINATION_WALLET='UQAMmKXWnv0DFUCU7KPEDb9c9pnl4gV7B2zadjBNZSyU7074';
+  const TON_MANIFEST_URL=(window.location?.origin||'https://gift-pepe.web.app')+'/tonconnect-manifest.json';
+  const TOP_REWARD_GIFT_NAMES=['Khabib’s Papakha','Crystal Ball','Berry Box'];
+  const TOP_REWARD_GIFTS=TOP_REWARD_GIFT_NAMES.map(name=>GIFT_CATALOG.find(gift=>String(gift?.name||'')===name)||null);
+  let tonConnectUI=null;
+  let tonWalletAddress='';
+
+
+
+  async function ensureTonConnect(){
+    if(tonConnectUI) return tonConnectUI;
+    const ctor=window.TON_CONNECT_UI?.TonConnectUI;
+    if(!ctor) throw new Error('TON Connect не загрузился');
+    tonConnectUI=new ctor({
+      manifestUrl: TON_MANIFEST_URL,
+    });
+    try{
+      await tonConnectUI.restoreConnection();
+    }catch(e){}
+    try{
+      tonWalletAddress=String(tonConnectUI?.account?.address||'');
+    }catch(e){}
+    if(typeof tonConnectUI.onStatusChange==='function'){
+      tonConnectUI.onStatusChange((wallet)=>{
+        tonWalletAddress=String(wallet?.account?.address||'');
+      });
+    }
+    return tonConnectUI;
+  }
+
+  async function sendTonTopup(){
+    const rawTon=getTopupRawValue();
+    const starsValue=getTopupStarsValue();
+    if(rawTon<=0||starsValue<=0) return;
+    topupSubmit.disabled=true;
+    topupSubmit.textContent='Подключаем кошелёк...';
+    try{
+      const tonUi=await ensureTonConnect();
+      if(!tonUi?.account?.address){
+        topupSubmit.textContent='Подключи TON кошелёк...';
+        if(typeof tonUi.openModal==='function'){
+          await tonUi.openModal();
+        }
+      }
+      if(!tonUi?.account?.address){
+        throw new Error('TON кошелёк не подключён');
+      }
+      tonWalletAddress=String(tonUi.account.address||tonWalletAddress||'');
+      topupSubmit.textContent='Открываем TON оплату...';
+      const txResult=await tonUi.sendTransaction({
+        validUntil: Math.floor(Date.now()/1000)+360,
+        messages: [{
+          address: TON_DESTINATION_WALLET,
+          amount: String(Math.max(1, Math.round(rawTon*1e9))),
+        }],
+      });
+      topupSubmit.textContent='Подтверждаем TON пополнение...';
+      const resp=await fetch(API_BASE+'/api/ton/topup/credit',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','x-init-data':tg?.initData||''},
+        body:JSON.stringify({
+          amountTon: rawTon,
+          starsAmount: starsValue,
+          walletAddress: tonWalletAddress,
+          txBoc: String(txResult?.boc||''),
+        }),
+      });
+      const data=await resp.json().catch(()=>({}));
+      if(!resp.ok) throw new Error(data.error||'TON top up failed');
+      if(Number.isFinite(Number(data.balance))) updateBalance(Number(data.balance));
+      else applyOptimisticDeposit(starsValue);
+      topupAmount.value='';
+      closeTopup();
+      await Promise.all([refreshBalance(),refreshTop(),refreshReferral()]);
+    }catch(e){
+      console.error('TON topup error:',e);
+      tg?.showAlert?tg.showAlert('TON: '+e.message):alert('TON: '+e.message);
+    }finally{
+      topupSubmit.disabled=false;
+      syncTopupSubmitLabel();
+    }
+  }
 
   function buildReferralLink(){
     const refId=String(referralCode||('ref_'+String(tg?.initDataUnsafe?.user?.id||'guest')));
@@ -3013,7 +3112,7 @@
     const livePayout=Math.max(0,Math.floor(Number(crashBetAmount||0)*liveMultiplier));
     const renderedGift=(crashRenderedWinGift&&Math.abs(Number(crashRenderedWinAmount||0)-livePayout)<=Math.max(24,Math.floor(livePayout*0.08))) ? crashRenderedWinGift : null;
     const previewGift=withCrashGiftValue(getCrashPreviewGift(livePayout)||null,livePayout);
-    const visualGift=previewGift||withCrashGiftValue(renderedGift||null,livePayout);
+    const visualGift=withCrashGiftValue(renderedGift||null,livePayout)||previewGift;
     const optimisticGift=visualGift||null;
 
     crashCashoutBusy=true;
@@ -3130,6 +3229,10 @@
   }
   let currentTab='crash';
   function showTab(tab){
+    if(currentTab==='craft' && tab!=='craft' && !craftBusy){
+      clearCraftSelection();
+      closeSheet();
+    }
     closeReferralPage();
     Object.values(pages).forEach(p=>p.classList.remove('visible'));
     if(pages[tab]){
@@ -3286,8 +3389,14 @@
     }else if(sheetMode==='craft') {
       const normalized=normalizeInventoryGift(selected,selected.id||selected._sheetId);
       if(normalized && craftGifts.length<10 && !craftGifts.some(item=>String(item.id)===String(normalized.id))){
+        const addedId=String(normalized.id);
         craftGifts=[...craftGifts, normalized];
         craftSelectedGiftIds=craftGifts.map(item=>String(item.id));
+        craftAppearingGiftIds=[...new Set([...craftAppearingGiftIds,addedId])];
+        setTimeout(()=>{
+          craftAppearingGiftIds=craftAppearingGiftIds.filter(item=>item!==addedId);
+          renderCraftUI();
+        },380);
       }
       sheetSelectedGiftId='';
       closeSheet();
@@ -3518,7 +3627,7 @@
 
   topupSubmit.addEventListener('click',async()=>{
     if(topupMode==='ton'){
-      tg?.showAlert?tg.showAlert('TON оплата скоро!'):alert('TON оплата скоро!');
+      await sendTonTopup();
       return;
     }
     const starsValue=getTopupStarsValue();
@@ -3541,10 +3650,10 @@
       topupSubmit.innerHTML='Открываем оплату...';
       tg.openInvoice(invoiceLink,async(status)=>{
         if(status==='paid'){
+          applyOptimisticDeposit(starsValue);
           topupSubmit.innerHTML='Проверяем оплату...';
           const applied=await waitForPaymentApply(invoiceId,balanceBefore,starsValue,12000);
           if(applied){
-            applyOptimisticDeposit(starsValue);
             topupAmount.value='';
             syncTopupModeUI();
             closeTopup();
@@ -3583,20 +3692,23 @@
   },5000);
 
   document.addEventListener('visibilitychange',()=>{
-    if(document.visibilityState==='visible'){
-      refreshBalance();
-      refreshTop();
-      refreshReferral();
-      refreshInventory();
-      refreshCrashState(true);
+    if(document.visibilityState!=='visible'){
+      if(!craftBusy) clearCraftSelection();
+      closeSheet();
+      return;
     }
+    refreshBalance();
+    refreshTop();
+    refreshReferral();
+    refreshInventory();
+    refreshCrashState(true);
   });
 
   // ─── BACKEND HELPERS ─────────────────────────────────────────────────────────
   async function refreshBalance(){
     if(!tg?.initData)return null;
     try{
-      const resp=await fetch(API_BASE+'/api/balance',{headers:{'x-init-data':tg.initData}});
+      const resp=await fetch(API_BASE+'/api/balance?ts='+Date.now(),{headers:{'x-init-data':tg.initData}});
       const data=await resp.json();
       if(data.balance!==undefined){
         updateBalance(data.balance);
@@ -3672,8 +3784,8 @@
 
   async function refreshTop(){
     try{
-      const url=API_BASE+'/api/top'+(tgUserId?'?userId='+tgUserId:'');
-      const resp=await fetch(url);
+      const url=API_BASE+'/api/top'+(tgUserId?'?userId='+tgUserId+'&':'?')+'ts='+Date.now();
+      const resp=await fetch(url,{cache:'no-store'});
       const {leaders=[],myRank}=await resp.json();
       topCache={leaders,myRank};
       renderTop(leaders,myRank);
@@ -3685,9 +3797,10 @@
     if(placeText) placeText.innerHTML=myRank
       ? (currentLang==='en' ? 'You are in the top at <b>'+myRank+'</b> place' : 'Вы в топе на <b>'+myRank+'</b> месте')
       : (currentLang==='en' ? 'You are not in the top yet' : 'Вы ещё не в топе');
+    const depositLabel=currentLang==='en'?'deposit':'пополнение';
     const myEntry=leaders.find(l=>String(l.id)===String(tgUserId));
     document.querySelector('.top-my-rank').textContent=myRank||'—';
-    document.querySelector('.top-my-score').innerHTML=(myEntry?formatStars(myEntry.total_deposited):'0')+' <img src="assets/star.png" alt="">';
+    document.querySelector('.top-my-score').innerHTML='<span class="top-score-value">'+(myEntry?formatStars(myEntry.total_deposited):'0')+' <img src="assets/star.png" alt=""></span><span class="top-score-label">'+depositLabel+'</span>';
     const rankClasses=['gold','silver','bronze'];
     const rows=document.querySelectorAll('#topPage .top-row');
     rows.forEach((row,i)=>{
@@ -3696,15 +3809,24 @@
       rankEl.textContent=leader?i+1:'—';
       rankEl.className='top-rank'+(leader&&rankClasses[i]?' '+rankClasses[i]:'');
       const nameEl=row.querySelector('.top-name');
+      row.querySelector('.top-gift-badge')?.remove();
       if(!leader){
         nameEl.textContent='—';
         nameEl.dataset.locked='false';
-        row.querySelector('.top-score').innerHTML='0 <img src="assets/star.png" alt="">';
+        row.querySelector('.top-score').innerHTML='<span class="top-score-value">0 <img src="assets/star.png" alt=""></span><span class="top-score-label">'+depositLabel+'</span>';
         return;
       }
       nameEl.textContent=leader.first_name||'User';
       nameEl.dataset.locked='true';
-      row.querySelector('.top-score').innerHTML=formatStars(leader.total_deposited)+' <img src="assets/star.png" alt="">';
+      row.querySelector('.top-score').innerHTML='<span class="top-score-value">'+formatStars(leader.total_deposited)+' <img src="assets/star.png" alt=""></span><span class="top-score-label">'+depositLabel+'</span>';
+      const rewardGift=TOP_REWARD_GIFTS[i]||null;
+      if(rewardGift?.image){
+        const badge=document.createElement('img');
+        badge.className='top-gift-badge';
+        badge.src=rewardGift.image;
+        badge.alt=rewardGift.name||'Gift';
+        row.appendChild(badge);
+      }
       let avatarEl=row.querySelector('.top-avatar');
       if(leader.photo_url){
         if(avatarEl.tagName==='DIV'){
