@@ -104,37 +104,43 @@
   .top-place-text{color:rgba(255,255,255,.45);font-size:14px;font-weight:600;margin-bottom:14px}
   .top-place-text b{color:#fff}
   .top-my-row{
-    width:100%;display:flex;align-items:center;gap:10px;
+    width:100%;display:flex;align-items:center;gap:12px;
     padding:12px 14px;border-radius:14px;
     background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06);
   }
-  .top-my-rank{width:22px;text-align:center;color:rgba(255,255,255,.3);font-size:14px;font-weight:800;flex-shrink:0}
+  .top-my-rank,.top-rank{
+    min-width:34px;height:34px;padding:0 10px;border-radius:12px;
+    display:inline-flex;align-items:center;justify-content:center;
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);
+    text-align:center;color:rgba(255,255,255,.82);font-size:14px;font-weight:800;
+    flex-shrink:0;
+  }
   .top-my-avatar{width:36px;height:36px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.1);flex-shrink:0}
   .top-my-name{flex:1;color:#fff;font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .top-my-score{display:flex;align-items:center;gap:4px;color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
   .top-my-score img{width:16px;height:16px;object-fit:contain;filter:drop-shadow(0 0 3px rgba(255,200,0,.3))}
   .top-list{display:flex;flex-direction:column;gap:8px}
   .top-row{
-    display:flex;align-items:center;gap:10px;
+    display:flex;align-items:center;gap:12px;
     padding:12px 14px;border-radius:14px;
     background:rgba(255,255,255,.06);backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);
     border:1px solid rgba(255,255,255,.06);
   }
-  .top-rank{
-    width:22px;text-align:center;
-    color:rgba(255,255,255,.3);font-size:14px;font-weight:800;
-    flex-shrink:0;
-  }
-  .top-rank.gold{color:#FFD60A}
-  .top-rank.silver{color:#C0C0C0}
-  .top-rank.bronze{color:#CD7F32}
+  .top-rank.gold{color:#FFD60A;border-color:rgba(255,214,10,.28);background:rgba(255,214,10,.08)}
+  .top-rank.silver{color:#E5E5EA;border-color:rgba(229,229,234,.22);background:rgba(229,229,234,.08)}
+  .top-rank.bronze{color:#D98F5C;border-color:rgba(217,143,92,.24);background:rgba(217,143,92,.08)}
   .top-avatar{width:36px;height:36px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.1);flex-shrink:0}
   .top-name{flex:1;color:#fff;font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .top-score{display:flex;align-items:center;gap:6px;color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+  .top-score{display:flex;align-items:center;gap:4px;color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
   .top-score-value{display:inline-flex;align-items:center;gap:4px}
   .top-score img{width:16px;height:16px;object-fit:contain;filter:drop-shadow(0 0 3px rgba(255,200,0,.3))}
-  .top-score-label{color:rgba(255,255,255,.34);font-size:10px;font-weight:700;letter-spacing:.02em;text-transform:uppercase}
-  .top-gift-badge{width:32px;height:32px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 8px 14px rgba(0,0,0,.22))}
+  .top-gift-cell{
+    width:44px;height:44px;border-radius:14px;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);
+    flex-shrink:0;
+  }
+  .top-gift-badge{width:30px;height:30px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 8px 14px rgba(0,0,0,.22))}
 
   /* === PROFILE === */
   .profile-card{
@@ -3797,10 +3803,9 @@
     if(placeText) placeText.innerHTML=myRank
       ? (currentLang==='en' ? 'You are in the top at <b>'+myRank+'</b> place' : 'Вы в топе на <b>'+myRank+'</b> месте')
       : (currentLang==='en' ? 'You are not in the top yet' : 'Вы ещё не в топе');
-    const depositLabel=currentLang==='en'?'deposit':'пополнение';
     const myEntry=leaders.find(l=>String(l.id)===String(tgUserId));
     document.querySelector('.top-my-rank').textContent=myRank||'—';
-    document.querySelector('.top-my-score').innerHTML='<span class="top-score-value">'+(myEntry?formatStars(myEntry.total_deposited):'0')+' <img src="assets/star.png" alt=""></span><span class="top-score-label">'+depositLabel+'</span>';
+    document.querySelector('.top-my-score').innerHTML='<span class="top-score-value">'+(myEntry?formatStars(myEntry.total_deposited):'0')+' <img src="assets/star.png" alt=""></span>';
     const rankClasses=['gold','silver','bronze'];
     const rows=document.querySelectorAll('#topPage .top-row');
     rows.forEach((row,i)=>{
@@ -3809,23 +3814,26 @@
       rankEl.textContent=leader?i+1:'—';
       rankEl.className='top-rank'+(leader&&rankClasses[i]?' '+rankClasses[i]:'');
       const nameEl=row.querySelector('.top-name');
-      row.querySelector('.top-gift-badge')?.remove();
+      row.querySelector('.top-gift-cell')?.remove();
       if(!leader){
         nameEl.textContent='—';
         nameEl.dataset.locked='false';
-        row.querySelector('.top-score').innerHTML='<span class="top-score-value">0 <img src="assets/star.png" alt=""></span><span class="top-score-label">'+depositLabel+'</span>';
+        row.querySelector('.top-score').innerHTML='<span class="top-score-value">0 <img src="assets/star.png" alt=""></span>';
         return;
       }
       nameEl.textContent=leader.first_name||'User';
       nameEl.dataset.locked='true';
-      row.querySelector('.top-score').innerHTML='<span class="top-score-value">'+formatStars(leader.total_deposited)+' <img src="assets/star.png" alt=""></span><span class="top-score-label">'+depositLabel+'</span>';
+      row.querySelector('.top-score').innerHTML='<span class="top-score-value">'+formatStars(leader.total_deposited)+' <img src="assets/star.png" alt=""></span>';
       const rewardGift=TOP_REWARD_GIFTS[i]||null;
       if(rewardGift?.image){
+        const giftCell=document.createElement('div');
+        giftCell.className='top-gift-cell';
         const badge=document.createElement('img');
         badge.className='top-gift-badge';
         badge.src=rewardGift.image;
         badge.alt=rewardGift.name||'Gift';
-        row.appendChild(badge);
+        giftCell.appendChild(badge);
+        row.appendChild(giftCell);
       }
       let avatarEl=row.querySelector('.top-avatar');
       if(leader.photo_url){
@@ -3835,6 +3843,10 @@
           avatarEl.replaceWith(img);avatarEl=img;
         }
         avatarEl.src=leader.photo_url;
+      }else if(avatarEl.tagName==='IMG'){
+        const placeholder=document.createElement('div');
+        placeholder.className='top-avatar';
+        avatarEl.replaceWith(placeholder);
       }
     });
   }
