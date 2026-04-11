@@ -108,12 +108,7 @@
     padding:12px 14px;border-radius:14px;
     background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06);
   }
-  .top-my-rank{
-    min-width:36px;height:30px;padding:0 10px;border-radius:999px;
-    display:inline-flex;align-items:center;justify-content:center;
-    text-align:center;color:rgba(255,255,255,.94);font-size:13px;font-weight:800;flex-shrink:0;
-    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);
-  }
+  .top-my-rank{width:22px;text-align:center;color:rgba(255,255,255,.3);font-size:14px;font-weight:800;flex-shrink:0}
   .top-my-avatar{width:36px;height:36px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.1);flex-shrink:0}
   .top-my-name{flex:1;color:#fff;font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .top-my-score{display:flex;align-items:center;gap:4px;color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
@@ -126,10 +121,9 @@
     border:1px solid rgba(255,255,255,.06);
   }
   .top-rank{
-    min-width:36px;height:30px;padding:0 10px;border-radius:999px;
-    display:inline-flex;align-items:center;justify-content:center;
-    text-align:center;color:rgba(255,255,255,.94);font-size:13px;font-weight:800;
-    flex-shrink:0;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);
+    width:22px;text-align:center;
+    color:rgba(255,255,255,.3);font-size:14px;font-weight:800;
+    flex-shrink:0;
   }
   .top-rank.gold{color:#FFD60A}
   .top-rank.silver{color:#C0C0C0}
@@ -140,12 +134,7 @@
   .top-score-value{display:inline-flex;align-items:center;gap:4px}
   .top-score img{width:16px;height:16px;object-fit:contain;filter:drop-shadow(0 0 3px rgba(255,200,0,.3))}
   .top-score-label{color:rgba(255,255,255,.34);font-size:10px;font-weight:700;letter-spacing:.02em;text-transform:uppercase}
-  .top-gift-badge{
-    width:42px;height:42px;padding:6px;border-radius:14px;object-fit:contain;flex-shrink:0;
-    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
-    filter:drop-shadow(0 8px 14px rgba(0,0,0,.16));
-  }
+  .top-gift-badge{width:32px;height:32px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 8px 14px rgba(0,0,0,.22))}
 
   /* === PROFILE === */
   .profile-card{
@@ -366,16 +355,16 @@
   .sheet-gift-card.in-craft{opacity:.52;filter:saturate(.65)}
   .sheet-gift-card.in-craft.selected{border-color:rgba(255,255,255,.08);box-shadow:none;transform:none}
   .sheet-gift-status{
-    position:absolute;top:5px;right:8px;
+    position:absolute;top:8px;right:8px;
     display:inline-flex;align-items:center;justify-content:center;
     min-width:54px;height:20px;padding:0 8px;border-radius:999px;
     background:rgba(0,0,0,.42);border:1px solid rgba(255,255,255,.08);
     color:#fff;font-size:10px;font-weight:700;
   }
-  .crash-bet-cloud{animation:crashBetIn .34s cubic-bezier(.22,1,.36,1) both}
+  .crash-bet-cloud{animation:crashBetIn .22s ease both}
   .crash-bet-cloud.fading-out{animation:crashBetOut .28s ease both}
-  @keyframes crashBetIn{from{opacity:0;transform:translateX(-16px) scale(.98)}to{opacity:1;transform:translateX(0) scale(1)}}
-  @keyframes crashBetOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(-10px)}}
+  @keyframes crashBetIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes crashBetOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-6px)}}
   .sheet-gift-card img{width:90px;height:90px;object-fit:contain;filter:drop-shadow(0 10px 18px rgba(0,0,0,.24))}
   .sheet-gift-name{color:#fff;font-size:12px;font-weight:700;text-align:center;line-height:1.2;min-height:30px}
   .sheet-gift-price{display:flex;align-items:center;justify-content:center;gap:4px;color:rgba(255,255,255,.65);font-size:12px;font-weight:700}
@@ -543,7 +532,7 @@
     color:rgba(255,255,255,.18);font-size:9px;font-weight:600;
     text-transform:uppercase;letter-spacing:.03em;
     display:flex;align-items:center;justify-content:center;
-    width:100%;flex:1;transform:translateY(4px);
+    width:100%;flex:1;transform:translateY(12px);
   }
   .craft-info{
     background:rgba(255,255,255,.06);
@@ -578,10 +567,10 @@
   .craft-cell .craft-cell-name{color:#fff;font-size:11px;font-weight:700;text-align:center;line-height:1.1;max-width:100%;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:24px}
   .craft-cell .craft-cell-price{color:rgba(255,255,255,.72);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:4px;margin-top:auto;padding-top:4px;min-height:16px}
   .craft-cell .craft-cell-price img{width:12px;height:12px;margin:0;filter:none}
-  .craft-cell.entering{animation:craftCellIn .42s cubic-bezier(.22,1,.36,1) both}
-  .craft-cell.removing{opacity:.08;transform:scale(.94)}
+  .craft-cell.entering{animation:craftCellIn .34s ease both}
+  .craft-cell.removing{opacity:.08;transform:scale(.92)}
   .craft-cell .craft-cell-badge{display:none}
-  @keyframes craftCellIn{from{opacity:0;transform:translateX(-12px) scale(.95)}to{opacity:1;transform:translateX(0) scale(1)}}
+  @keyframes craftCellIn{from{opacity:0;transform:translateY(8px) scale(.94)}to{opacity:1;transform:translateY(0) scale(1)}}
 
   .craft-add-btn{
     width:100%;height:50px;border-radius:999px;border:none;cursor:pointer;
@@ -657,11 +646,6 @@
   .crash-history-pill.purple{border-color:#AF52DE;color:#AF52DE}
   .crash-history-pill.active{
     background:#007AFF;color:#fff;border-color:#007AFF;
-  }
-  .crash-history-pill.entering{animation:crashHistoryIn .34s cubic-bezier(.22,1,.36,1) both}
-  @keyframes crashHistoryIn{
-    from{opacity:0;transform:translateX(-12px) scale(.92)}
-    to{opacity:1;transform:translateX(0) scale(1)}
   }
 
   .crash-bet-btn{
@@ -1374,6 +1358,7 @@
   async function initUser(){
     if(!tg)return;
     tg.ready();tg.expand();
+    if(tg.requestFullscreen)tg.requestFullscreen();
     if(tg.disableVerticalSwipes)tg.disableVerticalSwipes();
     const u=tg.initDataUnsafe?.user;
     if(u){
@@ -1551,11 +1536,8 @@
     if(sheetTitle){
       sheetTitle.textContent=sheetMode==='upgrade-source' ? t('myGifts') : (sheetMode==='upgrade-target' ? t('giftsForUpgrade') : t('myGifts'));
     }
-    sheetAddBtn.textContent=sheetMode==='craft'
-      ? (currentLang==='en' ? 'Add gifts' : 'Добавить подарки')
-      : (currentLang==='en' ? 'Add gift' : 'Добавить подарок');
-    const hasCraftSelection=sheetMode==='craft' && sheetSelectedGiftIds.length>0;
-    sheetAddBtn.classList.toggle('visible',!!((isUpgradeMode&&sheetSelectedGiftId)||hasCraftSelection));
+    sheetAddBtn.textContent=sheetMode==='craft' ? 'Добавить подарки' : 'Добавить подарок';
+    sheetAddBtn.classList.toggle('visible',!!((isUpgradeMode&&sheetSelectedGiftId)||(sheetMode==='craft'&&sheetSelectedGiftId)));
     if(!items.length){
       sheetGifts.classList.remove('visible');
       sheetGifts.innerHTML='';
@@ -1572,9 +1554,7 @@
     sheetGifts.classList.add('visible');
     sheetGifts.innerHTML=items.map(item=>{
       const inCraft=sheetMode==='craft' && !!item._inCraft;
-      const selected=sheetMode==='craft'
-        ? (sheetSelectedGiftIds.includes(String(item._sheetId)) && !inCraft)
-        : (String(item._sheetId)===String(sheetSelectedGiftId) && !inCraft);
+      const selected=String(item._sheetId)===String(sheetSelectedGiftId) && !inCraft;
       return `
       <div class="sheet-gift-card ${selected?'selected':''} ${inCraft?'in-craft':''}" data-id="${item._sheetId}">
         ${inCraft?'<div class="sheet-gift-status">В крафте</div>':''}
@@ -1586,64 +1566,53 @@
     }).join('');
   }
 
+
   const craftGrid=document.getElementById('craftGrid');
   const craftTotalPriceEl=document.getElementById('craftTotalPrice');
   const craftActionBtn=document.getElementById('craftActionBtn');
   const craftAddBtn=document.getElementById('craftAddBtn');
-  let craftGifts=[];
+  const CRAFT_SLOT_COUNT=10;
+  let craftSlots=Array.from({length:CRAFT_SLOT_COUNT},()=>null);
   let craftBusy=false;
 
   let craftRemovingGiftIds=[];
   let craftAppearingGiftIds=[];
-  function getCraftSlots(){
-    const slots=new Array(10).fill(null);
-    craftGifts.forEach((gift,index)=>{
-      const rawSlot=Number(gift?._craftSlot);
-      const preferredSlot=Number.isInteger(rawSlot) && rawSlot>=0 && rawSlot<10 ? rawSlot : index;
-      let slotIndex=preferredSlot;
-      while(slotIndex<10 && slots[slotIndex]) slotIndex+=1;
-      if(slotIndex>=10) slotIndex=slots.findIndex(item=>!item);
-      if(slotIndex>=0 && slotIndex<10){
-        gift._craftSlot=slotIndex;
-        slots[slotIndex]=gift;
-      }
-    });
-    return slots;
+
+  function getCraftItems(){
+    return craftSlots.filter(Boolean);
   }
-  function getFreeCraftSlots(count=1){
-    const slots=getCraftSlots();
-    const free=[];
-    slots.forEach((gift,index)=>{ if(!gift) free.push(index); });
-    return free.slice(0,Math.max(0,Number(count||0)));
+  function getCraftSlotIndexById(id){
+    return craftSlots.findIndex(item=>item && String(item.id)===String(id));
+  }
+  function updateCraftSelectedIds(){
+    craftSelectedGiftIds=getCraftItems().map(item=>String(item.id));
   }
   function renderCraftUI(){
     if(!craftGrid) return;
-    craftSelectedGiftIds=craftGifts.map(item=>String(item.id));
-    const slots=getCraftSlots();
+    updateCraftSelectedIds();
     const cells=[];
-    for(let i=0;i<10;i+=1){
-      const gift=slots[i]||null;
+    for(let i=0;i<CRAFT_SLOT_COUNT;i+=1){
+      const gift=craftSlots[i]||null;
       if(gift){
         const id=String(gift.id);
         const removing=craftRemovingGiftIds.includes(id);
         const entering=craftAppearingGiftIds.includes(id);
-        const delayStyle=entering ? ' style="animation-delay:'+(i*52)+'ms"' : '';
-        cells.push('<div class="craft-cell active '+(removing?'removing ':'')+(entering?'entering':'')+'" data-id="'+gift.id+'" data-slot="'+i+'"'+delayStyle+'><img src="'+resolveGiftImage(gift)+'" alt="'+gift.name+'"><div class="craft-cell-name">'+gift.name+'</div><div class="craft-cell-price">'+formatStars(gift.price)+' <img src="assets/star.png" alt=""></div></div>');
+        cells.push('<div class="craft-cell active '+(removing?'removing ':'')+(entering?'entering':'')+'" data-id="'+gift.id+'" data-slot="'+i+'"><img src="'+resolveGiftImage(gift)+'" alt="'+gift.name+'"><div class="craft-cell-name">'+gift.name+'</div><div class="craft-cell-price">'+formatStars(gift.price)+' <img src="assets/star.png" alt=""></div></div>');
       }else{
         cells.push('<div class="craft-cell" data-slot="'+i+'"><span>'+t('empty')+'</span></div>');
       }
     }
     craftGrid.innerHTML=cells.join('');
-    const total=craftGifts.reduce((sum,item)=>sum+Number(item.price||0),0);
+    const total=getCraftItems().reduce((sum,item)=>sum+Number(item.price||0),0);
     craftTotalPriceEl.textContent=formatStars(total);
-    const canCraft=!craftBusy && craftGifts.length>=3;
+    const canCraft=!craftBusy && getCraftItems().length>=3;
     craftActionBtn.classList.toggle('active',canCraft);
     craftActionBtn.disabled=!canCraft;
     craftActionBtn.textContent=craftBusy?'Создаём контракт...':t('makeContract');
   }
 
   function clearCraftSelection(){
-    craftGifts=[];
+    craftSlots=Array.from({length:CRAFT_SLOT_COUNT},()=>null);
     craftSelectedGiftIds=[];
     craftRemovingGiftIds=[];
     craftAppearingGiftIds=[];
@@ -1653,29 +1622,31 @@
 
   async function animateCraftConsumptionSequence(snapshot){
     craftRemovingGiftIds=[];
-    const ordered=[...snapshot].sort((a,b)=>Number(a._craftSlot||0)-Number(b._craftSlot||0));
-    const totalDuration=Math.max(4800,ordered.length*520);
-    const stepDuration=Math.max(360,Math.floor(totalDuration/Math.max(1,ordered.length)));
-    for(const gift of ordered){
+    const totalDuration=Math.max(5200,snapshot.length*620);
+    const stepDuration=Math.max(420,Math.floor(totalDuration/Math.max(1,snapshot.length)));
+    for(const gift of snapshot){
       const id=String(gift.id);
       craftRemovingGiftIds=[...craftRemovingGiftIds,id];
       renderCraftUI();
       await new Promise(resolve=>setTimeout(resolve,Math.floor(stepDuration*0.68)));
-      craftGifts=craftGifts.filter(item=>String(item.id)!==id);
-      craftSelectedGiftIds=craftGifts.map(item=>String(item.id));
+      const slotIndex=getCraftSlotIndexById(id);
+      if(slotIndex>=0){
+        craftSlots[slotIndex]=null;
+      }
+      updateCraftSelectedIds();
       craftRemovingGiftIds=craftRemovingGiftIds.filter(item=>item!==id);
       renderCraftUI();
       await new Promise(resolve=>setTimeout(resolve,Math.max(90,Math.floor(stepDuration*0.32))));
     }
     craftRemovingGiftIds=[];
     renderCraftUI();
-    await new Promise(resolve=>setTimeout(resolve,260));
+    await new Promise(resolve=>setTimeout(resolve,280));
   }
+
   const sheetTitle=document.querySelector('.sheet-pill');
   const sheetAddBtn=document.getElementById('sheetAddBtn');
   let sheetMode='inventory';
   let sheetSelectedGiftId='';
-  let sheetSelectedGiftIds=[];
   let craftSelectedGiftIds=[];
   let upgradeSourceGift=null;
   let upgradeTargetGift=null;
@@ -1806,7 +1777,6 @@
   function openSheet(mode='inventory'){
     sheetMode=mode;
     sheetSelectedGiftId='';
-    sheetSelectedGiftIds=[];
     renderSheetGifts();
     sheetOverlay.classList.add('open');sheet.classList.add('open');
     updateLottiePerformance();
@@ -1818,7 +1788,6 @@
   function closeSheet(){
     sheetOverlay.classList.remove('open');sheet.classList.remove('open');
     sheetSelectedGiftId='';
-    sheetSelectedGiftIds=[];
     sheetAddBtn.classList.remove('visible');
   }
   function addGiftToInventory(gift){
@@ -2160,14 +2129,22 @@
   }
   function resolveGiftImage(gift){
     const image=String(gift?.image||gift?.gift_image||'').trim();
-    const id=String(gift?.giftId||gift?.gift_id||gift?.id||'').trim();
+    const explicitGiftId=String(gift?.giftId||gift?.gift_id||'').trim();
+    const rawId=String(gift?.id||'').trim();
     const name=String(gift?.name||gift?.gift_name||'').trim().toLowerCase();
     if(image) return image;
-    if(id){
-      const byId=GIFT_CATALOG.find(entry=>String(entry.id||entry.giftId||'').trim()===id);
-      if(byId?.image) return String(byId.image).trim();
-      return 'https://cdn.changes.tg/gifts/originals/'+id+'/Original.png';
+
+    if(explicitGiftId){
+      const byGiftId=GIFT_CATALOG.find(entry=>String(entry.id||entry.giftId||'').trim()===explicitGiftId);
+      if(byGiftId?.image) return String(byGiftId.image).trim();
+      return 'https://cdn.changes.tg/gifts/originals/'+explicitGiftId+'/Original.png';
     }
+
+    if(rawId){
+      const byCatalogId=GIFT_CATALOG.find(entry=>String(entry.id||entry.giftId||'').trim()===rawId);
+      if(byCatalogId?.image) return String(byCatalogId.image).trim();
+    }
+
     if(name){
       const byName=GIFT_CATALOG.find(entry=>String(entry.name||'').trim().toLowerCase()===name);
       if(byName?.image) return String(byName.image).trim();
@@ -2327,35 +2304,19 @@
       if(rightEl) updateCrashGiftBadge(rightEl,gift);
     });
   }
-  let crashHistorySignature='';
   function renderCrashHistoryState(state){
-    const visualState=buildCrashVisualState(state);
-    const liveText=(visualState&&deriveCrashDisplayPhase(visualState, getServerNow())==='live')
-      ? 'x'+computeCrashMultiplier(visualState, getServerNow()).toFixed(2)
+    const liveText=(state&&state.phase==='live')
+      ? 'x'+computeCrashMultiplier(state).toFixed(2)
       : t('waiting');
+    crashHistory.innerHTML='';
     crashLivePill.textContent=liveText;
-    if(crashHistory.firstElementChild!==crashLivePill){
-      crashHistory.prepend(crashLivePill);
-    }
-    const historyItems=(state?.history||[]).slice(0,MAX_CRASH_HISTORY);
-    const nextSignature=historyItems.map(entry=>String(entry.roundId)+':'+Number(entry.multiplier).toFixed(2)).join('|');
-    if(nextSignature===crashHistorySignature){
-      clearCrashHistoryOverflow();
-      return;
-    }
-    const previousFirst=(crashHistorySignature.split('|')[0]||'');
-    crashHistorySignature=nextSignature;
-    Array.from(crashHistory.querySelectorAll('.crash-history-pill:not(.active)')).forEach(node=>node.remove());
-    historyItems.forEach((entry,index)=>{
+    crashHistory.appendChild(crashLivePill);
+    (state?.history||[]).slice(0,MAX_CRASH_HISTORY).forEach(entry=>{
       const pill=document.createElement('div');
       pill.className='crash-history-pill '+getPillColor(entry.multiplier);
-      const pillKey=String(entry.roundId)+':'+Number(entry.multiplier).toFixed(2);
-      if(index===0 && pillKey!==previousFirst) pill.classList.add('entering');
       pill.textContent='x'+Number(entry.multiplier).toFixed(2);
       crashHistory.appendChild(pill);
     });
-    clearCrashHistoryOverflow();
-    crashHistory.scrollTo({left:0, behavior:'smooth'});
   }
   function computeCrashMultiplier(state,now=getServerNow()){
     if(!state)return 1;
@@ -2382,38 +2343,6 @@
       container:crashRocket,renderer:'svg',loop:true,autoplay:true,
       path:'assets/rocket.json'
     });
-  }
-
-  function buildCrashVisualState(state, now=getServerNow()){
-    if(!state) return state;
-    const phase=String(state.phase||'countdown');
-    const countdownEndsAt=Number(state.countdownEndsAt||0);
-    const nextRoundAt=Number(state.nextRoundAt||0);
-    const crashTarget=Number(state.crashTarget||1.01);
-    const growthMs=Number(state.growthMs||8000);
-    const estimatedLiveDuration=Math.max(400,Math.round(growthMs*Math.log(Math.max(crashTarget,1.01))));
-    if(phase==='ended' && nextRoundAt && now>=nextRoundAt){
-      const syntheticCountdownEndsAt=nextRoundAt+10000;
-      return {
-        ...state,
-        roundId:Number(state.roundId||0)+1,
-        phase:'countdown',
-        countdownEndsAt:syntheticCountdownEndsAt,
-        liveStartAt:syntheticCountdownEndsAt,
-        liveEndsAt:syntheticCountdownEndsAt+estimatedLiveDuration,
-        lastCrashMultiplier:1
-      };
-    }
-    if(phase==='countdown' && countdownEndsAt && now>=countdownEndsAt){
-      return {
-        ...state,
-        phase:'live',
-        liveStartAt:countdownEndsAt,
-        liveEndsAt:Number(state.liveEndsAt||countdownEndsAt+estimatedLiveDuration),
-        lastCrashMultiplier:1
-      };
-    }
-    return state;
   }
 
   function deriveCrashDisplayPhase(state, now=getServerNow()){
@@ -2499,7 +2428,8 @@
 
   function renderCrashPlayerWin(amount,gift=null){
     const explicitGift=gift?normalizeCrashPrizeGift(gift):null;
-    const sourceGift=explicitGift||(crashPrizePending||crashBetSettled?crashPrizeGift:null)||getCrashPreviewGift(amount);
+    const shouldHideGift=crashResultState==='loss' && !explicitGift && !crashPrizePending;
+    const sourceGift=shouldHideGift ? null : (explicitGift||(crashPrizePending||crashBetSettled?crashPrizeGift:null)||getCrashPreviewGift(amount));
     const displayGift=withCrashGiftValue(sourceGift,amount);
     crashRenderedWinGift=displayGift?{...displayGift}:null;
     crashRenderedWinAmount=Number(amount||0);
@@ -2770,7 +2700,7 @@
       }
       if(crashResultState==='loss'&&crashBetAmount>0&&!crashPrizePending){
         renderCrashPlayerCard(crashBetAmount);
-        renderCrashPlayerWin(crashSettledPayout||crashBetAmount,crashPrizeGift||getCrashPreviewGift(crashBetAmount));
+        renderCrashPlayerWin(crashSettledPayout||crashBetAmount,null);
         setCrashPlayerState('loss');
         return;
       }
@@ -2814,9 +2744,9 @@
       crashBetActive=false;
       crashBetSettled=false;
       crashSettledPayout=displayAmount||crashBetAmount;
-      crashPrizeGift=previewGift;
+      crashPrizeGift=null;
       setCrashPlayerState('loss');
-      renderCrashPlayerWin(crashSettledPayout||crashBetAmount,crashPrizeGift);
+      renderCrashPlayerWin(crashSettledPayout||crashBetAmount,null);
       return;
     }
 
@@ -2838,18 +2768,13 @@
     if(prevState.roundId===nextState.roundId)return;
     if(!crashPrizePending) crashPrizeModalAutoKey='';
     crashRoundLocked=false;
-    crashCountdownIntroUntil=Date.now()+420;
+    crashCountdownIntroUntil=Date.now()+320;
 
     if(crashPrizePending||crashCashoutBusy){
       return;
     }
     if(crashResultState==='loss'&&crashBetAmount>0){
-      crashBetActive=false;
-      crashBetSettled=false;
-      crashPrizeGift=crashPrizeGift||withCrashGiftValue(getCrashPreviewGift(crashBetAmount),crashBetAmount);
-      renderCrashPlayerCard(crashBetAmount);
-      renderCrashPlayerWin(crashSettledPayout||crashBetAmount,crashPrizeGift);
-      setCrashPlayerState('loss');
+      resetCrashPlayer();
       return;
     }
     if(crashBetSettled&&!crashPrizePending){
@@ -2859,10 +2784,10 @@
     if(crashBetActive&&!crashPrizePending){
       crashBetActive=false;
       crashSettledPayout=crashBetAmount;
-      crashPrizeGift=withCrashGiftValue(getCrashPreviewGift(crashBetAmount),crashBetAmount);
+      crashPrizeGift=null;
       setCrashPlayerState('loss');
       renderCrashPlayerCard(crashBetAmount);
-      renderCrashPlayerWin(crashBetAmount,crashPrizeGift);
+      renderCrashPlayerWin(crashBetAmount,null);
       const betBtn=document.getElementById('crashBetBtn');
       betBtn.classList.add('dim');
       betBtn.textContent=t('placeBet');
@@ -2875,17 +2800,16 @@
     const state=crashRealtimeState;
     if(!state)return;
     const now=getServerNow();
-    const visualState=buildCrashVisualState(state,now);
     const betBtn=document.getElementById('crashBetBtn');
     const lossEl=document.getElementById('crashLoss');
-    const displayPhase=deriveCrashDisplayPhase(visualState,now);
-    maybeRefreshCrashBoundary(visualState,now);
+    const displayPhase=deriveCrashDisplayPhase(state,now);
+    maybeRefreshCrashBoundary(state,now);
     crashDisplayPhase=displayPhase;
     crashRoundLive=displayPhase==='live';
-    updateCrashOtherBetsLive({...visualState, phase: displayPhase});
+    updateCrashOtherBetsLive({...state, phase: displayPhase});
 
     if(displayPhase==='countdown'){
-      const endsAt=Number(visualState.countdownEndsAt||visualState.liveStartAt||0);
+      const endsAt=Number(state.countdownEndsAt||state.liveStartAt||0);
       const count=(Date.now()<crashCountdownIntroUntil)?10:Math.min(10,Math.max(1,Math.ceil(Math.max(0,endsAt-now)/1000))); 
       crashTimer.style.display='';
       crashTimer.textContent=String(count);
@@ -2911,7 +2835,7 @@
       closeBet();
       lossEl.className='crash-loss';
       startCrashRocket();
-      crashMultiplier=computeCrashMultiplier({...visualState, phase:'live'},now);
+      crashMultiplier=computeCrashMultiplier({...state, phase:'live'},now);
       crashTimer.style.display='none';
       crashLivePill.textContent='x'+crashMultiplier.toFixed(2);
       if(crashCashoutBusy||crashBetSettled){
@@ -2934,13 +2858,13 @@
     crashTimer.textContent='';
     crashTimer.className='crash-timer';
     stopCrashRocket();
-    crashMultiplier=Number(visualState.crashTarget||visualState.lastCrashMultiplier||1);
+    crashMultiplier=Number(state.crashTarget||state.lastCrashMultiplier||1);
     lossEl.textContent='x'+crashMultiplier.toFixed(2);
-    if(lastCrashDisplayState!==visualState.roundId+':ended'){
+    if(lastCrashDisplayState!==state.roundId+':ended'){
       lossEl.className='crash-loss';
       void lossEl.offsetWidth;
       lossEl.className='crash-loss show';
-      lastCrashDisplayState=visualState.roundId+':ended';
+      lastCrashDisplayState=state.roundId+':ended';
     }
     if(crashBetActive&&!crashPrizePending&&!crashCashoutBusy){
       crashBetActive=false;
@@ -3468,56 +3392,13 @@
     const card=e.target.closest('.sheet-gift-card');
     if(!card) return;
     if(sheetMode==='inventory') return;
-    if(sheetMode==='craft'){
-      if(card.classList.contains('in-craft')) return;
-      const id=String(card.dataset.id||'');
-      if(sheetSelectedGiftIds.includes(id)){
-        sheetSelectedGiftIds=sheetSelectedGiftIds.filter(item=>item!==id);
-      }else{
-        if(sheetSelectedGiftIds.length + craftGifts.length >= 10) return;
-        sheetSelectedGiftIds=[...sheetSelectedGiftIds,id];
-      }
-      renderSheetGifts();
-      return;
-    }
+    if(sheetMode==='craft' && card.classList.contains('in-craft')) return;
     sheetSelectedGiftId=String(card.dataset.id||'');
     renderSheetGifts();
   });
   sheetAddBtn.addEventListener('click',()=>{
-    const items=getSheetItems();
-    if(sheetMode==='craft'){
-      if(!sheetSelectedGiftIds.length) return;
-      const selectedItems=items.filter(item=>sheetSelectedGiftIds.includes(String(item._sheetId)));
-      if(!selectedItems.length) return;
-      const freeSlots=getFreeCraftSlots(selectedItems.length);
-      const addable=selectedItems
-        .filter(item=>!craftGifts.some(existing=>String(existing.id)===String(item.id)))
-        .slice(0,freeSlots.length);
-      if(!addable.length) return;
-      const addedIds=[];
-      addable.forEach((selected,index)=>{
-        const normalized=normalizeInventoryGift(selected,selected.id||selected._sheetId);
-        if(!normalized) return;
-        normalized._craftSlot=freeSlots[index];
-        craftGifts=[...craftGifts, normalized];
-        addedIds.push(String(normalized.id));
-      });
-      craftSelectedGiftIds=craftGifts.map(item=>String(item.id));
-      craftAppearingGiftIds=[...new Set([...craftAppearingGiftIds,...addedIds])];
-      renderCraftUI();
-      renderSheetGifts();
-      setTimeout(()=>{
-        craftAppearingGiftIds=craftAppearingGiftIds.filter(item=>!addedIds.includes(item));
-        renderCraftUI();
-      },620);
-      sheetSelectedGiftId='';
-      sheetSelectedGiftIds=[];
-      closeSheet();
-      renderCraftUI();
-      return;
-    }
-
     if(!sheetSelectedGiftId) return;
+    const items=getSheetItems();
     const selected=items.find(item=>String(item._sheetId)===String(sheetSelectedGiftId));
     if(!selected) return;
     if(sheetMode==='upgrade-source'){
@@ -3528,6 +3409,26 @@
       closeSheet();
       renderUpgradeUI();
       return;
+    }else if(sheetMode==='craft') {
+      const normalized=normalizeInventoryGift(selected,selected.id||selected._sheetId);
+      const hasFreeSlot=craftSlots.some(item=>!item);
+      if(normalized && hasFreeSlot && !getCraftItems().some(item=>String(item.id)===String(normalized.id))){
+        const addedId=String(normalized.id);
+        const slotIndex=craftSlots.findIndex(item=>!item);
+        if(slotIndex>=0){
+          craftSlots[slotIndex]=normalized;
+        }
+        updateCraftSelectedIds();
+        craftAppearingGiftIds=[...new Set([...craftAppearingGiftIds,addedId])];
+        setTimeout(()=>{
+          craftAppearingGiftIds=craftAppearingGiftIds.filter(item=>item!==addedId);
+          renderCraftUI();
+        },380);
+      }
+      sheetSelectedGiftId='';
+      closeSheet();
+      renderCraftUI();
+      return;
     }
     closeSheet();
     renderUpgradeUI();
@@ -3537,13 +3438,17 @@
     const cell=e.target.closest('.craft-cell[data-id]');
     if(!cell) return;
     const id=String(cell.dataset.id||'');
-    craftGifts=craftGifts.filter(item=>String(item.id)!==id);
-    craftSelectedGiftIds=craftGifts.map(item=>String(item.id));
+    const slotIndex=getCraftSlotIndexById(id);
+    if(slotIndex<0) return;
+    craftSlots[slotIndex]=null;
+    updateCraftSelectedIds();
     renderCraftUI();
   });
   craftActionBtn?.addEventListener('click', async()=>{
-    if(craftBusy || craftGifts.length<3) return;
-    const snapshot=craftGifts.map(item=>({...item}));
+    const craftItems=getCraftItems();
+    if(craftBusy || craftItems.length<3) return;
+    const snapshotSlots=craftSlots.map(item=>item?({...item}):null);
+    const snapshot=craftItems.map(item=>({...item}));
     craftBusy=true;
     renderCraftUI();
     try{
@@ -3557,14 +3462,14 @@
       if(!resp.ok) throw new Error(data.error||'Craft failed');
       await animationPromise;
       inventoryItems=Array.isArray(data.items)?data.items.map(item=>normalizeInventoryGift(item)).filter(Boolean):inventoryItems;
-      craftGifts=[];
+      craftSlots=Array.from({length:CRAFT_SLOT_COUNT},()=>null);
       craftSelectedGiftIds=[];
       craftRemovingGiftIds=[];
       renderInventory();
-      openUpgradeResultModal(normalizeInventoryGift(data.wonGift,data.wonGift?.id||('craft_'+Date.now())));
+      openUpgradeResultModal(normalizeInventoryGift(data.wonGift,data.wonGift?.giftId||data.wonGift?.gift_id||data.wonGift?.id||('craft_'+Date.now())));
     }catch(err){
-      craftGifts=snapshot;
-      craftSelectedGiftIds=craftGifts.map(item=>String(item.id));
+      craftSlots=snapshotSlots;
+      updateCraftSelectedIds();
       craftRemovingGiftIds=[];
       tg?.showAlert?tg.showAlert(err.message):alert(err.message);
     }finally{
@@ -3923,9 +3828,10 @@
     if(placeText) placeText.innerHTML=myRank
       ? (currentLang==='en' ? 'You are in the top at <b>'+myRank+'</b> place' : 'Вы в топе на <b>'+myRank+'</b> месте')
       : (currentLang==='en' ? 'You are not in the top yet' : 'Вы ещё не в топе');
+    const depositLabel=currentLang==='en'?'deposit':'пополнение';
     const myEntry=leaders.find(l=>String(l.id)===String(tgUserId));
     document.querySelector('.top-my-rank').textContent=myRank||'—';
-    document.querySelector('.top-my-score').innerHTML='<span class="top-score-value">'+(myEntry?formatStars(myEntry.total_deposited):'0')+' <img src="assets/star.png" alt=""></span>';
+    document.querySelector('.top-my-score').innerHTML='<span class="top-score-value">'+(myEntry?formatStars(myEntry.total_deposited):'0')+' <img src="assets/star.png" alt=""></span><span class="top-score-label">'+depositLabel+'</span>';
     const rankClasses=['gold','silver','bronze'];
     const rows=document.querySelectorAll('#topPage .top-row');
     rows.forEach((row,i)=>{
@@ -3938,12 +3844,12 @@
       if(!leader){
         nameEl.textContent='—';
         nameEl.dataset.locked='false';
-        row.querySelector('.top-score').innerHTML='<span class="top-score-value">0 <img src="assets/star.png" alt=""></span>';
+        row.querySelector('.top-score').innerHTML='<span class="top-score-value">0 <img src="assets/star.png" alt=""></span><span class="top-score-label">'+depositLabel+'</span>';
         return;
       }
       nameEl.textContent=leader.first_name||'User';
       nameEl.dataset.locked='true';
-      row.querySelector('.top-score').innerHTML='<span class="top-score-value">'+formatStars(leader.total_deposited)+' <img src="assets/star.png" alt=""></span>';
+      row.querySelector('.top-score').innerHTML='<span class="top-score-value">'+formatStars(leader.total_deposited)+' <img src="assets/star.png" alt=""></span><span class="top-score-label">'+depositLabel+'</span>';
       const rewardGift=TOP_REWARD_GIFTS[i]||null;
       if(rewardGift?.image){
         const badge=document.createElement('img');
