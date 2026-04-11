@@ -108,7 +108,12 @@
     padding:12px 14px;border-radius:14px;
     background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06);
   }
-  .top-my-rank{width:22px;text-align:center;color:rgba(255,255,255,.3);font-size:14px;font-weight:800;flex-shrink:0}
+  .top-my-rank{
+    min-width:36px;height:30px;padding:0 10px;border-radius:999px;
+    display:inline-flex;align-items:center;justify-content:center;
+    text-align:center;color:rgba(255,255,255,.94);font-size:13px;font-weight:800;flex-shrink:0;
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);
+  }
   .top-my-avatar{width:36px;height:36px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.1);flex-shrink:0}
   .top-my-name{flex:1;color:#fff;font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .top-my-score{display:flex;align-items:center;gap:4px;color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
@@ -121,9 +126,10 @@
     border:1px solid rgba(255,255,255,.06);
   }
   .top-rank{
-    width:22px;text-align:center;
-    color:rgba(255,255,255,.3);font-size:14px;font-weight:800;
-    flex-shrink:0;
+    min-width:36px;height:30px;padding:0 10px;border-radius:999px;
+    display:inline-flex;align-items:center;justify-content:center;
+    text-align:center;color:rgba(255,255,255,.94);font-size:13px;font-weight:800;
+    flex-shrink:0;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);
   }
   .top-rank.gold{color:#FFD60A}
   .top-rank.silver{color:#C0C0C0}
@@ -134,7 +140,12 @@
   .top-score-value{display:inline-flex;align-items:center;gap:4px}
   .top-score img{width:16px;height:16px;object-fit:contain;filter:drop-shadow(0 0 3px rgba(255,200,0,.3))}
   .top-score-label{color:rgba(255,255,255,.34);font-size:10px;font-weight:700;letter-spacing:.02em;text-transform:uppercase}
-  .top-gift-badge{width:32px;height:32px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 8px 14px rgba(0,0,0,.22))}
+  .top-gift-badge{
+    width:42px;height:42px;padding:6px;border-radius:14px;object-fit:contain;flex-shrink:0;
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+    filter:drop-shadow(0 8px 14px rgba(0,0,0,.16));
+  }
 
   /* === PROFILE === */
   .profile-card{
@@ -355,16 +366,16 @@
   .sheet-gift-card.in-craft{opacity:.52;filter:saturate(.65)}
   .sheet-gift-card.in-craft.selected{border-color:rgba(255,255,255,.08);box-shadow:none;transform:none}
   .sheet-gift-status{
-    position:absolute;top:8px;right:8px;
+    position:absolute;top:5px;right:8px;
     display:inline-flex;align-items:center;justify-content:center;
     min-width:54px;height:20px;padding:0 8px;border-radius:999px;
     background:rgba(0,0,0,.42);border:1px solid rgba(255,255,255,.08);
     color:#fff;font-size:10px;font-weight:700;
   }
-  .crash-bet-cloud{animation:crashBetIn .22s ease both}
+  .crash-bet-cloud{animation:crashBetIn .34s cubic-bezier(.22,1,.36,1) both}
   .crash-bet-cloud.fading-out{animation:crashBetOut .28s ease both}
-  @keyframes crashBetIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-  @keyframes crashBetOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-6px)}}
+  @keyframes crashBetIn{from{opacity:0;transform:translateX(-16px) scale(.98)}to{opacity:1;transform:translateX(0) scale(1)}}
+  @keyframes crashBetOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(-10px)}}
   .sheet-gift-card img{width:90px;height:90px;object-fit:contain;filter:drop-shadow(0 10px 18px rgba(0,0,0,.24))}
   .sheet-gift-name{color:#fff;font-size:12px;font-weight:700;text-align:center;line-height:1.2;min-height:30px}
   .sheet-gift-price{display:flex;align-items:center;justify-content:center;gap:4px;color:rgba(255,255,255,.65);font-size:12px;font-weight:700}
@@ -532,7 +543,7 @@
     color:rgba(255,255,255,.18);font-size:9px;font-weight:600;
     text-transform:uppercase;letter-spacing:.03em;
     display:flex;align-items:center;justify-content:center;
-    width:100%;flex:1;transform:translateY(12px);
+    width:100%;flex:1;transform:translateY(4px);
   }
   .craft-info{
     background:rgba(255,255,255,.06);
@@ -567,10 +578,10 @@
   .craft-cell .craft-cell-name{color:#fff;font-size:11px;font-weight:700;text-align:center;line-height:1.1;max-width:100%;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:24px}
   .craft-cell .craft-cell-price{color:rgba(255,255,255,.72);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:4px;margin-top:auto;padding-top:4px;min-height:16px}
   .craft-cell .craft-cell-price img{width:12px;height:12px;margin:0;filter:none}
-  .craft-cell.entering{animation:craftCellIn .34s ease both}
-  .craft-cell.removing{opacity:.08;transform:scale(.92)}
+  .craft-cell.entering{animation:craftCellIn .42s cubic-bezier(.22,1,.36,1) both}
+  .craft-cell.removing{opacity:.08;transform:scale(.94)}
   .craft-cell .craft-cell-badge{display:none}
-  @keyframes craftCellIn{from{opacity:0;transform:translateY(8px) scale(.94)}to{opacity:1;transform:translateY(0) scale(1)}}
+  @keyframes craftCellIn{from{opacity:0;transform:translateX(-12px) scale(.95)}to{opacity:1;transform:translateX(0) scale(1)}}
 
   .craft-add-btn{
     width:100%;height:50px;border-radius:999px;border:none;cursor:pointer;
@@ -646,6 +657,11 @@
   .crash-history-pill.purple{border-color:#AF52DE;color:#AF52DE}
   .crash-history-pill.active{
     background:#007AFF;color:#fff;border-color:#007AFF;
+  }
+  .crash-history-pill.entering{animation:crashHistoryIn .34s cubic-bezier(.22,1,.36,1) both}
+  @keyframes crashHistoryIn{
+    from{opacity:0;transform:translateX(-12px) scale(.92)}
+    to{opacity:1;transform:translateX(0) scale(1)}
   }
 
   .crash-bet-btn{
@@ -1338,19 +1354,6 @@
 
   // ─── BACKEND URL — замени после деплоя ────────────────────────────────────
   const API_BASE='https://node-api-server.replit.app';
-  const API_TIMEOUT_MS=6500;
-
-  async function fetchJsonWithTimeout(url, options={}, timeoutMs=API_TIMEOUT_MS){
-    const controller=new AbortController();
-    const timeoutId=setTimeout(()=>controller.abort(), timeoutMs);
-    try{
-      const resp=await fetch(url,{...options,signal:controller.signal});
-      const data=await resp.json().catch(()=>({}));
-      return {resp,data};
-    }finally{
-      clearTimeout(timeoutId);
-    }
-  }
 
   const tg=window.Telegram?.WebApp;
   let firstName='User',userHandle='@user',photoUrl='',tgUserId=null;
@@ -1370,9 +1373,8 @@
 
   async function initUser(){
     if(!tg)return;
-    try{tg.ready()}catch(e){}
-    try{tg.expand()}catch(e){}
-    try{if(tg.disableVerticalSwipes)tg.disableVerticalSwipes()}catch(e){}
+    tg.ready();tg.expand();
+    if(tg.disableVerticalSwipes)tg.disableVerticalSwipes();
     const u=tg.initDataUnsafe?.user;
     if(u){
       firstName=u.first_name||u.username||'User';
@@ -1382,12 +1384,13 @@
       applyUserToUI();
     }
     try{
-      const {resp,data}=await fetchJsonWithTimeout(API_BASE+'/api/init',{
+      const resp=await fetch(API_BASE+'/api/init',{
         method:'POST',
         headers:{'Content-Type':'application/json','x-init-data':tg?.initData||''},
         body:JSON.stringify({initData:tg.initData||''}),
-      },5000);
-      if(resp.ok&&data.id){
+      });
+      const data=await resp.json();
+      if(data.id){
         firstName=data.first_name||firstName;
         userHandle=data.username?'@'+data.username:userHandle;
         photoUrl=data.photo_url||photoUrl;
@@ -1548,8 +1551,11 @@
     if(sheetTitle){
       sheetTitle.textContent=sheetMode==='upgrade-source' ? t('myGifts') : (sheetMode==='upgrade-target' ? t('giftsForUpgrade') : t('myGifts'));
     }
-    sheetAddBtn.textContent=sheetMode==='craft' ? 'Добавить подарки' : 'Добавить подарок';
-    sheetAddBtn.classList.toggle('visible',!!((isUpgradeMode&&sheetSelectedGiftId)||(sheetMode==='craft'&&sheetSelectedGiftId)));
+    sheetAddBtn.textContent=sheetMode==='craft'
+      ? (currentLang==='en' ? 'Add gifts' : 'Добавить подарки')
+      : (currentLang==='en' ? 'Add gift' : 'Добавить подарок');
+    const hasCraftSelection=sheetMode==='craft' && sheetSelectedGiftIds.length>0;
+    sheetAddBtn.classList.toggle('visible',!!((isUpgradeMode&&sheetSelectedGiftId)||hasCraftSelection));
     if(!items.length){
       sheetGifts.classList.remove('visible');
       sheetGifts.innerHTML='';
@@ -1566,7 +1572,9 @@
     sheetGifts.classList.add('visible');
     sheetGifts.innerHTML=items.map(item=>{
       const inCraft=sheetMode==='craft' && !!item._inCraft;
-      const selected=String(item._sheetId)===String(sheetSelectedGiftId) && !inCraft;
+      const selected=sheetMode==='craft'
+        ? (sheetSelectedGiftIds.includes(String(item._sheetId)) && !inCraft)
+        : (String(item._sheetId)===String(sheetSelectedGiftId) && !inCraft);
       return `
       <div class="sheet-gift-card ${selected?'selected':''} ${inCraft?'in-craft':''}" data-id="${item._sheetId}">
         ${inCraft?'<div class="sheet-gift-status">В крафте</div>':''}
@@ -1578,7 +1586,6 @@
     }).join('');
   }
 
-
   const craftGrid=document.getElementById('craftGrid');
   const craftTotalPriceEl=document.getElementById('craftTotalPrice');
   const craftActionBtn=document.getElementById('craftActionBtn');
@@ -1588,19 +1595,42 @@
 
   let craftRemovingGiftIds=[];
   let craftAppearingGiftIds=[];
+  function getCraftSlots(){
+    const slots=new Array(10).fill(null);
+    craftGifts.forEach((gift,index)=>{
+      const rawSlot=Number(gift?._craftSlot);
+      const preferredSlot=Number.isInteger(rawSlot) && rawSlot>=0 && rawSlot<10 ? rawSlot : index;
+      let slotIndex=preferredSlot;
+      while(slotIndex<10 && slots[slotIndex]) slotIndex+=1;
+      if(slotIndex>=10) slotIndex=slots.findIndex(item=>!item);
+      if(slotIndex>=0 && slotIndex<10){
+        gift._craftSlot=slotIndex;
+        slots[slotIndex]=gift;
+      }
+    });
+    return slots;
+  }
+  function getFreeCraftSlots(count=1){
+    const slots=getCraftSlots();
+    const free=[];
+    slots.forEach((gift,index)=>{ if(!gift) free.push(index); });
+    return free.slice(0,Math.max(0,Number(count||0)));
+  }
   function renderCraftUI(){
     if(!craftGrid) return;
     craftSelectedGiftIds=craftGifts.map(item=>String(item.id));
+    const slots=getCraftSlots();
     const cells=[];
     for(let i=0;i<10;i+=1){
-      const gift=craftGifts[i]||null;
+      const gift=slots[i]||null;
       if(gift){
         const id=String(gift.id);
         const removing=craftRemovingGiftIds.includes(id);
         const entering=craftAppearingGiftIds.includes(id);
-        cells.push('<div class="craft-cell active '+(removing?'removing ':'')+(entering?'entering':'')+'" data-id="'+gift.id+'"><img src="'+resolveGiftImage(gift)+'" alt="'+gift.name+'"><div class="craft-cell-name">'+gift.name+'</div><div class="craft-cell-price">'+formatStars(gift.price)+' <img src="assets/star.png" alt=""></div></div>');
+        const delayStyle=entering ? ' style="animation-delay:'+(i*52)+'ms"' : '';
+        cells.push('<div class="craft-cell active '+(removing?'removing ':'')+(entering?'entering':'')+'" data-id="'+gift.id+'" data-slot="'+i+'"'+delayStyle+'><img src="'+resolveGiftImage(gift)+'" alt="'+gift.name+'"><div class="craft-cell-name">'+gift.name+'</div><div class="craft-cell-price">'+formatStars(gift.price)+' <img src="assets/star.png" alt=""></div></div>');
       }else{
-        cells.push('<div class="craft-cell"><span>'+t('empty')+'</span></div>');
+        cells.push('<div class="craft-cell" data-slot="'+i+'"><span>'+t('empty')+'</span></div>');
       }
     }
     craftGrid.innerHTML=cells.join('');
@@ -1623,9 +1653,10 @@
 
   async function animateCraftConsumptionSequence(snapshot){
     craftRemovingGiftIds=[];
-    const totalDuration=Math.max(5200,snapshot.length*620);
-    const stepDuration=Math.max(420,Math.floor(totalDuration/Math.max(1,snapshot.length)));
-    for(const gift of snapshot){
+    const ordered=[...snapshot].sort((a,b)=>Number(a._craftSlot||0)-Number(b._craftSlot||0));
+    const totalDuration=Math.max(4800,ordered.length*520);
+    const stepDuration=Math.max(360,Math.floor(totalDuration/Math.max(1,ordered.length)));
+    for(const gift of ordered){
       const id=String(gift.id);
       craftRemovingGiftIds=[...craftRemovingGiftIds,id];
       renderCraftUI();
@@ -1638,13 +1669,13 @@
     }
     craftRemovingGiftIds=[];
     renderCraftUI();
-    await new Promise(resolve=>setTimeout(resolve,280));
+    await new Promise(resolve=>setTimeout(resolve,260));
   }
-
   const sheetTitle=document.querySelector('.sheet-pill');
   const sheetAddBtn=document.getElementById('sheetAddBtn');
   let sheetMode='inventory';
   let sheetSelectedGiftId='';
+  let sheetSelectedGiftIds=[];
   let craftSelectedGiftIds=[];
   let upgradeSourceGift=null;
   let upgradeTargetGift=null;
@@ -1775,6 +1806,7 @@
   function openSheet(mode='inventory'){
     sheetMode=mode;
     sheetSelectedGiftId='';
+    sheetSelectedGiftIds=[];
     renderSheetGifts();
     sheetOverlay.classList.add('open');sheet.classList.add('open');
     updateLottiePerformance();
@@ -1786,6 +1818,7 @@
   function closeSheet(){
     sheetOverlay.classList.remove('open');sheet.classList.remove('open');
     sheetSelectedGiftId='';
+    sheetSelectedGiftIds=[];
     sheetAddBtn.classList.remove('visible');
   }
   function addGiftToInventory(gift){
@@ -2294,19 +2327,35 @@
       if(rightEl) updateCrashGiftBadge(rightEl,gift);
     });
   }
+  let crashHistorySignature='';
   function renderCrashHistoryState(state){
-    const liveText=(state&&state.phase==='live')
-      ? 'x'+computeCrashMultiplier(state).toFixed(2)
+    const visualState=buildCrashVisualState(state);
+    const liveText=(visualState&&deriveCrashDisplayPhase(visualState, getServerNow())==='live')
+      ? 'x'+computeCrashMultiplier(visualState, getServerNow()).toFixed(2)
       : t('waiting');
-    crashHistory.innerHTML='';
     crashLivePill.textContent=liveText;
-    crashHistory.appendChild(crashLivePill);
-    (state?.history||[]).slice(0,MAX_CRASH_HISTORY).forEach(entry=>{
+    if(crashHistory.firstElementChild!==crashLivePill){
+      crashHistory.prepend(crashLivePill);
+    }
+    const historyItems=(state?.history||[]).slice(0,MAX_CRASH_HISTORY);
+    const nextSignature=historyItems.map(entry=>String(entry.roundId)+':'+Number(entry.multiplier).toFixed(2)).join('|');
+    if(nextSignature===crashHistorySignature){
+      clearCrashHistoryOverflow();
+      return;
+    }
+    const previousFirst=(crashHistorySignature.split('|')[0]||'');
+    crashHistorySignature=nextSignature;
+    Array.from(crashHistory.querySelectorAll('.crash-history-pill:not(.active)')).forEach(node=>node.remove());
+    historyItems.forEach((entry,index)=>{
       const pill=document.createElement('div');
       pill.className='crash-history-pill '+getPillColor(entry.multiplier);
+      const pillKey=String(entry.roundId)+':'+Number(entry.multiplier).toFixed(2);
+      if(index===0 && pillKey!==previousFirst) pill.classList.add('entering');
       pill.textContent='x'+Number(entry.multiplier).toFixed(2);
       crashHistory.appendChild(pill);
     });
+    clearCrashHistoryOverflow();
+    crashHistory.scrollTo({left:0, behavior:'smooth'});
   }
   function computeCrashMultiplier(state,now=getServerNow()){
     if(!state)return 1;
@@ -2333,6 +2382,38 @@
       container:crashRocket,renderer:'svg',loop:true,autoplay:true,
       path:'assets/rocket.json'
     });
+  }
+
+  function buildCrashVisualState(state, now=getServerNow()){
+    if(!state) return state;
+    const phase=String(state.phase||'countdown');
+    const countdownEndsAt=Number(state.countdownEndsAt||0);
+    const nextRoundAt=Number(state.nextRoundAt||0);
+    const crashTarget=Number(state.crashTarget||1.01);
+    const growthMs=Number(state.growthMs||8000);
+    const estimatedLiveDuration=Math.max(400,Math.round(growthMs*Math.log(Math.max(crashTarget,1.01))));
+    if(phase==='ended' && nextRoundAt && now>=nextRoundAt){
+      const syntheticCountdownEndsAt=nextRoundAt+10000;
+      return {
+        ...state,
+        roundId:Number(state.roundId||0)+1,
+        phase:'countdown',
+        countdownEndsAt:syntheticCountdownEndsAt,
+        liveStartAt:syntheticCountdownEndsAt,
+        liveEndsAt:syntheticCountdownEndsAt+estimatedLiveDuration,
+        lastCrashMultiplier:1
+      };
+    }
+    if(phase==='countdown' && countdownEndsAt && now>=countdownEndsAt){
+      return {
+        ...state,
+        phase:'live',
+        liveStartAt:countdownEndsAt,
+        liveEndsAt:Number(state.liveEndsAt||countdownEndsAt+estimatedLiveDuration),
+        lastCrashMultiplier:1
+      };
+    }
+    return state;
   }
 
   function deriveCrashDisplayPhase(state, now=getServerNow()){
@@ -2757,13 +2838,18 @@
     if(prevState.roundId===nextState.roundId)return;
     if(!crashPrizePending) crashPrizeModalAutoKey='';
     crashRoundLocked=false;
-    crashCountdownIntroUntil=Date.now()+320;
+    crashCountdownIntroUntil=Date.now()+420;
 
     if(crashPrizePending||crashCashoutBusy){
       return;
     }
     if(crashResultState==='loss'&&crashBetAmount>0){
-      resetCrashPlayer();
+      crashBetActive=false;
+      crashBetSettled=false;
+      crashPrizeGift=crashPrizeGift||withCrashGiftValue(getCrashPreviewGift(crashBetAmount),crashBetAmount);
+      renderCrashPlayerCard(crashBetAmount);
+      renderCrashPlayerWin(crashSettledPayout||crashBetAmount,crashPrizeGift);
+      setCrashPlayerState('loss');
       return;
     }
     if(crashBetSettled&&!crashPrizePending){
@@ -2789,16 +2875,17 @@
     const state=crashRealtimeState;
     if(!state)return;
     const now=getServerNow();
+    const visualState=buildCrashVisualState(state,now);
     const betBtn=document.getElementById('crashBetBtn');
     const lossEl=document.getElementById('crashLoss');
-    const displayPhase=deriveCrashDisplayPhase(state,now);
-    maybeRefreshCrashBoundary(state,now);
+    const displayPhase=deriveCrashDisplayPhase(visualState,now);
+    maybeRefreshCrashBoundary(visualState,now);
     crashDisplayPhase=displayPhase;
     crashRoundLive=displayPhase==='live';
-    updateCrashOtherBetsLive({...state, phase: displayPhase});
+    updateCrashOtherBetsLive({...visualState, phase: displayPhase});
 
     if(displayPhase==='countdown'){
-      const endsAt=Number(state.countdownEndsAt||state.liveStartAt||0);
+      const endsAt=Number(visualState.countdownEndsAt||visualState.liveStartAt||0);
       const count=(Date.now()<crashCountdownIntroUntil)?10:Math.min(10,Math.max(1,Math.ceil(Math.max(0,endsAt-now)/1000))); 
       crashTimer.style.display='';
       crashTimer.textContent=String(count);
@@ -2824,7 +2911,7 @@
       closeBet();
       lossEl.className='crash-loss';
       startCrashRocket();
-      crashMultiplier=computeCrashMultiplier({...state, phase:'live'},now);
+      crashMultiplier=computeCrashMultiplier({...visualState, phase:'live'},now);
       crashTimer.style.display='none';
       crashLivePill.textContent='x'+crashMultiplier.toFixed(2);
       if(crashCashoutBusy||crashBetSettled){
@@ -2847,13 +2934,13 @@
     crashTimer.textContent='';
     crashTimer.className='crash-timer';
     stopCrashRocket();
-    crashMultiplier=Number(state.crashTarget||state.lastCrashMultiplier||1);
+    crashMultiplier=Number(visualState.crashTarget||visualState.lastCrashMultiplier||1);
     lossEl.textContent='x'+crashMultiplier.toFixed(2);
-    if(lastCrashDisplayState!==state.roundId+':ended'){
+    if(lastCrashDisplayState!==visualState.roundId+':ended'){
       lossEl.className='crash-loss';
       void lossEl.offsetWidth;
       lossEl.className='crash-loss show';
-      lastCrashDisplayState=state.roundId+':ended';
+      lastCrashDisplayState=visualState.roundId+':ended';
     }
     if(crashBetActive&&!crashPrizePending&&!crashCashoutBusy){
       crashBetActive=false;
@@ -2870,9 +2957,10 @@
   }
   async function refreshCrashState(silent=false){
     try{
-      const {resp,data}=await fetchJsonWithTimeout(API_BASE+'/api/crash/state',{
+      const resp=await fetch(API_BASE+'/api/crash/state',{
         headers:{'x-init-data':tg?.initData||''}
-      },4500);
+      });
+      const data=await resp.json();
       if(!resp.ok) throw new Error(data.error||'Crash sync failed');
       crashServerOffsetMs=Number(data.serverNow||Date.now())-Date.now();
       const prevState=crashRealtimeState;
@@ -3292,28 +3380,25 @@
     );
     try{
       await initUser();
+      await Promise.all([
+        refreshBalance(),
+        refreshTop(),
+        refreshReferral(),
+        refreshInventory(),
+        refreshCrashState(true),
+      ]);
+      if(!crashStarted){
+        crashStarted=true;
+        runCrashRound();
+      }
+      hideBootState();
     }catch(e){
-      console.warn('Init failed:',e?.message||e);
-    }
-
-    hideBootState();
-
-    const tasks=[
-      refreshBalance(),
-      refreshTop(),
-      refreshReferral(),
-      refreshInventory(),
-      refreshCrashState(true),
-    ];
-    const results=await Promise.allSettled(tasks);
-    const failedCount=results.filter(item=>item.status==='rejected').length;
-    if(failedCount===results.length){
-      console.warn('Bootstrap background requests failed');
-    }
-
-    if(!crashStarted){
-      crashStarted=true;
-      runCrashRound();
+      console.error('Bootstrap failed:',e);
+      showBootState(
+        currentLang==='en'?'Load error':'Ошибка загрузки',
+        currentLang==='en'?'Could not load the app data. Tap retry.':'Не удалось загрузить данные приложения. Нажми повторить.',
+        {retry:true}
+      );
     }
   }
 
@@ -3383,13 +3468,56 @@
     const card=e.target.closest('.sheet-gift-card');
     if(!card) return;
     if(sheetMode==='inventory') return;
-    if(sheetMode==='craft' && card.classList.contains('in-craft')) return;
+    if(sheetMode==='craft'){
+      if(card.classList.contains('in-craft')) return;
+      const id=String(card.dataset.id||'');
+      if(sheetSelectedGiftIds.includes(id)){
+        sheetSelectedGiftIds=sheetSelectedGiftIds.filter(item=>item!==id);
+      }else{
+        if(sheetSelectedGiftIds.length + craftGifts.length >= 10) return;
+        sheetSelectedGiftIds=[...sheetSelectedGiftIds,id];
+      }
+      renderSheetGifts();
+      return;
+    }
     sheetSelectedGiftId=String(card.dataset.id||'');
     renderSheetGifts();
   });
   sheetAddBtn.addEventListener('click',()=>{
-    if(!sheetSelectedGiftId) return;
     const items=getSheetItems();
+    if(sheetMode==='craft'){
+      if(!sheetSelectedGiftIds.length) return;
+      const selectedItems=items.filter(item=>sheetSelectedGiftIds.includes(String(item._sheetId)));
+      if(!selectedItems.length) return;
+      const freeSlots=getFreeCraftSlots(selectedItems.length);
+      const addable=selectedItems
+        .filter(item=>!craftGifts.some(existing=>String(existing.id)===String(item.id)))
+        .slice(0,freeSlots.length);
+      if(!addable.length) return;
+      const addedIds=[];
+      addable.forEach((selected,index)=>{
+        const normalized=normalizeInventoryGift(selected,selected.id||selected._sheetId);
+        if(!normalized) return;
+        normalized._craftSlot=freeSlots[index];
+        craftGifts=[...craftGifts, normalized];
+        addedIds.push(String(normalized.id));
+      });
+      craftSelectedGiftIds=craftGifts.map(item=>String(item.id));
+      craftAppearingGiftIds=[...new Set([...craftAppearingGiftIds,...addedIds])];
+      renderCraftUI();
+      renderSheetGifts();
+      setTimeout(()=>{
+        craftAppearingGiftIds=craftAppearingGiftIds.filter(item=>!addedIds.includes(item));
+        renderCraftUI();
+      },620);
+      sheetSelectedGiftId='';
+      sheetSelectedGiftIds=[];
+      closeSheet();
+      renderCraftUI();
+      return;
+    }
+
+    if(!sheetSelectedGiftId) return;
     const selected=items.find(item=>String(item._sheetId)===String(sheetSelectedGiftId));
     if(!selected) return;
     if(sheetMode==='upgrade-source'){
@@ -3399,22 +3527,6 @@
       upgradeTargetGift=normalizeCrashPrizeGift(selected)||selected;
       closeSheet();
       renderUpgradeUI();
-      return;
-    }else if(sheetMode==='craft') {
-      const normalized=normalizeInventoryGift(selected,selected.id||selected._sheetId);
-      if(normalized && craftGifts.length<10 && !craftGifts.some(item=>String(item.id)===String(normalized.id))){
-        const addedId=String(normalized.id);
-        craftGifts=[...craftGifts, normalized];
-        craftSelectedGiftIds=craftGifts.map(item=>String(item.id));
-        craftAppearingGiftIds=[...new Set([...craftAppearingGiftIds,addedId])];
-        setTimeout(()=>{
-          craftAppearingGiftIds=craftAppearingGiftIds.filter(item=>item!==addedId);
-          renderCraftUI();
-        },380);
-      }
-      sheetSelectedGiftId='';
-      closeSheet();
-      renderCraftUI();
       return;
     }
     closeSheet();
@@ -3722,8 +3834,9 @@
   async function refreshBalance(){
     if(!tg?.initData)return null;
     try{
-      const {resp,data}=await fetchJsonWithTimeout(API_BASE+'/api/balance?ts='+Date.now(),{headers:{'x-init-data':tg.initData}},5000);
-      if(resp.ok&&data.balance!==undefined){
+      const resp=await fetch(API_BASE+'/api/balance?ts='+Date.now(),{headers:{'x-init-data':tg.initData}});
+      const data=await resp.json();
+      if(data.balance!==undefined){
         updateBalance(data.balance);
         return data;
       }
@@ -3760,7 +3873,8 @@
     if(!tg?.initData)return null;
     if(upgradeSpinBusy)return {items:inventoryItems};
     try{
-      const {resp,data}=await fetchJsonWithTimeout(API_BASE+'/api/inventory',{headers:{'x-init-data':tg.initData}},5500);
+      const resp=await fetch(API_BASE+'/api/inventory',{headers:{'x-init-data':tg.initData}});
+      const data=await resp.json();
       if(resp.ok){
         inventoryItems=Array.isArray(data.items)?data.items.map(item=>normalizeInventoryGift(item)).filter(Boolean):[];
         renderInventory();
@@ -3781,7 +3895,8 @@
   async function refreshReferral(){
     if(!tg?.initData)return null;
     try{
-      const {resp,data}=await fetchJsonWithTimeout(API_BASE+'/api/referral',{headers:{'x-init-data':tg.initData}},5000);
+      const resp=await fetch(API_BASE+'/api/referral',{headers:{'x-init-data':tg.initData}});
+      const data=await resp.json();
       if(resp.ok){
         referralInvited=Number(data.invitedCount||0);
         referralEarned=Number(data.earned||0);
@@ -3796,9 +3911,8 @@
   async function refreshTop(){
     try{
       const url=API_BASE+'/api/top'+(tgUserId?'?userId='+tgUserId+'&':'?')+'ts='+Date.now();
-      const {resp,data}=await fetchJsonWithTimeout(url,{cache:'no-store'},5000);
-      if(!resp.ok) throw new Error(data?.error||'Top refresh failed');
-      const {leaders=[],myRank}=data||{};
+      const resp=await fetch(url,{cache:'no-store'});
+      const {leaders=[],myRank}=await resp.json();
       topCache={leaders,myRank};
       renderTop(leaders,myRank);
     }catch(e){console.warn('Top refresh failed:',e.message)}
@@ -3809,10 +3923,9 @@
     if(placeText) placeText.innerHTML=myRank
       ? (currentLang==='en' ? 'You are in the top at <b>'+myRank+'</b> place' : 'Вы в топе на <b>'+myRank+'</b> месте')
       : (currentLang==='en' ? 'You are not in the top yet' : 'Вы ещё не в топе');
-    const depositLabel=currentLang==='en'?'deposit':'пополнение';
     const myEntry=leaders.find(l=>String(l.id)===String(tgUserId));
     document.querySelector('.top-my-rank').textContent=myRank||'—';
-    document.querySelector('.top-my-score').innerHTML='<span class="top-score-value">'+(myEntry?formatStars(myEntry.total_deposited):'0')+' <img src="assets/star.png" alt=""></span><span class="top-score-label">'+depositLabel+'</span>';
+    document.querySelector('.top-my-score').innerHTML='<span class="top-score-value">'+(myEntry?formatStars(myEntry.total_deposited):'0')+' <img src="assets/star.png" alt=""></span>';
     const rankClasses=['gold','silver','bronze'];
     const rows=document.querySelectorAll('#topPage .top-row');
     rows.forEach((row,i)=>{
@@ -3825,12 +3938,12 @@
       if(!leader){
         nameEl.textContent='—';
         nameEl.dataset.locked='false';
-        row.querySelector('.top-score').innerHTML='<span class="top-score-value">0 <img src="assets/star.png" alt=""></span><span class="top-score-label">'+depositLabel+'</span>';
+        row.querySelector('.top-score').innerHTML='<span class="top-score-value">0 <img src="assets/star.png" alt=""></span>';
         return;
       }
       nameEl.textContent=leader.first_name||'User';
       nameEl.dataset.locked='true';
-      row.querySelector('.top-score').innerHTML='<span class="top-score-value">'+formatStars(leader.total_deposited)+' <img src="assets/star.png" alt=""></span><span class="top-score-label">'+depositLabel+'</span>';
+      row.querySelector('.top-score').innerHTML='<span class="top-score-value">'+formatStars(leader.total_deposited)+' <img src="assets/star.png" alt=""></span>';
       const rewardGift=TOP_REWARD_GIFTS[i]||null;
       if(rewardGift?.image){
         const badge=document.createElement('img');
