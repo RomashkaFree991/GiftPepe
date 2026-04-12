@@ -8,6 +8,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
 <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
 <style>
+  :root{--safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px)}
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',Roboto,sans-serif;background:#000 url('assets/background_pepe.png') center/cover no-repeat}
   .app{position:relative;width:100%;height:100%}
@@ -54,7 +55,7 @@
 
   /* === TOP BAR === */
   .top-bar{
-    position:absolute;top:82px;left:12px;right:12px;
+    position:absolute;top:calc(12px + var(--safe-top));left:12px;right:12px;
     display:flex;align-items:center;justify-content:space-between;z-index:30;
   }
   .user-pill{
@@ -82,9 +83,9 @@
   /* === PAGES === */
   .page{
     position:absolute;top:0;left:12px;right:12px;bottom:0;
-    padding-top:146px;padding-bottom:118px;
+    padding-top:calc(76px + var(--safe-top));padding-bottom:calc(102px + var(--safe-bottom));
     z-index:1;overflow-y:auto;-webkit-overflow-scrolling:touch;
-    scroll-padding-top:146px;
+    scroll-padding-top:calc(76px + var(--safe-top));
     opacity:0;visibility:hidden;pointer-events:none;
     transform:translateZ(0);-webkit-transform:translateZ(0);
   }
@@ -134,7 +135,7 @@
   .top-score-value{display:inline-flex;align-items:center;gap:4px}
   .top-score img{width:16px;height:16px;object-fit:contain;filter:drop-shadow(0 0 3px rgba(255,200,0,.3))}
   .top-score-label{color:rgba(255,255,255,.34);font-size:10px;font-weight:700;letter-spacing:.02em;text-transform:uppercase}
-  .top-gift-badge{width:32px;height:32px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 8px 14px rgba(0,0,0,.22))}
+  .top-gift-badge{width:40px;height:40px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 8px 14px rgba(0,0,0,.22));background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:6px}
 
   /* === PROFILE === */
   .profile-card{
@@ -188,8 +189,8 @@
     display:flex;flex-direction:column;align-items:center;min-height:198px;
   }
   .inventory-card-image{
-    width:98px;height:98px;object-fit:contain;flex-shrink:0;margin-bottom:8px;
-    filter:drop-shadow(0 10px 18px rgba(0,0,0,.24));
+    width:104px;height:104px;object-fit:contain;flex-shrink:0;margin-bottom:8px;padding:10px;
+    filter:drop-shadow(0 10px 18px rgba(0,0,0,.24));background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);border-radius:22px;
   }
   .inventory-card-name{
     color:#fff;font-size:13px;font-weight:700;text-align:center;line-height:1.15;
@@ -203,7 +204,11 @@
   }
   .inventory-sell-btn{background:#007AFF;color:#fff}
   .inventory-sell-btn img{width:14px;height:14px;object-fit:contain}
-  .inventory-withdraw-btn{background:rgba(255,255,255,.12);color:#fff;justify-content:space-between;gap:8px}
+  .inventory-withdraw-btn{background:rgba(255,255,255,.12);color:#fff;justify-content:space-between;gap:8px;transition:opacity .22s ease, filter .22s ease, background .22s ease}
+  .inventory-withdraw-main{display:inline-flex;align-items:center;justify-content:flex-start}
+  .inventory-withdraw-btn.is-locked{opacity:.82}
+  .inventory-withdraw-btn.is-ready{background:rgba(255,255,255,.16)}
+  .inventory-withdraw-btn.is-pending{opacity:.56;filter:saturate(.78);pointer-events:none}
   .inventory-withdraw-btn .inventory-timer-pill{margin-left:auto}
   .inventory-timer-pill{
     height:24px;padding:0 8px;border-radius:999px;white-space:nowrap;
@@ -214,7 +219,7 @@
 
   .referral-page{
     position:absolute;top:0;left:0;right:0;bottom:0;
-    padding:136px 12px 104px;z-index:8;overflow-y:auto;-webkit-overflow-scrolling:touch;
+    padding:calc(72px + var(--safe-top)) 12px calc(98px + var(--safe-bottom));z-index:8;overflow-y:auto;-webkit-overflow-scrolling:touch;
     opacity:0;visibility:hidden;pointer-events:none;
     transform:translateZ(0);-webkit-transform:translateZ(0);
     background:#000 url('assets/background_pepe.png') center/cover no-repeat;
@@ -293,7 +298,7 @@
   }
   .slot-cell.active{border-color:rgba(255,255,255,.12);box-shadow:none;transform:none}
   .slot-cell svg{width:28px;height:28px;opacity:.2}
-  .slot-cell img{width:64px;height:64px;object-fit:contain;filter:drop-shadow(0 8px 14px rgba(0,0,0,.22))}
+  .slot-cell img{width:72px;height:72px;object-fit:contain;filter:drop-shadow(0 8px 14px rgba(0,0,0,.22));background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:8px}
   .slot-label{font-size:10px;font-weight:600;color:rgba(255,255,255,.3);letter-spacing:.01em;text-align:center}
   .slot-price{display:flex;align-items:center;gap:4px;color:#fff;font-size:12px;font-weight:700}
   .slot-price img{width:14px;height:14px;object-fit:contain;filter:none}
@@ -365,7 +370,7 @@
   .crash-bet-cloud.fading-out{animation:crashBetOut .28s ease both}
   @keyframes crashBetIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
   @keyframes crashBetOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-6px)}}
-  .sheet-gift-card img{width:90px;height:90px;object-fit:contain;filter:drop-shadow(0 10px 18px rgba(0,0,0,.24))}
+  .sheet-gift-card img{width:96px;height:96px;object-fit:contain;filter:drop-shadow(0 10px 18px rgba(0,0,0,.24));background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:10px}
   .sheet-gift-name{color:#fff;font-size:12px;font-weight:700;text-align:center;line-height:1.2;min-height:30px}
   .sheet-gift-price{display:flex;align-items:center;justify-content:center;gap:4px;color:rgba(255,255,255,.65);font-size:12px;font-weight:700}
   .sheet-gift-price img{width:14px;height:14px;object-fit:contain}
@@ -563,7 +568,7 @@
   .craft-action-btn.active{background:#007AFF;color:#fff;cursor:pointer}
 
   .craft-cell.active{border-color:rgba(255,255,255,.08);box-shadow:none;background:rgba(255,255,255,.06)}
-  .craft-cell img{width:56px;height:56px;object-fit:contain;filter:drop-shadow(0 8px 14px rgba(0,0,0,.24));margin:0 0 6px;flex-shrink:0}
+  .craft-cell img{width:72px;height:72px;object-fit:contain;filter:drop-shadow(0 8px 14px rgba(0,0,0,.24));margin:0 0 6px;flex-shrink:0;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:8px}
   .craft-cell .craft-cell-name{color:#fff;font-size:11px;font-weight:700;text-align:center;line-height:1.1;max-width:100%;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:24px}
   .craft-cell .craft-cell-price{color:rgba(255,255,255,.72);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:4px;margin-top:auto;padding-top:4px;min-height:16px}
   .craft-cell .craft-cell-price img{width:12px;height:12px;margin:0;filter:none}
@@ -887,7 +892,7 @@
 
   /* === BOTTOM NAV === */
   .bottom-nav{
-    position:absolute;bottom:14px;left:12px;right:12px;padding:8px 6px;
+    position:absolute;bottom:calc(14px + var(--safe-bottom));left:12px;right:12px;padding:8px 6px;
     display:flex;align-items:center;justify-content:space-around;
     background:rgba(88,88,96,.22);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
     border:1px solid rgba(255,255,255,.07);border-radius:999px;z-index:18;
@@ -1357,9 +1362,23 @@
 
   async function initUser(){
     if(!tg)return;
-    tg.ready();tg.expand();
-    if(tg.requestFullscreen)tg.requestFullscreen();
-    if(tg.disableVerticalSwipes)tg.disableVerticalSwipes();
+    tg.ready();
+    try{tg.expand?.()}catch(e){}
+    try{tg.setHeaderColor?.('#000000')}catch(e){}
+    try{tg.setBackgroundColor?.('#000000')}catch(e){}
+    try{tg.setBottomBarColor?.('#000000')}catch(e){}
+    try{tg.disableVerticalSwipes?.()}catch(e){}
+    const syncFullscreenInsets=()=>{
+      const safeTop=Math.max(0,Number(tg?.safeAreaInset?.top||0));
+      const safeBottom=Math.max(0,Number(tg?.safeAreaInset?.bottom||0));
+      document.documentElement.style.setProperty('--safe-top',safeTop+'px');
+      document.documentElement.style.setProperty('--safe-bottom',safeBottom+'px');
+    };
+    syncFullscreenInsets();
+    try{tg.onEvent?.('safeAreaChanged',syncFullscreenInsets)}catch(e){}
+    try{tg.onEvent?.('viewportChanged',syncFullscreenInsets)}catch(e){}
+    try{tg.requestFullscreen?.()}catch(e){}
+    setTimeout(()=>{try{tg.requestFullscreen?.()}catch(e){}},120);
     const u=tg.initDataUnsafe?.user;
     if(u){
       firstName=u.first_name||u.username||'User';
@@ -1422,7 +1441,7 @@
   function setLangIndicator(lang){
     if(lang==='en'){langInd.classList.add('right')}else{langInd.classList.remove('right')}
   }
-  const INVENTORY_HOLD_MS=0;
+  const INVENTORY_HOLD_MS=20*60*1000;
   const MAX_CRASH_HISTORY=10;
   let inventoryItems=[];
   let crashPrizeGift=null;
@@ -1459,6 +1478,16 @@
     const minutes=totalMinutes%60;
     return currentLang==='en' ? (hours+'h '+String(minutes).padStart(2,'0')+'m') : (hours+'ч'+String(minutes).padStart(2,'0')+'м');
   }
+  function formatInventoryQueueBadge(ms){
+    const safe=Math.max(0,Number(ms)||0);
+    const totalMinutes=Math.ceil(safe/60000);
+    const hours=Math.floor(totalMinutes/60);
+    const minutes=totalMinutes%60;
+    if(currentLang==='en'){
+      return hours>0 ? ('In '+hours+'h'+String(minutes).padStart(2,'0')+'m') : ('In '+Math.max(1,totalMinutes)+'m');
+    }
+    return hours>0 ? ('Оч'+hours+'ч'+String(minutes).padStart(2,'0')+'м') : ('Оч'+Math.max(1,totalMinutes)+'м');
+  }
   function giftCountWord(count){
     if(currentLang==='en') return count===1?t('giftWord1'):t('giftWord2');
     const mod10=count%10,mod100=count%100;
@@ -1486,7 +1515,7 @@
     return Number.isFinite(ts)?ts:0;
   }
   function canWithdrawItem(item){
-    return true;
+    return Date.now()>=getItemWithdrawAt(item);
   }
   function dismissKeyboard(inputEl=null){
     try{inputEl?.blur?.()}catch(e){}
@@ -1495,7 +1524,11 @@
     try{if(window.Telegram?.WebApp?.hideKeyboard) window.Telegram.WebApp.hideKeyboard()}catch(e){}
   }
 
+  const inventoryWithdrawPendingIds=new Set();
+
   function renderInventory(){
+    const liveIds=new Set(inventoryItems.map(item=>String(item.id)));
+    Array.from(inventoryWithdrawPendingIds).forEach(id=>{if(!liveIds.has(String(id))) inventoryWithdrawPendingIds.delete(String(id));});
     updateInventorySummary();
     if(upgradeSourceGift && !inventoryItems.some(item=>String(item.id)===String(upgradeSourceGift.id))){
       upgradeSourceGift=null;
@@ -1518,9 +1551,9 @@
           <button class="inventory-sell-btn" data-action="sell">
             ${t('sell')} ${formatStars(item.price)} <img src="assets/star.png" alt="">
           </button>
-          <button class="inventory-withdraw-btn" data-action="withdraw">
-            <span>${t('withdraw')}</span>
-            <span class="inventory-timer-pill">${canWithdrawItem(item)?'now':formatInventoryTime(getItemWithdrawAt(item)-Date.now())}</span>
+          <button class="inventory-withdraw-btn ${inventoryWithdrawPendingIds.has(String(item.id))?'is-pending':(canWithdrawItem(item)?'is-ready':'is-locked')}" data-action="withdraw" ${(!canWithdrawItem(item)||inventoryWithdrawPendingIds.has(String(item.id)))?'disabled':''}>
+            <span class="inventory-withdraw-main">${inventoryWithdrawPendingIds.has(String(item.id))?(currentLang==='en'?'Sending':'Выводится'):t('withdraw')}</span>
+            ${inventoryWithdrawPendingIds.has(String(item.id))?'':'<span class="inventory-timer-pill">'+(canWithdrawItem(item)?(currentLang==='en'?'Ready':'Готово'):formatInventoryQueueBadge(getItemWithdrawAt(item)-Date.now()))+'</span>'}
           </button>
         </div>
       </div>
@@ -1536,8 +1569,13 @@
     if(sheetTitle){
       sheetTitle.textContent=sheetMode==='upgrade-source' ? t('myGifts') : (sheetMode==='upgrade-target' ? t('giftsForUpgrade') : t('myGifts'));
     }
-    sheetAddBtn.textContent=sheetMode==='craft' ? 'Добавить подарки' : 'Добавить подарок';
-    sheetAddBtn.classList.toggle('visible',!!((isUpgradeMode&&sheetSelectedGiftId)||(sheetMode==='craft'&&sheetSelectedGiftId)));
+    const craftSelectionCount=sheetSelectedGiftIds.length;
+    if(sheetMode==='craft'){
+      sheetAddBtn.textContent=(currentLang==='en'?'Add gifts':'Добавить подарки')+(craftSelectionCount?` (${craftSelectionCount})`:'');
+    }else{
+      sheetAddBtn.textContent=currentLang==='en'?'Add gift':'Добавить подарок';
+    }
+    sheetAddBtn.classList.toggle('visible',!!((isUpgradeMode&&sheetSelectedGiftId)||(sheetMode==='craft'&&craftSelectionCount)));
     if(!items.length){
       sheetGifts.classList.remove('visible');
       sheetGifts.innerHTML='';
@@ -1554,7 +1592,7 @@
     sheetGifts.classList.add('visible');
     sheetGifts.innerHTML=items.map(item=>{
       const inCraft=sheetMode==='craft' && !!item._inCraft;
-      const selected=String(item._sheetId)===String(sheetSelectedGiftId) && !inCraft;
+      const selected=sheetMode==='craft' ? (sheetSelectedGiftIds.includes(String(item._sheetId)) && !inCraft) : (String(item._sheetId)===String(sheetSelectedGiftId) && !inCraft);
       return `
       <div class="sheet-gift-card ${selected?'selected':''} ${inCraft?'in-craft':''}" data-id="${item._sheetId}">
         ${inCraft?'<div class="sheet-gift-status">В крафте</div>':''}
@@ -1647,6 +1685,7 @@
   const sheetAddBtn=document.getElementById('sheetAddBtn');
   let sheetMode='inventory';
   let sheetSelectedGiftId='';
+  let sheetSelectedGiftIds=[];
   let craftSelectedGiftIds=[];
   let upgradeSourceGift=null;
   let upgradeTargetGift=null;
@@ -1777,6 +1816,7 @@
   function openSheet(mode='inventory'){
     sheetMode=mode;
     sheetSelectedGiftId='';
+    sheetSelectedGiftIds=[];
     renderSheetGifts();
     sheetOverlay.classList.add('open');sheet.classList.add('open');
     updateLottiePerformance();
@@ -1788,6 +1828,7 @@
   function closeSheet(){
     sheetOverlay.classList.remove('open');sheet.classList.remove('open');
     sheetSelectedGiftId='';
+    sheetSelectedGiftIds=[];
     sheetAddBtn.classList.remove('visible');
   }
   function addGiftToInventory(gift){
@@ -1805,7 +1846,7 @@
 
   setInterval(()=>{
     if(inventoryItems.length) renderInventory();
-  },30000);
+  },1000);
 
   inventoryGrid.addEventListener('click',async e=>{
     const card=e.target.closest('.inventory-card');
@@ -1840,9 +1881,10 @@
     }
 
     if(e.target.closest('[data-action="withdraw"]')){
+      if(!canWithdrawItem(item) || inventoryWithdrawPendingIds.has(String(item.id))) return;
       dismissKeyboard();
       const prevItems=[...inventoryItems];
-      inventoryItems=inventoryItems.filter(entry=>String(entry.id)!==String(item.id));
+      inventoryWithdrawPendingIds.add(String(item.id));
       renderInventory();
       try{
         const resp=await fetch(API_BASE+'/api/inventory/withdraw',{
@@ -1853,8 +1895,11 @@
         const data=await resp.json().catch(()=>({}));
         if(!resp.ok) throw new Error(data.error||'Withdraw failed');
         if(Array.isArray(data.items)) inventoryItems=data.items.map(item=>normalizeInventoryGift(item)).filter(Boolean);
+        else inventoryItems=inventoryItems.filter(entry=>String(entry.id)!==String(item.id));
+        inventoryWithdrawPendingIds.delete(String(item.id));
         renderInventory();
       }catch(err){
+        inventoryWithdrawPendingIds.delete(String(item.id));
         inventoryItems=prevItems;
         renderInventory();
         tg?.showAlert?tg.showAlert(err.message):alert(err.message);
@@ -3392,13 +3437,51 @@
     const card=e.target.closest('.sheet-gift-card');
     if(!card) return;
     if(sheetMode==='inventory') return;
-    if(sheetMode==='craft' && card.classList.contains('in-craft')) return;
+    if(sheetMode==='craft'){
+      if(card.classList.contains('in-craft')) return;
+      const selectedId=String(card.dataset.id||'');
+      if(sheetSelectedGiftIds.includes(selectedId)) sheetSelectedGiftIds=sheetSelectedGiftIds.filter(id=>id!==selectedId);
+      else sheetSelectedGiftIds=[...sheetSelectedGiftIds,selectedId];
+      renderSheetGifts();
+      return;
+    }
     sheetSelectedGiftId=String(card.dataset.id||'');
     renderSheetGifts();
   });
   sheetAddBtn.addEventListener('click',()=>{
-    if(!sheetSelectedGiftId) return;
     const items=getSheetItems();
+    if(sheetMode==='craft'){
+      if(!sheetSelectedGiftIds.length) return;
+      const selectedItems=sheetSelectedGiftIds
+        .map(id=>items.find(item=>String(item._sheetId)===String(id)))
+        .filter(Boolean)
+        .map(item=>normalizeInventoryGift(item,item.id||item._sheetId))
+        .filter(Boolean);
+      const freeSlots=craftSlots.filter(item=>!item).length;
+      if(selectedItems.length>freeSlots){
+        tg?.showAlert?tg.showAlert(currentLang==='en'?'Not enough free craft slots':'Недостаточно свободных слотов для крафта'):alert(currentLang==='en'?'Not enough free craft slots':'Недостаточно свободных слотов для крафта');
+        return;
+      }
+      const addedIds=[];
+      selectedItems.forEach(normalized=>{
+        if(!normalized || getCraftItems().some(item=>String(item.id)===String(normalized.id))) return;
+        const slotIndex=craftSlots.findIndex(item=>!item);
+        if(slotIndex>=0){
+          craftSlots[slotIndex]=normalized;
+          addedIds.push(String(normalized.id));
+        }
+      });
+      updateCraftSelectedIds();
+      craftAppearingGiftIds=[...new Set([...craftAppearingGiftIds,...addedIds])];
+      setTimeout(()=>{
+        craftAppearingGiftIds=craftAppearingGiftIds.filter(item=>!addedIds.includes(item));
+        renderCraftUI();
+      },380);
+      closeSheet();
+      renderCraftUI();
+      return;
+    }
+    if(!sheetSelectedGiftId) return;
     const selected=items.find(item=>String(item._sheetId)===String(sheetSelectedGiftId));
     if(!selected) return;
     if(sheetMode==='upgrade-source'){
@@ -3408,26 +3491,6 @@
       upgradeTargetGift=normalizeCrashPrizeGift(selected)||selected;
       closeSheet();
       renderUpgradeUI();
-      return;
-    }else if(sheetMode==='craft') {
-      const normalized=normalizeInventoryGift(selected,selected.id||selected._sheetId);
-      const hasFreeSlot=craftSlots.some(item=>!item);
-      if(normalized && hasFreeSlot && !getCraftItems().some(item=>String(item.id)===String(normalized.id))){
-        const addedId=String(normalized.id);
-        const slotIndex=craftSlots.findIndex(item=>!item);
-        if(slotIndex>=0){
-          craftSlots[slotIndex]=normalized;
-        }
-        updateCraftSelectedIds();
-        craftAppearingGiftIds=[...new Set([...craftAppearingGiftIds,addedId])];
-        setTimeout(()=>{
-          craftAppearingGiftIds=craftAppearingGiftIds.filter(item=>item!==addedId);
-          renderCraftUI();
-        },380);
-      }
-      sheetSelectedGiftId='';
-      closeSheet();
-      renderCraftUI();
       return;
     }
     closeSheet();
@@ -3682,17 +3745,15 @@
       tg.openInvoice(invoiceLink,async(status)=>{
         if(status==='paid'){
           applyOptimisticDeposit(starsValue);
-          topupSubmit.innerHTML='Проверяем оплату...';
-          const applied=await waitForPaymentApply(invoiceId,balanceBefore,starsValue,12000);
-          if(applied){
-            topupAmount.value='';
-            syncTopupModeUI();
-            closeTopup();
-          }else{
-            tg?.showAlert?tg.showAlert('Оплата принята, но подтверждение задержалось. Баланс обновится чуть позже.'):alert('Оплата принята, но подтверждение задержалось. Баланс обновится чуть позже.');
-          }
+          topupAmount.value='';
           topupSubmit.disabled=false;
-          syncTopupSubmitLabel();
+          syncTopupModeUI();
+          closeTopup();
+          waitForPaymentApply(invoiceId,balanceBefore,starsValue,4000).then(applied=>{
+            if(!applied){
+              tg?.showAlert?tg.showAlert('Оплата принята. Баланс синхронизируется автоматически.'):alert('Оплата принята. Баланс синхронизируется автоматически.');
+            }
+          }).catch(()=>null);
         }else if(status==='failed'){
           topupSubmit.disabled=false;
           syncTopupSubmitLabel();
@@ -3828,10 +3889,9 @@
     if(placeText) placeText.innerHTML=myRank
       ? (currentLang==='en' ? 'You are in the top at <b>'+myRank+'</b> place' : 'Вы в топе на <b>'+myRank+'</b> месте')
       : (currentLang==='en' ? 'You are not in the top yet' : 'Вы ещё не в топе');
-    const depositLabel=currentLang==='en'?'deposit':'пополнение';
     const myEntry=leaders.find(l=>String(l.id)===String(tgUserId));
     document.querySelector('.top-my-rank').textContent=myRank||'—';
-    document.querySelector('.top-my-score').innerHTML='<span class="top-score-value">'+(myEntry?formatStars(myEntry.total_deposited):'0')+' <img src="assets/star.png" alt=""></span><span class="top-score-label">'+depositLabel+'</span>';
+    document.querySelector('.top-my-score').innerHTML='<span class="top-score-value">'+(myEntry?formatStars(myEntry.total_deposited):'0')+' <img src="assets/star.png" alt=""></span>';
     const rankClasses=['gold','silver','bronze'];
     const rows=document.querySelectorAll('#topPage .top-row');
     rows.forEach((row,i)=>{
@@ -3844,12 +3904,12 @@
       if(!leader){
         nameEl.textContent='—';
         nameEl.dataset.locked='false';
-        row.querySelector('.top-score').innerHTML='<span class="top-score-value">0 <img src="assets/star.png" alt=""></span><span class="top-score-label">'+depositLabel+'</span>';
+        row.querySelector('.top-score').innerHTML='<span class="top-score-value">0 <img src="assets/star.png" alt=""></span>';
         return;
       }
       nameEl.textContent=leader.first_name||'User';
       nameEl.dataset.locked='true';
-      row.querySelector('.top-score').innerHTML='<span class="top-score-value">'+formatStars(leader.total_deposited)+' <img src="assets/star.png" alt=""></span><span class="top-score-label">'+depositLabel+'</span>';
+      row.querySelector('.top-score').innerHTML='<span class="top-score-value">'+formatStars(leader.total_deposited)+' <img src="assets/star.png" alt=""></span>';
       const rewardGift=TOP_REWARD_GIFTS[i]||null;
       if(rewardGift?.image){
         const badge=document.createElement('img');
