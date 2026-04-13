@@ -54,7 +54,7 @@
 
   /* === TOP BAR === */
   .top-bar{
-    position:absolute;top:94px;left:12px;right:12px;
+    position:absolute;top:82px;left:12px;right:12px;
     display:flex;align-items:center;justify-content:space-between;z-index:30;
   }
   .user-pill{
@@ -108,7 +108,7 @@
     padding:12px 14px;border-radius:14px;
     background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06);
   }
-  .top-my-rank{width:32px;height:32px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.72);font-size:13px;font-weight:800;flex-shrink:0}
+  .top-my-rank{width:22px;text-align:center;color:rgba(255,255,255,.3);font-size:14px;font-weight:800;flex-shrink:0}
   .top-my-avatar{width:36px;height:36px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.1);flex-shrink:0}
   .top-my-name{flex:1;color:#fff;font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .top-my-score{display:flex;align-items:center;gap:4px;color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
@@ -121,10 +121,8 @@
     border:1px solid rgba(255,255,255,.06);
   }
   .top-rank{
-    width:32px;height:32px;border-radius:12px;text-align:center;
-    display:flex;align-items:center;justify-content:center;
-    background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);
-    color:rgba(255,255,255,.72);font-size:13px;font-weight:800;
+    width:22px;text-align:center;
+    color:rgba(255,255,255,.3);font-size:14px;font-weight:800;
     flex-shrink:0;
   }
   .top-rank.gold{color:#FFD60A}
@@ -135,9 +133,8 @@
   .top-score{display:flex;align-items:center;gap:6px;color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
   .top-score-value{display:inline-flex;align-items:center;gap:4px}
   .top-score img{width:16px;height:16px;object-fit:contain;filter:drop-shadow(0 0 3px rgba(255,200,0,.3))}
-  .top-score-label{display:none}
-  .top-gift-badge-wrap{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);flex-shrink:0}
-  .top-gift-badge{width:28px;height:28px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 8px 14px rgba(0,0,0,.22))}
+  .top-score-label{color:rgba(255,255,255,.34);font-size:10px;font-weight:700;letter-spacing:.02em;text-transform:uppercase}
+  .top-gift-badge{width:32px;height:32px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 8px 14px rgba(0,0,0,.22))}
 
   /* === PROFILE === */
   .profile-card{
@@ -190,8 +187,13 @@
     border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:10px 10px 12px;
     display:flex;flex-direction:column;align-items:center;min-height:198px;
   }
+  .inventory-card-media{
+    width:108px;height:108px;display:flex;align-items:center;justify-content:center;
+    border-radius:20px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+    margin-bottom:8px;flex-shrink:0;overflow:hidden;
+  }
   .inventory-card-image{
-    width:98px;height:98px;object-fit:contain;flex-shrink:0;margin-bottom:8px;
+    width:88px;height:88px;object-fit:contain;flex-shrink:0;
     filter:drop-shadow(0 10px 18px rgba(0,0,0,.24));
   }
   .inventory-card-name{
@@ -206,10 +208,8 @@
   }
   .inventory-sell-btn{background:#007AFF;color:#fff}
   .inventory-sell-btn img{width:14px;height:14px;object-fit:contain}
-  .inventory-withdraw-btn{background:rgba(255,255,255,.12);color:#fff;justify-content:space-between;gap:8px;transition:opacity .18s ease, filter .18s ease}
+  .inventory-withdraw-btn{background:rgba(255,255,255,.12);color:#fff;justify-content:space-between;gap:8px}
   .inventory-withdraw-btn .inventory-timer-pill{margin-left:auto}
-  .inventory-withdraw-btn.pending{opacity:.55;filter:saturate(.7)}
-  .inventory-withdraw-btn.locked{opacity:.92}
   .inventory-timer-pill{
     height:24px;padding:0 8px;border-radius:999px;white-space:nowrap;
     display:inline-flex;align-items:center;justify-content:center;
@@ -292,15 +292,15 @@
 
   .slots-row{display:flex;align-items:center;gap:14px;width:100%;padding:0 4px;margin-bottom:14px}
   .slot-cell{
-    flex:1;height:96px;border-radius:20px;background:#1a1a1e;
+    flex:1;height:110px;border-radius:22px;background:#1a1a1e;
     border:1.5px dashed rgba(255,255,255,.12);
-    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;transition:border-color .2s ease, box-shadow .2s ease, transform .2s ease;overflow:hidden;padding:8px 8px 10px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;transition:border-color .2s ease, box-shadow .2s ease, transform .2s ease;overflow:hidden;padding:10px;
   }
   .slot-cell.active{border-color:rgba(255,255,255,.12);box-shadow:none;transform:none}
   .slot-cell svg{width:28px;height:28px;opacity:.2}
-  .slot-cell img{width:50px;height:50px;object-fit:contain;filter:drop-shadow(0 8px 14px rgba(0,0,0,.22));flex-shrink:0}
-  .slot-label{font-size:10px;font-weight:600;color:rgba(255,255,255,.3);letter-spacing:.01em;text-align:center;line-height:1.05}
-  .slot-price{display:flex;align-items:center;gap:4px;color:#fff;font-size:12px;font-weight:700;margin-top:2px;flex-wrap:nowrap}
+  .slot-cell img{width:64px;height:64px;object-fit:contain;filter:drop-shadow(0 8px 14px rgba(0,0,0,.22))}
+  .slot-label{font-size:10px;font-weight:600;color:rgba(255,255,255,.3);letter-spacing:.01em;text-align:center}
+  .slot-price{display:flex;align-items:center;gap:4px;color:#fff;font-size:12px;font-weight:700}
   .slot-price img{width:14px;height:14px;object-fit:contain;filter:none}
   .slots-arrows{color:rgba(255,255,255,.12);font-size:26px;font-weight:800;flex-shrink:0}
 
@@ -355,7 +355,7 @@
   .sheet-lottie{width:140px;height:140px;margin:36px 0 18px}
   .sheet-gifts{display:none;width:100%;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding-top:8px}
   .sheet-gifts.visible{display:grid}
-  .sheet-gift-card{padding:12px 10px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;transition:border-color .22s ease, box-shadow .22s ease, transform .22s ease, opacity .22s ease, filter .22s ease}
+  .sheet-gift-card{padding:12px 10px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;transition:border-color .22s ease, box-shadow .22s ease, transform .22s ease, opacity .22s ease, filter .22s ease;min-height:188px}
   .sheet-gift-card.selected{border-color:#0A84FF;box-shadow:0 0 0 1px rgba(10,132,255,.22), 0 12px 24px rgba(10,132,255,.12);transform:translateY(-1px)}
   .sheet-gift-card.in-craft{opacity:.52;filter:saturate(.65)}
   .sheet-gift-card.in-craft.selected{border-color:rgba(255,255,255,.08);box-shadow:none;transform:none}
@@ -370,9 +370,13 @@
   .crash-bet-cloud.fading-out{animation:crashBetOut .28s ease both}
   @keyframes crashBetIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
   @keyframes crashBetOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-6px)}}
-  .sheet-gift-card img{width:90px;height:90px;object-fit:contain;filter:drop-shadow(0 10px 18px rgba(0,0,0,.24))}
-  .sheet-gift-card .sheet-gift-price img{width:14px;height:14px;object-fit:contain;filter:none}
-  .sheet-gift-name{color:#fff;font-size:12px;font-weight:700;text-align:center;line-height:1.2;min-height:30px}
+  .sheet-gift-media{
+    width:104px;height:104px;display:flex;align-items:center;justify-content:center;
+    border-radius:20px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+    overflow:hidden;flex-shrink:0;
+  }
+  .sheet-gift-card img{width:84px;height:84px;object-fit:contain;filter:drop-shadow(0 10px 18px rgba(0,0,0,.24))}
+  .sheet-gift-name{color:#fff;font-size:12px;font-weight:700;text-align:center;line-height:1.2;min-height:30px;width:100%}
   .sheet-gift-price{display:flex;align-items:center;justify-content:center;gap:4px;color:rgba(255,255,255,.65);font-size:12px;font-weight:700}
   .sheet-gift-price img{width:14px;height:14px;object-fit:contain}
   .sheet-body .empty-title{color:#fff;font-size:16px;font-weight:700;margin-bottom:6px}
@@ -537,8 +541,8 @@
   .craft-cell span{
     color:rgba(255,255,255,.18);font-size:9px;font-weight:600;
     text-transform:uppercase;letter-spacing:.03em;
-    display:flex;align-items:flex-start;justify-content:center;
-    width:100%;flex:1;padding-top:6px;transform:none;
+    display:flex;align-items:center;justify-content:center;
+    width:100%;flex:1;transform:translateY(18px);
   }
   .craft-info{
     background:rgba(255,255,255,.06);
@@ -569,14 +573,19 @@
   .craft-action-btn.active{background:#007AFF;color:#fff;cursor:pointer}
 
   .craft-cell.active{border-color:rgba(255,255,255,.08);box-shadow:none;background:rgba(255,255,255,.06)}
-  .craft-cell img{width:48px;height:48px;object-fit:contain;filter:drop-shadow(0 8px 14px rgba(0,0,0,.24));margin:0 0 4px;flex-shrink:0}
-  .craft-cell .craft-cell-name{color:#fff;font-size:10px;font-weight:700;text-align:center;line-height:1.08;max-width:100%;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:22px}
-  .craft-cell .craft-cell-price{color:rgba(255,255,255,.72);font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:4px;margin-top:auto;padding-top:2px;min-height:14px}
+  .craft-cell-media{
+    width:74px;height:74px;display:flex;align-items:center;justify-content:center;
+    border-radius:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+    margin:4px 0 6px;flex-shrink:0;
+  }
+  .craft-cell img{width:58px;height:58px;object-fit:contain;filter:drop-shadow(0 8px 14px rgba(0,0,0,.24));margin:0;flex-shrink:0;transition:opacity .2s ease, transform .2s ease}
+  .craft-cell .craft-cell-name{display:none}
+  .craft-cell .craft-cell-price{color:rgba(255,255,255,.78);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:4px;margin-top:auto;min-height:16px;transition:opacity .2s ease}
   .craft-cell .craft-cell-price img{width:12px;height:12px;margin:0;filter:none}
-  .craft-cell.entering{animation:craftCellIn .24s ease both}
-  .craft-cell.removing{opacity:.34;transform:scale(.97);filter:saturate(.55) brightness(.82)}
+  .craft-cell.entering{animation:craftCellIn .2s ease both}
+  .craft-cell.removing img,.craft-cell.removing .craft-cell-price{opacity:.14;transform:scale(.92)}
   .craft-cell .craft-cell-badge{display:none}
-  @keyframes craftCellIn{from{opacity:0;transform:translateY(8px) scale(.94)}to{opacity:1;transform:translateY(0) scale(1)}}
+  @keyframes craftCellIn{from{opacity:0;transform:translateY(6px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
 
   .craft-add-btn{
     width:100%;height:50px;border-radius:999px;border:none;cursor:pointer;
@@ -1404,22 +1413,22 @@
     ru:{
       topPlace:'Вы в топе на <b>—</b> месте', waitingDots:'Ожидание...', profile:'Профиль', promocodes:'Промокоды', promoPlaceholder:'Введите промокод', apply:'Применить',
       referralTitle:'РЕФЕРАЛЬНАЯ СИСТЕМА', referralDesc:'Приглашайте людей, чтобы получать бонусы', inventory:'Инвентарь', noGiftsTitle:'Не нашли подарков?',
-      noGiftsDesc:'Отправьте подарок <a href="https://t.me/GiftPepe_Releyer" target="_blank">@GiftPepe_Releyer</a><br>или выиграйте в играх', chooseGift:'Выберите подарок',
+      noGiftsDesc:'Отправьте подарок <a href="https://t.me/GiftPepe_Releyer" target="_blank">@GiftPepe_Releyer</a><br>или выиграйте в играх', chooseGift:'Выбрать подарок',
       myGifts:'Мои подарки', giftsForUpgrade:'Подарки для апгрейда', makeUpgrade:'Сделать апгрейд', yourGifts:'Ваши подарки', empty:'Пусто', giftCost:'Стоимость подарков',
       makeContract:'Сделать контракт', addGifts:'Добавить подарки', waiting:'Ожидание', waitingBets:'Ожидание ставок', placeBet:'Сделать ставку', cashOut:'Забрать',
       giftUnlocked:'Ваш подарок', claim:'Забрать', sell:'Продать', support:'Поддержка', language:'Язык', saveAndExit:'Сохранить и выйти', topup:'Пополнение', stars:'Звезды', ton:'TON',
       topupBtn:'Пополнить', bet:'Ставка', top:'Топ', craft:'Крафт', crash:'Краш', upgrade:'Апгрейд', profileNav:'Профиль', giftReady:'Подарок', giftOpened:'Подарок открыт',
-      sellAll:'Продать все', withdraw:'Вывести', withdrawSoon:'Подарок отправляется в Telegram…', giftWord1:'подарок', giftWord2:'подарка', giftWord5:'подарков', referralBack:'Назад', invited:'Приглашено', earned:'Заработано', invite:'Пригласить', referralLink:'Реферальная ссылка', copied:'Скопировано', addGift:'Добавить подарок', inCraft:'В крафте', crafting:'Создаём контракт...', chance:'Шанс', chanceEmpty:'Шанс —', tonLoading:'Подключаем кошелёк...', tonNeedWallet:'Подключи TON кошелёк...', tonNotConnected:'TON кошелёк не подключён', tonOpening:'Открываем TON оплату...', tonConfirm:'Подтверждаем TON пополнение...', loading:'Загрузка...', loadingWait:'Подождите немного', promoUnavailable:'Промокод недоступен', upgradeFailed:'Апгрейд не удался', openTelegramPay:'Открой в Telegram для оплаты', creatingInvoice:'Создаём инвойс...', openingPayment:'Открываем оплату...', checkingPayment:'Проверяем оплату...', paymentDelayed:'Оплата принята, но подтверждение задержалось. Баланс обновится чуть позже.', paymentFailed:'Оплата не прошла. Попробуй снова.', paymentCancelled:'Оплата отменена.', errorPrefix:'Ошибка: ', topPlaceAt:'Вы в топе на <b>{rank}</b> месте', topNotYet:'Вы ещё не в топе', now:'Сейчас', soonPrefix:'Оч'
+      sellAll:'Продать все', withdraw:'Вывести', withdrawSoon:'Подарок отправляется в Telegram…', giftWord1:'подарок', giftWord2:'подарка', giftWord5:'подарков', referralBack:'Назад', invited:'Приглашено', earned:'Заработано', invite:'Пригласить', referralLink:'Реферальная ссылка', copied:'Скопировано'
     },
     en:{
       topPlace:'You are in the top at <b>—</b> place', waitingDots:'Waiting...', profile:'Profile', promocodes:'Promo codes', promoPlaceholder:'Enter promo code', apply:'Apply',
       referralTitle:'REFERRAL SYSTEM', referralDesc:'Invite people to get bonuses', inventory:'Inventory', noGiftsTitle:'No gifts found?',
-      noGiftsDesc:'Send a gift to <a href="https://t.me/GiftPepe_Releyer" target="_blank">@GiftPepe_Releyer</a><br>or win one in games', chooseGift:'Choose a gift',
+      noGiftsDesc:'Send a gift to <a href="https://t.me/GiftPepe_Releyer" target="_blank">@GiftPepe_Releyer</a><br>or win one in games', chooseGift:'Choose gift',
       myGifts:'My gifts', giftsForUpgrade:'Gifts for upgrade', makeUpgrade:'Make upgrade', yourGifts:'Your gifts', empty:'Empty', giftCost:'Gift value',
       makeContract:'Make contract', addGifts:'Add gifts', waiting:'Waiting', waitingBets:'Waiting for bets', placeBet:'Place bet', cashOut:'Cash out',
       giftUnlocked:'Your gift', claim:'Claim', sell:'Sell', support:'Support', language:'Language', saveAndExit:'Save and exit', topup:'Top up', stars:'Stars', ton:'TON',
       topupBtn:'Top up', bet:'Bet', top:'Top', craft:'Craft', crash:'Crash', upgrade:'Upgrade', profileNav:'Profile', giftReady:'Gift', giftOpened:'Gift opened',
-      sellAll:'Sell all', withdraw:'Withdraw', withdrawSoon:'Gift is being sent to Telegram…', giftWord1:'gift', giftWord2:'gifts', giftWord5:'gifts', referralBack:'Back', invited:'Invited', earned:'Earned', invite:'Invite', referralLink:'Referral link', copied:'Copied', addGift:'Add gift', inCraft:'In craft', crafting:'Crafting...', chance:'Chance', chanceEmpty:'Chance —', tonLoading:'Connecting wallet...', tonNeedWallet:'Connect TON wallet...', tonNotConnected:'TON wallet is not connected', tonOpening:'Opening TON payment...', tonConfirm:'Confirming TON top up...', loading:'Loading...', loadingWait:'Please wait a bit', promoUnavailable:'Promo code unavailable', upgradeFailed:'Upgrade failed', openTelegramPay:'Open in Telegram to pay', creatingInvoice:'Creating invoice...', openingPayment:'Opening payment...', checkingPayment:'Checking payment...', paymentDelayed:'Payment is accepted, but confirmation is delayed. Balance will update a bit later.', paymentFailed:'Payment failed. Try again.', paymentCancelled:'Payment cancelled.', errorPrefix:'Error: ', topPlaceAt:'You are in the top at <b>{rank}</b> place', topNotYet:'You are not in the top yet', now:'Now', soonPrefix:'In'
+      sellAll:'Sell all', withdraw:'Withdraw', withdrawSoon:'Gift is being sent to Telegram…', giftWord1:'gift', giftWord2:'gifts', giftWord5:'gifts', referralBack:'Back', invited:'Invited', earned:'Earned', invite:'Invite', referralLink:'Referral link', copied:'Copied'
     }
   };
   let currentLang=(localStorage.getItem('miniapp_lang')==='en')?'en':'ru';
@@ -1428,10 +1437,9 @@
   function setLangIndicator(lang){
     if(lang==='en'){langInd.classList.add('right')}else{langInd.classList.remove('right')}
   }
-  const INVENTORY_HOLD_MS=20*60*1000;
+  const INVENTORY_HOLD_MS=0;
   const MAX_CRASH_HISTORY=10;
   let inventoryItems=[];
-  const withdrawingGiftIds=new Set();
   let crashPrizeGift=null;
   let crashPrizePending=false;
   let crashRenderedWinGift=null;
@@ -1464,12 +1472,7 @@
     const totalMinutes=Math.ceil(safe/60000);
     const hours=Math.floor(totalMinutes/60);
     const minutes=totalMinutes%60;
-    if(currentLang==='en'){
-      if(hours<=0) return totalMinutes+'m';
-      return hours+'h '+String(minutes).padStart(2,'0')+'m';
-    }
-    if(hours<=0) return totalMinutes+'м';
-    return hours+'ч'+String(minutes).padStart(2,'0')+'м';
+    return currentLang==='en' ? (hours+'h '+String(minutes).padStart(2,'0')+'m') : (hours+'ч'+String(minutes).padStart(2,'0')+'м');
   }
   function giftCountWord(count){
     if(currentLang==='en') return count===1?t('giftWord1'):t('giftWord2');
@@ -1498,18 +1501,7 @@
     return Number.isFinite(ts)?ts:0;
   }
   function canWithdrawItem(item){
-    const ts=getItemWithdrawAt(item);
-    return !ts || Date.now()>=ts;
-  }
-  function getWithdrawButtonState(item){
-    const withdrawing=withdrawingGiftIds.has(String(item?.id||''));
-    if(withdrawing){
-      return {text:t('withdrawSoon'), pill:'', className:'pending', disabled:true};
-    }
-    if(canWithdrawItem(item)){
-      return {text:t('withdraw'), pill:'', className:'', disabled:false};
-    }
-    return {text:t('withdraw'), pill:t('soonPrefix')+formatInventoryTime(getItemWithdrawAt(item)-Date.now()), className:'locked', disabled:true};
+    return true;
   }
   function dismissKeyboard(inputEl=null){
     try{inputEl?.blur?.()}catch(e){}
@@ -1533,24 +1525,23 @@
     }
     inventoryEmpty.style.display='none';
     inventoryGrid.classList.add('visible');
-    inventoryGrid.innerHTML=inventoryItems.map(item=>{
-      const withdrawState=getWithdrawButtonState(item);
-      return `
+    inventoryGrid.innerHTML=inventoryItems.map(item=>`
       <div class="inventory-card" data-id="${item.id}">
-        <img class="inventory-card-image" src="${resolveGiftImage(item)}" alt="${item.name}">
+        <div class="inventory-card-media">
+          <img class="inventory-card-image" src="${resolveGiftImage(item)}" alt="${item.name}">
+        </div>
         <div class="inventory-card-name">${item.name}</div>
         <div class="inventory-actions">
           <button class="inventory-sell-btn" data-action="sell">
             ${t('sell')} ${formatStars(item.price)} <img src="assets/star.png" alt="">
           </button>
-          <button class="inventory-withdraw-btn ${withdrawState.className}" data-action="withdraw" ${withdrawState.disabled?'disabled':''}>
-            <span>${withdrawState.text}</span>
-            ${withdrawState.pill?`<span class="inventory-timer-pill">${withdrawState.pill}</span>`:''}
+          <button class="inventory-withdraw-btn" data-action="withdraw">
+            <span>${t('withdraw')}</span>
+            <span class="inventory-timer-pill">${canWithdrawItem(item)?'now':formatInventoryTime(getItemWithdrawAt(item)-Date.now())}</span>
           </button>
         </div>
       </div>
-    `;
-    }).join('');
+    `).join('');
     renderSheetGifts();
     renderCraftUI();
   }
@@ -1562,7 +1553,7 @@
     if(sheetTitle){
       sheetTitle.textContent=sheetMode==='upgrade-source' ? t('myGifts') : (sheetMode==='upgrade-target' ? t('giftsForUpgrade') : t('myGifts'));
     }
-    sheetAddBtn.textContent=sheetMode==='craft' ? t('addGifts') : t('addGift');
+    sheetAddBtn.textContent=sheetMode==='craft' ? t('addGifts') : t('chooseGift');
     sheetAddBtn.classList.toggle('visible',!!((isUpgradeMode&&sheetSelectedGiftId)||(sheetMode==='craft'&&sheetSelectedGiftId)));
     if(!items.length){
       sheetGifts.classList.remove('visible');
@@ -1583,8 +1574,10 @@
       const selected=String(item._sheetId)===String(sheetSelectedGiftId) && !inCraft;
       return `
       <div class="sheet-gift-card ${selected?'selected':''} ${inCraft?'in-craft':''}" data-id="${item._sheetId}">
-        ${inCraft?'<div class="sheet-gift-status\>'+t('inCraft')+'</div>':''}
-        <img src="${resolveGiftImage(item)}" alt="${item.name}">
+        ${inCraft?'<div class="sheet-gift-status">'+(currentLang==='en'?'In craft':'В крафте')+'</div>':''}
+        <div class="sheet-gift-media">
+          <img src="${resolveGiftImage(item)}" alt="${item.name}">
+        </div>
         <div class="sheet-gift-name">${item.name}</div>
         <div class="sheet-gift-price">${formatStars(item.price)} <img src="assets/star.png" alt=""></div>
       </div>
@@ -1623,7 +1616,7 @@
         const id=String(gift.id);
         const removing=craftRemovingGiftIds.includes(id);
         const entering=craftAppearingGiftIds.includes(id);
-        cells.push('<div class="craft-cell active '+(removing?'removing ':'')+(entering?'entering':'')+'" data-id="'+gift.id+'" data-slot="'+i+'"><img src="'+resolveGiftImage(gift)+'" alt="'+gift.name+'"><div class="craft-cell-name">'+gift.name+'</div><div class="craft-cell-price">'+formatStars(gift.price)+' <img src="assets/star.png" alt=""></div></div>');
+        cells.push('<div class="craft-cell active '+(removing?'removing ':'')+(entering?'entering':'')+'" data-id="'+gift.id+'" data-slot="'+i+'"><div class="craft-cell-media"><img src="'+resolveGiftImage(gift)+'" alt="'+gift.name+'"></div><div class="craft-cell-price">'+formatStars(gift.price)+' <img src="assets/star.png" alt=""></div></div>');
       }else{
         cells.push('<div class="craft-cell" data-slot="'+i+'"><span>'+t('empty')+'</span></div>');
       }
@@ -1634,7 +1627,7 @@
     const canCraft=!craftBusy && getCraftItems().length>=3;
     craftActionBtn.classList.toggle('active',canCraft);
     craftActionBtn.disabled=!canCraft;
-    craftActionBtn.textContent=craftBusy?t('crafting'):t('makeContract');
+    craftActionBtn.textContent=craftBusy?(currentLang==='en'?'Crafting...':'Создаём контракт...'):t('makeContract');
   }
 
   function clearCraftSelection(){
@@ -1647,9 +1640,19 @@
   }
 
   async function animateCraftConsumptionSequence(snapshot){
-    craftRemovingGiftIds=snapshot.map(gift=>String(gift.id));
+    craftRemovingGiftIds=[];
+    const ids=snapshot.map(gift=>String(gift.id));
+    for(const id of ids){
+      craftRemovingGiftIds=[...new Set([...craftRemovingGiftIds,id])];
+      renderCraftUI();
+      await new Promise(resolve=>setTimeout(resolve,85));
+    }
+    await new Promise(resolve=>setTimeout(resolve,130));
+    craftSlots=craftSlots.map(item=>item && ids.includes(String(item.id)) ? null : item);
+    updateCraftSelectedIds();
+    craftRemovingGiftIds=[];
     renderCraftUI();
-    await new Promise(resolve=>setTimeout(resolve,360));
+    await new Promise(resolve=>setTimeout(resolve,90));
   }
 
   const sheetTitle=document.querySelector('.sheet-pill');
@@ -1760,7 +1763,7 @@
     slotSourceEl.classList.toggle('active',!!upgradeSourceGift);
     slotTargetEl.classList.toggle('active',!!upgradeTargetGift);
     const chance=getUpgradeChance();
-    upgradeChanceEl.textContent=chance?(t('chance')+' '+chance+'%'):t('chanceEmpty');
+    upgradeChanceEl.textContent=chance?('Шанс '+chance+'%'):'Шанс —';
     const canUpgrade=!!(upgradeSourceGift&&upgradeTargetGift&&!upgradeSpinBusy);
     upgradeBtnEl.classList.toggle('active',canUpgrade);
     upgradeBtnEl.classList.toggle('dim',!canUpgrade);
@@ -1849,9 +1852,9 @@
     }
 
     if(e.target.closest('[data-action="withdraw"]')){
-      if(!canWithdrawItem(item) || withdrawingGiftIds.has(String(item.id))) return;
       dismissKeyboard();
-      withdrawingGiftIds.add(String(item.id));
+      const prevItems=[...inventoryItems];
+      inventoryItems=inventoryItems.filter(entry=>String(entry.id)!==String(item.id));
       renderInventory();
       try{
         const resp=await fetch(API_BASE+'/api/inventory/withdraw',{
@@ -1862,10 +1865,9 @@
         const data=await resp.json().catch(()=>({}));
         if(!resp.ok) throw new Error(data.error||'Withdraw failed');
         if(Array.isArray(data.items)) inventoryItems=data.items.map(item=>normalizeInventoryGift(item)).filter(Boolean);
-        withdrawingGiftIds.delete(String(item.id));
         renderInventory();
       }catch(err){
-        withdrawingGiftIds.delete(String(item.id));
+        inventoryItems=prevItems;
         renderInventory();
         tg?.showAlert?tg.showAlert(err.message):alert(err.message);
       }
@@ -1924,7 +1926,7 @@
   async function ensureTonConnect(){
     if(tonConnectUI) return tonConnectUI;
     const ctor=window.TON_CONNECT_UI?.TonConnectUI;
-    if(!ctor) throw new Error('TON Connect failed to load');
+    if(!ctor) throw new Error('TON Connect не загрузился');
     tonConnectUI=new ctor({
       manifestUrl: TON_MANIFEST_URL,
     });
@@ -1951,16 +1953,16 @@
     try{
       const tonUi=await ensureTonConnect();
       if(!tonUi?.account?.address){
-        topupSubmit.textContent=t('tonNeedWallet');
+        topupSubmit.textContent='Подключи TON кошелёк...';
         if(typeof tonUi.openModal==='function'){
           await tonUi.openModal();
         }
       }
       if(!tonUi?.account?.address){
-        throw new Error(t('tonNotConnected')); 
+        throw new Error('TON кошелёк не подключён');
       }
       tonWalletAddress=String(tonUi.account.address||tonWalletAddress||'');
-      topupSubmit.textContent=t('tonOpening');
+      topupSubmit.textContent='Открываем TON оплату...';
       const txResult=await tonUi.sendTransaction({
         validUntil: Math.floor(Date.now()/1000)+360,
         messages: [{
@@ -1968,7 +1970,7 @@
           amount: String(Math.max(1, Math.round(rawTon*1e9))),
         }],
       });
-      topupSubmit.textContent=t('tonConfirm');
+      topupSubmit.textContent='Подтверждаем TON пополнение...';
       const resp=await fetch(API_BASE+'/api/ton/topup/credit',{
         method:'POST',
         headers:{'Content-Type':'application/json','x-init-data':tg?.initData||''},
@@ -2883,10 +2885,6 @@
     if(crashCashoutBusy||crashBetSettled){
       setCrashPlayerState('win');
       renderCrashPlayerWin(crashSettledPayout||crashBetAmount,crashPrizeGift);
-    }else if(!crashPrizePending && crashBetAmount>0){
-      renderCrashPlayerCard(crashBetAmount);
-      renderCrashPlayerWin(crashBetAmount,null);
-      setCrashPlayerState('loss');
     }
     if(crashPrizePending){ crashLivePill.textContent=t('giftReady'); closeBet(); }
     else crashLivePill.textContent=t('waiting');
@@ -3301,8 +3299,8 @@
   const bootRetryBtn=document.getElementById('bootRetryBtn');
 
   function showBootState(title,subtitle,{retry=false}={}){
-    if(bootTitle) bootTitle.textContent=title||t('loading');
-    if(bootSubtitle) bootSubtitle.textContent=subtitle||t('loadingWait');
+    if(bootTitle) bootTitle.textContent=title||'Загрузка...';
+    if(bootSubtitle) bootSubtitle.textContent=subtitle||'Подождите немного';
     if(bootRetryBtn) bootRetryBtn.style.display=retry?'inline-flex':'none';
     bootScreen.classList.remove('hidden');
     appRoot.classList.add('boot-hidden');
@@ -3313,7 +3311,7 @@
   }
   async function bootstrapApp(){
     showBootState(
-      t('loading'),
+      currentLang==='en'?'Loading...':'Загрузка...',
       currentLang==='en'?'Loading balance, top, crash, referral and gifts':'Подгружаем баланс, топ, краш, рефералку и подарки'
     );
     try{
@@ -3360,7 +3358,7 @@
         body:JSON.stringify({code}),
       });
       const data=await resp.json().catch(()=>({}));
-      if(!resp.ok) throw new Error(data.error||t('promoUnavailable')); 
+      if(!resp.ok) throw new Error(data.error||'Промокод недоступен');
       if(Number.isFinite(Number(data.balance))) updateBalance(Number(data.balance));
       if(data.referral){
         referralInvited=Number(data.referral.invitedCount||referralInvited||0);
@@ -3543,7 +3541,7 @@
       if(isWin && data.wonGift){
         openUpgradeResultModal(normalizeInventoryGift(data.wonGift,data.wonGift?.id||('upgrade_'+Date.now())));
       } else {
-        tg?.showAlert?tg.showAlert(t('upgradeFailed')):alert(t('upgradeFailed')); 
+        tg?.showAlert?tg.showAlert('Апгрейд не удался'):alert('Апгрейд не удался');
       }
       renderInventory();
       upgradeSourceGift=null;
@@ -3678,11 +3676,11 @@
     const starsValue=getTopupStarsValue();
     if(starsValue<=0)return;
     if(!tg?.openInvoice){
-      tg?.showAlert?tg.showAlert(t('openTelegramPay')):alert(t('openTelegramPay')); 
+      tg?.showAlert?tg.showAlert('Открой в Telegram для оплаты'):alert('Открой в Telegram для оплаты');
       return;
     }
     topupSubmit.disabled=true;
-    topupSubmit.innerHTML=t('creatingInvoice');
+    topupSubmit.innerHTML='Создаём инвойс...';
     try{
       const resp=await fetch(API_BASE+'/api/invoice',{
         method:'POST',
@@ -3692,36 +3690,36 @@
       const {invoiceLink,invoiceId,error}=await resp.json();
       if(error)throw new Error(error);
       const balanceBefore=balance;
-      topupSubmit.innerHTML=t('openingPayment');
+      topupSubmit.innerHTML='Открываем оплату...';
       tg.openInvoice(invoiceLink,async(status)=>{
         if(status==='paid'){
           applyOptimisticDeposit(starsValue);
-          topupSubmit.innerHTML=t('checkingPayment');
-          const applied=await waitForPaymentApply(invoiceId,balanceBefore,starsValue,3200);
+          topupSubmit.innerHTML='Проверяем оплату...';
+          topupAmount.value='';
+          syncTopupModeUI();
+          closeTopup();
+          const applied=await waitForPaymentApply(invoiceId,balanceBefore,starsValue,4000);
           if(applied){
-            topupAmount.value='';
-            syncTopupModeUI();
-            closeTopup();
           }else{
-            tg?.showAlert?tg.showAlert(t('paymentDelayed')):alert(t('paymentDelayed')); 
+            tg?.showAlert?tg.showAlert('Оплата принята, но подтверждение задержалось. Баланс обновится чуть позже.'):alert('Оплата принята, но подтверждение задержалось. Баланс обновится чуть позже.');
           }
           topupSubmit.disabled=false;
           syncTopupSubmitLabel();
         }else if(status==='failed'){
           topupSubmit.disabled=false;
           syncTopupSubmitLabel();
-          tg.showAlert?.(t('paymentFailed')); 
+          tg.showAlert?.('Оплата не прошла. Попробуй снова.');
         }else if(status==='cancelled'){
           topupSubmit.disabled=false;
           syncTopupSubmitLabel();
-          tg.showAlert?.(t('paymentCancelled')); 
+          tg.showAlert?.('Оплата отменена.');
         }
       });
     }catch(e){
       console.error('Invoice error:',e);
       topupSubmit.disabled=false;
       syncTopupSubmitLabel();
-      tg?.showAlert?tg.showAlert(t('errorPrefix')+e.message):alert(t('errorPrefix')+e.message); 
+      tg?.showAlert?tg.showAlert('Ошибка: '+e.message):alert('Ошибка: '+e.message);
     }
   });
 
@@ -3763,7 +3761,7 @@
     return null;
   }
 
-  async function waitForPaymentApply(invoiceId,previousBalance,starsValue,timeoutMs=3200){
+  async function waitForPaymentApply(invoiceId,previousBalance,starsValue,timeoutMs=12000){
     const started=Date.now();
     while(Date.now()-started<timeoutMs){
       try{
@@ -3782,7 +3780,7 @@
           return true;
         }
       }catch(e){}
-      await new Promise(r=>setTimeout(r,120));
+      await new Promise(r=>setTimeout(r,80));
     }
     await Promise.all([refreshBalance(),refreshTop(),refreshReferral()]);
     return Number(balance)>=Number(previousBalance)+Number(starsValue||0);
@@ -3839,10 +3837,13 @@
 
   function renderTop(leaders,myRank){
     const placeText=document.querySelector('#topPage .top-place-text');
-    if(placeText) placeText.innerHTML=myRank ? t('topPlaceAt').replace('{rank}',myRank) : t('topNotYet');
+    if(placeText) placeText.innerHTML=myRank
+      ? (currentLang==='en' ? 'You are in the top at <b>'+myRank+'</b> place' : 'Вы в топе на <b>'+myRank+'</b> месте')
+      : (currentLang==='en' ? 'You are not in the top yet' : 'Вы ещё не в топе');
+    const depositLabel=currentLang==='en'?'deposit':'пополнение';
     const myEntry=leaders.find(l=>String(l.id)===String(tgUserId));
     document.querySelector('.top-my-rank').textContent=myRank||'—';
-    document.querySelector('.top-my-score').innerHTML='<span class="top-score-value">'+(myEntry?formatStars(myEntry.total_deposited):'0')+' <img src="assets/star.png" alt=""></span>'; 
+    document.querySelector('.top-my-score').innerHTML='<span class="top-score-value">'+(myEntry?formatStars(myEntry.total_deposited):'0')+' <img src="assets/star.png" alt=""></span><span class="top-score-label">'+depositLabel+'</span>';
     const rankClasses=['gold','silver','bronze'];
     const rows=document.querySelectorAll('#topPage .top-row');
     rows.forEach((row,i)=>{
@@ -3851,26 +3852,23 @@
       rankEl.textContent=leader?i+1:'—';
       rankEl.className='top-rank'+(leader&&rankClasses[i]?' '+rankClasses[i]:'');
       const nameEl=row.querySelector('.top-name');
-      row.querySelector('.top-gift-badge-wrap')?.remove();
+      row.querySelector('.top-gift-badge')?.remove();
       if(!leader){
         nameEl.textContent='—';
         nameEl.dataset.locked='false';
-        row.querySelector('.top-score').innerHTML='<span class="top-score-value">0 <img src="assets/star.png" alt=""></span>'; 
+        row.querySelector('.top-score').innerHTML='<span class="top-score-value">0 <img src="assets/star.png" alt=""></span><span class="top-score-label">'+depositLabel+'</span>';
         return;
       }
       nameEl.textContent=leader.first_name||'User';
       nameEl.dataset.locked='true';
-      row.querySelector('.top-score').innerHTML='<span class="top-score-value">'+formatStars(leader.total_deposited)+' <img src="assets/star.png" alt=""></span>'; 
+      row.querySelector('.top-score').innerHTML='<span class="top-score-value">'+formatStars(leader.total_deposited)+' <img src="assets/star.png" alt=""></span><span class="top-score-label">'+depositLabel+'</span>';
       const rewardGift=TOP_REWARD_GIFTS[i]||null;
       if(rewardGift?.image){
-        const wrap=document.createElement('div');
-        wrap.className='top-gift-badge-wrap';
         const badge=document.createElement('img');
         badge.className='top-gift-badge';
         badge.src=rewardGift.image;
         badge.alt=rewardGift.name||'Gift';
-        wrap.appendChild(badge);
-        row.appendChild(wrap);
+        row.appendChild(badge);
       }
       let avatarEl=row.querySelector('.top-avatar');
       if(leader.photo_url){
