@@ -54,7 +54,7 @@
 
   /* === TOP BAR === */
   .top-bar{
-    position:absolute;top:96px;left:12px;right:12px;
+    position:absolute;top:94px;left:12px;right:12px;
     display:flex;align-items:center;justify-content:space-between;z-index:30;
   }
   .user-pill{
@@ -82,9 +82,9 @@
   /* === PAGES === */
   .page{
     position:absolute;top:0;left:12px;right:12px;bottom:0;
-    padding-top:160px;padding-bottom:118px;
+    padding-top:146px;padding-bottom:118px;
     z-index:1;overflow-y:auto;-webkit-overflow-scrolling:touch;
-    scroll-padding-top:160px;
+    scroll-padding-top:146px;
     opacity:0;visibility:hidden;pointer-events:none;
     transform:translateZ(0);-webkit-transform:translateZ(0);
   }
@@ -108,7 +108,7 @@
     padding:12px 14px;border-radius:14px;
     background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06);
   }
-  .top-my-rank{width:34px;height:34px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);text-align:center;color:rgba(255,255,255,.92);font-size:14px;font-weight:800;flex-shrink:0}
+  .top-my-rank{width:32px;height:32px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.72);font-size:13px;font-weight:800;flex-shrink:0}
   .top-my-avatar{width:36px;height:36px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.1);flex-shrink:0}
   .top-my-name{flex:1;color:#fff;font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .top-my-score{display:flex;align-items:center;gap:4px;color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
@@ -121,21 +121,23 @@
     border:1px solid rgba(255,255,255,.06);
   }
   .top-rank{
-    width:34px;height:34px;border-radius:12px;display:flex;align-items:center;justify-content:center;
-    background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);
-    color:rgba(255,255,255,.92);font-size:14px;font-weight:800;
+    width:32px;height:32px;border-radius:12px;text-align:center;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);
+    color:rgba(255,255,255,.72);font-size:13px;font-weight:800;
     flex-shrink:0;
   }
-  .top-rank.gold{color:#FFD60A;border-color:rgba(255,214,10,.28)}
-  .top-rank.silver{color:#E0E0E0;border-color:rgba(224,224,224,.24)}
-  .top-rank.bronze{color:#CD7F32;border-color:rgba(205,127,50,.24)}
+  .top-rank.gold{color:#FFD60A}
+  .top-rank.silver{color:#C0C0C0}
+  .top-rank.bronze{color:#CD7F32}
   .top-avatar{width:36px;height:36px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.1);flex-shrink:0}
   .top-name{flex:1;color:#fff;font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .top-score{display:flex;align-items:center;gap:6px;color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
   .top-score-value{display:inline-flex;align-items:center;gap:4px}
   .top-score img{width:16px;height:16px;object-fit:contain;filter:drop-shadow(0 0 3px rgba(255,200,0,.3))}
   .top-score-label{display:none}
-  .top-gift-badge{width:32px;height:32px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 8px 14px rgba(0,0,0,.22))}
+  .top-gift-badge-wrap{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);flex-shrink:0}
+  .top-gift-badge{width:28px;height:28px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 8px 14px rgba(0,0,0,.22))}
 
   /* === PROFILE === */
   .profile-card{
@@ -184,18 +186,19 @@
   .inventory-grid{display:none;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding-bottom:10px}
   .inventory-grid.visible{display:grid}
   .inventory-card{
-    background:none;border:none;border-radius:0;padding:2px 2px 12px;min-height:0;
-    display:flex;flex-direction:column;align-items:center;
+    background:rgba(255,255,255,.06);backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);
+    border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:10px 10px 12px;
+    display:flex;flex-direction:column;align-items:center;min-height:198px;
   }
   .inventory-card-image{
-    width:108px;height:108px;object-fit:contain;flex-shrink:0;margin-bottom:8px;
-    filter:drop-shadow(0 12px 22px rgba(0,0,0,.28));
+    width:98px;height:98px;object-fit:contain;flex-shrink:0;margin-bottom:8px;
+    filter:drop-shadow(0 10px 18px rgba(0,0,0,.24));
   }
   .inventory-card-name{
     color:#fff;font-size:13px;font-weight:700;text-align:center;line-height:1.15;
     min-height:28px;margin-bottom:8px;
   }
-  .inventory-actions{width:100%;display:flex;flex-direction:column;gap:7px;margin-top:auto;padding-top:4px}
+  .inventory-actions{width:100%;display:flex;flex-direction:column;gap:7px;margin-top:auto;padding-top:2px}
   .inventory-sell-btn,.inventory-withdraw-btn{
     width:100%;height:34px;border:none;border-radius:13px;cursor:pointer;padding:0 10px;
     display:flex;align-items:center;justify-content:center;gap:4px;
@@ -203,18 +206,16 @@
   }
   .inventory-sell-btn{background:#007AFF;color:#fff}
   .inventory-sell-btn img{width:14px;height:14px;object-fit:contain}
-  .inventory-withdraw-btn{background:rgba(255,255,255,.12);color:#fff;justify-content:space-between;gap:8px}
-  .inventory-withdraw-btn.ready{background:rgba(255,255,255,.12);opacity:1}
-  .inventory-withdraw-btn.pending{background:rgba(255,255,255,.12);opacity:.58;pointer-events:none}
-  .inventory-withdraw-btn.locked{background:rgba(255,255,255,.08);opacity:.72}
+  .inventory-withdraw-btn{background:rgba(255,255,255,.12);color:#fff;justify-content:space-between;gap:8px;transition:opacity .18s ease, filter .18s ease}
   .inventory-withdraw-btn .inventory-timer-pill{margin-left:auto}
+  .inventory-withdraw-btn.pending{opacity:.55;filter:saturate(.7)}
+  .inventory-withdraw-btn.locked{opacity:.92}
   .inventory-timer-pill{
     height:24px;padding:0 8px;border-radius:999px;white-space:nowrap;
     display:inline-flex;align-items:center;justify-content:center;
     background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.08);
     color:rgba(255,255,255,.74);font-size:10px;font-weight:700;flex-shrink:0;
   }
-  .inventory-timer-pill.compact{padding:0 7px;font-size:10px;min-width:48px}
 
   .referral-page{
     position:absolute;top:0;left:0;right:0;bottom:0;
@@ -291,16 +292,16 @@
 
   .slots-row{display:flex;align-items:center;gap:14px;width:100%;padding:0 4px;margin-bottom:14px}
   .slot-cell{
-    flex:1;height:126px;border-radius:22px;background:#1a1a1e;
+    flex:1;height:96px;border-radius:20px;background:#1a1a1e;
     border:1.5px dashed rgba(255,255,255,.12);
-    display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:6px;cursor:pointer;transition:border-color .2s ease, box-shadow .2s ease, transform .2s ease;overflow:hidden;padding:12px 10px 10px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;transition:border-color .2s ease, box-shadow .2s ease, transform .2s ease;overflow:hidden;padding:8px 8px 10px;
   }
   .slot-cell.active{border-color:rgba(255,255,255,.12);box-shadow:none;transform:none}
-  .slot-cell svg{width:28px;height:28px;opacity:.2;margin-top:20px}
-  .slot-cell > img{width:56px;height:56px;object-fit:contain;filter:drop-shadow(0 8px 14px rgba(0,0,0,.22));flex-shrink:0}
-  .slot-label{font-size:10px;font-weight:600;color:rgba(255,255,255,.3);letter-spacing:.01em;text-align:center;line-height:1.15;max-width:100%;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:22px}
-  .slot-price{display:flex;align-items:center;gap:4px;color:#fff;font-size:12px;font-weight:700;min-height:16px}
-  .slot-price img{width:14px;height:14px;object-fit:contain;filter:none;border-radius:0;background:none}
+  .slot-cell svg{width:28px;height:28px;opacity:.2}
+  .slot-cell img{width:50px;height:50px;object-fit:contain;filter:drop-shadow(0 8px 14px rgba(0,0,0,.22));flex-shrink:0}
+  .slot-label{font-size:10px;font-weight:600;color:rgba(255,255,255,.3);letter-spacing:.01em;text-align:center;line-height:1.05}
+  .slot-price{display:flex;align-items:center;gap:4px;color:#fff;font-size:12px;font-weight:700;margin-top:2px;flex-wrap:nowrap}
+  .slot-price img{width:14px;height:14px;object-fit:contain;filter:none}
   .slots-arrows{color:rgba(255,255,255,.12);font-size:26px;font-weight:800;flex-shrink:0}
 
   .upgrade-btn{
@@ -354,10 +355,10 @@
   .sheet-lottie{width:140px;height:140px;margin:36px 0 18px}
   .sheet-gifts{display:none;width:100%;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding-top:8px}
   .sheet-gifts.visible{display:grid}
-  .sheet-gift-card{padding:8px 4px 10px;border-radius:18px;background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;transition:box-shadow .22s ease, transform .22s ease, opacity .22s ease, filter .22s ease}
-  .sheet-gift-card.selected{box-shadow:0 0 0 1px rgba(10,132,255,.22), 0 12px 24px rgba(10,132,255,.12);transform:translateY(-1px)}
+  .sheet-gift-card{padding:12px 10px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;transition:border-color .22s ease, box-shadow .22s ease, transform .22s ease, opacity .22s ease, filter .22s ease}
+  .sheet-gift-card.selected{border-color:#0A84FF;box-shadow:0 0 0 1px rgba(10,132,255,.22), 0 12px 24px rgba(10,132,255,.12);transform:translateY(-1px)}
   .sheet-gift-card.in-craft{opacity:.52;filter:saturate(.65)}
-  .sheet-gift-card.in-craft.selected{box-shadow:none;transform:none}
+  .sheet-gift-card.in-craft.selected{border-color:rgba(255,255,255,.08);box-shadow:none;transform:none}
   .sheet-gift-status{
     position:absolute;top:8px;right:8px;
     display:inline-flex;align-items:center;justify-content:center;
@@ -370,6 +371,7 @@
   @keyframes crashBetIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
   @keyframes crashBetOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-6px)}}
   .sheet-gift-card img{width:90px;height:90px;object-fit:contain;filter:drop-shadow(0 10px 18px rgba(0,0,0,.24))}
+  .sheet-gift-card .sheet-gift-price img{width:14px;height:14px;object-fit:contain;filter:none}
   .sheet-gift-name{color:#fff;font-size:12px;font-weight:700;text-align:center;line-height:1.2;min-height:30px}
   .sheet-gift-price{display:flex;align-items:center;justify-content:center;gap:4px;color:rgba(255,255,255,.65);font-size:12px;font-weight:700}
   .sheet-gift-price img{width:14px;height:14px;object-fit:contain}
@@ -535,8 +537,8 @@
   .craft-cell span{
     color:rgba(255,255,255,.18);font-size:9px;font-weight:600;
     text-transform:uppercase;letter-spacing:.03em;
-    display:flex;align-items:center;justify-content:center;
-    width:100%;flex:1;transform:translateY(12px);
+    display:flex;align-items:flex-start;justify-content:center;
+    width:100%;flex:1;padding-top:6px;transform:none;
   }
   .craft-info{
     background:rgba(255,255,255,.06);
@@ -567,13 +569,12 @@
   .craft-action-btn.active{background:#007AFF;color:#fff;cursor:pointer}
 
   .craft-cell.active{border-color:rgba(255,255,255,.08);box-shadow:none;background:rgba(255,255,255,.06)}
-  .craft-cell img{width:52px;height:52px;object-fit:contain;filter:drop-shadow(0 8px 14px rgba(0,0,0,.24));margin:0 0 6px;flex-shrink:0}
-  .craft-cell .craft-cell-name{color:#fff;font-size:11px;font-weight:700;text-align:center;line-height:1.1;max-width:100%;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:24px;margin-bottom:2px}
-  .craft-cell .craft-cell-price{color:rgba(255,255,255,.72);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:4px;margin-top:auto;padding-top:2px;min-height:16px}
+  .craft-cell img{width:48px;height:48px;object-fit:contain;filter:drop-shadow(0 8px 14px rgba(0,0,0,.24));margin:0 0 4px;flex-shrink:0}
+  .craft-cell .craft-cell-name{color:#fff;font-size:10px;font-weight:700;text-align:center;line-height:1.08;max-width:100%;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:22px}
+  .craft-cell .craft-cell-price{color:rgba(255,255,255,.72);font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:4px;margin-top:auto;padding-top:2px;min-height:14px}
   .craft-cell .craft-cell-price img{width:12px;height:12px;margin:0;filter:none}
-  .craft-cell.entering{animation:craftCellIn .34s ease both}
-  .craft-cell.removing{opacity:.45;transform:none}
-  .craft-cell.ghost{opacity:.78}
+  .craft-cell.entering{animation:craftCellIn .24s ease both}
+  .craft-cell.removing{opacity:.34;transform:scale(.97);filter:saturate(.55) brightness(.82)}
   .craft-cell .craft-cell-badge{display:none}
   @keyframes craftCellIn{from{opacity:0;transform:translateY(8px) scale(.94)}to{opacity:1;transform:translateY(0) scale(1)}}
 
@@ -1408,7 +1409,7 @@
       makeContract:'Сделать контракт', addGifts:'Добавить подарки', waiting:'Ожидание', waitingBets:'Ожидание ставок', placeBet:'Сделать ставку', cashOut:'Забрать',
       giftUnlocked:'Ваш подарок', claim:'Забрать', sell:'Продать', support:'Поддержка', language:'Язык', saveAndExit:'Сохранить и выйти', topup:'Пополнение', stars:'Звезды', ton:'TON',
       topupBtn:'Пополнить', bet:'Ставка', top:'Топ', craft:'Крафт', crash:'Краш', upgrade:'Апгрейд', profileNav:'Профиль', giftReady:'Подарок', giftOpened:'Подарок открыт',
-      sellAll:'Продать все', withdraw:'Вывести', withdrawSoon:'Подарок отправляется в Telegram…', giftWord1:'подарок', giftWord2:'подарка', giftWord5:'подарков', referralBack:'Назад', invited:'Приглашено', earned:'Заработано', invite:'Пригласить', referralLink:'Реферальная ссылка', copied:'Скопировано'
+      sellAll:'Продать все', withdraw:'Вывести', withdrawSoon:'Подарок отправляется в Telegram…', giftWord1:'подарок', giftWord2:'подарка', giftWord5:'подарков', referralBack:'Назад', invited:'Приглашено', earned:'Заработано', invite:'Пригласить', referralLink:'Реферальная ссылка', copied:'Скопировано', addGift:'Добавить подарок', inCraft:'В крафте', crafting:'Создаём контракт...', chance:'Шанс', chanceEmpty:'Шанс —', tonLoading:'Подключаем кошелёк...', tonNeedWallet:'Подключи TON кошелёк...', tonNotConnected:'TON кошелёк не подключён', tonOpening:'Открываем TON оплату...', tonConfirm:'Подтверждаем TON пополнение...', loading:'Загрузка...', loadingWait:'Подождите немного', promoUnavailable:'Промокод недоступен', upgradeFailed:'Апгрейд не удался', openTelegramPay:'Открой в Telegram для оплаты', creatingInvoice:'Создаём инвойс...', openingPayment:'Открываем оплату...', checkingPayment:'Проверяем оплату...', paymentDelayed:'Оплата принята, но подтверждение задержалось. Баланс обновится чуть позже.', paymentFailed:'Оплата не прошла. Попробуй снова.', paymentCancelled:'Оплата отменена.', errorPrefix:'Ошибка: ', topPlaceAt:'Вы в топе на <b>{rank}</b> месте', topNotYet:'Вы ещё не в топе', now:'Сейчас', soonPrefix:'Оч'
     },
     en:{
       topPlace:'You are in the top at <b>—</b> place', waitingDots:'Waiting...', profile:'Profile', promocodes:'Promo codes', promoPlaceholder:'Enter promo code', apply:'Apply',
@@ -1418,7 +1419,7 @@
       makeContract:'Make contract', addGifts:'Add gifts', waiting:'Waiting', waitingBets:'Waiting for bets', placeBet:'Place bet', cashOut:'Cash out',
       giftUnlocked:'Your gift', claim:'Claim', sell:'Sell', support:'Support', language:'Language', saveAndExit:'Save and exit', topup:'Top up', stars:'Stars', ton:'TON',
       topupBtn:'Top up', bet:'Bet', top:'Top', craft:'Craft', crash:'Crash', upgrade:'Upgrade', profileNav:'Profile', giftReady:'Gift', giftOpened:'Gift opened',
-      sellAll:'Sell all', withdraw:'Withdraw', withdrawSoon:'Gift is being sent to Telegram…', giftWord1:'gift', giftWord2:'gifts', giftWord5:'gifts', referralBack:'Back', invited:'Invited', earned:'Earned', invite:'Invite', referralLink:'Referral link', copied:'Copied'
+      sellAll:'Sell all', withdraw:'Withdraw', withdrawSoon:'Gift is being sent to Telegram…', giftWord1:'gift', giftWord2:'gifts', giftWord5:'gifts', referralBack:'Back', invited:'Invited', earned:'Earned', invite:'Invite', referralLink:'Referral link', copied:'Copied', addGift:'Add gift', inCraft:'In craft', crafting:'Crafting...', chance:'Chance', chanceEmpty:'Chance —', tonLoading:'Connecting wallet...', tonNeedWallet:'Connect TON wallet...', tonNotConnected:'TON wallet is not connected', tonOpening:'Opening TON payment...', tonConfirm:'Confirming TON top up...', loading:'Loading...', loadingWait:'Please wait a bit', promoUnavailable:'Promo code unavailable', upgradeFailed:'Upgrade failed', openTelegramPay:'Open in Telegram to pay', creatingInvoice:'Creating invoice...', openingPayment:'Opening payment...', checkingPayment:'Checking payment...', paymentDelayed:'Payment is accepted, but confirmation is delayed. Balance will update a bit later.', paymentFailed:'Payment failed. Try again.', paymentCancelled:'Payment cancelled.', errorPrefix:'Error: ', topPlaceAt:'You are in the top at <b>{rank}</b> place', topNotYet:'You are not in the top yet', now:'Now', soonPrefix:'In'
     }
   };
   let currentLang=(localStorage.getItem('miniapp_lang')==='en')?'en':'ru';
@@ -1430,6 +1431,7 @@
   const INVENTORY_HOLD_MS=20*60*1000;
   const MAX_CRASH_HISTORY=10;
   let inventoryItems=[];
+  const withdrawingGiftIds=new Set();
   let crashPrizeGift=null;
   let crashPrizePending=false;
   let crashRenderedWinGift=null;
@@ -1462,7 +1464,12 @@
     const totalMinutes=Math.ceil(safe/60000);
     const hours=Math.floor(totalMinutes/60);
     const minutes=totalMinutes%60;
-    return currentLang==='en' ? (hours+'h '+String(minutes).padStart(2,'0')+'m') : (hours+'ч'+String(minutes).padStart(2,'0')+'м');
+    if(currentLang==='en'){
+      if(hours<=0) return totalMinutes+'m';
+      return hours+'h '+String(minutes).padStart(2,'0')+'m';
+    }
+    if(hours<=0) return totalMinutes+'м';
+    return hours+'ч'+String(minutes).padStart(2,'0')+'м';
   }
   function giftCountWord(count){
     if(currentLang==='en') return count===1?t('giftWord1'):t('giftWord2');
@@ -1491,15 +1498,18 @@
     return Number.isFinite(ts)?ts:0;
   }
   function canWithdrawItem(item){
-    return Date.now()>=getItemWithdrawAt(item);
+    const ts=getItemWithdrawAt(item);
+    return !ts || Date.now()>=ts;
   }
-  function formatWithdrawCompact(ms){
-    const safe=Math.max(0,ms);
-    const totalMinutes=Math.ceil(safe/60000);
-    const hours=Math.floor(totalMinutes/60);
-    const minutes=totalMinutes%60;
-    if(currentLang==='en') return hours>0 ? (String(hours)+'h'+String(minutes).padStart(2,'0')+'m') : (String(totalMinutes)+'m');
-    return hours>0 ? ('Оч'+String(hours)+'ч'+String(minutes).padStart(2,'0')+'м') : ('Оч'+String(totalMinutes)+'м');
+  function getWithdrawButtonState(item){
+    const withdrawing=withdrawingGiftIds.has(String(item?.id||''));
+    if(withdrawing){
+      return {text:t('withdrawSoon'), pill:'', className:'pending', disabled:true};
+    }
+    if(canWithdrawItem(item)){
+      return {text:t('withdraw'), pill:'', className:'', disabled:false};
+    }
+    return {text:t('withdraw'), pill:t('soonPrefix')+formatInventoryTime(getItemWithdrawAt(item)-Date.now()), className:'locked', disabled:true};
   }
   function dismissKeyboard(inputEl=null){
     try{inputEl?.blur?.()}catch(e){}
@@ -1524,11 +1534,7 @@
     inventoryEmpty.style.display='none';
     inventoryGrid.classList.add('visible');
     inventoryGrid.innerHTML=inventoryItems.map(item=>{
-      const ready=canWithdrawItem(item);
-      const pending=withdrawingGiftIds.includes(String(item.id));
-      const pill=ready ? '' : '<span class="inventory-timer-pill compact">'+formatWithdrawCompact(getItemWithdrawAt(item)-Date.now())+'</span>';
-      const label=pending ? 'Выводится' : t('withdraw');
-      const stateClass=pending ? 'pending' : (ready ? 'ready' : 'locked');
+      const withdrawState=getWithdrawButtonState(item);
       return `
       <div class="inventory-card" data-id="${item.id}">
         <img class="inventory-card-image" src="${resolveGiftImage(item)}" alt="${item.name}">
@@ -1537,13 +1543,14 @@
           <button class="inventory-sell-btn" data-action="sell">
             ${t('sell')} ${formatStars(item.price)} <img src="assets/star.png" alt="">
           </button>
-          <button class="inventory-withdraw-btn ${stateClass}" data-action="withdraw" ${(!ready||pending)?'disabled':''}>
-            <span>${label}</span>
-            ${pill}
+          <button class="inventory-withdraw-btn ${withdrawState.className}" data-action="withdraw" ${withdrawState.disabled?'disabled':''}>
+            <span>${withdrawState.text}</span>
+            ${withdrawState.pill?`<span class="inventory-timer-pill">${withdrawState.pill}</span>`:''}
           </button>
         </div>
       </div>
-    `}).join('');
+    `;
+    }).join('');
     renderSheetGifts();
     renderCraftUI();
   }
@@ -1555,9 +1562,8 @@
     if(sheetTitle){
       sheetTitle.textContent=sheetMode==='upgrade-source' ? t('myGifts') : (sheetMode==='upgrade-target' ? t('giftsForUpgrade') : t('myGifts'));
     }
-    sheetAddBtn.textContent=sheetMode==='craft' ? 'Добавить подарки' : 'Добавить подарок';
-    const canAdd=isUpgradeMode ? !!sheetSelectedGiftId : (sheetMode==='craft' ? sheetSelectedGiftIds.length>0 : false);
-    sheetAddBtn.classList.toggle('visible',!!canAdd);
+    sheetAddBtn.textContent=sheetMode==='craft' ? t('addGifts') : t('addGift');
+    sheetAddBtn.classList.toggle('visible',!!((isUpgradeMode&&sheetSelectedGiftId)||(sheetMode==='craft'&&sheetSelectedGiftId)));
     if(!items.length){
       sheetGifts.classList.remove('visible');
       sheetGifts.innerHTML='';
@@ -1565,7 +1571,7 @@
       sheetEmptyTitle.style.display='block';
       sheetEmptyDesc.style.display='block';
       sheetEmptyTitle.textContent=t('noGiftsTitle');
-      sheetEmptyDesc.innerHTML='Отправьте подарок <a href="https://t.me/GiftPepe_Releyer" target="_blank">@GiftPepe_Releyer</a><br>или выиграйте в играх';
+      sheetEmptyDesc.innerHTML=t('noGiftsDesc');
       return;
     }
     sheetLottieEl.style.display='none';
@@ -1574,10 +1580,10 @@
     sheetGifts.classList.add('visible');
     sheetGifts.innerHTML=items.map(item=>{
       const inCraft=sheetMode==='craft' && !!item._inCraft;
-      const selected=(sheetMode==='craft' ? sheetSelectedGiftIds.includes(String(item._sheetId)) : String(item._sheetId)===String(sheetSelectedGiftId)) && !inCraft;
+      const selected=String(item._sheetId)===String(sheetSelectedGiftId) && !inCraft;
       return `
       <div class="sheet-gift-card ${selected?'selected':''} ${inCraft?'in-craft':''}" data-id="${item._sheetId}">
-        ${inCraft?'<div class="sheet-gift-status">В крафте</div>':''}
+        ${inCraft?'<div class="sheet-gift-status\>'+t('inCraft')+'</div>':''}
         <img src="${resolveGiftImage(item)}" alt="${item.name}">
         <div class="sheet-gift-name">${item.name}</div>
         <div class="sheet-gift-price">${formatStars(item.price)} <img src="assets/star.png" alt=""></div>
@@ -1597,9 +1603,6 @@
 
   let craftRemovingGiftIds=[];
   let craftAppearingGiftIds=[];
-  let craftGhostSlotIndexes=[];
-  let sheetSelectedGiftIds=[];
-  let withdrawingGiftIds=[];
 
   function getCraftItems(){
     return craftSlots.filter(Boolean);
@@ -1616,14 +1619,11 @@
     const cells=[];
     for(let i=0;i<CRAFT_SLOT_COUNT;i+=1){
       const gift=craftSlots[i]||null;
-      const ghost=craftGhostSlotIndexes.includes(i);
       if(gift){
         const id=String(gift.id);
         const removing=craftRemovingGiftIds.includes(id);
         const entering=craftAppearingGiftIds.includes(id);
         cells.push('<div class="craft-cell active '+(removing?'removing ':'')+(entering?'entering':'')+'" data-id="'+gift.id+'" data-slot="'+i+'"><img src="'+resolveGiftImage(gift)+'" alt="'+gift.name+'"><div class="craft-cell-name">'+gift.name+'</div><div class="craft-cell-price">'+formatStars(gift.price)+' <img src="assets/star.png" alt=""></div></div>');
-      }else if(ghost){
-        cells.push('<div class="craft-cell active ghost" data-slot="'+i+'"><span>'+t('empty')+'</span></div>');
       }else{
         cells.push('<div class="craft-cell" data-slot="'+i+'"><span>'+t('empty')+'</span></div>');
       }
@@ -1634,7 +1634,7 @@
     const canCraft=!craftBusy && getCraftItems().length>=3;
     craftActionBtn.classList.toggle('active',canCraft);
     craftActionBtn.disabled=!canCraft;
-    craftActionBtn.textContent=craftBusy?'Создаём контракт...':t('makeContract');
+    craftActionBtn.textContent=craftBusy?t('crafting'):t('makeContract');
   }
 
   function clearCraftSelection(){
@@ -1642,35 +1642,14 @@
     craftSelectedGiftIds=[];
     craftRemovingGiftIds=[];
     craftAppearingGiftIds=[];
-    craftGhostSlotIndexes=[];
-    sheetSelectedGiftIds=[];
     renderCraftUI();
     renderSheetGifts();
   }
 
   async function animateCraftConsumptionSequence(snapshot){
-    craftRemovingGiftIds=[];
-    craftGhostSlotIndexes=[];
-    const totalDuration=Math.max(5200,snapshot.length*620);
-    const stepDuration=Math.max(420,Math.floor(totalDuration/Math.max(1,snapshot.length)));
-    for(const gift of snapshot){
-      const id=String(gift.id);
-      craftRemovingGiftIds=[...craftRemovingGiftIds,id];
-      renderCraftUI();
-      await new Promise(resolve=>setTimeout(resolve,Math.floor(stepDuration*0.68)));
-      const slotIndex=getCraftSlotIndexById(id);
-      if(slotIndex>=0){
-        craftSlots[slotIndex]=null;
-        craftGhostSlotIndexes=[...new Set([...craftGhostSlotIndexes,slotIndex])];
-      }
-      updateCraftSelectedIds();
-      craftRemovingGiftIds=craftRemovingGiftIds.filter(item=>item!==id);
-      renderCraftUI();
-      await new Promise(resolve=>setTimeout(resolve,Math.max(90,Math.floor(stepDuration*0.32))));
-    }
-    craftRemovingGiftIds=[];
+    craftRemovingGiftIds=snapshot.map(gift=>String(gift.id));
     renderCraftUI();
-    await new Promise(resolve=>setTimeout(resolve,280));
+    await new Promise(resolve=>setTimeout(resolve,360));
   }
 
   const sheetTitle=document.querySelector('.sheet-pill');
@@ -1781,7 +1760,7 @@
     slotSourceEl.classList.toggle('active',!!upgradeSourceGift);
     slotTargetEl.classList.toggle('active',!!upgradeTargetGift);
     const chance=getUpgradeChance();
-    upgradeChanceEl.textContent=chance?('Шанс '+chance+'%'):'Шанс —';
+    upgradeChanceEl.textContent=chance?(t('chance')+' '+chance+'%'):t('chanceEmpty');
     const canUpgrade=!!(upgradeSourceGift&&upgradeTargetGift&&!upgradeSpinBusy);
     upgradeBtnEl.classList.toggle('active',canUpgrade);
     upgradeBtnEl.classList.toggle('dim',!canUpgrade);
@@ -1818,7 +1797,6 @@
   function closeSheet(){
     sheetOverlay.classList.remove('open');sheet.classList.remove('open');
     sheetSelectedGiftId='';
-    sheetSelectedGiftIds=[];
     sheetAddBtn.classList.remove('visible');
   }
   function addGiftToInventory(gift){
@@ -1871,10 +1849,9 @@
     }
 
     if(e.target.closest('[data-action="withdraw"]')){
+      if(!canWithdrawItem(item) || withdrawingGiftIds.has(String(item.id))) return;
       dismissKeyboard();
-      if(!canWithdrawItem(item)) return;
-      const giftIdStr=String(item.id);
-      withdrawingGiftIds=[...new Set([...withdrawingGiftIds,giftIdStr])];
+      withdrawingGiftIds.add(String(item.id));
       renderInventory();
       try{
         const resp=await fetch(API_BASE+'/api/inventory/withdraw',{
@@ -1885,10 +1862,10 @@
         const data=await resp.json().catch(()=>({}));
         if(!resp.ok) throw new Error(data.error||'Withdraw failed');
         if(Array.isArray(data.items)) inventoryItems=data.items.map(item=>normalizeInventoryGift(item)).filter(Boolean);
-        withdrawingGiftIds=withdrawingGiftIds.filter(id=>id!==giftIdStr);
+        withdrawingGiftIds.delete(String(item.id));
         renderInventory();
       }catch(err){
-        withdrawingGiftIds=withdrawingGiftIds.filter(id=>id!==giftIdStr);
+        withdrawingGiftIds.delete(String(item.id));
         renderInventory();
         tg?.showAlert?tg.showAlert(err.message):alert(err.message);
       }
@@ -1947,7 +1924,7 @@
   async function ensureTonConnect(){
     if(tonConnectUI) return tonConnectUI;
     const ctor=window.TON_CONNECT_UI?.TonConnectUI;
-    if(!ctor) throw new Error('TON Connect не загрузился');
+    if(!ctor) throw new Error('TON Connect failed to load');
     tonConnectUI=new ctor({
       manifestUrl: TON_MANIFEST_URL,
     });
@@ -1974,16 +1951,16 @@
     try{
       const tonUi=await ensureTonConnect();
       if(!tonUi?.account?.address){
-        topupSubmit.textContent='Подключи TON кошелёк...';
+        topupSubmit.textContent=t('tonNeedWallet');
         if(typeof tonUi.openModal==='function'){
           await tonUi.openModal();
         }
       }
       if(!tonUi?.account?.address){
-        throw new Error('TON кошелёк не подключён');
+        throw new Error(t('tonNotConnected')); 
       }
       tonWalletAddress=String(tonUi.account.address||tonWalletAddress||'');
-      topupSubmit.textContent='Открываем TON оплату...';
+      topupSubmit.textContent=t('tonOpening');
       const txResult=await tonUi.sendTransaction({
         validUntil: Math.floor(Date.now()/1000)+360,
         messages: [{
@@ -1991,7 +1968,7 @@
           amount: String(Math.max(1, Math.round(rawTon*1e9))),
         }],
       });
-      topupSubmit.textContent='Подтверждаем TON пополнение...';
+      topupSubmit.textContent=t('tonConfirm');
       const resp=await fetch(API_BASE+'/api/ton/topup/credit',{
         method:'POST',
         headers:{'Content-Type':'application/json','x-init-data':tg?.initData||''},
@@ -2242,7 +2219,7 @@
       name:String(item.name||'Gift'),
       price:Number(item.price||0),
       image:resolveGiftImage(item),
-      withdrawAt:item.withdrawAt||item.withdraw_available_at||new Date(Date.now()+INVENTORY_HOLD_MS).toISOString(),
+      withdrawAt:item.withdrawAt||item.withdraw_available_at||new Date().toISOString(),
       createdAt:item.createdAt||item.created_at||new Date().toISOString(),
     };
   }
@@ -2906,6 +2883,10 @@
     if(crashCashoutBusy||crashBetSettled){
       setCrashPlayerState('win');
       renderCrashPlayerWin(crashSettledPayout||crashBetAmount,crashPrizeGift);
+    }else if(!crashPrizePending && crashBetAmount>0){
+      renderCrashPlayerCard(crashBetAmount);
+      renderCrashPlayerWin(crashBetAmount,null);
+      setCrashPlayerState('loss');
     }
     if(crashPrizePending){ crashLivePill.textContent=t('giftReady'); closeBet(); }
     else crashLivePill.textContent=t('waiting');
@@ -3320,8 +3301,8 @@
   const bootRetryBtn=document.getElementById('bootRetryBtn');
 
   function showBootState(title,subtitle,{retry=false}={}){
-    if(bootTitle) bootTitle.textContent=title||'Загрузка...';
-    if(bootSubtitle) bootSubtitle.textContent=subtitle||'Подождите немного';
+    if(bootTitle) bootTitle.textContent=title||t('loading');
+    if(bootSubtitle) bootSubtitle.textContent=subtitle||t('loadingWait');
     if(bootRetryBtn) bootRetryBtn.style.display=retry?'inline-flex':'none';
     bootScreen.classList.remove('hidden');
     appRoot.classList.add('boot-hidden');
@@ -3332,7 +3313,7 @@
   }
   async function bootstrapApp(){
     showBootState(
-      currentLang==='en'?'Loading...':'Загрузка...',
+      t('loading'),
       currentLang==='en'?'Loading balance, top, crash, referral and gifts':'Подгружаем баланс, топ, краш, рефералку и подарки'
     );
     try{
@@ -3379,7 +3360,7 @@
         body:JSON.stringify({code}),
       });
       const data=await resp.json().catch(()=>({}));
-      if(!resp.ok) throw new Error(data.error||'Промокод недоступен');
+      if(!resp.ok) throw new Error(data.error||t('promoUnavailable')); 
       if(Number.isFinite(Number(data.balance))) updateBalance(Number(data.balance));
       if(data.referral){
         referralInvited=Number(data.referral.invitedCount||referralInvited||0);
@@ -3425,61 +3406,46 @@
     const card=e.target.closest('.sheet-gift-card');
     if(!card) return;
     if(sheetMode==='inventory') return;
-    const cardId=String(card.dataset.id||'');
-    if(sheetMode==='craft'){
-      if(card.classList.contains('in-craft')) return;
-      if(sheetSelectedGiftIds.includes(cardId)){
-        sheetSelectedGiftIds=sheetSelectedGiftIds.filter(id=>id!==cardId);
-      }else if(sheetSelectedGiftIds.length<Math.max(0,CRAFT_SLOT_COUNT-getCraftItems().length)){
-        sheetSelectedGiftIds=[...sheetSelectedGiftIds,cardId];
-      }
-    }else{
-      sheetSelectedGiftId=cardId;
-    }
+    if(sheetMode==='craft' && card.classList.contains('in-craft')) return;
+    sheetSelectedGiftId=String(card.dataset.id||'');
     renderSheetGifts();
   });
   sheetAddBtn.addEventListener('click',()=>{
+    if(!sheetSelectedGiftId) return;
     const items=getSheetItems();
-    if(sheetMode==='upgrade-source' || sheetMode==='upgrade-target'){
-      if(!sheetSelectedGiftId) return;
-      const selected=items.find(item=>String(item._sheetId)===String(sheetSelectedGiftId));
-      if(!selected) return;
-      if(sheetMode==='upgrade-source'){
-        upgradeSourceGift=normalizeInventoryGift(selected,selected.id||selected._sheetId);
-        upgradeTargetGift=null;
-      }else{
-        upgradeTargetGift=normalizeCrashPrizeGift(selected)||selected;
-        closeSheet();
-        renderUpgradeUI();
-        return;
-      }
+    const selected=items.find(item=>String(item._sheetId)===String(sheetSelectedGiftId));
+    if(!selected) return;
+    if(sheetMode==='upgrade-source'){
+      upgradeSourceGift=normalizeInventoryGift(selected,selected.id||selected._sheetId);
+      upgradeTargetGift=null;
+    }else if(sheetMode==='upgrade-target'){
+      upgradeTargetGift=normalizeCrashPrizeGift(selected)||selected;
       closeSheet();
       renderUpgradeUI();
       return;
-    }
-    if(sheetMode==='craft') {
-      if(!sheetSelectedGiftIds.length) return;
-      const freeIndexes=[];
-      craftSlots.forEach((item,index)=>{if(!item) freeIndexes.push(index)});
-      const selectedItems=items.filter(item=>sheetSelectedGiftIds.includes(String(item._sheetId))).slice(0,freeIndexes.length);
-      const addedIds=[];
-      selectedItems.forEach((selected,idx)=>{
-        const normalized=normalizeInventoryGift(selected,selected.id||selected._sheetId);
-        if(!normalized || getCraftItems().some(item=>String(item.id)===String(normalized.id))) return;
-        const slotIndex=freeIndexes[idx];
-        if(slotIndex===undefined) return;
-        craftSlots[slotIndex]=normalized;
-        addedIds.push(String(normalized.id));
-      });
-      updateCraftSelectedIds();
-      craftAppearingGiftIds=[...new Set([...craftAppearingGiftIds,...addedIds])];
-      setTimeout(()=>{
-        craftAppearingGiftIds=craftAppearingGiftIds.filter(item=>!addedIds.includes(item));
-        renderCraftUI();
-      },380);
+    }else if(sheetMode==='craft') {
+      const normalized=normalizeInventoryGift(selected,selected.id||selected._sheetId);
+      const hasFreeSlot=craftSlots.some(item=>!item);
+      if(normalized && hasFreeSlot && !getCraftItems().some(item=>String(item.id)===String(normalized.id))){
+        const addedId=String(normalized.id);
+        const slotIndex=craftSlots.findIndex(item=>!item);
+        if(slotIndex>=0){
+          craftSlots[slotIndex]=normalized;
+        }
+        updateCraftSelectedIds();
+        craftAppearingGiftIds=[...new Set([...craftAppearingGiftIds,addedId])];
+        setTimeout(()=>{
+          craftAppearingGiftIds=craftAppearingGiftIds.filter(item=>item!==addedId);
+          renderCraftUI();
+        },380);
+      }
+      sheetSelectedGiftId='';
       closeSheet();
       renderCraftUI();
+      return;
     }
+    closeSheet();
+    renderUpgradeUI();
   });
 
   craftGrid?.addEventListener('click',e=>{
@@ -3489,7 +3455,6 @@
     const slotIndex=getCraftSlotIndexById(id);
     if(slotIndex<0) return;
     craftSlots[slotIndex]=null;
-    craftGhostSlotIndexes=craftGhostSlotIndexes.filter(index=>index!==slotIndex);
     updateCraftSelectedIds();
     renderCraftUI();
   });
@@ -3514,15 +3479,12 @@
       craftSlots=Array.from({length:CRAFT_SLOT_COUNT},()=>null);
       craftSelectedGiftIds=[];
       craftRemovingGiftIds=[];
-      craftGhostSlotIndexes=[];
-      sheetSelectedGiftIds=[];
       renderInventory();
       openUpgradeResultModal(normalizeInventoryGift(data.wonGift,data.wonGift?.giftId||data.wonGift?.gift_id||data.wonGift?.id||('craft_'+Date.now())));
     }catch(err){
       craftSlots=snapshotSlots;
       updateCraftSelectedIds();
       craftRemovingGiftIds=[];
-      craftGhostSlotIndexes=[];
       tg?.showAlert?tg.showAlert(err.message):alert(err.message);
     }finally{
       craftBusy=false;
@@ -3581,7 +3543,7 @@
       if(isWin && data.wonGift){
         openUpgradeResultModal(normalizeInventoryGift(data.wonGift,data.wonGift?.id||('upgrade_'+Date.now())));
       } else {
-        tg?.showAlert?tg.showAlert('Апгрейд не удался'):alert('Апгрейд не удался');
+        tg?.showAlert?tg.showAlert(t('upgradeFailed')):alert(t('upgradeFailed')); 
       }
       renderInventory();
       upgradeSourceGift=null;
@@ -3716,11 +3678,11 @@
     const starsValue=getTopupStarsValue();
     if(starsValue<=0)return;
     if(!tg?.openInvoice){
-      tg?.showAlert?tg.showAlert('Открой в Telegram для оплаты'):alert('Открой в Telegram для оплаты');
+      tg?.showAlert?tg.showAlert(t('openTelegramPay')):alert(t('openTelegramPay')); 
       return;
     }
     topupSubmit.disabled=true;
-    topupSubmit.innerHTML='Создаём инвойс...';
+    topupSubmit.innerHTML=t('creatingInvoice');
     try{
       const resp=await fetch(API_BASE+'/api/invoice',{
         method:'POST',
@@ -3730,32 +3692,36 @@
       const {invoiceLink,invoiceId,error}=await resp.json();
       if(error)throw new Error(error);
       const balanceBefore=balance;
-      topupSubmit.innerHTML='Открываем оплату...';
+      topupSubmit.innerHTML=t('openingPayment');
       tg.openInvoice(invoiceLink,async(status)=>{
         if(status==='paid'){
           applyOptimisticDeposit(starsValue);
-          topupSubmit.innerHTML='Проверяем оплату...';
-          topupAmount.value='';
-          syncTopupModeUI();
-          closeTopup();
+          topupSubmit.innerHTML=t('checkingPayment');
+          const applied=await waitForPaymentApply(invoiceId,balanceBefore,starsValue,3200);
+          if(applied){
+            topupAmount.value='';
+            syncTopupModeUI();
+            closeTopup();
+          }else{
+            tg?.showAlert?tg.showAlert(t('paymentDelayed')):alert(t('paymentDelayed')); 
+          }
           topupSubmit.disabled=false;
           syncTopupSubmitLabel();
-          waitForPaymentApply(invoiceId,balanceBefore,starsValue,4500).catch(()=>null);
         }else if(status==='failed'){
           topupSubmit.disabled=false;
           syncTopupSubmitLabel();
-          tg.showAlert?.('Оплата не прошла. Попробуй снова.');
+          tg.showAlert?.(t('paymentFailed')); 
         }else if(status==='cancelled'){
           topupSubmit.disabled=false;
           syncTopupSubmitLabel();
-          tg.showAlert?.('Оплата отменена.');
+          tg.showAlert?.(t('paymentCancelled')); 
         }
       });
     }catch(e){
       console.error('Invoice error:',e);
       topupSubmit.disabled=false;
       syncTopupSubmitLabel();
-      tg?.showAlert?tg.showAlert('Ошибка: '+e.message):alert('Ошибка: '+e.message);
+      tg?.showAlert?tg.showAlert(t('errorPrefix')+e.message):alert(t('errorPrefix')+e.message); 
     }
   });
 
@@ -3797,7 +3763,7 @@
     return null;
   }
 
-  async function waitForPaymentApply(invoiceId,previousBalance,starsValue,timeoutMs=12000){
+  async function waitForPaymentApply(invoiceId,previousBalance,starsValue,timeoutMs=3200){
     const started=Date.now();
     while(Date.now()-started<timeoutMs){
       try{
@@ -3816,7 +3782,7 @@
           return true;
         }
       }catch(e){}
-      await new Promise(r=>setTimeout(r,80));
+      await new Promise(r=>setTimeout(r,120));
     }
     await Promise.all([refreshBalance(),refreshTop(),refreshReferral()]);
     return Number(balance)>=Number(previousBalance)+Number(starsValue||0);
@@ -3873,12 +3839,10 @@
 
   function renderTop(leaders,myRank){
     const placeText=document.querySelector('#topPage .top-place-text');
-    if(placeText) placeText.innerHTML=myRank
-      ? (currentLang==='en' ? 'You are in the top at <b>'+myRank+'</b> place' : 'Вы в топе на <b>'+myRank+'</b> месте')
-      : (currentLang==='en' ? 'You are not in the top yet' : 'Вы ещё не в топе');
+    if(placeText) placeText.innerHTML=myRank ? t('topPlaceAt').replace('{rank}',myRank) : t('topNotYet');
     const myEntry=leaders.find(l=>String(l.id)===String(tgUserId));
     document.querySelector('.top-my-rank').textContent=myRank||'—';
-    document.querySelector('.top-my-score').innerHTML='<span class="top-score-value">'+(myEntry?formatStars(myEntry.total_deposited):'0')+' <img src="assets/star.png" alt=""></span>';
+    document.querySelector('.top-my-score').innerHTML='<span class="top-score-value">'+(myEntry?formatStars(myEntry.total_deposited):'0')+' <img src="assets/star.png" alt=""></span>'; 
     const rankClasses=['gold','silver','bronze'];
     const rows=document.querySelectorAll('#topPage .top-row');
     rows.forEach((row,i)=>{
@@ -3887,23 +3851,26 @@
       rankEl.textContent=leader?i+1:'—';
       rankEl.className='top-rank'+(leader&&rankClasses[i]?' '+rankClasses[i]:'');
       const nameEl=row.querySelector('.top-name');
-      row.querySelector('.top-gift-badge')?.remove();
+      row.querySelector('.top-gift-badge-wrap')?.remove();
       if(!leader){
         nameEl.textContent='—';
         nameEl.dataset.locked='false';
-        row.querySelector('.top-score').innerHTML='<span class="top-score-value">0 <img src="assets/star.png" alt=""></span>';
+        row.querySelector('.top-score').innerHTML='<span class="top-score-value">0 <img src="assets/star.png" alt=""></span>'; 
         return;
       }
       nameEl.textContent=leader.first_name||'User';
       nameEl.dataset.locked='true';
-      row.querySelector('.top-score').innerHTML='<span class="top-score-value">'+formatStars(leader.total_deposited)+' <img src="assets/star.png" alt=""></span>';
+      row.querySelector('.top-score').innerHTML='<span class="top-score-value">'+formatStars(leader.total_deposited)+' <img src="assets/star.png" alt=""></span>'; 
       const rewardGift=TOP_REWARD_GIFTS[i]||null;
       if(rewardGift?.image){
+        const wrap=document.createElement('div');
+        wrap.className='top-gift-badge-wrap';
         const badge=document.createElement('img');
         badge.className='top-gift-badge';
         badge.src=rewardGift.image;
         badge.alt=rewardGift.name||'Gift';
-        row.appendChild(badge);
+        wrap.appendChild(badge);
+        row.appendChild(wrap);
       }
       let avatarEl=row.querySelector('.top-avatar');
       if(leader.photo_url){
