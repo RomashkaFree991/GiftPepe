@@ -54,7 +54,7 @@
 
   /* === TOP BAR === */
   .top-bar{
-    position:absolute;top:82px;left:12px;right:12px;
+    position:absolute;top:94px;left:12px;right:12px;
     display:flex;align-items:center;justify-content:space-between;z-index:30;
   }
   .user-pill{
@@ -95,8 +95,8 @@
 
   /* === TOP/LEADERBOARD === */
   .top-trophy-box{
-    background:rgba(255,255,255,.06);backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);
-    border:1px solid rgba(255,255,255,.06);
+    background:#1C1C1E;
+    border:1px solid rgba(255,255,255,.08);
     border-radius:20px;padding:20px 16px;
     display:flex;flex-direction:column;align-items:center;margin-bottom:16px;
   }
@@ -106,9 +106,9 @@
   .top-my-row{
     width:100%;display:flex;align-items:center;gap:10px;
     padding:12px 14px;border-radius:14px;
-    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06);
+    background:#1C1C1E;border:1px solid rgba(255,255,255,.08);
   }
-  .top-my-rank{width:22px;text-align:center;color:rgba(255,255,255,.3);font-size:14px;font-weight:800;flex-shrink:0}
+  .top-my-rank{width:32px;height:32px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.72);font-size:13px;font-weight:800;flex-shrink:0}
   .top-my-avatar{width:36px;height:36px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.1);flex-shrink:0}
   .top-my-name{flex:1;color:#fff;font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .top-my-score{display:flex;align-items:center;gap:4px;color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
@@ -117,12 +117,14 @@
   .top-row{
     display:flex;align-items:center;gap:10px;
     padding:12px 14px;border-radius:14px;
-    background:rgba(255,255,255,.06);backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);
-    border:1px solid rgba(255,255,255,.06);
+    background:#1C1C1E;
+    border:1px solid rgba(255,255,255,.08);
   }
   .top-rank{
-    width:22px;text-align:center;
-    color:rgba(255,255,255,.3);font-size:14px;font-weight:800;
+    width:32px;height:32px;border-radius:12px;text-align:center;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);
+    color:rgba(255,255,255,.72);font-size:13px;font-weight:800;
     flex-shrink:0;
   }
   .top-rank.gold{color:#FFD60A}
@@ -133,12 +135,14 @@
   .top-score{display:flex;align-items:center;gap:6px;color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
   .top-score-value{display:inline-flex;align-items:center;gap:4px}
   .top-score img{width:16px;height:16px;object-fit:contain;filter:drop-shadow(0 0 3px rgba(255,200,0,.3))}
-  .top-score-label{color:rgba(255,255,255,.34);font-size:10px;font-weight:700;letter-spacing:.02em;text-transform:uppercase}
-  .top-gift-badge{width:32px;height:32px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 8px 14px rgba(0,0,0,.22))}
+  .top-score-label{display:none}
+  .top-gift-badge-wrap{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);flex-shrink:0}
+  .top-gift-badge{width:28px;height:28px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 8px 14px rgba(0,0,0,.22))}
 
   /* === PROFILE === */
   .profile-card{
-    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);
+    background:#1C1C1E;
+    border:1px solid rgba(255,255,255,.08);
     border-radius:20px;padding:20px 16px 18px;
     display:flex;flex-direction:column;align-items:center;margin-bottom:20px;
   }
@@ -154,7 +158,7 @@
   .profile-username{color:rgba(255,255,255,.45);font-size:14px;font-weight:500}
 
   .promo-input-wrap{
-    display:flex;align-items:center;background:rgba(255,255,255,.08);backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);
+    display:flex;align-items:center;background:#1C1C1E;
     border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:4px 4px 4px 14px;margin-bottom:14px;height:48px;
   }
   .promo-input{flex:1;background:none;border:none;outline:none;color:#fff;font-size:14px;font-weight:500}
@@ -183,17 +187,12 @@
   .inventory-grid{display:none;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding-bottom:10px}
   .inventory-grid.visible{display:grid}
   .inventory-card{
-    background:rgba(255,255,255,.06);backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);
-    border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:10px 10px 12px;
+    background:#1C1C1E;
+    border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:10px 10px 12px;
     display:flex;flex-direction:column;align-items:center;min-height:198px;
   }
-  .inventory-card-media{
-    width:108px;height:108px;display:flex;align-items:center;justify-content:center;
-    border-radius:20px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
-    margin-bottom:8px;flex-shrink:0;overflow:hidden;
-  }
   .inventory-card-image{
-    width:88px;height:88px;object-fit:contain;flex-shrink:0;
+    width:98px;height:98px;object-fit:contain;flex-shrink:0;margin-bottom:8px;
     filter:drop-shadow(0 10px 18px rgba(0,0,0,.24));
   }
   .inventory-card-name{
@@ -208,8 +207,10 @@
   }
   .inventory-sell-btn{background:#007AFF;color:#fff}
   .inventory-sell-btn img{width:14px;height:14px;object-fit:contain}
-  .inventory-withdraw-btn{background:rgba(255,255,255,.12);color:#fff;justify-content:space-between;gap:8px}
+  .inventory-withdraw-btn{background:rgba(255,255,255,.12);color:#fff;justify-content:space-between;gap:8px;transition:opacity .18s ease, filter .18s ease}
   .inventory-withdraw-btn .inventory-timer-pill{margin-left:auto}
+  .inventory-withdraw-btn.pending{opacity:.55;filter:saturate(.7)}
+  .inventory-withdraw-btn.locked{opacity:.92}
   .inventory-timer-pill{
     height:24px;padding:0 8px;border-radius:999px;white-space:nowrap;
     display:inline-flex;align-items:center;justify-content:center;
@@ -233,7 +234,7 @@
   }
   .back-pill svg{width:16px;height:16px;flex-shrink:0}
   .referral-panel{
-    background:rgba(255,255,255,.06);backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);
+    background:#1C1C1E;
     border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:14px;
   }
   .referral-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
@@ -292,15 +293,15 @@
 
   .slots-row{display:flex;align-items:center;gap:14px;width:100%;padding:0 4px;margin-bottom:14px}
   .slot-cell{
-    flex:1;height:110px;border-radius:22px;background:#1a1a1e;
+    flex:1;height:96px;border-radius:20px;background:#1C1C1E;
     border:1.5px dashed rgba(255,255,255,.12);
-    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;transition:border-color .2s ease, box-shadow .2s ease, transform .2s ease;overflow:hidden;padding:10px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;transition:border-color .2s ease, box-shadow .2s ease, transform .2s ease;overflow:hidden;padding:8px 8px 10px;
   }
   .slot-cell.active{border-color:rgba(255,255,255,.12);box-shadow:none;transform:none}
   .slot-cell svg{width:28px;height:28px;opacity:.2}
-  .slot-cell img{width:64px;height:64px;object-fit:contain;filter:drop-shadow(0 8px 14px rgba(0,0,0,.22))}
-  .slot-label{font-size:10px;font-weight:600;color:rgba(255,255,255,.3);letter-spacing:.01em;text-align:center}
-  .slot-price{display:flex;align-items:center;gap:4px;color:#fff;font-size:12px;font-weight:700}
+  .slot-cell img{width:50px;height:50px;object-fit:contain;filter:drop-shadow(0 8px 14px rgba(0,0,0,.22));flex-shrink:0}
+  .slot-label{font-size:10px;font-weight:600;color:rgba(255,255,255,.3);letter-spacing:.01em;text-align:center;line-height:1.05}
+  .slot-price{display:flex;align-items:center;gap:4px;color:#fff;font-size:12px;font-weight:700;margin-top:2px;flex-wrap:nowrap}
   .slot-price img{width:14px;height:14px;object-fit:contain;filter:none}
   .slots-arrows{color:rgba(255,255,255,.12);font-size:26px;font-weight:800;flex-shrink:0}
 
@@ -355,10 +356,19 @@
   .sheet-lottie{width:140px;height:140px;margin:36px 0 18px}
   .sheet-gifts{display:none;width:100%;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding-top:8px}
   .sheet-gifts.visible{display:grid}
-  .sheet-gift-card{padding:12px 10px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;transition:border-color .22s ease, box-shadow .22s ease, transform .22s ease, opacity .22s ease, filter .22s ease;min-height:188px}
+  .sheet-gift-card{padding:12px 10px;border-radius:18px;background:#1C1C1E;border:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;transition:border-color .22s ease, box-shadow .22s ease, transform .22s ease, opacity .22s ease, filter .22s ease}
   .sheet-gift-card.selected{border-color:#0A84FF;box-shadow:0 0 0 1px rgba(10,132,255,.22), 0 12px 24px rgba(10,132,255,.12);transform:translateY(-1px)}
-  .sheet-gift-card.in-craft{opacity:.52;filter:saturate(.65)}
-  .sheet-gift-card.in-craft.selected{border-color:rgba(255,255,255,.08);box-shadow:none;transform:none}
+  .sheet-gift-card.in-craft{opacity:.35;filter:saturate(.5);pointer-events:none}
+  .sheet-gift-card.in-craft .sheet-craft-pill{display:flex}
+  .sheet-gift-card.craft-selected{border-color:#0A84FF;box-shadow:0 0 0 1px rgba(10,132,255,.22)}
+  .sheet-gift-card.craft-selected .sheet-craft-pill{display:none}
+  .sheet-craft-pill{
+    display:none;position:absolute;top:8px;right:8px;
+    height:20px;padding:0 8px;border-radius:999px;
+    background:rgba(255,255,255,.12);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    color:rgba(255,255,255,.7);font-size:10px;font-weight:700;
+    align-items:center;justify-content:center;white-space:nowrap;
+  }
   .sheet-gift-status{
     position:absolute;top:8px;right:8px;
     display:inline-flex;align-items:center;justify-content:center;
@@ -370,13 +380,9 @@
   .crash-bet-cloud.fading-out{animation:crashBetOut .28s ease both}
   @keyframes crashBetIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
   @keyframes crashBetOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-6px)}}
-  .sheet-gift-media{
-    width:104px;height:104px;display:flex;align-items:center;justify-content:center;
-    border-radius:20px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
-    overflow:hidden;flex-shrink:0;
-  }
-  .sheet-gift-card img{width:84px;height:84px;object-fit:contain;filter:drop-shadow(0 10px 18px rgba(0,0,0,.24))}
-  .sheet-gift-name{color:#fff;font-size:12px;font-weight:700;text-align:center;line-height:1.2;min-height:30px;width:100%}
+  .sheet-gift-card img{width:90px;height:90px;object-fit:contain;filter:drop-shadow(0 10px 18px rgba(0,0,0,.24))}
+  .sheet-gift-card .sheet-gift-price img{width:14px;height:14px;object-fit:contain;filter:none}
+  .sheet-gift-name{color:#fff;font-size:12px;font-weight:700;text-align:center;line-height:1.2;min-height:30px}
   .sheet-gift-price{display:flex;align-items:center;justify-content:center;gap:4px;color:rgba(255,255,255,.65);font-size:12px;font-weight:700}
   .sheet-gift-price img{width:14px;height:14px;object-fit:contain}
   .sheet-body .empty-title{color:#fff;font-size:16px;font-weight:700;margin-bottom:6px}
@@ -521,9 +527,8 @@
     color:#fff;font-size:15px;font-weight:700;margin-bottom:2px;
   }
   .craft-window{
-    background:rgba(255,255,255,.06);
-    backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);
-    border:1px solid rgba(255,255,255,.06);
+    background:#1C1C1E;
+    border:1px solid rgba(255,255,255,.08);
     border-radius:20px;padding:14px;
   }
   .craft-grid{
@@ -531,7 +536,7 @@
   }
   .craft-cell{
     aspect-ratio:.78;border-radius:14px;
-    background:rgba(255,255,255,.04);
+    background:#2C2C2E;
     border:1.5px dashed rgba(255,255,255,.08);
     display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
     cursor:pointer;position:relative;overflow:hidden;
@@ -542,12 +547,11 @@
     color:rgba(255,255,255,.18);font-size:9px;font-weight:600;
     text-transform:uppercase;letter-spacing:.03em;
     display:flex;align-items:center;justify-content:center;
-    width:100%;flex:1;transform:translateY(18px);
+    width:100%;flex:1;transform:none;
   }
   .craft-info{
-    background:rgba(255,255,255,.06);
-    backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);
-    border:1px solid rgba(255,255,255,.06);
+    background:#1C1C1E;
+    border:1px solid rgba(255,255,255,.08);
     border-radius:20px;padding:16px;
   }
   .craft-info-row{
@@ -572,20 +576,11 @@
   }
   .craft-action-btn.active{background:#007AFF;color:#fff;cursor:pointer}
 
-  .craft-cell.active{border-color:rgba(255,255,255,.08);box-shadow:none;background:rgba(255,255,255,.06)}
-  .craft-cell-media{
-    width:74px;height:74px;display:flex;align-items:center;justify-content:center;
-    border-radius:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
-    margin:4px 0 6px;flex-shrink:0;
-  }
-  .craft-cell img{width:58px;height:58px;object-fit:contain;filter:drop-shadow(0 8px 14px rgba(0,0,0,.24));margin:0;flex-shrink:0;transition:opacity .2s ease, transform .2s ease}
-  .craft-cell .craft-cell-name{display:none}
-  .craft-cell .craft-cell-price{color:rgba(255,255,255,.78);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:4px;margin-top:auto;min-height:16px;transition:opacity .2s ease}
-  .craft-cell .craft-cell-price img{width:12px;height:12px;margin:0;filter:none}
-  .craft-cell.entering{animation:craftCellIn .2s ease both}
-  .craft-cell.removing img,.craft-cell.removing .craft-cell-price{opacity:.14;transform:scale(.92)}
-  .craft-cell .craft-cell-badge{display:none}
-  @keyframes craftCellIn{from{opacity:0;transform:translateY(6px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+  .craft-cell.active{border-color:rgba(255,255,255,.08);border-style:solid;box-shadow:none;background:#2C2C2E;justify-content:center}
+  .craft-cell img{width:52px;height:52px;object-fit:contain;filter:drop-shadow(0 8px 14px rgba(0,0,0,.24));flex-shrink:0}
+  .craft-cell.entering{animation:craftCellIn .24s ease both}
+  .craft-cell.removing{opacity:.34;transform:scale(.97);filter:saturate(.55) brightness(.82)}
+  @keyframes craftCellIn{from{opacity:0;transform:translateY(8px) scale(.94)}to{opacity:1;transform:translateY(0) scale(1)}}
 
   .craft-add-btn{
     width:100%;height:50px;border-radius:999px;border:none;cursor:pointer;
@@ -618,6 +613,18 @@
     100%{opacity:0;transform:translate(-50%,-50%) scale(1.8);filter:blur(8px)}
   }
   .crash-timer.pop{animation:timerPop .8s ease-out forwards}
+  @keyframes timerDigitIn{
+    0%{opacity:0;transform:translate(-50%,-50%) scale(.5);filter:blur(6px)}
+    60%{opacity:1;transform:translate(-50%,-50%) scale(1.08);filter:blur(0)}
+    100%{opacity:1;transform:translate(-50%,-50%) scale(1);filter:blur(0)}
+  }
+  @keyframes timerDigitOut{
+    0%{opacity:1;transform:translate(-50%,-50%) scale(1);filter:blur(0)}
+    50%{opacity:.6;transform:translate(-50%,-50%) scale(2);filter:blur(4px)}
+    100%{opacity:0;transform:translate(-50%,-50%) scale(2.8);filter:blur(14px)}
+  }
+  .crash-timer.digit-in{animation:timerDigitIn .35s cubic-bezier(.4,0,.2,1) forwards}
+  .crash-timer.digit-out{animation:timerDigitOut .4s ease-out forwards}
 
   .crash-loss{
     position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
@@ -662,6 +669,14 @@
   .crash-history-pill.active{
     background:#007AFF;color:#fff;border-color:#007AFF;
   }
+  @keyframes pillSlideIn{
+    0%{opacity:0;max-width:0;padding-left:0;padding-right:0}
+    100%{opacity:1;max-width:100px;padding-left:12px;padding-right:12px}
+  }
+  .crash-history-pill.slide-in{
+    animation:pillSlideIn .6s cubic-bezier(.22,.61,.36,1) both;
+    overflow:hidden;will-change:max-width,opacity;
+  }
 
   .crash-bet-btn{
     display:flex;align-items:center;justify-content:center;gap:8px;
@@ -680,8 +695,8 @@
   }
   .crash-wait{
     width:100%;border-radius:24px;
-    background:transparent;
-    border:1px solid rgba(255,255,255,.12);
+    background:#1C1C1E;
+    border:1px solid rgba(255,255,255,.08);
     display:flex;flex-direction:column;align-items:center;justify-content:center;
     overflow:hidden;padding:16px 14px;
     transition:height .3s ease;
@@ -695,11 +710,18 @@
   .crash-player{
     display:none;width:100%;padding:12px 14px;
     align-items:center;gap:12px;
-    background:rgba(255,255,255,.06);border-radius:16px;
+    background:#1C1C1E;
+    border-radius:16px;
     border:1.5px solid rgba(255,255,255,.08);
     transition:opacity .5s ease,border-color .25s ease,box-shadow .25s ease;
   }
+  @keyframes playerSlideIn{
+    0%{opacity:0;transform:translateY(-30px);filter:blur(6px)}
+    60%{opacity:1;filter:blur(1px)}
+    100%{opacity:1;transform:translateY(0);filter:blur(0)}
+  }
   .crash-player.visible{display:flex}
+  .crash-player.slide-in{animation:playerSlideIn .5s cubic-bezier(.22,.61,.36,1) both}
   .crash-player.fading{opacity:0}
   .crash-player.win-state{border-color:rgba(52,199,89,.95);box-shadow:0 0 0 1px rgba(52,199,89,.18),0 0 24px rgba(52,199,89,.18)}
   .crash-player.loss-state{border-color:rgba(255,59,48,.95);box-shadow:0 0 0 1px rgba(255,59,48,.16),0 0 24px rgba(255,59,48,.16)}
@@ -726,9 +748,8 @@
   .crash-bet-cloud{
     display:flex;align-items:center;gap:10px;
     padding:10px 12px;border-radius:16px;
-    background:rgba(255,255,255,.06);
+    background:#1C1C1E;
     border:1px solid rgba(255,255,255,.08);
-    backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
     min-height:66px;
     transition:border-color .18s ease, box-shadow .18s ease, background .18s ease;
   }
@@ -1373,8 +1394,8 @@
   async function initUser(){
     if(!tg)return;
     tg.ready();tg.expand();
-    if(tg.requestFullscreen)tg.requestFullscreen();
-    if(tg.disableVerticalSwipes)tg.disableVerticalSwipes();
+    try{if(tg.requestFullscreen)tg.requestFullscreen();}catch(e){}
+    try{if(tg.disableVerticalSwipes)tg.disableVerticalSwipes();}catch(e){}
     const u=tg.initDataUnsafe?.user;
     if(u){
       firstName=u.first_name||u.username||'User';
@@ -1413,22 +1434,22 @@
     ru:{
       topPlace:'Вы в топе на <b>—</b> месте', waitingDots:'Ожидание...', profile:'Профиль', promocodes:'Промокоды', promoPlaceholder:'Введите промокод', apply:'Применить',
       referralTitle:'РЕФЕРАЛЬНАЯ СИСТЕМА', referralDesc:'Приглашайте людей, чтобы получать бонусы', inventory:'Инвентарь', noGiftsTitle:'Не нашли подарков?',
-      noGiftsDesc:'Отправьте подарок <a href="https://t.me/GiftPepe_Releyer" target="_blank">@GiftPepe_Releyer</a><br>или выиграйте в играх', chooseGift:'Выбрать подарок',
+      noGiftsDesc:'Отправьте подарок <a href="https://t.me/GiftPepe_Releyer" target="_blank">@GiftPepe_Releyer</a><br>или выиграйте в играх', chooseGift:'Выберите подарок',
       myGifts:'Мои подарки', giftsForUpgrade:'Подарки для апгрейда', makeUpgrade:'Сделать апгрейд', yourGifts:'Ваши подарки', empty:'Пусто', giftCost:'Стоимость подарков',
       makeContract:'Сделать контракт', addGifts:'Добавить подарки', waiting:'Ожидание', waitingBets:'Ожидание ставок', placeBet:'Сделать ставку', cashOut:'Забрать',
       giftUnlocked:'Ваш подарок', claim:'Забрать', sell:'Продать', support:'Поддержка', language:'Язык', saveAndExit:'Сохранить и выйти', topup:'Пополнение', stars:'Звезды', ton:'TON',
       topupBtn:'Пополнить', bet:'Ставка', top:'Топ', craft:'Крафт', crash:'Краш', upgrade:'Апгрейд', profileNav:'Профиль', giftReady:'Подарок', giftOpened:'Подарок открыт',
-      sellAll:'Продать все', withdraw:'Вывести', withdrawSoon:'Подарок отправляется в Telegram…', giftWord1:'подарок', giftWord2:'подарка', giftWord5:'подарков', referralBack:'Назад', invited:'Приглашено', earned:'Заработано', invite:'Пригласить', referralLink:'Реферальная ссылка', copied:'Скопировано'
+      sellAll:'Продать все', withdraw:'Вывести', withdrawSoon:'Подарок отправляется в Telegram…', giftWord1:'подарок', giftWord2:'подарка', giftWord5:'подарков', referralBack:'Назад', invited:'Приглашено', earned:'Заработано', invite:'Пригласить', referralLink:'Реферальная ссылка', copied:'Скопировано', addGift:'Добавить подарок', inCraft:'В крафте', crafting:'Создаём контракт...', chance:'Шанс', chanceEmpty:'Шанс —', tonLoading:'Подключаем кошелёк...', tonNeedWallet:'Подключи TON кошелёк...', tonNotConnected:'TON кошелёк не подключён', tonOpening:'Открываем TON оплату...', tonConfirm:'Подтверждаем TON пополнение...', loading:'Загрузка...', loadingWait:'Подождите немного', promoUnavailable:'Промокод недоступен', upgradeFailed:'Апгрейд не удался', openTelegramPay:'Открой в Telegram для оплаты', creatingInvoice:'Создаём инвойс...', openingPayment:'Открываем оплату...', checkingPayment:'Проверяем оплату...', paymentDelayed:'Оплата принята, но подтверждение задержалось. Баланс обновится чуть позже.', paymentFailed:'Оплата не прошла. Попробуй снова.', paymentCancelled:'Оплата отменена.', errorPrefix:'Ошибка: ', topPlaceAt:'Вы в топе на <b>{rank}</b> месте', topNotYet:'Вы ещё не в топе', now:'Сейчас', soonPrefix:'Оч'
     },
     en:{
       topPlace:'You are in the top at <b>—</b> place', waitingDots:'Waiting...', profile:'Profile', promocodes:'Promo codes', promoPlaceholder:'Enter promo code', apply:'Apply',
       referralTitle:'REFERRAL SYSTEM', referralDesc:'Invite people to get bonuses', inventory:'Inventory', noGiftsTitle:'No gifts found?',
-      noGiftsDesc:'Send a gift to <a href="https://t.me/GiftPepe_Releyer" target="_blank">@GiftPepe_Releyer</a><br>or win one in games', chooseGift:'Choose gift',
+      noGiftsDesc:'Send a gift to <a href="https://t.me/GiftPepe_Releyer" target="_blank">@GiftPepe_Releyer</a><br>or win one in games', chooseGift:'Choose a gift',
       myGifts:'My gifts', giftsForUpgrade:'Gifts for upgrade', makeUpgrade:'Make upgrade', yourGifts:'Your gifts', empty:'Empty', giftCost:'Gift value',
       makeContract:'Make contract', addGifts:'Add gifts', waiting:'Waiting', waitingBets:'Waiting for bets', placeBet:'Place bet', cashOut:'Cash out',
       giftUnlocked:'Your gift', claim:'Claim', sell:'Sell', support:'Support', language:'Language', saveAndExit:'Save and exit', topup:'Top up', stars:'Stars', ton:'TON',
       topupBtn:'Top up', bet:'Bet', top:'Top', craft:'Craft', crash:'Crash', upgrade:'Upgrade', profileNav:'Profile', giftReady:'Gift', giftOpened:'Gift opened',
-      sellAll:'Sell all', withdraw:'Withdraw', withdrawSoon:'Gift is being sent to Telegram…', giftWord1:'gift', giftWord2:'gifts', giftWord5:'gifts', referralBack:'Back', invited:'Invited', earned:'Earned', invite:'Invite', referralLink:'Referral link', copied:'Copied'
+      sellAll:'Sell all', withdraw:'Withdraw', withdrawSoon:'Gift is being sent to Telegram…', giftWord1:'gift', giftWord2:'gifts', giftWord5:'gifts', referralBack:'Back', invited:'Invited', earned:'Earned', invite:'Invite', referralLink:'Referral link', copied:'Copied', addGift:'Add gift', inCraft:'In craft', crafting:'Crafting...', chance:'Chance', chanceEmpty:'Chance —', tonLoading:'Connecting wallet...', tonNeedWallet:'Connect TON wallet...', tonNotConnected:'TON wallet is not connected', tonOpening:'Opening TON payment...', tonConfirm:'Confirming TON top up...', loading:'Loading...', loadingWait:'Please wait a bit', promoUnavailable:'Promo code unavailable', upgradeFailed:'Upgrade failed', openTelegramPay:'Open in Telegram to pay', creatingInvoice:'Creating invoice...', openingPayment:'Opening payment...', checkingPayment:'Checking payment...', paymentDelayed:'Payment is accepted, but confirmation is delayed. Balance will update a bit later.', paymentFailed:'Payment failed. Try again.', paymentCancelled:'Payment cancelled.', errorPrefix:'Error: ', topPlaceAt:'You are in the top at <b>{rank}</b> place', topNotYet:'You are not in the top yet', now:'Now', soonPrefix:'In'
     }
   };
   let currentLang=(localStorage.getItem('miniapp_lang')==='en')?'en':'ru';
@@ -1437,9 +1458,10 @@
   function setLangIndicator(lang){
     if(lang==='en'){langInd.classList.add('right')}else{langInd.classList.remove('right')}
   }
-  const INVENTORY_HOLD_MS=0;
+  const INVENTORY_HOLD_MS=20*60*1000;
   const MAX_CRASH_HISTORY=10;
   let inventoryItems=[];
+  const withdrawingGiftIds=new Set();
   let crashPrizeGift=null;
   let crashPrizePending=false;
   let crashRenderedWinGift=null;
@@ -1472,7 +1494,12 @@
     const totalMinutes=Math.ceil(safe/60000);
     const hours=Math.floor(totalMinutes/60);
     const minutes=totalMinutes%60;
-    return currentLang==='en' ? (hours+'h '+String(minutes).padStart(2,'0')+'m') : (hours+'ч'+String(minutes).padStart(2,'0')+'м');
+    if(currentLang==='en'){
+      if(hours<=0) return totalMinutes+'m';
+      return hours+'h '+String(minutes).padStart(2,'0')+'m';
+    }
+    if(hours<=0) return totalMinutes+'м';
+    return hours+'ч'+String(minutes).padStart(2,'0')+'м';
   }
   function giftCountWord(count){
     if(currentLang==='en') return count===1?t('giftWord1'):t('giftWord2');
@@ -1501,7 +1528,18 @@
     return Number.isFinite(ts)?ts:0;
   }
   function canWithdrawItem(item){
-    return true;
+    const ts=getItemWithdrawAt(item);
+    return !ts || Date.now()>=ts;
+  }
+  function getWithdrawButtonState(item){
+    const withdrawing=withdrawingGiftIds.has(String(item?.id||''));
+    if(withdrawing){
+      return {text:t('withdrawSoon'), pill:'', className:'pending', disabled:true};
+    }
+    if(canWithdrawItem(item)){
+      return {text:t('withdraw'), pill:'', className:'', disabled:false};
+    }
+    return {text:t('withdraw'), pill:t('soonPrefix')+formatInventoryTime(getItemWithdrawAt(item)-Date.now()), className:'locked', disabled:true};
   }
   function dismissKeyboard(inputEl=null){
     try{inputEl?.blur?.()}catch(e){}
@@ -1525,23 +1563,24 @@
     }
     inventoryEmpty.style.display='none';
     inventoryGrid.classList.add('visible');
-    inventoryGrid.innerHTML=inventoryItems.map(item=>`
+    inventoryGrid.innerHTML=inventoryItems.map(item=>{
+      const withdrawState=getWithdrawButtonState(item);
+      return `
       <div class="inventory-card" data-id="${item.id}">
-        <div class="inventory-card-media">
-          <img class="inventory-card-image" src="${resolveGiftImage(item)}" alt="${item.name}">
-        </div>
+        <img class="inventory-card-image" src="${resolveGiftImage(item)}" alt="${item.name}">
         <div class="inventory-card-name">${item.name}</div>
         <div class="inventory-actions">
           <button class="inventory-sell-btn" data-action="sell">
             ${t('sell')} ${formatStars(item.price)} <img src="assets/star.png" alt="">
           </button>
-          <button class="inventory-withdraw-btn" data-action="withdraw">
-            <span>${t('withdraw')}</span>
-            <span class="inventory-timer-pill">${canWithdrawItem(item)?'now':formatInventoryTime(getItemWithdrawAt(item)-Date.now())}</span>
+          <button class="inventory-withdraw-btn ${withdrawState.className}" data-action="withdraw" ${withdrawState.disabled?'disabled':''}>
+            <span>${withdrawState.text}</span>
+            ${withdrawState.pill?`<span class="inventory-timer-pill">${withdrawState.pill}</span>`:''}
           </button>
         </div>
       </div>
-    `).join('');
+    `;
+    }).join('');
     renderSheetGifts();
     renderCraftUI();
   }
@@ -1553,8 +1592,9 @@
     if(sheetTitle){
       sheetTitle.textContent=sheetMode==='upgrade-source' ? t('myGifts') : (sheetMode==='upgrade-target' ? t('giftsForUpgrade') : t('myGifts'));
     }
-    sheetAddBtn.textContent=sheetMode==='craft' ? t('addGifts') : t('chooseGift');
-    sheetAddBtn.classList.toggle('visible',!!((isUpgradeMode&&sheetSelectedGiftId)||(sheetMode==='craft'&&sheetSelectedGiftId)));
+    sheetAddBtn.textContent=sheetMode==='craft' ? t('addGifts') : t('addGift');
+    const showBtn=!!(isUpgradeMode&&sheetSelectedGiftId)||(sheetMode==='craft'&&sheetCraftPendingIds.length>0);
+    sheetAddBtn.classList.toggle('visible',showBtn);
     if(!items.length){
       sheetGifts.classList.remove('visible');
       sheetGifts.innerHTML='';
@@ -1571,13 +1611,12 @@
     sheetGifts.classList.add('visible');
     sheetGifts.innerHTML=items.map(item=>{
       const inCraft=sheetMode==='craft' && !!item._inCraft;
-      const selected=String(item._sheetId)===String(sheetSelectedGiftId) && !inCraft;
+      const craftPending=sheetMode==='craft' && sheetCraftPendingIds.includes(String(item._sheetId));
+      const selected=(sheetMode!=='craft') && String(item._sheetId)===String(sheetSelectedGiftId) && !inCraft;
       return `
-      <div class="sheet-gift-card ${selected?'selected':''} ${inCraft?'in-craft':''}" data-id="${item._sheetId}">
-        ${inCraft?'<div class="sheet-gift-status">'+(currentLang==='en'?'In craft':'В крафте')+'</div>':''}
-        <div class="sheet-gift-media">
-          <img src="${resolveGiftImage(item)}" alt="${item.name}">
-        </div>
+      <div class="sheet-gift-card ${selected?'selected':''} ${inCraft?'in-craft':''} ${craftPending?'craft-selected':''}" data-id="${item._sheetId}">
+        <div class="sheet-craft-pill">${t('inCraft')}</div>
+        <img src="${resolveGiftImage(item)}" alt="${item.name}">
         <div class="sheet-gift-name">${item.name}</div>
         <div class="sheet-gift-price">${formatStars(item.price)} <img src="assets/star.png" alt=""></div>
       </div>
@@ -1616,7 +1655,7 @@
         const id=String(gift.id);
         const removing=craftRemovingGiftIds.includes(id);
         const entering=craftAppearingGiftIds.includes(id);
-        cells.push('<div class="craft-cell active '+(removing?'removing ':'')+(entering?'entering':'')+'" data-id="'+gift.id+'" data-slot="'+i+'"><div class="craft-cell-media"><img src="'+resolveGiftImage(gift)+'" alt="'+gift.name+'"></div><div class="craft-cell-price">'+formatStars(gift.price)+' <img src="assets/star.png" alt=""></div></div>');
+        cells.push('<div class="craft-cell active '+(removing?'removing ':'')+(entering?'entering':'')+'" data-id="'+gift.id+'" data-slot="'+i+'"><img src="'+resolveGiftImage(gift)+'" alt="'+gift.name+'"></div>');
       }else{
         cells.push('<div class="craft-cell" data-slot="'+i+'"><span>'+t('empty')+'</span></div>');
       }
@@ -1627,7 +1666,7 @@
     const canCraft=!craftBusy && getCraftItems().length>=3;
     craftActionBtn.classList.toggle('active',canCraft);
     craftActionBtn.disabled=!canCraft;
-    craftActionBtn.textContent=craftBusy?(currentLang==='en'?'Crafting...':'Создаём контракт...'):t('makeContract');
+    craftActionBtn.textContent=craftBusy?t('crafting'):t('makeContract');
   }
 
   function clearCraftSelection(){
@@ -1640,24 +1679,15 @@
   }
 
   async function animateCraftConsumptionSequence(snapshot){
-    craftRemovingGiftIds=[];
-    const ids=snapshot.map(gift=>String(gift.id));
-    for(const id of ids){
-      craftRemovingGiftIds=[...new Set([...craftRemovingGiftIds,id])];
-      renderCraftUI();
-      await new Promise(resolve=>setTimeout(resolve,85));
-    }
-    await new Promise(resolve=>setTimeout(resolve,130));
-    craftSlots=craftSlots.map(item=>item && ids.includes(String(item.id)) ? null : item);
-    updateCraftSelectedIds();
-    craftRemovingGiftIds=[];
+    craftRemovingGiftIds=snapshot.map(gift=>String(gift.id));
     renderCraftUI();
-    await new Promise(resolve=>setTimeout(resolve,90));
+    await new Promise(resolve=>setTimeout(resolve,360));
   }
 
   const sheetTitle=document.querySelector('.sheet-pill');
   const sheetAddBtn=document.getElementById('sheetAddBtn');
   let sheetMode='inventory';
+  let sheetCraftPendingIds=[];
   let sheetSelectedGiftId='';
   let craftSelectedGiftIds=[];
   let upgradeSourceGift=null;
@@ -1763,7 +1793,7 @@
     slotSourceEl.classList.toggle('active',!!upgradeSourceGift);
     slotTargetEl.classList.toggle('active',!!upgradeTargetGift);
     const chance=getUpgradeChance();
-    upgradeChanceEl.textContent=chance?('Шанс '+chance+'%'):'Шанс —';
+    upgradeChanceEl.textContent=chance?(t('chance')+' '+chance+'%'):t('chanceEmpty');
     const canUpgrade=!!(upgradeSourceGift&&upgradeTargetGift&&!upgradeSpinBusy);
     upgradeBtnEl.classList.toggle('active',canUpgrade);
     upgradeBtnEl.classList.toggle('dim',!canUpgrade);
@@ -1789,6 +1819,7 @@
   function openSheet(mode='inventory'){
     sheetMode=mode;
     sheetSelectedGiftId='';
+    sheetCraftPendingIds=[];
     renderSheetGifts();
     sheetOverlay.classList.add('open');sheet.classList.add('open');
     updateLottiePerformance();
@@ -1852,9 +1883,9 @@
     }
 
     if(e.target.closest('[data-action="withdraw"]')){
+      if(!canWithdrawItem(item) || withdrawingGiftIds.has(String(item.id))) return;
       dismissKeyboard();
-      const prevItems=[...inventoryItems];
-      inventoryItems=inventoryItems.filter(entry=>String(entry.id)!==String(item.id));
+      withdrawingGiftIds.add(String(item.id));
       renderInventory();
       try{
         const resp=await fetch(API_BASE+'/api/inventory/withdraw',{
@@ -1865,9 +1896,10 @@
         const data=await resp.json().catch(()=>({}));
         if(!resp.ok) throw new Error(data.error||'Withdraw failed');
         if(Array.isArray(data.items)) inventoryItems=data.items.map(item=>normalizeInventoryGift(item)).filter(Boolean);
+        withdrawingGiftIds.delete(String(item.id));
         renderInventory();
       }catch(err){
-        inventoryItems=prevItems;
+        withdrawingGiftIds.delete(String(item.id));
         renderInventory();
         tg?.showAlert?tg.showAlert(err.message):alert(err.message);
       }
@@ -1926,7 +1958,7 @@
   async function ensureTonConnect(){
     if(tonConnectUI) return tonConnectUI;
     const ctor=window.TON_CONNECT_UI?.TonConnectUI;
-    if(!ctor) throw new Error('TON Connect не загрузился');
+    if(!ctor) throw new Error('TON Connect failed to load');
     tonConnectUI=new ctor({
       manifestUrl: TON_MANIFEST_URL,
     });
@@ -1953,16 +1985,16 @@
     try{
       const tonUi=await ensureTonConnect();
       if(!tonUi?.account?.address){
-        topupSubmit.textContent='Подключи TON кошелёк...';
+        topupSubmit.textContent=t('tonNeedWallet');
         if(typeof tonUi.openModal==='function'){
           await tonUi.openModal();
         }
       }
       if(!tonUi?.account?.address){
-        throw new Error('TON кошелёк не подключён');
+        throw new Error(t('tonNotConnected')); 
       }
       tonWalletAddress=String(tonUi.account.address||tonWalletAddress||'');
-      topupSubmit.textContent='Открываем TON оплату...';
+      topupSubmit.textContent=t('tonOpening');
       const txResult=await tonUi.sendTransaction({
         validUntil: Math.floor(Date.now()/1000)+360,
         messages: [{
@@ -1970,7 +2002,7 @@
           amount: String(Math.max(1, Math.round(rawTon*1e9))),
         }],
       });
-      topupSubmit.textContent='Подтверждаем TON пополнение...';
+      topupSubmit.textContent=t('tonConfirm');
       const resp=await fetch(API_BASE+'/api/ton/topup/credit',{
         method:'POST',
         headers:{'Content-Type':'application/json','x-init-data':tg?.initData||''},
@@ -2116,6 +2148,8 @@
   let crashTickNextTimeout=null;
   let crashRoundToken=0;
 
+  let crashLastCountdownDigit=-1;
+  let crashDigitAnimTimeout=null;
   let crashBetActive=false;
   let crashBetAmount=0;
   let crashRoundLive=false;
@@ -2316,17 +2350,29 @@
       if(rightEl) updateCrashGiftBadge(rightEl,gift);
     });
   }
+  let crashPrevHistoryFirst='';
+  let crashHistoryInitialized=false;
   function renderCrashHistoryState(state){
     const liveText=(state&&state.phase==='live')
       ? 'x'+computeCrashMultiplier(state).toFixed(2)
       : t('waiting');
+    const historyArr=(state?.history||[]).slice(0,MAX_CRASH_HISTORY);
+    const newFirstKey=historyArr.length?(historyArr[0].roundId||'x'+Number(historyArr[0].multiplier).toFixed(2)):'';
+    const shouldAnimate=crashHistoryInitialized&&newFirstKey&&newFirstKey!==crashPrevHistoryFirst;
+    crashPrevHistoryFirst=newFirstKey;
+    crashHistoryInitialized=true;
     crashHistory.innerHTML='';
     crashLivePill.textContent=liveText;
     crashHistory.appendChild(crashLivePill);
-    (state?.history||[]).slice(0,MAX_CRASH_HISTORY).forEach(entry=>{
+    historyArr.forEach((entry,i)=>{
       const pill=document.createElement('div');
       pill.className='crash-history-pill '+getPillColor(entry.multiplier);
       pill.textContent='x'+Number(entry.multiplier).toFixed(2);
+      if(i===0&&shouldAnimate){
+        pill.style.opacity='0';
+        pill.style.maxWidth='0';
+        pill.classList.add('slide-in');
+      }
       crashHistory.appendChild(pill);
     });
   }
@@ -2664,11 +2710,15 @@
     updateCrashWaitLabel(crashRealtimeState?.betsCount||0);
   }
 
-  function renderCrashPlayerCard(amount){
+  function renderCrashPlayerCard(amount,animate){
     crashWaitText.style.display='none';
     crashWait.className='crash-wait has-bet';
-    crashPlayer.classList.remove('fading');
+    crashPlayer.classList.remove('fading','slide-in');
     crashPlayer.classList.add('visible');
+    if(animate){
+      void crashPlayer.offsetWidth;
+      crashPlayer.classList.add('slide-in');
+    }
     document.getElementById('crashPlayerName').textContent=firstName;
     if(photoUrl) document.getElementById('crashPlayerAvatar').src=photoUrl;
     document.getElementById('crashPlayerBet').innerHTML=formatStars(amount)+' <img src="assets/star.png" alt="">';
@@ -2824,8 +2874,21 @@
       const endsAt=Number(state.countdownEndsAt||state.liveStartAt||0);
       const count=(Date.now()<crashCountdownIntroUntil)?10:Math.min(10,Math.max(1,Math.ceil(Math.max(0,endsAt-now)/1000))); 
       crashTimer.style.display='';
-      crashTimer.textContent=String(count);
-      crashTimer.className='crash-timer';
+      if(count!==crashLastCountdownDigit){
+        if(crashDigitAnimTimeout){clearTimeout(crashDigitAnimTimeout);crashDigitAnimTimeout=null}
+        if(crashLastCountdownDigit>0){
+          crashTimer.className='crash-timer digit-out';
+          crashDigitAnimTimeout=setTimeout(()=>{
+            crashTimer.textContent=String(count);
+            crashTimer.className='crash-timer digit-in';
+            crashDigitAnimTimeout=null;
+          },350);
+        }else{
+          crashTimer.textContent=String(count);
+          crashTimer.className='crash-timer digit-in';
+        }
+        crashLastCountdownDigit=count;
+      }
       stopCrashRocket();
       lossEl.className='crash-loss';
       crashMultiplier=1.0;
@@ -2844,6 +2907,8 @@
     }
 
     if(displayPhase==='live'){
+      crashLastCountdownDigit=-1;
+      if(crashDigitAnimTimeout){clearTimeout(crashDigitAnimTimeout);crashDigitAnimTimeout=null}
       closeBet();
       lossEl.className='crash-loss';
       startCrashRocket();
@@ -2885,6 +2950,10 @@
     if(crashCashoutBusy||crashBetSettled){
       setCrashPlayerState('win');
       renderCrashPlayerWin(crashSettledPayout||crashBetAmount,crashPrizeGift);
+    }else if(!crashPrizePending && crashBetAmount>0){
+      renderCrashPlayerCard(crashBetAmount);
+      renderCrashPlayerWin(crashBetAmount,null);
+      setCrashPlayerState('loss');
     }
     if(crashPrizePending){ crashLivePill.textContent=t('giftReady'); closeBet(); }
     else crashLivePill.textContent=t('waiting');
@@ -2952,7 +3021,7 @@
     hideCrashPrize();
     if(crashRoundLive){betBtn.classList.remove('dim')}else{betBtn.classList.add('dim')}
     betBtn.innerHTML=t('cashOut')+' '+formatStars(amount)+' <img src="assets/star.png" alt="">';
-    renderCrashPlayerCard(amount);
+    renderCrashPlayerCard(amount,true);
     renderCrashPlayerWin(amount,null);
 
     let data=null;
@@ -3299,8 +3368,8 @@
   const bootRetryBtn=document.getElementById('bootRetryBtn');
 
   function showBootState(title,subtitle,{retry=false}={}){
-    if(bootTitle) bootTitle.textContent=title||'Загрузка...';
-    if(bootSubtitle) bootSubtitle.textContent=subtitle||'Подождите немного';
+    if(bootTitle) bootTitle.textContent=title||t('loading');
+    if(bootSubtitle) bootSubtitle.textContent=subtitle||t('loadingWait');
     if(bootRetryBtn) bootRetryBtn.style.display=retry?'inline-flex':'none';
     bootScreen.classList.remove('hidden');
     appRoot.classList.add('boot-hidden');
@@ -3311,12 +3380,12 @@
   }
   async function bootstrapApp(){
     showBootState(
-      currentLang==='en'?'Loading...':'Загрузка...',
+      t('loading'),
       currentLang==='en'?'Loading balance, top, crash, referral and gifts':'Подгружаем баланс, топ, краш, рефералку и подарки'
     );
     try{
       await initUser();
-      await Promise.all([
+      await Promise.allSettled([
         refreshBalance(),
         refreshTop(),
         refreshReferral(),
@@ -3327,14 +3396,15 @@
         crashStarted=true;
         runCrashRound();
       }
+      if(!tg?.initData){
+        const testGifts=GIFT_CATALOG.slice().sort((a,b)=>b.price-a.price).slice(0,5);
+        inventoryItems=testGifts.map((g,i)=>normalizeInventoryGift({...g,id:'test_'+i,giftId:g.id},'test_'+i));
+        renderInventory();
+      }
       hideBootState();
     }catch(e){
       console.error('Bootstrap failed:',e);
-      showBootState(
-        currentLang==='en'?'Load error':'Ошибка загрузки',
-        currentLang==='en'?'Could not load the app data. Tap retry.':'Не удалось загрузить данные приложения. Нажми повторить.',
-        {retry:true}
-      );
+      hideBootState();
     }
   }
 
@@ -3358,7 +3428,7 @@
         body:JSON.stringify({code}),
       });
       const data=await resp.json().catch(()=>({}));
-      if(!resp.ok) throw new Error(data.error||'Промокод недоступен');
+      if(!resp.ok) throw new Error(data.error||t('promoUnavailable')); 
       if(Number.isFinite(Number(data.balance))) updateBalance(Number(data.balance));
       if(data.referral){
         referralInvited=Number(data.referral.invitedCount||referralInvited||0);
@@ -3404,11 +3474,47 @@
     const card=e.target.closest('.sheet-gift-card');
     if(!card) return;
     if(sheetMode==='inventory') return;
-    if(sheetMode==='craft' && card.classList.contains('in-craft')) return;
+    if(sheetMode==='craft'){
+      if(card.classList.contains('in-craft')) return;
+      const id=String(card.dataset.id||'');
+      const freeSlots=craftSlots.filter(s=>!s).length;
+      if(sheetCraftPendingIds.includes(id)){
+        sheetCraftPendingIds=sheetCraftPendingIds.filter(x=>x!==id);
+      }else if(sheetCraftPendingIds.length<freeSlots){
+        sheetCraftPendingIds.push(id);
+      }
+      renderSheetGifts();
+      return;
+    }
     sheetSelectedGiftId=String(card.dataset.id||'');
     renderSheetGifts();
   });
   sheetAddBtn.addEventListener('click',()=>{
+    if(sheetMode==='craft'){
+      if(!sheetCraftPendingIds.length) return;
+      const items=getSheetItems();
+      sheetCraftPendingIds.forEach(pid=>{
+        const item=items.find(x=>String(x._sheetId)===pid);
+        if(!item) return;
+        const normalized=normalizeInventoryGift(item,item.id||item._sheetId);
+        const hasFreeSlot=craftSlots.some(s=>!s);
+        if(normalized && hasFreeSlot && !getCraftItems().some(ci=>String(ci.id)===String(normalized.id))){
+          const addedId=String(normalized.id);
+          const slotIndex=craftSlots.findIndex(s=>!s);
+          if(slotIndex>=0) craftSlots[slotIndex]=normalized;
+          updateCraftSelectedIds();
+          craftAppearingGiftIds=[...new Set([...craftAppearingGiftIds,addedId])];
+          setTimeout(()=>{
+            craftAppearingGiftIds=craftAppearingGiftIds.filter(x=>x!==addedId);
+            renderCraftUI();
+          },380);
+        }
+      });
+      sheetCraftPendingIds=[];
+      closeSheet();
+      renderCraftUI();
+      return;
+    }
     if(!sheetSelectedGiftId) return;
     const items=getSheetItems();
     const selected=items.find(item=>String(item._sheetId)===String(sheetSelectedGiftId));
@@ -3420,26 +3526,6 @@
       upgradeTargetGift=normalizeCrashPrizeGift(selected)||selected;
       closeSheet();
       renderUpgradeUI();
-      return;
-    }else if(sheetMode==='craft') {
-      const normalized=normalizeInventoryGift(selected,selected.id||selected._sheetId);
-      const hasFreeSlot=craftSlots.some(item=>!item);
-      if(normalized && hasFreeSlot && !getCraftItems().some(item=>String(item.id)===String(normalized.id))){
-        const addedId=String(normalized.id);
-        const slotIndex=craftSlots.findIndex(item=>!item);
-        if(slotIndex>=0){
-          craftSlots[slotIndex]=normalized;
-        }
-        updateCraftSelectedIds();
-        craftAppearingGiftIds=[...new Set([...craftAppearingGiftIds,addedId])];
-        setTimeout(()=>{
-          craftAppearingGiftIds=craftAppearingGiftIds.filter(item=>item!==addedId);
-          renderCraftUI();
-        },380);
-      }
-      sheetSelectedGiftId='';
-      closeSheet();
-      renderCraftUI();
       return;
     }
     closeSheet();
@@ -3541,7 +3627,7 @@
       if(isWin && data.wonGift){
         openUpgradeResultModal(normalizeInventoryGift(data.wonGift,data.wonGift?.id||('upgrade_'+Date.now())));
       } else {
-        tg?.showAlert?tg.showAlert('Апгрейд не удался'):alert('Апгрейд не удался');
+        tg?.showAlert?tg.showAlert(t('upgradeFailed')):alert(t('upgradeFailed')); 
       }
       renderInventory();
       upgradeSourceGift=null;
@@ -3676,11 +3762,11 @@
     const starsValue=getTopupStarsValue();
     if(starsValue<=0)return;
     if(!tg?.openInvoice){
-      tg?.showAlert?tg.showAlert('Открой в Telegram для оплаты'):alert('Открой в Telegram для оплаты');
+      tg?.showAlert?tg.showAlert(t('openTelegramPay')):alert(t('openTelegramPay')); 
       return;
     }
     topupSubmit.disabled=true;
-    topupSubmit.innerHTML='Создаём инвойс...';
+    topupSubmit.innerHTML=t('creatingInvoice');
     try{
       const resp=await fetch(API_BASE+'/api/invoice',{
         method:'POST',
@@ -3690,36 +3776,36 @@
       const {invoiceLink,invoiceId,error}=await resp.json();
       if(error)throw new Error(error);
       const balanceBefore=balance;
-      topupSubmit.innerHTML='Открываем оплату...';
+      topupSubmit.innerHTML=t('openingPayment');
       tg.openInvoice(invoiceLink,async(status)=>{
         if(status==='paid'){
           applyOptimisticDeposit(starsValue);
-          topupSubmit.innerHTML='Проверяем оплату...';
-          topupAmount.value='';
-          syncTopupModeUI();
-          closeTopup();
-          const applied=await waitForPaymentApply(invoiceId,balanceBefore,starsValue,4000);
+          topupSubmit.innerHTML=t('checkingPayment');
+          const applied=await waitForPaymentApply(invoiceId,balanceBefore,starsValue,3200);
           if(applied){
+            topupAmount.value='';
+            syncTopupModeUI();
+            closeTopup();
           }else{
-            tg?.showAlert?tg.showAlert('Оплата принята, но подтверждение задержалось. Баланс обновится чуть позже.'):alert('Оплата принята, но подтверждение задержалось. Баланс обновится чуть позже.');
+            tg?.showAlert?tg.showAlert(t('paymentDelayed')):alert(t('paymentDelayed')); 
           }
           topupSubmit.disabled=false;
           syncTopupSubmitLabel();
         }else if(status==='failed'){
           topupSubmit.disabled=false;
           syncTopupSubmitLabel();
-          tg.showAlert?.('Оплата не прошла. Попробуй снова.');
+          tg.showAlert?.(t('paymentFailed')); 
         }else if(status==='cancelled'){
           topupSubmit.disabled=false;
           syncTopupSubmitLabel();
-          tg.showAlert?.('Оплата отменена.');
+          tg.showAlert?.(t('paymentCancelled')); 
         }
       });
     }catch(e){
       console.error('Invoice error:',e);
       topupSubmit.disabled=false;
       syncTopupSubmitLabel();
-      tg?.showAlert?tg.showAlert('Ошибка: '+e.message):alert('Ошибка: '+e.message);
+      tg?.showAlert?tg.showAlert(t('errorPrefix')+e.message):alert(t('errorPrefix')+e.message); 
     }
   });
 
@@ -3761,7 +3847,7 @@
     return null;
   }
 
-  async function waitForPaymentApply(invoiceId,previousBalance,starsValue,timeoutMs=12000){
+  async function waitForPaymentApply(invoiceId,previousBalance,starsValue,timeoutMs=3200){
     const started=Date.now();
     while(Date.now()-started<timeoutMs){
       try{
@@ -3780,7 +3866,7 @@
           return true;
         }
       }catch(e){}
-      await new Promise(r=>setTimeout(r,80));
+      await new Promise(r=>setTimeout(r,120));
     }
     await Promise.all([refreshBalance(),refreshTop(),refreshReferral()]);
     return Number(balance)>=Number(previousBalance)+Number(starsValue||0);
@@ -3837,13 +3923,10 @@
 
   function renderTop(leaders,myRank){
     const placeText=document.querySelector('#topPage .top-place-text');
-    if(placeText) placeText.innerHTML=myRank
-      ? (currentLang==='en' ? 'You are in the top at <b>'+myRank+'</b> place' : 'Вы в топе на <b>'+myRank+'</b> месте')
-      : (currentLang==='en' ? 'You are not in the top yet' : 'Вы ещё не в топе');
-    const depositLabel=currentLang==='en'?'deposit':'пополнение';
+    if(placeText) placeText.innerHTML=myRank ? t('topPlaceAt').replace('{rank}',myRank) : t('topNotYet');
     const myEntry=leaders.find(l=>String(l.id)===String(tgUserId));
     document.querySelector('.top-my-rank').textContent=myRank||'—';
-    document.querySelector('.top-my-score').innerHTML='<span class="top-score-value">'+(myEntry?formatStars(myEntry.total_deposited):'0')+' <img src="assets/star.png" alt=""></span><span class="top-score-label">'+depositLabel+'</span>';
+    document.querySelector('.top-my-score').innerHTML='<span class="top-score-value">'+(myEntry?formatStars(myEntry.total_deposited):'0')+' <img src="assets/star.png" alt=""></span>'; 
     const rankClasses=['gold','silver','bronze'];
     const rows=document.querySelectorAll('#topPage .top-row');
     rows.forEach((row,i)=>{
@@ -3852,23 +3935,26 @@
       rankEl.textContent=leader?i+1:'—';
       rankEl.className='top-rank'+(leader&&rankClasses[i]?' '+rankClasses[i]:'');
       const nameEl=row.querySelector('.top-name');
-      row.querySelector('.top-gift-badge')?.remove();
+      row.querySelector('.top-gift-badge-wrap')?.remove();
       if(!leader){
         nameEl.textContent='—';
         nameEl.dataset.locked='false';
-        row.querySelector('.top-score').innerHTML='<span class="top-score-value">0 <img src="assets/star.png" alt=""></span><span class="top-score-label">'+depositLabel+'</span>';
+        row.querySelector('.top-score').innerHTML='<span class="top-score-value">0 <img src="assets/star.png" alt=""></span>'; 
         return;
       }
       nameEl.textContent=leader.first_name||'User';
       nameEl.dataset.locked='true';
-      row.querySelector('.top-score').innerHTML='<span class="top-score-value">'+formatStars(leader.total_deposited)+' <img src="assets/star.png" alt=""></span><span class="top-score-label">'+depositLabel+'</span>';
+      row.querySelector('.top-score').innerHTML='<span class="top-score-value">'+formatStars(leader.total_deposited)+' <img src="assets/star.png" alt=""></span>'; 
       const rewardGift=TOP_REWARD_GIFTS[i]||null;
       if(rewardGift?.image){
+        const wrap=document.createElement('div');
+        wrap.className='top-gift-badge-wrap';
         const badge=document.createElement('img');
         badge.className='top-gift-badge';
         badge.src=rewardGift.image;
         badge.alt=rewardGift.name||'Gift';
-        row.appendChild(badge);
+        wrap.appendChild(badge);
+        row.appendChild(wrap);
       }
       let avatarEl=row.querySelector('.top-avatar');
       if(leader.photo_url){
