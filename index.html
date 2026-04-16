@@ -210,7 +210,7 @@
   .inventory-withdraw-btn{background:rgba(255,255,255,.12);color:#fff;justify-content:space-between;gap:8px;transition:opacity .18s ease, filter .18s ease}
   .inventory-withdraw-btn .inventory-timer-pill{margin-left:auto}
   .inventory-withdraw-btn.pending{opacity:.55;filter:saturate(.7)}
-  .inventory-withdraw-btn.locked{opacity:.58;filter:saturate(.7)}
+  .inventory-withdraw-btn.locked{opacity:.92}
   .inventory-timer-pill{
     height:24px;padding:0 8px;border-radius:999px;white-space:nowrap;
     display:inline-flex;align-items:center;justify-content:center;
@@ -521,99 +521,32 @@
     background:#007AFF;color:#fff;font-size:15px;font-weight:700;
   }
 
-  /* === CRAFT === */
-  .craft-page{display:flex;flex-direction:column;gap:14px}
-  .craft-section-title{
-    color:#fff;font-size:15px;font-weight:700;margin-bottom:2px;
+  /* === CASES === */
+  .cases-page{display:flex;flex-direction:column;gap:14px}
+  .cases-feed{
+    width:100%;min-height:54px;border-radius:18px;
+    background:#1C1C1E;border:1px solid rgba(255,255,255,.08);
+    display:flex;align-items:center;padding:0 16px;
   }
-  .craft-window{
-    background:#1C1C1E;
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:20px;padding:14px;
+  .cases-feed-label{color:rgba(255,255,255,.34);font-size:12px;font-weight:700;letter-spacing:.02em}
+  .cases-title{color:#fff;font-size:18px;font-weight:800;margin-top:2px}
+  .cases-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .case-card{
+    background:#1C1C1E;border:1px solid rgba(255,255,255,.08);border-radius:20px;
+    padding:14px 10px 12px;display:flex;flex-direction:column;align-items:center;gap:10px;
+    min-height:212px;
   }
-  .craft-grid{
-    display:grid;grid-template-columns:repeat(5,1fr);gap:8px;
+  .case-card-image{
+    width:112px;height:112px;object-fit:contain;display:block;flex-shrink:0;
+    filter:drop-shadow(0 10px 18px rgba(0,0,0,.24));
   }
-  .craft-cell{
-    aspect-ratio:.78;border-radius:14px;
-    background:#2C2C2E;
-    border:1.5px dashed rgba(255,255,255,.08);
-    display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
-    cursor:pointer;position:relative;overflow:hidden;
-    padding:10px 6px 8px;
-    transition:background .2s ease, opacity .62s ease, transform .62s ease;
+  .case-card-title{color:#fff;font-size:13px;font-weight:700;text-align:center;line-height:1.2;min-height:32px;display:flex;align-items:center;justify-content:center}
+  .case-card-pill{
+    min-width:92px;height:30px;padding:0 14px;border-radius:999px;
+    background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.08);
+    display:inline-flex;align-items:center;justify-content:center;
+    color:#fff;font-size:12px;font-weight:700;
   }
-  .craft-cell span{
-    color:rgba(255,255,255,.18);font-size:9px;font-weight:600;
-    text-transform:uppercase;letter-spacing:.03em;
-    display:flex;align-items:center;justify-content:center;
-    width:100%;flex:1;transform:none;
-  }
-  .craft-info{
-    background:#1C1C1E;
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:20px;padding:16px;
-  }
-  .craft-info-row{
-    display:flex;align-items:center;gap:6px;margin-bottom:4px;
-  }
-  .craft-info-row span{
-    color:#fff;font-size:22px;font-weight:800;
-  }
-  .craft-info-row img{
-    width:20px;height:20px;object-fit:contain;
-    filter:drop-shadow(0 0 4px rgba(255,200,0,.4));
-  }
-  .craft-info-label{
-    color:rgba(255,255,255,.3);font-size:12px;font-weight:600;
-    margin-bottom:16px;
-  }
-  .craft-action-btn{
-    width:100%;height:46px;border-radius:14px;border:none;
-    background:rgba(0,122,255,.13);
-    color:rgba(0,122,255,.4);font-size:14px;font-weight:700;
-    cursor:default;letter-spacing:.01em;
-  }
-  .craft-action-btn.active{background:#007AFF;color:#fff;cursor:pointer}
-
-  .craft-cell.active{border-color:rgba(255,255,255,.08);border-style:solid;box-shadow:none;background:#2C2C2E;justify-content:center}
-  .craft-cell img{width:52px;height:52px;object-fit:contain;filter:drop-shadow(0 8px 14px rgba(0,0,0,.24));flex-shrink:0}
-  .craft-cell.entering{animation:craftCellIn .24s ease both}
-  .craft-cell.removing{opacity:.34;transform:scale(.97);filter:saturate(.55) brightness(.82)}
-  @keyframes craftCellIn{from{opacity:0;transform:translateY(8px) scale(.94)}to{opacity:1;transform:translateY(0) scale(1)}}
-
-  .craft-add-btn{
-    width:100%;height:50px;border-radius:999px;border:none;cursor:pointer;
-    background:#007AFF;color:#fff;font-size:15px;font-weight:700;
-  }
-
-.cases-page{display:flex;flex-direction:column;gap:14px;min-height:calc(100vh - 300px);padding:0 0 40px}
-.cases-title{color:#fff;font-size:17px;font-weight:700;margin-bottom:6px}
-.cases-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.cases-card{
-  background:#1C1C1E;
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:20px;
-  padding:12px 10px 14px;
-  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
-  min-height:214px;
-}
-.cases-card-image{
-  width:112px;height:112px;object-fit:contain;flex-shrink:0;margin-bottom:10px;
-  filter:drop-shadow(0 10px 18px rgba(0,0,0,.24));
-}
-.cases-card-name{
-  color:#fff;font-size:14px;font-weight:700;line-height:1.2;text-align:center;
-  margin-bottom:10px;min-height:34px;display:flex;align-items:center;justify-content:center;
-}
-.cases-card-pill{
-  min-width:92px;height:30px;padding:0 14px;border-radius:999px;
-  display:inline-flex;align-items:center;justify-content:center;
-  background:rgba(255,255,255,.12);
-  border:1px solid rgba(255,255,255,.08);
-  color:#fff;font-size:12px;font-weight:700;
-}
-.craft-legacy-hidden{display:none!important}
 
   /* === CRASH === */
   .crash-page{display:flex;flex-direction:column;height:100%}
@@ -774,7 +707,8 @@
   }
   .crash-bets-stack:empty{display:none}
   .crash-bet-cloud{
-    display:flex;align-items:center;gap:10px;
+    display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:nowrap;
+    width:100%;overflow:hidden;
     padding:10px 12px;border-radius:16px;
     background:#1C1C1E;
     border:1px solid rgba(255,255,255,.08);
@@ -787,7 +721,7 @@
     width:36px;height:36px;border-radius:50%;object-fit:cover;flex-shrink:0;
     background:rgba(255,255,255,.1);
   }
-  .crash-bet-cloud-info{min-width:0;display:flex;flex-direction:column;gap:3px;flex:1}
+  .crash-bet-cloud-info{min-width:0;display:flex;flex-direction:column;justify-content:center;gap:4px;flex:1}
   .crash-bet-cloud-name{
     color:#fff;font-size:13px;font-weight:700;
     white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
@@ -795,17 +729,17 @@
   }
   .crash-bet-cloud-bet{
     display:flex;align-items:center;gap:4px;
-    color:rgba(255,255,255,.45);font-size:12px;font-weight:600;
+    color:rgba(255,255,255,.45);font-size:12px;line-height:1.1;font-weight:600;
   }
   .crash-bet-cloud-bet img{width:13px;height:13px;object-fit:contain}
   .crash-bet-cloud-right{
-    margin-left:auto;
+    margin-left:auto;align-self:center;
     display:flex;align-items:center;justify-content:flex-end;gap:8px;
-    flex-shrink:0;min-width:112px;
+    flex-shrink:0;min-width:122px;
   }
   .crash-bet-cloud-amount{
     display:flex;align-items:center;gap:4px;
-    color:#fff;font-size:13px;font-weight:800;flex-shrink:0;justify-content:flex-end;
+    color:#fff;font-size:13px;line-height:1;font-weight:800;flex-shrink:0;justify-content:flex-end;
     white-space:nowrap;
   }
   .crash-bet-cloud-amount img{width:13px;height:13px;object-fit:contain}
@@ -1189,32 +1123,18 @@
     </div>
   </div>
 
-
-<!-- CASES -->
-<div class="page" id="craftPage">
-  <div class="craft-page cases-page">
-    <div class="cases-title" id="casesTitle">Кейсы</div>
-    <div class="cases-grid">
-      <div class="cases-card">
-        <img class="cases-card-image" src="assets/case/case1.png" alt="case">
-        <div class="cases-card-name" id="caseCardName">Ежедневный</div>
-        <div class="cases-card-pill" id="caseCardAction">Открыть</div>
+  <!-- CASES -->
+  <div class="page" id="craftPage">
+    <div class="cases-page">
+      <div class="cases-feed" id="casesFeed">
+        <div class="cases-feed-label" id="casesFeedLabel">Последние выбитые подарки</div>
       </div>
-    </div>
-    <div class="craft-legacy-hidden">
-      <div class="craft-section-title">Ваши подарки</div>
-      <div class="craft-window"><div class="craft-grid" id="craftGrid"></div></div>
-      <div class="craft-info">
-        <div class="craft-info-row"><span id="craftTotalPrice">0</span><img src="assets/star.png" alt="star"></div>
-        <div class="craft-info-label">Стоимость подарков</div>
-        <button class="craft-action-btn" id="craftActionBtn">Сделать контракт</button>
-      </div>
-      <button class="craft-add-btn" id="craftAddBtn">Добавить подарки</button>
+      <div class="cases-title" id="casesTitle">Кейсы</div>
+      <div class="cases-grid" id="casesGrid"></div>
     </div>
   </div>
-</div>
 
-<!-- CRASH -->
+  <!-- CRASH -->
   <div class="page visible" id="crashPage" style="padding-top:0;left:0;right:0">
     <div class="crash-page">
       <div class="crash-sky" id="crashSky">
@@ -1449,7 +1369,8 @@
   }
 
   // Lottie — profile
-  let profileLottieAnim=lottie.loadAnimation({container:document.getElementById('lottieContainer'),renderer:'svg',loop:true,autoplay:true,path:'assets/PlushPepe(blue).json',rendererSettings:{progressiveLoad:true}});
+  let profileLottieAnim=lottie.loadAnimation({container:document.getElementById('lottieContainer'),renderer:'svg',loop:true,autoplay:false,path:'assets/PlushPepe(blue).json'});
+  document.getElementById('lottieContainer')?.addEventListener('click',()=>{try{profileLottieAnim.goToAndPlay(0,true)}catch(e){}});
 
   let sheetLottieLoaded=false;
   let sheetLottieAnim=null;
@@ -1464,8 +1385,8 @@
       myGifts:'Мои подарки', giftsForUpgrade:'Подарки для апгрейда', makeUpgrade:'Сделать апгрейд', yourGifts:'Ваши подарки', empty:'Пусто', giftCost:'Стоимость подарков',
       makeContract:'Сделать контракт', addGifts:'Добавить подарки', waiting:'Ожидание', waitingBets:'Ожидание ставок', placeBet:'Сделать ставку', cashOut:'Забрать',
       giftUnlocked:'Ваш подарок', claim:'Забрать', sell:'Продать', support:'Поддержка', language:'Язык', saveAndExit:'Сохранить и выйти', topup:'Пополнение', stars:'Звезды', ton:'TON',
-      topupBtn:'Пополнить', bet:'Ставка', top:'Топ', craft:'Кейсы', crash:'Краш', upgrade:'Апгрейд', profileNav:'Профиль', giftReady:'Подарок', giftOpened:'Подарок открыт',
-      sellAll:'Продать все', withdraw:'Вывести', withdrawSoon:'Подарок отправляется в Telegram…', giftWord1:'подарок', giftWord2:'подарка', giftWord5:'подарков', referralBack:'Назад', invited:'Приглашено', earned:'Заработано', invite:'Пригласить', referralLink:'Реферальная ссылка', copied:'Скопировано', addGift:'Добавить подарок', inCraft:'В крафте', crafting:'Создаём контракт...', chance:'Шанс', chanceEmpty:'Шанс —', tonLoading:'Подключаем кошелёк...', tonNeedWallet:'Подключи TON кошелёк...', tonNotConnected:'TON кошелёк не подключён', tonOpening:'Открываем TON оплату...', tonConfirm:'Подтверждаем TON пополнение...', loading:'Загрузка...', loadingWait:'Подождите немного', promoUnavailable:'Промокод недоступен', upgradeFailed:'Апгрейд не удался', openTelegramPay:'Открой в Telegram для оплаты', creatingInvoice:'Создаём инвойс...', openingPayment:'Открываем оплату...', checkingPayment:'Проверяем оплату...', paymentDelayed:'Оплата принята, но подтверждение задержалось. Баланс обновится чуть позже.', paymentFailed:'Оплата не прошла. Попробуй снова.', paymentCancelled:'Оплата отменена.', errorPrefix:'Ошибка: ', topPlaceAt:'Вы в топе на <b>{rank}</b> месте', topNotYet:'Вы ещё не в топе', now:'Сейчас', soonPrefix:'Оч'
+      topupBtn:'Пополнить', bet:'Ставка', top:'Топ', craft:'Крафт', cases:'Кейсы', crash:'Краш', upgrade:'Апгрейд', profileNav:'Профиль', giftReady:'Подарок', giftOpened:'Подарок открыт',
+      sellAll:'Продать все', withdraw:'Вывести', withdrawSoon:'Подарок отправляется в Telegram…', giftWord1:'подарок', giftWord2:'подарка', giftWord5:'подарков', referralBack:'Назад', invited:'Приглашено', earned:'Заработано', invite:'Пригласить', referralLink:'Реферальная ссылка', copied:'Скопировано', addGift:'Добавить подарок', inCraft:'В крафте', crafting:'Создаём контракт...', chance:'Шанс', chanceEmpty:'Шанс —', tonLoading:'Подключаем кошелёк...', tonNeedWallet:'Подключи TON кошелёк...', tonNotConnected:'TON кошелёк не подключён', tonOpening:'Открываем TON оплату...', tonConfirm:'Подтверждаем TON пополнение...', loading:'Загрузка...', loadingWait:'Подождите немного', promoUnavailable:'Промокод недоступен', upgradeFailed:'Апгрейд не удался', openTelegramPay:'Открой в Telegram для оплаты', creatingInvoice:'Создаём инвойс...', openingPayment:'Открываем оплату...', checkingPayment:'Проверяем оплату...', paymentDelayed:'Оплата принята, но подтверждение задержалось. Баланс обновится чуть позже.', paymentFailed:'Оплата не прошла. Попробуй снова.', paymentCancelled:'Оплата отменена.', errorPrefix:'Ошибка: ', topPlaceAt:'Вы в топе на <b>{rank}</b> месте', topNotYet:'Вы ещё не в топе', now:'Сейчас', recentDrops:'Последние выбитые подарки', casesTitle:'Кейсы', openCase:'Открыть', caseDaily:'Ежедневный', soonPrefix:'Оч'
     },
     en:{
       topPlace:'You are in the top at <b>—</b> place', waitingDots:'Waiting...', profile:'Profile', promocodes:'Promo codes', promoPlaceholder:'Enter promo code', apply:'Apply',
@@ -1474,8 +1395,8 @@
       myGifts:'My gifts', giftsForUpgrade:'Gifts for upgrade', makeUpgrade:'Make upgrade', yourGifts:'Your gifts', empty:'Empty', giftCost:'Gift value',
       makeContract:'Make contract', addGifts:'Add gifts', waiting:'Waiting', waitingBets:'Waiting for bets', placeBet:'Place bet', cashOut:'Cash out',
       giftUnlocked:'Your gift', claim:'Claim', sell:'Sell', support:'Support', language:'Language', saveAndExit:'Save and exit', topup:'Top up', stars:'Stars', ton:'TON',
-      topupBtn:'Top up', bet:'Bet', top:'Top', craft:'Cases', crash:'Crash', upgrade:'Upgrade', profileNav:'Profile', giftReady:'Gift', giftOpened:'Gift opened',
-      sellAll:'Sell all', withdraw:'Withdraw', withdrawSoon:'Gift is being sent to Telegram…', giftWord1:'gift', giftWord2:'gifts', giftWord5:'gifts', referralBack:'Back', invited:'Invited', earned:'Earned', invite:'Invite', referralLink:'Referral link', copied:'Copied', addGift:'Add gift', inCraft:'In craft', crafting:'Crafting...', chance:'Chance', chanceEmpty:'Chance —', tonLoading:'Connecting wallet...', tonNeedWallet:'Connect TON wallet...', tonNotConnected:'TON wallet is not connected', tonOpening:'Opening TON payment...', tonConfirm:'Confirming TON top up...', loading:'Loading...', loadingWait:'Please wait a bit', promoUnavailable:'Promo code unavailable', upgradeFailed:'Upgrade failed', openTelegramPay:'Open in Telegram to pay', creatingInvoice:'Creating invoice...', openingPayment:'Opening payment...', checkingPayment:'Checking payment...', paymentDelayed:'Payment is accepted, but confirmation is delayed. Balance will update a bit later.', paymentFailed:'Payment failed. Try again.', paymentCancelled:'Payment cancelled.', errorPrefix:'Error: ', topPlaceAt:'You are in the top at <b>{rank}</b> place', topNotYet:'You are not in the top yet', now:'Now', soonPrefix:'In'
+      topupBtn:'Top up', bet:'Bet', top:'Top', craft:'Craft', cases:'Cases', crash:'Crash', upgrade:'Upgrade', profileNav:'Profile', giftReady:'Gift', giftOpened:'Gift opened',
+      sellAll:'Sell all', withdraw:'Withdraw', withdrawSoon:'Gift is being sent to Telegram…', giftWord1:'gift', giftWord2:'gifts', giftWord5:'gifts', referralBack:'Back', invited:'Invited', earned:'Earned', invite:'Invite', referralLink:'Referral link', copied:'Copied', addGift:'Add gift', inCraft:'In craft', crafting:'Crafting...', chance:'Chance', chanceEmpty:'Chance —', tonLoading:'Connecting wallet...', tonNeedWallet:'Connect TON wallet...', tonNotConnected:'TON wallet is not connected', tonOpening:'Opening TON payment...', tonConfirm:'Confirming TON top up...', loading:'Loading...', loadingWait:'Please wait a bit', promoUnavailable:'Promo code unavailable', upgradeFailed:'Upgrade failed', openTelegramPay:'Open in Telegram to pay', creatingInvoice:'Creating invoice...', openingPayment:'Opening payment...', checkingPayment:'Checking payment...', paymentDelayed:'Payment is accepted, but confirmation is delayed. Balance will update a bit later.', paymentFailed:'Payment failed. Try again.', paymentCancelled:'Payment cancelled.', errorPrefix:'Error: ', topPlaceAt:'You are in the top at <b>{rank}</b> place', topNotYet:'You are not in the top yet', now:'Now', recentDrops:'Recent drops', casesTitle:'Cases', openCase:'Open', caseDaily:'Daily', soonPrefix:'In'
     }
   };
   let currentLang=(localStorage.getItem('miniapp_lang')==='en')?'en':'ru';
@@ -1485,6 +1406,22 @@
     if(lang==='en'){langInd.classList.add('right')}else{langInd.classList.remove('right')}
   }
   const INVENTORY_HOLD_MS=20*60*1000;
+  const CASES_CATALOG=[
+    {id:'case1',title:'Ежедневный',image:'assets/case/case1.png'},
+    {id:'case2',title:'Кейс 2',image:'assets/case/case2.png'},
+    {id:'case3',title:'Кейс 3',image:'assets/case/case3.png'},
+    {id:'case4',title:'Кейс 4',image:'assets/case/case4.png'},
+    {id:'case5',title:'Кейс 5',image:'assets/case/case5.png'},
+    {id:'case6',title:'Кейс 6',image:'assets/case/case6.png'},
+    {id:'case7',title:'Кейс 7',image:'assets/case/case7.png'},
+    {id:'case8',title:'Кейс 8',image:'assets/case/case8.png'},
+    {id:'case9',title:'Кейс 9',image:'assets/case/case9.png'},
+    {id:'case10',title:'Кейс 10',image:'assets/case/case10.png'}
+  ];
+  function renderCasesPage(){
+    if(!casesGrid) return;
+    casesGrid.innerHTML=CASES_CATALOG.map(item=>`<div class="case-card" data-case-id="${item.id}"><img class="case-card-image" src="${item.image}" alt="${item.title}"><div class="case-card-title">${item.title}</div><div class="case-card-pill">${t('openCase')}</div></div>`).join('');
+  }
   const MAX_CRASH_HISTORY=10;
   let inventoryItems=[];
   const withdrawingGiftIds=new Set();
@@ -1516,8 +1453,9 @@
     return formatStars(num);
   }
   function formatInventoryTime(ms){
-    const safe=Math.max(0,ms);
-    const totalMinutes=Math.ceil(safe/60000);
+    const safe=Math.max(0,Number(ms||0));
+    const adjusted=Math.max(0,safe-5000);
+    const totalMinutes=adjusted<=0?0:Math.max(1,Math.ceil(adjusted/60000));
     const hours=Math.floor(totalMinutes/60);
     const minutes=totalMinutes%60;
     if(currentLang==='en'){
@@ -1565,8 +1503,7 @@
     if(canWithdrawItem(item)){
       return {text:t('withdraw'), pill:'', className:'', disabled:false};
     }
-    const leftMs=Math.max(0,getItemWithdrawAt(item)-Date.now());
-    return {text:t('withdraw'), pill:formatInventoryTime(leftMs), className:'locked', disabled:true};
+    return {text:t('withdraw'), pill:t('soonPrefix')+formatInventoryTime(getItemWithdrawAt(item)-Date.now()), className:'locked', disabled:true};
   }
   function dismissKeyboard(inputEl=null){
     try{inputEl?.blur?.()}catch(e){}
@@ -1652,6 +1589,9 @@
   }
 
 
+  const casesGrid=document.getElementById('casesGrid');
+  const casesFeedLabel=document.getElementById('casesFeedLabel');
+  const casesTitleEl=document.getElementById('casesTitle');
   const craftGrid=document.getElementById('craftGrid');
   const craftTotalPriceEl=document.getElementById('craftTotalPrice');
   const craftActionBtn=document.getElementById('craftActionBtn');
@@ -1851,7 +1791,8 @@
     sheetOverlay.classList.add('open');sheet.classList.add('open');
     updateLottiePerformance();
     if(!sheetLottieLoaded){
-      sheetLottieAnim=lottie.loadAnimation({container:document.getElementById('sheetLottie'),renderer:'svg',loop:true,autoplay:true,path:'assets/PlushPepe(blue).json',rendererSettings:{progressiveLoad:true}});
+      sheetLottieAnim=lottie.loadAnimation({container:document.getElementById('sheetLottie'),renderer:'svg',loop:true,autoplay:false,path:'assets/PlushPepe(blue).json'});
+      document.getElementById('sheetLottie')?.addEventListener('click',()=>{try{sheetLottieAnim.goToAndPlay(0,true)}catch(e){}});
       sheetLottieLoaded=true;
     }
   }
@@ -2148,7 +2089,9 @@
   }
 
   // Trophy lottie
-  trophyLottieAnim=lottie.loadAnimation({container:document.getElementById('trophyLottie'),renderer:'svg',loop:true,autoplay:true,path:'assets/trophy.json',rendererSettings:{progressiveLoad:true}});
+  trophyLottieAnim=lottie.loadAnimation({container:document.getElementById('trophyLottie'),renderer:'svg',loop:true,autoplay:false,path:'assets/trophy.json'});
+  document.getElementById('trophyLottie')?.addEventListener('click',()=>{try{trophyLottieAnim.goToAndPlay(0,true)}catch(e){}});
+  renderCasesPage();
 
   // Generate stars for crash
   const sky=document.getElementById('crashSky');
@@ -2282,7 +2225,7 @@
       name:String(item.name||'Gift'),
       price:Number(item.price||0),
       image:resolveGiftImage(item),
-      withdrawAt:item.withdrawAt||item.withdraw_available_at||(String(item.id||fallbackId||'').startsWith('temp_')?new Date(Date.now()+INVENTORY_HOLD_MS).toISOString():null),
+      withdrawAt:item.withdrawAt||item.withdraw_available_at||null,
       createdAt:item.createdAt||item.created_at||new Date().toISOString(),
     };
   }
@@ -2294,11 +2237,7 @@
   }
   function renderCrashOtherBets(list=[]){
     if(!crashOthers)return;
-    const currentRoundId=Number(crashRealtimeState?.roundId||0);
-    const others=(Array.isArray(list)?list:[])
-      .filter(player=>!player?.isViewer)
-      .filter(player=>!currentRoundId || Number(player?.roundId||0)===currentRoundId)
-      .slice(0,6);
+    const others=(Array.isArray(list)?list:[]).filter(player=>String(player.userId)!==String(tgUserId)).slice(0,6);
     const nextIds=new Set(others.map(player=>String(player.userId)));
     Array.from(crashOthers.querySelectorAll('.crash-bet-cloud')).forEach(row=>{
       if(!nextIds.has(String(row.dataset.userId||'')) && !row.classList.contains('fading-out')){
@@ -2579,14 +2518,9 @@
     document.querySelectorAll('.slot-label')[0].textContent=t('myGifts');
     document.querySelectorAll('.slot-label')[1].textContent=t('giftsForUpgrade');
     q('.upgrade-btn').innerHTML=t('makeUpgrade')+'\n        <img src="svg/rise.svg" alt="">';
-    q('.craft-section-title').textContent=t('yourGifts');
-    document.querySelectorAll('.craft-cell span').forEach(el=>el.textContent=t('empty'));
-    q('.craft-info-label').textContent=t('giftCost');
-    q('.craft-action-btn').textContent=t('makeContract');
-    q('.craft-add-btn').textContent=t('addGifts');
-    q('#casesTitle').textContent=t('craft');
-    q('#caseCardName').textContent=currentLang==='en'?'Daily':'Ежедневный';
-    q('#caseCardAction').textContent=currentLang==='en'?'Open':'Открыть';
+    if(casesFeedLabel) casesFeedLabel.textContent=t('recentDrops');
+    if(casesTitleEl) casesTitleEl.textContent=t('casesTitle');
+    renderCasesPage();
     q('#sheet .sheet-pill').textContent=t('myGifts');
     q('#sheet .empty-title').textContent=t('noGiftsTitle');
     q('#sheet .empty-desc').innerHTML=t('noGiftsDesc');
@@ -2600,7 +2534,7 @@
     document.querySelector('.topup-block[data-type="ton"] span').textContent=t('ton');
     q('#betSheet .bet-pill').textContent=t('bet');
     document.querySelectorAll('.nav-label')[0].textContent=t('top');
-    document.querySelectorAll('.nav-label')[1].textContent=t('craft');
+    document.querySelectorAll('.nav-label')[1].textContent=t('cases');
     document.querySelectorAll('.nav-label')[2].textContent=t('crash');
     document.querySelectorAll('.nav-label')[3].textContent=t('upgrade');
     document.querySelectorAll('.nav-label')[4].textContent=t('profileNav');
@@ -2718,8 +2652,11 @@
     crashCashoutBusy=false;
     crashRoundLocked=false;
     crashCashoutBusy=false;
+    crashBetActive=false;
+    crashBetAmount=0;
     crashBetSettled=false;
     crashSettledPayout=0;
+    crashResultState=null;
     crashRenderedWinGift=null;
     crashRenderedWinAmount=0;
     if(crashPlayer.classList.contains('visible') && !crashPlayer.classList.contains('fading')){
@@ -2783,6 +2720,10 @@
     }
 
     if(!viewerBet){
+      if((crashBetActive||crashBetSettled) && !crashPrizePending && !crashBetSyncPending && state?.phase==='countdown'){
+        resetCrashPlayer();
+        return;
+      }
       if(crashBetSyncPending&&crashBetActive&&state?.phase==='countdown'){
         renderCrashPlayerCard(crashBetAmount);
         renderCrashPlayerWin(crashBetAmount,null);
@@ -2865,7 +2806,6 @@
     if(!crashPrizePending) crashPrizeModalAutoKey='';
     crashRoundLocked=false;
     crashCountdownIntroUntil=Date.now()+320;
-    renderCrashOtherBets([]);
 
     if(crashPrizePending||crashCashoutBusy){
       return;
@@ -3504,7 +3444,7 @@
   document.getElementById('sheetClose').addEventListener('click',closeSheet);
   sheetOverlay.addEventListener('click',closeSheet);
   // Craft add gifts opens same sheet
-  craftAddBtn?.addEventListener('click',()=>{});
+  craftAddBtn?.addEventListener('click',()=>openSheet('craft'));
   sheetGifts.addEventListener('click',e=>{
     const card=e.target.closest('.sheet-gift-card');
     if(!card) return;
