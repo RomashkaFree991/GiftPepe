@@ -1458,7 +1458,7 @@
   function setLangIndicator(lang){
     if(lang==='en'){langInd.classList.add('right')}else{langInd.classList.remove('right')}
   }
-  const INVENTORY_HOLD_MS=20*60*1000;
+  const INVENTORY_HOLD_MS=0;
   const MAX_CRASH_HISTORY=10;
   let inventoryItems=[];
   const withdrawingGiftIds=new Set();
@@ -1840,7 +1840,7 @@
       name:gift.name,
       price:gift.price,
       image:resolveGiftImage(gift),
-      withdrawAt:new Date(Date.now()+INVENTORY_HOLD_MS).toISOString()
+      withdrawAt:INVENTORY_HOLD_MS>0?new Date(Date.now()+INVENTORY_HOLD_MS).toISOString():null
     });
     renderInventory();
   renderUpgradeUI();
@@ -2255,7 +2255,7 @@
       name:String(item.name||'Gift'),
       price:Number(item.price||0),
       image:resolveGiftImage(item),
-      withdrawAt:item.withdrawAt||item.withdraw_available_at||new Date().toISOString(),
+      withdrawAt:item.withdrawAt||item.withdraw_available_at||null,
       createdAt:item.createdAt||item.created_at||new Date().toISOString(),
     };
   }
